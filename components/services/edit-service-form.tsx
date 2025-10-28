@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import type { z } from "zod";
 import { CheckboxInput } from "@/components/shared/input/CheckboxInput";
 import { FileInput } from "@/components/shared/input/FileInput";
+import { IconSelectInput } from "@/components/shared/input/IconSelectInput";
 import { TextInput } from "@/components/shared/input/TextInput";
 import { EntityTranslations } from "@/components/translations/translations";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ import {
   type TEditServiceForm,
 } from "@/schemas/services.schemas";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface EditServiceFormProps {
   serviceId: string;
@@ -70,11 +72,17 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
   const onSubmit = async (
     data: z.input<ReturnType<typeof editServiceSchema>>
   ) => {
+    // Check if form has any changes
+    if (!form.formState.isDirty) {
+      toast.info("No changes detected. Please make some changes before updating.");
+      return;
+    }
+    
     try {
       await updateService(Number(serviceId), data as TEditServiceForm);
       toast.success(t.common?.success || "Service updated successfully");
       refetchService(); // Refetch to get updated data
-    } catch {
+    } catch (error) {
       toast.error(updateError || t.common?.error || "Failed to update service");
     }
   };
@@ -105,116 +113,124 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Main Service Form */}
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {/* Basic Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle>{t.services?.basicInformation || "Basic Information"}</CardTitle>
-              <CardDescription>
-                {t.services?.basicInformationDescription || "Enter the basic service information."}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <TextInput
-                  control={form.control}
-                  name="slug"
-                  label={t.services?.slug || "Slug"}
-                  placeholder={t.services?.slugPlaceholder || "service-slug"}
+    <Tabs defaultValue="service" className="w-full">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="service">
+          {t.services?.basicInformation || "Service Settings"}
+        </TabsTrigger>
+        <TabsTrigger value="translations">
+          {"Translations"}
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="service" className="space-y-6">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* Basic Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t.services?.basicInformation || "Basic Information"}</CardTitle>
+                <CardDescription>
+                  {t.services?.basicInformationDescription || "Enter the basic service information."}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <TextInput
+                    control={form.control}
+                    name="slug"
+                    label={t.services?.slug || "Slug"}
+                    placeholder={t.services?.slugPlaceholder || "service-slug"}
+                  />
+                  <IconSelectInput
+                    name="icon"
+                    label={t.services?.icon || "Icon"}
+                    placeholder={t.services?.iconPlaceholder || "Select an icon"}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <TextInput
+                    control={form.control}
+                    name="order"
+                    label={t.services?.order || "Order"}
+                    placeholder="0"
+                    type="number"
+                  />
+                
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Featured Image */}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t.services?.featuredImage || "Featured Image"}</CardTitle>
+                <CardDescription>
+                  {t.services?.featuredImageDescription || "Upload a featured image for this service."}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <FileInput
+                  name="featuredImage"
+                  label={t.services?.featuredImage || "Featured Image"}
+                  placeholder={t.services?.selectImage || "Select an image"}
+                  accept="image/*"
+                  maxSize={10}
+                  autoUpload={true}
                 />
-                <TextInput
-                  control={form.control}
-                  name="icon"
-                  label={t.services?.icon || "Icon"}
-                  placeholder={t.services?.iconPlaceholder || "Icon name or class"}
-                />
-              </div>
+              </CardContent>
+            </Card>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <TextInput
-                  control={form.control}
-                  name="order"
-                  label={t.services?.order || "Order"}
-                  placeholder="0"
-                  type="number"
-                />
-              
-              </div>
-            </CardContent>
-          </Card>
+            {/* Status Options */}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t.services?.statusOptions || "Status Options"}</CardTitle>
+                <CardDescription>
+                  {t.services?.statusOptionsDescription || "Configure the service status and visibility."}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <CheckboxInput
+                    control={form.control}
+                    name="isPublished"
+                    label={t.services?.published || "Published"}
+                    description={t.services?.publishedDescription || "Make this service visible to the public"}
+                    className="items-center rounded-lg border p-4"
+                  />
+                  <CheckboxInput
+                    control={form.control}
+                    name="isFeatured"
+                    label={t.services?.featured || "Featured"}
+                    description={t.services?.featuredDescription || "Mark this service as featured"}
+                    className="items-center rounded-lg border p-4"
+                  />
+                </div>
+              </CardContent>
+            </Card>
 
-          {/* Featured Image */}
-          <Card>
-            <CardHeader>
-              <CardTitle>{t.services?.featuredImage || "Featured Image"}</CardTitle>
-              <CardDescription>
-                {t.services?.featuredImageDescription || "Upload a featured image for this service."}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <FileInput
-                name="imageFile"
-                label={t.services?.featuredImage || "Featured Image"}
-                placeholder={t.services?.selectImage || "Select an image"}
-                accept="image/*"
-                maxSize={10}
-                autoUpload={true}
-                uploadFieldName="featuredImage"
-              />
-            </CardContent>
-          </Card>
+            <div className="flex items-center gap-2">
+              <Button type="submit" disabled={isUpdating || !form.formState.isDirty}>
+                {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                <Save className="mr-2 h-4 w-4" />
+                {isUpdating ? t.validation?.updating || "Updating..." : t.validation?.update || "Update"}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </TabsContent>
 
-
-          {/* Status Options */}
-          <Card>
-            <CardHeader>
-              <CardTitle>{t.services?.statusOptions || "Status Options"}</CardTitle>
-              <CardDescription>
-                {t.services?.statusOptionsDescription || "Configure the service status and visibility."}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <CheckboxInput
-                  control={form.control}
-                  name="isPublished"
-                  label={t.services?.published || "Published"}
-                  description={t.services?.publishedDescription || "Make this service visible to the public"}
-                  className="items-center rounded-lg border p-4"
-                />
-                <CheckboxInput
-                  control={form.control}
-                  name="isFeatured"
-                  label={t.services?.featured || "Featured"}
-                  description={t.services?.featuredDescription || "Mark this service as featured"}
-                  className="items-center rounded-lg border p-4"
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="flex items-center gap-2">
-            <Button type="submit" disabled={isUpdating}>
-              {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              <Save className="mr-2 h-4 w-4" />
-              {isUpdating ? t.validation?.updating || "Updating..." : t.validation?.update || "Update"}
-            </Button>
-          </div>
-        </form>
-      </Form>
-
-      {/* Translations Section */}
-      <EntityTranslations
-        entityId={Number(serviceId)}
-        entityType="service"
-        hooks={serviceTranslationsHooks}
-        hasContent={false}
-        hasMeta={true}
-        hasSubServices={true}
-      />
-    </div>
+      <TabsContent value="translations" className="space-y-6">
+        <EntityTranslations
+          entityId={Number(serviceId)}
+          entityType="service"
+          hooks={serviceTranslationsHooks}
+          hasContent={false}
+          hasMeta={true}
+          hasSubServices={true}
+        />
+      </TabsContent>
+    </Tabs>
   );
 }

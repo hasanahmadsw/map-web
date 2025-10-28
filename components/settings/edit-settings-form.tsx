@@ -14,6 +14,7 @@ import { useSettings } from "@/hooks/useSettings";
 import { useLang } from "@/hooks/useLang";
 import { updateSettingsSchema } from "@/schemas/settings.schemas";
 import { toast } from "sonner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EditTranslationsSettings from "./edit-translation-settings";
 
 interface EditSettingsFormProps {
@@ -188,196 +189,132 @@ export default function EditSettingsForm({ settings }: EditSettingsFormProps) {
   };
 
   return (
-    <div className="space-y-6">
-      <form onSubmit={handleSubmit} className="space-y-6">
+    <Tabs defaultValue="settings" className="w-full">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="settings">
+          {t.settings?.general || "General Settings"}
+        </TabsTrigger>
+        <TabsTrigger value="translations">
+          {"Translations"}
+        </TabsTrigger>
+      </TabsList>
 
-        {/* Social Links */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Link className="h-5 w-5" />
-              {t.settings?.socialLinks}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="platform">{t.settings?.platform}</Label>
-                <Input
-                  id="platform"
-                  value={newSocialLink.platform}
-                  onChange={(e) => setNewSocialLink(prev => ({ ...prev, platform: e.target.value }))}
-                  placeholder="facebook"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="url">{t.settings?.url}</Label>
-                <Input
-                  id="url"
-                  value={newSocialLink.url}
-                  onChange={(e) => setNewSocialLink(prev => ({ ...prev, url: e.target.value }))}
-                  placeholder="https://facebook.com/yourpage"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="label">{t.settings?.label}</Label>
-                <Input
-                  id="label"
-                  value={newSocialLink.label}
-                  onChange={(e) => setNewSocialLink(prev => ({ ...prev, label: e.target.value }))}
-                  placeholder="Follow us on Facebook"
-                />
-              </div>
-            </div>
-            <Button type="button" onClick={addSocialLink} variant="outline" className="w-full">
-              <Plus className="mr-2 h-4 w-4" />
-              {t.settings?.addSocialLink}
-            </Button>
-            <div className="space-y-2">
-              {formData.social.map((link: any, index: number) => (
-                <div key={index} className="flex items-center justify-between p-3 border rounded-md">
-                  <div className="flex items-center gap-3">
-                    <Badge variant="secondary">{link.platform}</Badge>
-                    <span className="text-sm">{link.label}</span>
-                    <span className="text-xs text-muted-foreground">{link.url}</span>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeSocialLink(index)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
+      <TabsContent value="settings" className="space-y-6 pt-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Social Links */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Link className="h-5 w-5" />
+                {t.settings?.socialLinks}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="platform">{t.settings?.platform}</Label>
+                  <Input
+                    id="platform"
+                    value={newSocialLink.platform}
+                    onChange={(e) => setNewSocialLink(prev => ({ ...prev, platform: e.target.value }))}
+                    placeholder="facebook"
+                  />
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Analytics */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="h-5 w-5" />
-              {t.settings?.analytics}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="googleAnalytics">{t.settings?.googleAnalytics}</Label>
-                <Input
-                  id="googleAnalytics"
-                  value={formData.analytics.googleAnalytics}
-                  onChange={(e) => handleInputChange("analytics.googleAnalytics", e.target.value)}
-                  placeholder="GA-XXXXXXXXX"
-                />
+                <div className="space-y-2">
+                  <Label htmlFor="url">{t.settings?.url}</Label>
+                  <Input
+                    id="url"
+                    value={newSocialLink.url}
+                    onChange={(e) => setNewSocialLink(prev => ({ ...prev, url: e.target.value }))}
+                    placeholder="https://facebook.com/yourpage"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="label">{t.settings?.label}</Label>
+                  <Input
+                    id="label"
+                    value={newSocialLink.label}
+                    onChange={(e) => setNewSocialLink(prev => ({ ...prev, label: e.target.value }))}
+                    placeholder="Follow us on Facebook"
+                  />
+                </div>
               </div>
+              <Button type="button" onClick={addSocialLink} variant="outline" className="w-full">
+                <Plus className="mr-2 h-4 w-4" />
+                {t.settings?.addSocialLink}
+              </Button>
               <div className="space-y-2">
-                <Label htmlFor="facebookPixel">{t.settings?.facebookPixel}</Label>
-                <Input
-                  id="facebookPixel"
-                  value={formData.analytics.facebookPixel}
-                  onChange={(e) => handleInputChange("analytics.facebookPixel", e.target.value)}
-                  placeholder="FB-XXXXXXXXX"
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="analyticsScripts">Analytics Custom Scripts</Label>
-              <div className="flex gap-2">
-                <Input
-                  value={newAnalyticsScript}
-                  onChange={(e) => setNewAnalyticsScript(e.target.value)}
-                  placeholder="console.log('Analytics loaded')"
-                />
-                <Button type="button" onClick={addAnalyticsScript} variant="outline">
-                  <Check className="h-4 w-4" />
-                </Button>
-              </div>
-              <div className="space-y-2">
-                {formData.analytics.customScripts.map((script: string, index: number) => (
-                  <div key={index} className="flex items-center justify-between p-2 border rounded">
-                    <code className="text-xs">{script}</code>
+                {formData.social.map((link: any, index: number) => (
+                  <div key={index} className="flex items-center justify-between p-3 border rounded-md">
+                    <div className="flex items-center gap-3">
+                      <Badge variant="secondary">{link.platform}</Badge>
+                      <span className="text-sm">{link.label}</span>
+                      <span className="text-xs text-muted-foreground">{link.url}</span>
+                    </div>
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
-                      onClick={() => removeAnalyticsScript(index)}
+                      onClick={() => removeSocialLink(index)}
                     >
                       <X className="h-4 w-4" />
                     </Button>
                   </div>
                 ))}
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        {/* Contact Information */}
-        <Card>
-          <CardHeader>
-            <CardTitle>{t.settings?.contactInformation}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="email">{t.common?.email}</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.contact.email}
-                  onChange={(e) => handleInputChange("contact.email", e.target.value)}
-                  placeholder={t.common?.enterEmailAddress}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="phone">{t.common?.phone}</Label>
-                <Input
-                  id="phone"
-                  value={formData.contact.phone}
-                  onChange={(e) => handleInputChange("contact.phone", e.target.value)}
-                  placeholder={t.common?.enterPhoneNumber}
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Custom Scripts */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Code className="h-5 w-5" />
-              {t.settings?.customScripts}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="headerScripts">{t.settings?.headerScripts}</Label>
-                <div className="flex gap-2 mt-2">
-                  <Textarea
-                    value={newHeaderScript}
-                    onChange={(e) => setNewHeaderScript(e.target.value)}
-                    placeholder="<script>console.log('Header script')</script>"
-                    rows={2}
-                    className="flex-1"
+          {/* Analytics */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart3 className="h-5 w-5" />
+                {t.settings?.analytics}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="googleAnalytics">{t.settings?.googleAnalytics}</Label>
+                  <Input
+                    id="googleAnalytics"
+                    value={formData.analytics.googleAnalytics}
+                    onChange={(e) => handleInputChange("analytics.googleAnalytics", e.target.value)}
+                    placeholder="GA-XXXXXXXXX"
                   />
-                  <Button type="button" onClick={addHeaderScript} variant="outline">
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="facebookPixel">{t.settings?.facebookPixel}</Label>
+                  <Input
+                    id="facebookPixel"
+                    value={formData.analytics.facebookPixel}
+                    onChange={(e) => handleInputChange("analytics.facebookPixel", e.target.value)}
+                    placeholder="FB-XXXXXXXXX"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="analyticsScripts">Analytics Custom Scripts</Label>
+                <div className="flex gap-2">
+                  <Input
+                    value={newAnalyticsScript}
+                    onChange={(e) => setNewAnalyticsScript(e.target.value)}
+                    placeholder="console.log('Analytics loaded')"
+                  />
+                  <Button type="button" onClick={addAnalyticsScript} variant="outline">
                     <Check className="h-4 w-4" />
                   </Button>
                 </div>
-                <div className="space-y-2 mt-2">
-                  {formData.customScripts.header.map((script: string, index: number) => (
+                <div className="space-y-2">
+                  {formData.analytics.customScripts.map((script: string, index: number) => (
                     <div key={index} className="flex items-center justify-between p-2 border rounded">
                       <code className="text-xs">{script}</code>
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
-                        onClick={() => removeHeaderScript(index)}
+                        onClick={() => removeAnalyticsScript(index)}
                       >
                         <X className="h-4 w-4" />
                       </Button>
@@ -385,52 +322,128 @@ export default function EditSettingsForm({ settings }: EditSettingsFormProps) {
                   ))}
                 </div>
               </div>
-              <div>
-                <Label htmlFor="footerScripts">{t.settings?.footerScripts}</Label>
-                <div className="flex gap-2 mt-2">
-                  <Textarea
-                    value={newFooterScript}
-                    onChange={(e) => setNewFooterScript(e.target.value)}
-                    placeholder="<script>console.log('Footer script')</script>"
-                    rows={2}
-                    className="flex-1"
+            </CardContent>
+          </Card>
+
+          {/* Contact Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle>{t.settings?.contactInformation}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="email">{t.common?.email}</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.contact.email}
+                    onChange={(e) => handleInputChange("contact.email", e.target.value)}
+                    placeholder={t.common?.enterEmailAddress}
                   />
-                  <Button type="button" onClick={addFooterScript} variant="outline">
-                    <Check className="h-4 w-4" />
-                  </Button>
                 </div>
-                <div className="space-y-2 mt-2">
-                  {formData.customScripts.footer.map((script: string, index: number) => (
-                    <div key={index} className="flex items-center justify-between p-2 border rounded">
-                      <code className="text-xs">{script}</code>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeFooterScript(index)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
+                <div className="space-y-2">
+                  <Label htmlFor="phone">{t.common?.phone}</Label>
+                  <Input
+                    id="phone"
+                    value={formData.contact.phone}
+                    onChange={(e) => handleInputChange("contact.phone", e.target.value)}
+                    placeholder={t.common?.enterPhoneNumber}
+                  />
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
-        <div className="flex justify-end gap-4">
-          <Button type="button" variant="outline" onClick={() => router.back()}>
-            {t.common?.cancel}
-          </Button>
-          <Button type="submit" disabled={isUpdating}>
-            <Save className="mr-2 h-4 w-4" />
-            {isUpdating ? t.common?.saving : t.common?.saveChanges}
-          </Button>
-        </div>
-      </form>
-      
-      <EditTranslationsSettings />
-    </div>
+          {/* Custom Scripts */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Code className="h-5 w-5" />
+                {t.settings?.customScripts}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="headerScripts">{t.settings?.headerScripts}</Label>
+                  <div className="flex gap-2 mt-2">
+                    <Textarea
+                      value={newHeaderScript}
+                      onChange={(e) => setNewHeaderScript(e.target.value)}
+                      placeholder="<script>console.log('Header script')</script>"
+                      rows={2}
+                      className="flex-1"
+                    />
+                    <Button type="button" onClick={addHeaderScript} variant="outline">
+                      <Check className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="space-y-2 mt-2">
+                    {formData.customScripts.header.map((script: string, index: number) => (
+                      <div key={index} className="flex items-center justify-between p-2 border rounded">
+                        <code className="text-xs">{script}</code>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeHeaderScript(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="footerScripts">{t.settings?.footerScripts}</Label>
+                  <div className="flex gap-2 mt-2">
+                    <Textarea
+                      value={newFooterScript}
+                      onChange={(e) => setNewFooterScript(e.target.value)}
+                      placeholder="<script>console.log('Footer script')</script>"
+                      rows={2}
+                      className="flex-1"
+                    />
+                    <Button type="button" onClick={addFooterScript} variant="outline">
+                      <Check className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="space-y-2 mt-2">
+                    {formData.customScripts.footer.map((script: string, index: number) => (
+                      <div key={index} className="flex items-center justify-between p-2 border rounded">
+                        <code className="text-xs">{script}</code>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeFooterScript(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="flex justify-end gap-4">
+            <Button type="button" variant="outline" onClick={() => router.back()}>
+              {t.common?.cancel}
+            </Button>
+            <Button type="submit" disabled={isUpdating}>
+              <Save className="mr-2 h-4 w-4" />
+              {isUpdating ? t.common?.saving : t.common?.saveChanges}
+            </Button>
+          </div>
+        </form>
+      </TabsContent>
+
+      <TabsContent value="translations" className="space-y-6 pt-6">
+        <EditTranslationsSettings settings={settings} />
+      </TabsContent>
+    </Tabs>
   );
 }

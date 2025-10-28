@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { StandaloneIconSelectInput } from "@/components/shared/input/StandaloneIconSelectInput";
 import { useTranslation } from "@/providers/translations-provider";
 
 interface SubService {
@@ -134,17 +135,13 @@ export function SubServicesInput<T extends FieldValues>({
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <label className="text-sm font-medium">
-                              {t.services?.icon || "Icon"}
-                            </label>
-                            <Input
-                              placeholder={t.services?.iconPlaceholder || "Icon name"}
-                              value={subService.icon || ""}
-                              onChange={(e) => updateSubService(index, "icon", e.target.value)}
-                              disabled={disabled}
-                            />
-                          </div>
+                          <StandaloneIconSelectInput
+                            value={subService.icon || ""}
+                            onChange={(value) => updateSubService(index, "icon", value)}
+                            label={t.services?.icon || "Icon"}
+                            placeholder={t.services?.iconPlaceholder || "Select an icon"}
+                            disabled={disabled}
+                          />
                           <div className="space-y-2">
                             <label className="text-sm font-medium">
                               {t.services?.title || "Title"}

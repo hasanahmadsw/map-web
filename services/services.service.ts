@@ -157,9 +157,9 @@ export const servicesService = {
   // Upload service image
   async uploadImage(file: File, opts?: RequestOpts): Promise<{ url: string }> {
     const formData = new FormData();
-    formData.append('image', file, file.name);
+    formData.append('picture', file, file.name);
     
-    const res = await ApiService.post<{ url: string }>(`${BASE}/upload-image`, formData, {
+    const res = await ApiService.post<{ url: string }>(`${BASE}/upload-picture`, formData, {
       ...opts,
     });
     return res.data;

@@ -51,8 +51,8 @@ export const editServiceSchema = (validationDict: Record<string, string>) =>
           message: validationDict.invalidSlug || "Invalid slug format",
         })
         .optional(),
-      icon: trimmed(100, validationDict).min(1, validationDict.required || "Icon is required").optional(),
-      featuredImage: trimmed(500, validationDict).min(1, validationDict.required || "Featured image is required").optional(),
+      icon: z.string().optional(),
+      featuredImage: z.string().optional(),
       isPublished: z.boolean().optional(),
       isFeatured: z.boolean().optional(),
       order: z.number().int().min(0).optional(),

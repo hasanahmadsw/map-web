@@ -8,6 +8,8 @@ export interface BaseTranslation {
 export interface ArticleTranslation extends BaseTranslation {
   content: string;
   excerpt: string;
+  tags?: string;
+  topics?: string;
   meta: {
     title: string;
     description: string;
@@ -54,6 +56,8 @@ export interface EditableTranslation {
   bio?: string;
   content?: string;
   excerpt?: string;
+  tags?: string;
+  topics?: string;
   meta?: {
     title: string;
     description: string;

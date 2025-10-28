@@ -30,21 +30,8 @@ export const editArticleSchema = (validationDict: Record<string, string>) =>
   atLeastOne(
     {
       slug: slugSchema(validationDict).optional(),
-      name: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)).optional(),
-      content: trimmed(50000, validationDict).min(10, minLengthValidation(10, validationDict)).optional(),
-      excerpt: trimmed(500, validationDict).min(5, minLengthValidation(5, validationDict)).optional(),
-      meta: z
-        .object({
-          title: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)).optional(),
-          description: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)).optional(),
-          keywords: z.array(trimmed(50, validationDict)).optional(),
-        })
-        .optional(),
-      languageCode: languageCodeSchema(validationDict).optional(),
       isPublished: z.boolean().optional(),
       isFeatured: z.boolean().optional(),
-      tags: z.string().optional(),
-      topics: z.string().optional(),
       image: z.string().optional(),
       imageFile: z.instanceof(File).optional(),
     },
@@ -63,6 +50,8 @@ export const createArticleTranslationSchema = (validationDict: any) =>
         description: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)),
         keywords: z.array(trimmed(50, validationDict)).optional(),
       }),
+      tags: z.string().optional(),
+      topics: z.string().optional(),
     })
     .strict();
 
@@ -79,6 +68,8 @@ export const editArticleTranslationSchema = (validationDict: any) =>
           keywords: z.array(trimmed(50, validationDict)).optional(),
         })
         .optional(),
+      tags: z.string().optional(),
+      topics: z.string().optional(),
     },
     validationDict.atLeastOne,
   );

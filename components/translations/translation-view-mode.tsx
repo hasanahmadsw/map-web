@@ -8,6 +8,30 @@ import type { ArticleTranslation, Translation } from "@/types/translations.types
 import HtmlViewer from "../shared/html-viewer";
 import DivHtml from "../shared/div-html";
 
+// Import the same icons as in the icon select components
+import {
+  Camera, Aperture, Clapperboard, Film, Focus, Fullscreen, ScanEye, Video,
+  Webcam, Zap, SwitchCamera, FileVideo, Headset, FilePlay, Play, SquarePlay, TvMinimal,
+  Cable, PcCase, Palette, Contrast, Music, CirclePlay, Volume2, FileAudio, RadioTower,
+  Radio, Truck, PencilRuler, LoaderPinwheel, Scissors, PaintRoller, Layers2, Grid2x2,
+  Fingerprint, Mic, MicVocal, Speaker
+} from "lucide-react";
+
+// Create icon components mapping
+const iconComponents = {
+  Camera, Aperture, Clapperboard, Film, Focus, Fullscreen, ScanEye, Video,
+  Webcam, Zap, SwitchCamera, FileVideo, Headset, FilePlay, Play, SquarePlay, TvMinimal,
+  Cable, PcCase, Palette, Contrast, Music, CirclePlay, Volume2, FileAudio, RadioTower,
+  Radio, Truck, PencilRuler, LoaderPinwheel, Scissors, PaintRoller, Layers2, Grid2x2,
+  Fingerprint, Mic, MicVocal, Speaker
+};
+
+// Helper function to get icon component
+const getIconComponent = (iconName: string) => {
+  const IconComponent = iconComponents[iconName as keyof typeof iconComponents] as React.ComponentType<{ className?: string }>;
+  return IconComponent ? <IconComponent className="h-5 w-5" /> : null;
+};
+
 interface TranslationViewModeProps {
   translation: Translation;
   entityType: string;
@@ -41,7 +65,31 @@ export const TranslationViewMode: React.FC<TranslationViewModeProps> = ({
             </div>
             {hasContent && (translation as ArticleTranslation).excerpt && (
               <DivHtml html={(translation as ArticleTranslation).excerpt} />
-              
+            )}
+
+            {hasContent && (
+              <div className="flex flex-wrap gap-2">
+                {(translation as ArticleTranslation).tags && (
+                  <div className="flex flex-wrap gap-1">
+                    <span className="text-xs font-medium text-muted-foreground">Tags:</span>
+                    {(translation as ArticleTranslation).tags?.split(',').map((tag: string, index: number) => (
+                      <span key={index} className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                        {tag.trim()}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {(translation as ArticleTranslation).topics && (
+                  <div className="flex flex-wrap gap-1">
+                    <span className="text-xs font-medium text-muted-foreground">Topics:</span>
+                    {(translation as ArticleTranslation).topics?.split(',').map((topic: string, index: number) => (
+                      <span key={index} className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                        {topic.trim()}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
             )}
             <p className="text-sm text-muted-foreground">
               {"bio" in translation ? translation.bio : "description" in translation ? translation.description : ""}
@@ -61,7 +109,11 @@ export const TranslationViewMode: React.FC<TranslationViewModeProps> = ({
                       <CardHeader className="pb-2">
                         <div className="flex items-center gap-2">
                           {subService.icon && (
-                            <span className="text-lg">{subService.icon}</span>
+                            <div className="flex items-center justify-center w-6 h-6 text-muted-foreground">
+                              {getIconComponent(subService.icon) || (
+                                <span className="text-sm font-mono">{subService.icon}</span>
+                              )}
+                            </div>
                           )}
                           <CardTitle className="text-base">{subService.title}</CardTitle>
                         </div>

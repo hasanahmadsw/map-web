@@ -115,6 +115,25 @@ export function AddTranslationForm({
               placeholder={t.translations.enterTranslatedContent}
               className="min-h-[120px]"
             />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <TextAreaInput
+                control={form.control}
+                name="tags"
+                label={t.tags?.title || "Tags"}
+                placeholder="Enter tags separated by commas (e.g., technology, AI, innovation)"
+                className="min-h-[80px]"
+                rows={3}
+              />
+              <TextAreaInput
+                control={form.control}
+                name="topics"
+                label={t.topics?.title || "Topics"}
+                placeholder="Enter topics separated by commas (e.g., politics, business, health)"
+                className="min-h-[80px]"
+                rows={3}
+              />
+            </div>
           </>
         )}
 

@@ -12,6 +12,7 @@ import { EntityTranslations } from "@/components/translations/translations";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ROLES, Role } from "@/enums/roles.enum";
 import { useStaff, useStaffById } from "@/hooks/useStaff";
 import { useStaffTranslations } from "@/hooks/useStaffTranslations";
@@ -106,64 +107,73 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Main Tag Form */}
-      <Form {...staffForm}>
-        <form onSubmit={staffForm.handleSubmit(onUpdateStaff)} className="space-y-4">
-          {/* Editable fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-4">
-            <PasswordInput
-              control={staffForm.control}
-              name="password"
-              label={t.common.password}
-              placeholder={t.common.passwordPlaceholder}
+    <Tabs defaultValue="staff" className="w-full">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="staff">
+          {t.staffs?.staff || "Staff Settings"}
+        </TabsTrigger>
+        <TabsTrigger value="translations">
+          {"Translations"}
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="staff" className="space-y-6 pt-6">
+        <Form {...staffForm}>
+          <form onSubmit={staffForm.handleSubmit(onUpdateStaff)} className="space-y-4">
+            {/* Editable fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-4">
+              <PasswordInput
+                control={staffForm.control}
+                name="password"
+                label={t.common.password}
+                placeholder={t.common.passwordPlaceholder}
+                disabled={isUpdating}
+              />
+
+              <SelectInput
+                control={staffForm.control}
+                name="role"
+                label={t.staffs.role}
+                placeholder={t.staffs.rolePlaceholder}
+                options={ROLES.map((r) => ({
+                  value: r,
+                  label: r.charAt(0).toUpperCase() + r.slice(1),
+                }))}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FileInput
+                name="image"
+                label={t.common.image}
+                placeholder={t.common.chooseFile}
+                accept="image/*"
+                maxSize={10}
+                autoUpload={true}
+              />
+            </div>
+
+            <Button 
+              type="submit" 
               disabled={isUpdating}
-            />
+            >
+              {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Save className="mr-2 h-4 w-4" />
+                  {isUpdating ? t.validation.updating : t.validation.update}
+            </Button>
+          </form>
+        </Form>
+      </TabsContent>
 
-            <SelectInput
-              control={staffForm.control}
-              name="role"
-              label={t.staffs.role}
-              placeholder={t.staffs.rolePlaceholder}
-              options={ROLES.map((r) => ({
-                value: r,
-                label: r.charAt(0).toUpperCase() + r.slice(1),
-              }))}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FileInput
-              name="image"
-              label={t.common.image}
-              placeholder={t.common.chooseFile}
-              accept="image/*"
-              maxSize={10}
-              autoUpload={true}
-            />
-          </div>
-
-          <Button 
-            type="submit" 
-            disabled={isUpdating}
-          >
-            {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            <Save className="mr-2 h-4 w-4" />
-                {isUpdating ? t.validation.updating : t.validation.update}
-          </Button>
-        </form>
-      </Form>
-
-      <Separator />
-
-      {/* Translations Management */}
-      <EntityTranslations
-        entityId={parseInt(staffId, 10)}
-        entityType="staff"
-        hooks={staffTranslationsHooks}
-        hasContent={false}
-        hasMeta={false}
-      />
-    </div>
+      <TabsContent value="translations" className="space-y-6">
+        <EntityTranslations
+          entityId={parseInt(staffId, 10)}
+          entityType="staff"
+          hooks={staffTranslationsHooks}
+          hasContent={false}
+          hasMeta={false}
+        />
+      </TabsContent>
+    </Tabs>
   );
 }

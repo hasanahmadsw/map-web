@@ -56,6 +56,8 @@ export const useTranslationForms = (entityType: EntityType, hasContent = false, 
       ...(hasContent && {
         content: "",
         excerpt: "",
+        tags: "",
+        topics: "",
         ...(hasMeta && {
           meta: {
             title: "",

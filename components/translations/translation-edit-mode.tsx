@@ -121,6 +121,22 @@ export const TranslationEditMode: React.FC<TranslationEditModeProps> = ({
                     />
                   </AiProvider>
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <SimpleTextAreaInput
+                    label={t.tags?.title || "Tags"}
+                    value={editingTranslation.tags || ""}
+                    onChange={(value) => onUpdate(translation.id, "tags", value)}
+                    className="min-h-[80px]"
+                    placeholder="Enter tags separated by commas"
+                  />
+                  <SimpleTextAreaInput
+                    label={t.topics?.title || "Topics"}
+                    value={editingTranslation.topics || ""}
+                    onChange={(value) => onUpdate(translation.id, "topics", value)}
+                    className="min-h-[80px]"
+                    placeholder="Enter topics separated by commas"
+                  />
+                </div>
               </>
             )}
 

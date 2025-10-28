@@ -76,6 +76,8 @@ export function EntityTranslations<T extends Translation>({
         ...(hasContent && {
           content: data.content,
           excerpt: data.excerpt,
+          tags: data.tags,
+          topics: data.topics,
           ...(hasMeta && { meta: data.meta }),
         }),
         ...(hasSubServices && {
@@ -114,6 +116,8 @@ export function EntityTranslations<T extends Translation>({
         ...(hasContent && {
           content: data.content,
           excerpt: data.excerpt,
+          tags: data.tags,
+          topics: data.topics,
           ...(hasMeta && { meta: data.meta }),
         }),
         ...(hasSubServices && {
@@ -157,6 +161,8 @@ export function EntityTranslations<T extends Translation>({
         ...(hasContent && {
           content: editingTranslation.content,
           excerpt: editingTranslation.excerpt,
+          tags: editingTranslation.tags,
+          topics: editingTranslation.topics,
           ...(hasMeta && { meta: editingTranslation.meta }),
         }),
         ...(hasSubServices && {

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { staffService } from "@/services/staff.service";
+import { servicesService } from "@/services/services.service";
 import { useTranslation } from "@/providers/translations-provider";
 
 interface FileInputProps {
@@ -69,7 +69,7 @@ export function FileInput({
     }, 200);
 
     try {
-      const { url } = await staffService.uploadPicture(fileToUpload);
+      const { url } = await servicesService.uploadImage(fileToUpload);
       clearInterval(progressInterval);
       setUploadProgress(100);
       

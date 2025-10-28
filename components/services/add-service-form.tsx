@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import type { z } from "zod";
 import { CheckboxInput } from "@/components/shared/input/CheckboxInput";
 import { FileInput } from "@/components/shared/input/FileInput";
+import { IconSelectInput } from "@/components/shared/input/IconSelectInput";
 import { SelectInput } from "@/components/shared/input/SelectInput";
 import { SubServicesInput } from "@/components/shared/input/SubServicesInput";
 import { TextAreaInput } from "@/components/shared/input/TextAreaInput";
@@ -127,11 +128,10 @@ export function AddServiceForm() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <TextInput
-                control={form.control}
+              <IconSelectInput
                 name="icon"
                 label={t.services?.icon || "Icon"}
-                placeholder={t.services?.iconPlaceholder || "Icon name or class"}
+                placeholder={t.services?.iconPlaceholder || "Select an icon"}
               />
               <TextInput
                 control={form.control}

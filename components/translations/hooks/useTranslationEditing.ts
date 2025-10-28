@@ -17,6 +17,8 @@ export const useTranslationEditing = () => {
         ...(hasContent && {
           content: translation.content,
           excerpt: translation.excerpt,
+          tags: translation.tags || "",
+          topics: translation.topics || "",
           ...(hasMeta && {
             meta: {
               title: translation.meta?.title || "",
