@@ -10,12 +10,14 @@ import { CheckboxInput } from "@/components/shared/input/CheckboxInput";
 import { FileInput } from "@/components/shared/input/FileInput";
 import { MediaPickerDialog } from "@/components/media/media-picker-dialog";
 import { IconSelectInput } from "@/components/shared/input/IconSelectInput";
+import { SearchableMultiSelectInput } from "@/components/shared/input/SearchableMultiSelectInput";
 import { TextInput } from "@/components/shared/input/TextInput";
 import { EntityTranslations } from "@/components/translations/translations";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useServiceStaffById, useServicesStaff } from "@/hooks/services/useServices";
 import { useServiceTranslations } from "@/hooks/services/useServiceTranslations";
+import { useSolutionsStaff } from "@/hooks/solutions/useSolutions";
 import { useTranslation } from "@/providers/translations-provider";
 import {
   editServiceSchema,
@@ -40,6 +42,7 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
     refetch: refetchService,
   } = useServiceStaffById(Number(serviceId));
   const serviceTranslationsHooks = useServiceTranslations(Number(serviceId));
+  const { solutions, isLoading: solutionsLoading } = useSolutionsStaff({ limit: 100 });
 
   const form = useForm<z.input<ReturnType<typeof editServiceSchema>>>({
     resolver: zodResolver(editServiceSchema(t.validation)),
@@ -50,6 +53,7 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
       isPublished: false,
       isFeatured: false,
       order: 0,
+      solutionIds: [],
     },
   });
 
@@ -60,6 +64,12 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
       const firstTranslation = service.translations?.[0];
       const languageCode = firstTranslation?.languageCode || "";
 
+      // Extract solution IDs from the solutions array
+      const serviceSolutions = service.solutions || [];
+      const solutionIds = Array.isArray(serviceSolutions)
+        ? serviceSolutions.map((sol) => (typeof sol === 'object' && sol !== null ? sol.id : sol)).filter((id): id is number => typeof id === 'number')
+        : [];
+
       form.reset({
         slug: service.slug,
         icon: service.icon,
@@ -67,6 +77,7 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
         isPublished: service.isPublished,
         isFeatured: service.isFeatured,
         order: service.order,
+        solutionIds: solutionIds,
       });
     }
   }, [service, form]);
@@ -220,6 +231,27 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
                   mode="single"
                   filter="image"
                   initialSelected={form.watch("featuredImage") ? [form.watch("featuredImage") as string] : []}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Solutions */}
+            <Card>
+             
+              <CardContent>
+                <SearchableMultiSelectInput
+                  control={form.control}
+                  name="solutionIds"
+                  label={t.services?.solutions || "Solutions"}
+                  description={t.services?.solutionsDescription || "Select solutions related to this service."}
+                  placeholder={t.services?.selectSolutions || "Select solutions"}
+                  searchPlaceholder={t.services?.searchSolutions || "Search solutions..."}
+                  emptyMessage={t.services?.noSolutionsFound || "No solutions found"}
+                  options={solutions.map((solution) => ({
+                    id: solution.id,
+                    translations: solution.translations?.map((t) => ({ name: t.name })) || [],
+                  }))}
+                  disabled={solutionsLoading}
                 />
               </CardContent>
             </Card>

@@ -1,3 +1,5 @@
+
+import { ServiceResponse } from "./services.types";
 export interface StaffSolution {
   id: number;
   slug: string;
@@ -8,6 +10,7 @@ export interface StaffSolution {
   viewCount: number;
   order: number;
   translations: SolutionTranslation[];
+  services: ServiceResponse[];
   createdAt: string;
   updatedAt: string;
 }
@@ -24,6 +27,9 @@ export interface SolutionResponse {
   name: string;
   description: string;
   shortDescription: string;
+  services?: ServiceResponse[];
+  createdAt?: string;
+  updatedAt?: string;
   meta: {
     title: string;
     keywords: string[];

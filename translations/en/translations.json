@@ -105,9 +105,9 @@
     }
   },
   "metadata": {
-    "siteName": "News Website",
+    "siteName": "MAP Media Production and Broadcasting Solutions",
     "pages": {
-      "home": "News Website – Latest Breaking News, World Events & In-Depth Analysis",
+      "home": "MAP – Media Production and Broadcasting Solutions",
       "news": "News Articles – Breaking Stories, Current Events & Global Coverage",
       "topics": "News Topics – Politics, Technology, Business & World Affairs",
       "tags": "News Tags – Trending Topics, Keywords & Content Discovery",
@@ -268,8 +268,8 @@
     "about": "About"
   },
   "header": {
-    "siteName": "Reporters",
-    "siteNameShort": "R",
+    "siteName": "MAP",
+    "siteNameShort": "MAP",
     "language": "Language",
     "theme": "Theme",
     "menu": "Menu",
@@ -652,7 +652,12 @@
     "basicInformation": "Basic Information",
     "basicInformationDescription": "Enter the basic service information.",
     "noServicesFound": "No services found",
-    "failedToLoadServices": "Failed to load services"
+    "failedToLoadServices": "Failed to load services",
+    "solutions": "Solutions",
+    "solutionsDescription": "Select solutions related to this service.",
+    "selectSolutions": "Select solutions",
+    "searchSolutions": "Search solutions...",
+    "noSolutionsFound": "No solutions found"
   },
   "solutions": {
     "title": "Solutions",

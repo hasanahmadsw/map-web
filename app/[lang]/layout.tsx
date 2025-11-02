@@ -4,6 +4,7 @@ import "@/app/globals.css";
 import { cookies } from "next/headers";
 import { Toaster } from "sonner";
 import { ConditionalNavbar } from "@/components/layout/nav/conditional-navbar";
+import { ConditionalFooter } from "@/components/layout/conditional-footer";
 import QueryProvider from "@/providers/query-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { TranslationsProvider } from "@/providers/translations-provider";
@@ -53,6 +54,7 @@ export default async function RootLayout({ params, children }: Readonly<RootLayo
               />
               <ConditionalNavbar isAuthenticated={isAuthenticated} />
               {children}
+              <ConditionalFooter />
             </ThemeProvider>
           </TranslationsProvider>
         </QueryProvider>

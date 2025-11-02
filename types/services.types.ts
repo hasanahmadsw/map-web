@@ -8,6 +8,7 @@ export interface StaffService {
   viewCount: number;
   order: number;
   translations: ServiceTranslation[];
+  solutions?: Array<{ id: number } | number>;
   createdAt: string;
   updatedAt: string;
 }

@@ -27,6 +27,7 @@ export const createServiceSchema = (validationDict: Record<string, string>) =>
       isFeatured: z.boolean().default(false),
       order: z.number().int().min(0).default(0),
       subServices: z.array(subServiceSchema(validationDict)).optional(),
+      solutionIds: z.array(z.number().int().positive()).optional(),
       name: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)),
       description: trimmed(1000, validationDict).min(10, minLengthValidation(10, validationDict)),
       shortDescription: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)),
@@ -56,6 +57,7 @@ export const editServiceSchema = (validationDict: Record<string, string>) =>
       isPublished: z.boolean().optional(),
       isFeatured: z.boolean().optional(),
       order: z.number().int().min(0).optional(),
+      solutionIds: z.array(z.number().int().positive()).optional(),
     },
     validationDict.atLeastOne || "At least one field must be provided",
   ).strict();

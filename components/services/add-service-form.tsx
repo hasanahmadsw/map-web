@@ -10,6 +10,7 @@ import { CheckboxInput } from "@/components/shared/input/CheckboxInput";
 import { FileInput } from "@/components/shared/input/FileInput";
 import { MediaPickerDialog } from "@/components/media/media-picker-dialog";
 import { IconSelectInput } from "@/components/shared/input/IconSelectInput";
+import { SearchableMultiSelectInput } from "@/components/shared/input/SearchableMultiSelectInput";
 import { SelectInput } from "@/components/shared/input/SelectInput";
 import { SubServicesInput } from "@/components/shared/input/SubServicesInput";
 import { TextAreaInput } from "@/components/shared/input/TextAreaInput";
@@ -17,6 +18,7 @@ import { TextInput } from "@/components/shared/input/TextInput";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useServicesStaff } from "@/hooks/services/useServices";
+import { useSolutionsStaff } from "@/hooks/solutions/useSolutions";
 import { useLanguages } from "@/hooks/useLanguages";
 import { useTranslation } from "@/providers/translations-provider";
 import { createServiceSchema, type TCreateServiceForm } from "@/schemas/services.schemas";
@@ -27,6 +29,7 @@ export function AddServiceForm() {
   const router = useRouter();
   const { createService, isCreating, createError } = useServicesStaff();
   const { languages, isLoading: languagesLoading } = useLanguages();
+  const { solutions, isLoading: solutionsLoading } = useSolutionsStaff({ limit: 1000 });
   const { t } = useTranslation();
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
 
@@ -40,6 +43,7 @@ export function AddServiceForm() {
       isFeatured: false,
       order: 0,
       subServices: [],
+      solutionIds: [],
       name: "",
       description: "",
       shortDescription: "",
@@ -72,6 +76,7 @@ export function AddServiceForm() {
         isFeatured: data.isFeatured ?? false,
         order: data.order || 0,
         subServices: data.subServices?.filter(sub => sub.title && sub.description) || [],
+        solutionIds: data.solutionIds || [],
         name: data.name,
         description: data.description,
         shortDescription: data.shortDescription,
@@ -92,7 +97,7 @@ export function AddServiceForm() {
     }
   };
 
-  if (languagesLoading) {
+  if (languagesLoading || solutionsLoading) {
     return (
       <div className="flex items-center justify-center h-32">
         <div className="text-center">
@@ -229,6 +234,31 @@ export function AddServiceForm() {
           label={t.services?.subServices || "Sub Services"}
           description={t.services?.subServicesDescription || "Add sub-services for this service."}
         />
+
+        {/* Solutions */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t.services?.solutions || "Solutions"}</CardTitle>
+            <CardDescription>
+              {t.services?.solutionsDescription || "Select solutions related to this service."}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <SearchableMultiSelectInput
+              control={form.control}
+              name="solutionIds"
+              label={t.services?.solutions || "Solutions"}
+              description={t.services?.solutionsDescription || "Select solutions related to this service."}
+              placeholder={t.services?.selectSolutions || "Select solutions"}
+              searchPlaceholder={t.services?.searchSolutions || "Search solutions..."}
+              emptyMessage={t.services?.noSolutionsFound || "No solutions found"}
+              options={solutions.map((solution) => ({
+                id: solution.id,
+                translations: solution.translations?.map((t) => ({ name: t.name })) || [],
+              }))}
+            />
+          </CardContent>
+        </Card>
 
         {/* Meta Information */}
         <Card>
