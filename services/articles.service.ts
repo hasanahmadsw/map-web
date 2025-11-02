@@ -1,4 +1,4 @@
-import { PaginatedResponse, SortBy, SortOrder } from "@/types/common.types";
+import { ApiResponse, SortBy, SortOrder } from "@/types/common.types";
 import { ApiService } from "./base.service";
 import { ArticleStaffResponse, ArticleTranslation, Article } from "@/types/articles.types";
 import type {
@@ -8,16 +8,13 @@ import type {
   TEditArticleTranslationForm,
   TAutoTranslateArticleForm,
 } from "@/schemas/articles.schemas";
+import { toQS } from "@/utils/api-utils";
 
 const BASE = "/articles";
 
 type Id = number;
 type RequestOpts = { signal?: AbortSignal; headers?: Record<string, string> };
 
-const toQS = (params: Record<string, unknown>) => {
-  const entries = Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== "");
-  return entries.length ? `?${new URLSearchParams(entries as any).toString()}` : "";
-};
 
 const enc = (v: string | number) => encodeURIComponent(String(v));
 
@@ -35,18 +32,17 @@ export const articlesService = {
   async getAllForStaff(
     params: StaffListParams = {},
     opts?: RequestOpts,
-  ): Promise<PaginatedResponse<ArticleStaffResponse>> {
-    const qs = toQS(params);
-    const res = await ApiService.get<PaginatedResponse<ArticleStaffResponse>>(`${BASE}/staff${qs}`, opts);
-    return res as unknown as PaginatedResponse<ArticleStaffResponse>;
+  ): Promise<ApiResponse<ArticleStaffResponse[]>> {
+    const res = await ApiService.get<ArticleStaffResponse[]>(`${BASE}/staff${toQS(params)}`, opts);
+    return res;
   },
 
-  async getArticlesByLanguage(lang: string, opts?: RequestOpts): Promise<PaginatedResponse<ArticleStaffResponse>> {
-    const res = await ApiService.get<PaginatedResponse<ArticleStaffResponse>>(
+  async getArticlesByLanguage(lang: string, opts?: RequestOpts): Promise<ApiResponse<ArticleStaffResponse[]>> {
+    const res = await ApiService.get<ArticleStaffResponse[]>(
       `${BASE}/staff/language/${enc(lang)}`,
       opts,
     );
-    return res as unknown as PaginatedResponse<ArticleStaffResponse>;
+    return res;
   },
 
   async getById(id: Id, opts?: RequestOpts): Promise<ArticleStaffResponse> {
@@ -108,6 +104,17 @@ export const articlesService = {
     return res.data;
   },
 
+  // Upload picture
+  async uploadPicture(file: File, opts?: RequestOpts): Promise<{ url: string }> {
+    const formData = new FormData();
+    formData.append('picture', file, file.name);
+    
+    const res = await ApiService.post<{ url: string }>(`${BASE}/upload-picture`, formData, {
+      ...opts,
+    });
+    return res.data;
+  },
+
   // Public Services
   async getAll(
     payload: {
@@ -121,9 +128,9 @@ export const articlesService = {
       tagId?: string
     },
     opts?: RequestOpts,
-  ): Promise<PaginatedResponse<Article>> {
-    const res = await ApiService.get<PaginatedResponse<Article>>(`/articles/published${toQS(payload)}`, opts);
-    return res as unknown as PaginatedResponse<Article>;
+  ): Promise<ApiResponse<Article[]>> {
+    const res = await ApiService.get<Article[]>(`/articles/published${toQS(payload)}`, opts);
+    return res;
   },
 
   async getBySlug(slug: string, lang: string, opts?: RequestOpts): Promise<Article> {

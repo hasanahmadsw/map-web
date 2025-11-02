@@ -85,7 +85,22 @@
     "pleaseWait": "يرجى الانتظار...",
     "imageUploadedSuccessfully": "تم رفع الصورة بنجاح",
     "confirmDeleteArticle": "هل أنت متأكد من حذف هذا {entity}؟",
-    "confirmDeleteArticleMessage": "هل أنت متأكد من حذف هذا {entity}؟ لا يمكن التراجع عن هذا الإجراء وسيتم حذف {entity} نهائياً من النظام."
+    "confirmDeleteArticleMessage": "هل أنت متأكد من حذف هذا {entity}؟ لا يمكن التراجع عن هذا الإجراء وسيتم حذف {entity} نهائياً من النظام.",
+    "actions": {
+      "delete": "حذف",
+      "cancel": "إلغاء",
+      "confirm": "تأكيد",
+      "upload": "رفع",
+      "view": "عرض",
+      "copy": "نسخ",
+      "download": "تحميل",
+      "select": "تحديد",
+      "selectAll": "تحديد الكل",
+      "deselectAll": "إلغاء تحديد الكل"
+    },
+    "confirmation": {
+      "areYouSure": "هل أنت متأكد؟"
+    }
   },
   "metadata": {
     "siteName": "موقع الأخبار",
@@ -246,7 +261,9 @@
     "help": "مساعدة",
     "about": "حول",
     "manageArticles": "إدارة المقالات",
-    "manageServices": "إدارة الخدمات"
+    "manageServices": "إدارة الخدمات",
+    "manageSolutions": "إدارة الحلول",
+    "manageMedia": "إدارة الوسائط"
   
 
   },
@@ -662,6 +679,52 @@
     "noServicesFound": "لم يتم العثور على خدمات",
     "failedToLoadServices": "فشل في تحميل الخدمات"
   },
+  "solutions": {
+    "title": "الحلول",
+    "solution": "الحل",
+    "solutionsManagement": "إدارة الحلول",
+    "solutionsManagementDescription": "إدارة حلولك وترجماتها.",
+    "contentSolutions": "حلول المحتوى",
+    "contentSolutionsDescription": "إدارة وتنظيم عروض الحلول الخاصة بك.",
+    "addSolution": "إضافة حل",
+    "addNewSolution": "إضافة حل جديد",
+    "addNewSolutionDescription": "إنشاء حل جديد مع الترجمات.",
+    "editSolution": "تعديل الحل",
+    "editSolutionDescription": "تحديث معلومات الحل وإدارة الترجمات.",
+    "solutionDetails": "تفاصيل الحل",
+    "solutionDetailsDescription": "تعديل معلومات الحل وإدارة ترجماته.",
+    "solutionName": "اسم الحل",
+    "solutionNamePlaceholder": "أدخل اسم الحل",
+    "slug": "المعرف",
+    "slugPlaceholder": "solution-slug",
+    "icon": "الأيقونة",
+    "iconPlaceholder": "اسم الأيقونة أو الكلاس",
+    "order": "الترتيب",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أدخل وصف الحل",
+    "shortDescription": "الوصف المختصر",
+    "shortDescriptionPlaceholder": "أدخل وصف مختصر",
+    "featuredImage": "الصورة المميزة",
+    "featuredImageDescription": "تحميل صورة مميزة لهذا الحل.",
+    "selectImage": "اختر صورة",
+    "metaInformation": "معلومات الميتا",
+    "metaInformationDescription": "معلومات SEO والميتا لهذا الحل.",
+    "metaTitle": "عنوان الميتا",
+    "metaTitlePlaceholder": "أدخل عنوان الميتا",
+    "metaDescription": "وصف الميتا",
+    "metaDescriptionPlaceholder": "أدخل وصف الميتا",
+    "statusOptions": "خيارات الحالة",
+    "statusOptionsDescription": "تكوين حالة الحل والرؤية.",
+    "published": "منشور",
+    "publishedDescription": "جعل هذا الحل مرئياً للجمهور",
+    "featured": "مميز",
+    "featuredDescription": "وضع علامة على هذا الحل كمميز",
+    "draft": "مسودة",
+    "basicInformation": "المعلومات الأساسية",
+    "basicInformationDescription": "أدخل المعلومات الأساسية للحل.",
+    "noSolutionsFound": "لم يتم العثور على حلول",
+    "failedToLoadSolutions": "فشل في تحميل الحلول"
+  },
   "languages": {
     "languagesManagement": "إدارة اللغات",
     "languagesManagementDescription": "إدارة لغات النظام وإعدادات الترجمة",
@@ -692,5 +755,48 @@
     "deleteLanguage": "حذف اللغة",
     "noLanguagesToTranslate": "لا توجد لغات للترجمة",
     "noLanguagesToTranslateDescription": "تمت ترجمة هذا الكيان لجميع اللغات المتاحة."
+  },
+  "media": {
+    "management": {
+      "title": "إدارة الوسائط",
+      "description": "إدارة وتنظيم ملفات الوسائط الخاصة بك"
+    },
+    "actions": {
+      "upload": "رفع",
+      "uploadDescription": "رفع الصور والفيديوهات إلى مكتبة الوسائط الخاصة بك",
+      "selectFiles": "انقر لاختيار الملفات أو اسحب وأفلت",
+      "dragDrop": "PNG، JPG، GIF، WEBP حتى 10 ميجابايت"
+    },
+    "filters": {
+      "all": "الكل",
+      "images": "الصور",
+      "videos": "الفيديوهات"
+    },
+    "messages": {
+      "urlCopied": "تم نسخ الرابط إلى الحافظة",
+      "deleteSuccess": "تم حذف الملف بنجاح",
+      "deleteError": "فشل حذف الملف",
+      "deleteConfirm": "هل أنت متأكد من حذف ملف الوسائط هذا؟ لا يمكن التراجع عن هذا الإجراء.",
+      "noMedia": "لا توجد ملفات وسائط",
+      "uploadSuccess": "تم رفع الملف بنجاح",
+      "uploadError": "فشل رفع الملف",
+      "uploading": "جاري الرفع...",
+      "loadingMore": "جاري تحميل المزيد...",
+      "noMoreItems": "لا توجد عناصر أخرى للتحميل",
+      "selectMedia": "اختيار الوسائط"
+    },
+    "card": {
+      "view": "عرض",
+      "copyUrl": "نسخ الرابط",
+      "download": "تحميل",
+      "delete": "حذف"
+    },
+    "viewer": {
+      "close": "إغلاق",
+      "download": "تحميل",
+      "previous": "السابق",
+      "next": "التالي",
+      "fileType": "نوع الملف"
+    }
   }
 }

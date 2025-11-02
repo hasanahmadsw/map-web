@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import type { TCreateStaffDTO, TEditStaffDTO, TUpdateMeDTO } from "@/schemas/staff.schemas";
 import { staffService } from "@/services/staff.service";
-import type { PaginatedResponse } from "@/types/common.types";
+import type { ApiResponse } from "@/types/common.types";
 import type { Role, Staff } from "@/types/staff.types";
 
 const qk = {
@@ -13,7 +13,7 @@ const qk = {
   byId: (id: string | number) => ["staff", id] as const,
 };
 
-type StaffListPage = PaginatedResponse<Staff>;
+type StaffListPage = ApiResponse<Staff[]>;
 
 const sameId = (a: string | number, b: string | number) => String(a) === String(b);
 
@@ -30,7 +30,7 @@ interface UseStaffOptions {
 interface UseStaffReturn {
   staff: Staff[];
   currentStaff: Staff | undefined;
-  pagination: StaffListPage["pagination"] | undefined;
+  pagination: StaffListPage["pagination"];
   totalPages: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
@@ -108,7 +108,7 @@ export function useStaff(options: UseStaffOptions = {}): UseStaffReturn {
       if (!cur?.data) return old;
       const idx = cur.data.findIndex((s) => sameId(s.id, item.id));
       const newData = idx === -1 ? [item, ...cur.data] : cur.data.map((s, i) => (i === idx ? { ...s, ...item } : s));
-      return { ...cur, data: newData, meta: cur.meta };
+      return { ...cur, data: newData };
     });
     queryClient.setQueryData(qk.byId(item.id), item);
   };
@@ -121,11 +121,10 @@ export function useStaff(options: UseStaffOptions = {}): UseStaffReturn {
       return {
         ...cur,
         data: newData,
-        pagination: {
+        pagination: cur.pagination ? {
           ...cur.pagination,
-          total: Math.max(0, (cur.pagination?.total ?? newData.length) - 1),
-        },
-        meta: cur.meta,
+          total: Math.max(0, (cur.pagination.total ?? newData.length) - 1),
+        } : undefined,
       };
     });
     queryClient.removeQueries({ queryKey: qk.byId(id) });
@@ -176,8 +175,12 @@ export function useStaff(options: UseStaffOptions = {}): UseStaffReturn {
   const hasPrevPage = !!pageData?.pagination?.hasPrevPage;
   const totalPages = pageData?.pagination?.totalPages ?? 0;
 
+  // Ensure staff is always an array
+  const staffData = pageData?.data;
+  const staff = Array.isArray(staffData) ? staffData : [];
+
   return {
-    staff: pageData?.data ?? [],
+    staff,
     currentStaff: currentStaffData,
     pagination: pageData?.pagination,
     totalPages,

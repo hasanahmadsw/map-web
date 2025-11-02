@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useArticlesStaff } from "@/hooks/useArticles";
+import { useArticlesStaff } from "@/hooks/articles/useArticles";
 import { DataTable } from "@/components/shared/data-table";
 import { useArticlesTableConfig } from "@/components/articles/articles-table.config";
 import { Plus } from "lucide-react";

@@ -45,7 +45,17 @@ export interface ServiceTranslation extends BaseTranslation {
   }>;
 }
 
-export type Translation = ArticleTranslation | TagTranslation | TopicTranslation | StaffTranslation | ServiceTranslation;
+export interface SolutionTranslation extends BaseTranslation {
+  description: string;
+  shortDescription: string;
+  meta: {
+    title: string;
+    description: string;
+    keywords: string[];
+  };
+}
+
+export type Translation = ArticleTranslation | TagTranslation | TopicTranslation | StaffTranslation | ServiceTranslation | SolutionTranslation;
 
 export interface EditableTranslation {
   id: number;
@@ -85,4 +95,4 @@ export interface TranslationHooks<T extends Translation> {
   isTranslating: boolean;
 }
 
-export type EntityType = "article" | "tag" | "topic" | "staff" | "service";
+export type EntityType = "article" | "tag" | "topic" | "staff" | "service" | "solution";

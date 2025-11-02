@@ -87,7 +87,22 @@
     "imageUploadedSuccessfully": "Image uploaded successfully",
     "confirmDeleteArticle": "Are you sure you want to delete this {{entity}}?",
 
-    "confirmDeleteArticleMessage": "Are you sure you want to delete this {{entity}}? This action cannot be undone and will permanently remove the {{entity}} from the system."
+    "confirmDeleteArticleMessage": "Are you sure you want to delete this {{entity}}? This action cannot be undone and will permanently remove the {{entity}} from the system.",
+    "actions": {
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "upload": "Upload",
+      "view": "View",
+      "copy": "Copy",
+      "download": "Download",
+      "select": "Select",
+      "selectAll": "Select All",
+      "deselectAll": "Deselect All"
+    },
+    "confirmation": {
+      "areYouSure": "Are you sure?"
+    }
   },
   "metadata": {
     "siteName": "News Website",
@@ -241,6 +256,8 @@
     "team": "Team",
     "manageArticles": "Manage Articles",
     "manageServices": "Manage Services",
+    "manageSolutions": "Manage Solutions",
+    "manageMedia": "Manage Media",
     "staff": "Staff",
     "settings": "Settings",
     "topics": "Topics",
@@ -637,6 +654,52 @@
     "noServicesFound": "No services found",
     "failedToLoadServices": "Failed to load services"
   },
+  "solutions": {
+    "title": "Solutions",
+    "solution": "Solution",
+    "solutionsManagement": "Solutions Management",
+    "solutionsManagementDescription": "Manage your solutions and their translations.",
+    "contentSolutions": "Content Solutions",
+    "contentSolutionsDescription": "Manage and organize your solution offerings.",
+    "addSolution": "Add Solution",
+    "addNewSolution": "Add New Solution",
+    "addNewSolutionDescription": "Create a new solution with translations.",
+    "editSolution": "Edit Solution",
+    "editSolutionDescription": "Update solution information and manage translations.",
+    "solutionDetails": "Solution Details",
+    "solutionDetailsDescription": "Edit the solution information and manage its translations.",
+    "solutionName": "Solution Name",
+    "solutionNamePlaceholder": "Enter solution name",
+    "slug": "Slug",
+    "slugPlaceholder": "solution-slug",
+    "icon": "Icon",
+    "iconPlaceholder": "Icon name or class",
+    "order": "Order",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter solution description",
+    "shortDescription": "Short Description",
+    "shortDescriptionPlaceholder": "Enter short description",
+    "featuredImage": "Featured Image",
+    "featuredImageDescription": "Upload a featured image for this solution.",
+    "selectImage": "Select an image",
+    "metaInformation": "Meta Information",
+    "metaInformationDescription": "SEO and meta information for this solution.",
+    "metaTitle": "Meta Title",
+    "metaTitlePlaceholder": "Enter meta title",
+    "metaDescription": "Meta Description",
+    "metaDescriptionPlaceholder": "Enter meta description",
+    "statusOptions": "Status Options",
+    "statusOptionsDescription": "Configure the solution status and visibility.",
+    "published": "Published",
+    "publishedDescription": "Make this solution visible to the public",
+    "featured": "Featured",
+    "featuredDescription": "Mark this solution as featured",
+    "draft": "Draft",
+    "basicInformation": "Basic Information",
+    "basicInformationDescription": "Enter the basic solution information.",
+    "noSolutionsFound": "No solutions found",
+    "failedToLoadSolutions": "Failed to load solutions"
+  },
   "languages": {
     "languagesManagement": "Languages Management",
     "languagesManagementDescription": "Manage system languages and localization settings",
@@ -666,5 +729,48 @@
     "errorLoadingLanguages": "Error loading languages",
     "deleteLanguage": "Delete Language",
     "noLanguagesToTranslateDescription": "This entity has been translated to all available languages."
+  },
+  "media": {
+    "management": {
+      "title": "Media Management",
+      "description": "Manage and organize your media files"
+    },
+    "actions": {
+      "upload": "Upload",
+      "uploadDescription": "Upload images and videos to your media library",
+      "selectFiles": "Click to select files or drag and drop",
+      "dragDrop": "PNG, JPG, GIF, WEBP up to 10MB"
+    },
+    "filters": {
+      "all": "All",
+      "images": "Images",
+      "videos": "Videos"
+    },
+    "messages": {
+      "urlCopied": "URL copied to clipboard",
+      "deleteSuccess": "Media deleted successfully",
+      "deleteError": "Failed to delete media",
+      "deleteConfirm": "Are you sure you want to delete this media file? This action cannot be undone.",
+      "noMedia": "No media files",
+      "uploadSuccess": "Media uploaded successfully",
+      "uploadError": "Failed to upload media",
+      "uploading": "Uploading...",
+      "loadingMore": "Loading more...",
+      "noMoreItems": "No more items to load",
+      "selectMedia": "Select Media"
+    },
+    "card": {
+      "view": "View",
+      "copyUrl": "Copy URL",
+      "download": "Download",
+      "delete": "Delete"
+    },
+    "viewer": {
+      "close": "Close",
+      "download": "Download",
+      "previous": "Previous",
+      "next": "Next",
+      "fileType": "File type"
+    }
   }
 }

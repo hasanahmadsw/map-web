@@ -5,7 +5,7 @@ import { useState } from "react";
 import type { TCreateServiceForm, TEditServiceForm, TBulkServiceOperationForm, TUpdateServiceStatusForm } from "@/schemas/services.schemas";
 import { servicesService } from "@/services/services.service";
 import type { StaffService, ServiceResponse } from "@/types/services.types";
-import type { PaginatedResponse } from "@/types/common.types";
+import type { ApiResponse } from "@/types/common.types";
 
 const qk = {
   list: (page: number, limit: number, lang?: string) => ["services", "staff", { page, limit, lang }] as const,
@@ -15,8 +15,8 @@ const qk = {
   search: (params: Record<string, unknown>) => ["services", "search", params] as const,
 };
 
-type StaffServicesPage = PaginatedResponse<StaffService>;
-type PublicServicesPage = PaginatedResponse<ServiceResponse>;
+type StaffServicesPage = ApiResponse<StaffService[]>;
+type PublicServicesPage = ApiResponse<ServiceResponse[]>;
 
 const sameId = (a: string | number, b: string | number) => String(a) === String(b);
 
@@ -34,7 +34,7 @@ interface UseServicesStaffOptions {
 
 interface UseServicesStaffReturn {
   services: StaffService[];
-  pagination: StaffServicesPage["pagination"] | undefined;
+  pagination: StaffServicesPage["pagination"];
   totalPages: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
@@ -127,7 +127,7 @@ export function useServicesStaff(options: UseServicesStaffOptions = {}): UseServ
       if (!cur?.data) return old;
       const idx = cur.data.findIndex((s) => sameId(s.id, item.id));
       const newData = idx === -1 ? [item, ...cur.data] : cur.data.map((s, i) => (i === idx ? { ...s, ...item } : s));
-      return { ...cur, data: newData, meta: cur.meta };
+      return { ...cur, data: newData };
     });
     queryClient.setQueryData(qk.byId(item.id), item);
   };
@@ -140,11 +140,10 @@ export function useServicesStaff(options: UseServicesStaffOptions = {}): UseServ
       return {
         ...cur,
         data: newData,
-        pagination: {
+        pagination: cur.pagination ? {
           ...cur.pagination,
-          total: Math.max(0, (cur.pagination?.total ?? newData.length) - 1),
-        },
-        meta: cur.meta,
+          total: Math.max(0, (cur.pagination.total ?? newData.length) - 1),
+        } : undefined,
       };
     });
     queryClient.removeQueries({ queryKey: qk.byId(id) });
@@ -199,8 +198,12 @@ export function useServicesStaff(options: UseServicesStaffOptions = {}): UseServ
   const hasPrevPage = !!pageData?.pagination?.hasPrevPage;
   const totalPages = pageData?.pagination?.totalPages ?? 0;
 
+  // Ensure services is always an array
+  const servicesData = pageData?.data;
+  const services = Array.isArray(servicesData) ? servicesData : [];
+
   return {
-    services: pageData?.data ?? [],
+    services,
     pagination: pageData?.pagination,
     totalPages,
     hasNextPage,
@@ -265,7 +268,7 @@ interface UsePublicServicesOptions {
 
 interface UsePublicServicesReturn {
   services: ServiceResponse[];
-  pagination: PublicServicesPage["pagination"] | undefined;
+  pagination: PublicServicesPage["pagination"];
   totalPages: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
@@ -324,8 +327,12 @@ export function usePublicServices(options: UsePublicServicesOptions): UsePublicS
   const hasPrevPage = !!pageData?.pagination?.hasPrevPage;
   const totalPages = pageData?.pagination?.totalPages ?? 0;
 
+  // Ensure services is always an array
+  const servicesData = pageData?.data;
+  const services = Array.isArray(servicesData) ? servicesData : [];
+
   return {
-    services: pageData?.data ?? [],
+    services,
     pagination: pageData?.pagination,
     totalPages,
     hasNextPage,
@@ -386,8 +393,12 @@ export function useServiceSearch(options: UseServiceSearchOptions = {}) {
     retry: 1,
   });
 
+  // Ensure services is always an array
+  const servicesData = pageData?.data;
+  const services = Array.isArray(servicesData) ? servicesData : [];
+
   return {
-    services: pageData?.data ?? [],
+    services,
     pagination: pageData?.pagination,
     totalPages: pageData?.pagination?.totalPages ?? 0,
     hasNextPage: !!pageData?.pagination?.hasNextPage,

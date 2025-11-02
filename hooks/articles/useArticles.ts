@@ -5,14 +5,14 @@ import { useState } from "react";
 import type { TCreateArticleForm, TEditArticleForm } from "@/schemas/articles.schemas";
 import { articlesService } from "@/services/articles.service";
 import type { ArticleStaffResponse } from "@/types/articles.types";
-import type { PaginatedResponse } from "@/types/common.types";
+import type { ApiResponse } from "@/types/common.types";
 
 const qk = {
   list: (page: number, limit: number, lang?: string) => ["articles", "staff", { page, limit, lang }] as const,
   byId: (id: number) => ["articles", "staff", id] as const,
 };
 
-type StaffArticlesPage = PaginatedResponse<ArticleStaffResponse>;
+type StaffArticlesPage = ApiResponse<ArticleStaffResponse[]>;
 
 const sameId = (a: string | number, b: string | number) => String(a) === String(b);
 
@@ -25,7 +25,7 @@ interface UseArticlesStaffOptions {
 
 interface UseArticlesStaffReturn {
   articles: ArticleStaffResponse[];
-  pagination: StaffArticlesPage["pagination"] | undefined;
+  pagination: StaffArticlesPage["pagination"];
   totalPages: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
@@ -87,7 +87,7 @@ export function useArticlesStaff(options: UseArticlesStaffOptions = {}): UseArti
       if (!cur?.data) return old;
       const idx = cur.data.findIndex((t) => sameId(t.id, item.id));
       const newData = idx === -1 ? [item, ...cur.data] : cur.data.map((t, i) => (i === idx ? { ...t, ...item } : t));
-      return { ...cur, data: newData, meta: cur.meta };
+      return { ...cur, data: newData };
     });
     queryClient.setQueryData(qk.byId(item.id), item);
   };
@@ -100,11 +100,10 @@ export function useArticlesStaff(options: UseArticlesStaffOptions = {}): UseArti
       return {
         ...cur,
         data: newData,
-        pagination: {
+        pagination: cur.pagination ? {
           ...cur.pagination,
-          total: Math.max(0, (cur.pagination?.total ?? newData.length) - 1),
-        },
-        meta: cur.meta,
+          total: Math.max(0, (cur.pagination.total ?? newData.length) - 1),
+        } : undefined,
       };
     });
     queryClient.removeQueries({ queryKey: qk.byId(id) });
@@ -139,8 +138,12 @@ export function useArticlesStaff(options: UseArticlesStaffOptions = {}): UseArti
   const hasPrevPage = !!pageData?.pagination?.hasPrevPage;
   const totalPages = pageData?.pagination?.totalPages ?? 0;
 
+  // Ensure articles is always an array
+  const articlesData = pageData?.data;
+  const articles = Array.isArray(articlesData) ? articlesData : [];
+
   return {
-    articles: pageData?.data ?? [],
+    articles,
     pagination: pageData?.pagination,
     totalPages,
     hasNextPage,

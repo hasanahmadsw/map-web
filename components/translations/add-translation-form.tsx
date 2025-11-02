@@ -98,6 +98,16 @@ export function AddTranslationForm({
           />
         )}
 
+        {entityType === "solution" && (
+          <TextAreaInput
+            control={form.control}
+            name="shortDescription"
+            label={t.solutions?.shortDescription || "Short Description"}
+            placeholder={t.solutions?.shortDescriptionPlaceholder || "Enter short description"}
+            className="min-h-[80px]"
+          />
+        )}
+
         {hasContent && (
           <>
             <TextAreaInput

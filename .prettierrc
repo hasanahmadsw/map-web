@@ -2,6 +2,10 @@
   "plugins": ["prettier-plugin-tailwindcss"],
   "trailingComma": "all",
   "printWidth": 110,
+  "tabWidth": 2,
+  "semi": true,
+  "singleQuote": true,
   "arrayBracketNewline": true,
-  "arrayBracketSpacing": false
+  "arrayBracketSpacing": false,
+  "arrowParens": "avoid"
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, FileText, Package, PieChart, Settings2, Tag, Users } from "lucide-react";
+import { BookOpen, BriefcaseBusiness, FileText, Image, Package, PieChart, Settings2, Tag, Users } from "lucide-react";
 import type * as React from "react";
 
 import { NavMain } from "@/components/layout/sidebar/nav-main";
@@ -42,6 +42,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       title: t.staffs.staffManagement, 
       url: "/dashboard/staff",
       icon: Users,
+    },
+    {
+      title: t.navigation.manageSolutions,
+      url: "/dashboard/solutions",
+      icon: BriefcaseBusiness,
+    },
+    {
+      title: t.navigation.manageMedia,
+      url: "/dashboard/media",
+      icon: Image,
     },
     {
       title: t.navigation.settings,

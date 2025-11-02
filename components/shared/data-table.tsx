@@ -114,6 +114,9 @@ export function DataTable<T = any>({
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
   const { t } = useTranslation();
 
+  // Ensure data is always an array
+  const safeData = Array.isArray(data) ? data : [];
+
   const handleSelectItem = (itemId: number) => {
     const newSelection = selectedItems.includes(itemId)
       ? selectedItems.filter((id) => id !== itemId)
@@ -124,11 +127,11 @@ export function DataTable<T = any>({
   };
 
   const handleSelectAll = () => {
-    if (selectedItems.length === data.length) {
+    if (selectedItems.length === safeData.length) {
       setSelectedItems([]);
       onSelectionChange?.([]);
     } else {
-      const allIds = data.map(getItemId);
+      const allIds = safeData.map(getItemId);
       setSelectedItems(allIds);
       onSelectionChange?.(allIds);
     }
@@ -165,7 +168,14 @@ export function DataTable<T = any>({
       <TableRow key={i}>
         {selectable && (
           <TableCell>
-            <div className="h-4 w-4 bg-muted animate-pulse rounded" />
+            <input
+              type="checkbox"
+              checked={false}
+              disabled
+              className="rounded border-gray-300 opacity-50"
+              aria-label="Loading"
+              readOnly
+            />
           </TableCell>
         )}
         {columns.map((column, colIndex) => (
@@ -208,7 +218,7 @@ export function DataTable<T = any>({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{t.common.actions || "Actions"}</DropdownMenuLabel>
+          <DropdownMenuLabel>{"Actions"}</DropdownMenuLabel>
           {actions.map((action, index) => {
             const isDisabled = action.disabled?.(item) || false;
             const isDeleteAction = action.variant === "destructive";
@@ -277,7 +287,7 @@ export function DataTable<T = any>({
                 <TableHead className="w-12">
                   <input
                     type="checkbox"
-                    checked={selectedItems.length === data.length && data.length > 0}
+                    checked={selectedItems.length === safeData.length && safeData.length > 0}
                     onChange={handleSelectAll}
                     className="rounded border-gray-300"
                   />
@@ -294,9 +304,9 @@ export function DataTable<T = any>({
           <TableBody>
             {isLoading
               ? renderLoadingSkeleton()
-              : data.length === 0
+              : safeData.length === 0
                 ? renderEmptyState()
-                : data.map((item) => (
+                : safeData.map((item) => (
                     <TableRow key={getItemId(item)}>
                       {selectable && (
                         <TableCell>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { EditableTranslation } from "@/types/translations.types";
 
-export const useTranslationEditing = () => {
+export const useTranslationEditing = (entityType?: string) => {
   const [editingTranslations, setEditingTranslations] = useState<EditableTranslation[]>([]);
 
   const startEditing = (translation: any, hasContent = false, hasMeta = false, hasSubServices = false) => {
@@ -29,6 +29,9 @@ export const useTranslationEditing = () => {
         }),
         ...(hasSubServices && {
           subServices: translation.subServices || [],
+        }),
+        ...(entityType === "solution" && {
+          shortDescription: translation.shortDescription || "",
         }),
         isEditing: true,
       },

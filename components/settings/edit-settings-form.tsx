@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Save,  X, Link, BarChart3, Code, Plus, Check } from "lucide-react";
 import { useTranslation } from "@/providers/translations-provider";
-import { useSettings } from "@/hooks/useSettings";
+import { useSettings } from "@/hooks/settings/useSettings";
 import { useLang } from "@/hooks/useLang";
 import { updateSettingsSchema } from "@/schemas/settings.schemas";
 import { toast } from "sonner";

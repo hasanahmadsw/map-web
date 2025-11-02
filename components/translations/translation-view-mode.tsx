@@ -100,6 +100,12 @@ export const TranslationViewMode: React.FC<TranslationViewModeProps> = ({
               </p>
             )}
 
+            {entityType === "solution" && "shortDescription" in translation && (
+              <p className="text-sm text-muted-foreground">
+                {translation.shortDescription}
+              </p>
+            )}
+
             {hasSubServices && "subServices" in translation && translation.subServices && translation.subServices.length > 0 && (
               <div className="mt-4">
                 <h4 className="text-sm font-medium mb-2">{t.services?.subServices || "Sub Services"}</h4>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useServicesStaff } from "@/hooks/useServices";
+import { useServicesStaff } from "@/hooks/services/useServices";
 import { DataTable } from "@/components/shared/data-table";
 import { useServicesTableConfig } from "@/components/services/services-table.config";
 import { Plus } from "lucide-react";
@@ -43,20 +43,7 @@ export function ServicesTable() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">
-            Services Management
-          </h2>
-          <p className="text-muted-foreground">
-            Manage your services and their translations.
-          </p>
-        </div>
-        <Button onClick={() => router.push("/dashboard/services/add")}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Service
-        </Button>
-      </div>
+   
 
       <DataTable
         data={services || []}

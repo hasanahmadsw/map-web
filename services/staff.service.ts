@@ -6,9 +6,10 @@ import type {
   TUpdateMeDTO,
   TUpdateStaffTranslationDTO,
 } from "@/schemas/staff.schemas";
-import type { PaginatedResponse } from "@/types/common.types";
+import type { ApiResponse } from "@/types/common.types";
 import type { Role, Staff, StaffTranslation } from "@/types/staff.types";
 import { ApiService } from "./base.service";
+import { toQS } from "@/utils/api-utils";
 
 const BASE = "/staff";
 
@@ -28,11 +29,6 @@ type GetAllParams = {
   order?: "asc" | "desc";
 };
 
-const toQS = (params: Record<string, unknown>) => {
-  const entries = Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== "");
-  return entries.length ? `?${new URLSearchParams(entries as [string, string][]).toString()}` : "";
-};
-
 const encId = (id: Id) => encodeURIComponent(String(id));
 
 export const staffService = {
@@ -41,18 +37,9 @@ export const staffService = {
     return res.data;
   },
 
-  async getAll(params: GetAllParams = {}, opts?: RequestOpts): Promise<PaginatedResponse<Staff>> {
-    const qs = toQS({
-      page: params.page,
-      limit: params.limit,
-      search: params.search,
-      role: params.role,
-      sort: params.sort,
-      order: params.order,
-    });
-
-    const res = await ApiService.get<PaginatedResponse<Staff>>(`${BASE}${qs}`, opts);
-    return res as unknown as PaginatedResponse<Staff>;
+  async getAll(params: GetAllParams = {}, opts?: RequestOpts): Promise<ApiResponse<Staff[]>> {
+    const res = await ApiService.get<Staff[]>(`${BASE}${toQS(params)}`, opts);
+    return res;
   },
 
   async getById(id: Id, opts?: RequestOpts): Promise<Staff> {

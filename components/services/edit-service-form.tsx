@@ -1,25 +1,27 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Save } from "lucide-react";
-import { useEffect } from "react";
+import { Image, Loader2, Save, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { CheckboxInput } from "@/components/shared/input/CheckboxInput";
 import { FileInput } from "@/components/shared/input/FileInput";
+import { MediaPickerDialog } from "@/components/media/media-picker-dialog";
 import { IconSelectInput } from "@/components/shared/input/IconSelectInput";
 import { TextInput } from "@/components/shared/input/TextInput";
 import { EntityTranslations } from "@/components/translations/translations";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useServiceStaffById, useServicesStaff } from "@/hooks/useServices";
-import { useServiceTranslations } from "@/hooks/useServiceTranslations";
+import { useServiceStaffById, useServicesStaff } from "@/hooks/services/useServices";
+import { useServiceTranslations } from "@/hooks/services/useServiceTranslations";
 import { useTranslation } from "@/providers/translations-provider";
 import {
   editServiceSchema,
   type TEditServiceForm,
 } from "@/schemas/services.schemas";
+import { servicesService } from "@/services/services.service";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -30,6 +32,7 @@ interface EditServiceFormProps {
 export function EditServiceForm({ serviceId }: EditServiceFormProps) {
   const { t } = useTranslation();
   const { updateService, isUpdating, updateError } = useServicesStaff();
+  const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
   const {
     data: service,
     isLoading: isLoadingService,
@@ -171,13 +174,52 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <FileInput
-                  name="featuredImage"
-                  label={t.services?.featuredImage || "Featured Image"}
-                  placeholder={t.services?.selectImage || "Select an image"}
-                  accept="image/*"
-                  maxSize={10}
-                  autoUpload={true}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">{t.services?.featuredImage || "Featured Image"}</label>
+                  <div className="flex items-center gap-4">
+                    {form.watch("featuredImage") && (
+                      <div className="relative w-32 h-32 rounded-lg overflow-hidden border">
+                        <img
+                          src={form.watch("featuredImage") as string}
+                          alt="Featured"
+                          className="w-full h-full object-cover"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-1 right-1 h-6 w-6 rounded-full p-0"
+                      onClick={() => {
+                        form.setValue("featuredImage", "", { shouldDirty: true });
+                      }}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    )}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setIsMediaPickerOpen(true)}
+                    >
+                      <Image className="mr-2 h-4 w-4" />
+                      {form.watch("featuredImage") ? t.services?.selectImage || "Select Image" : t.services?.featuredImage || "Featured Image"}
+                    </Button>
+                  </div>
+                </div>
+
+                <MediaPickerDialog
+                  open={isMediaPickerOpen}
+                  onOpenChange={setIsMediaPickerOpen}
+                  onSelect={(media) => {
+                    const selectedMedia = Array.isArray(media) ? media[0] : media;
+                    if (selectedMedia) {
+                      form.setValue("featuredImage", selectedMedia.url, { shouldDirty: true });
+                    }
+                  }}
+                  mode="single"
+                  filter="image"
+                  initialSelected={form.watch("featuredImage") ? [form.watch("featuredImage") as string] : []}
                 />
               </CardContent>
             </Card>

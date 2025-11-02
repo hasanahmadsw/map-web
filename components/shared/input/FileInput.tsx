@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { servicesService } from "@/services/services.service";
 import { useTranslation } from "@/providers/translations-provider";
 
 interface FileInputProps {
@@ -20,6 +19,7 @@ interface FileInputProps {
   className?: string;
   autoUpload?: boolean; // New prop to enable auto-upload
   uploadFieldName?: string; // Field name to store the uploaded URL
+  uploadService?: (file: File) => Promise<{ url: string }>; // Upload service function
 }
 
 export function FileInput({
@@ -31,6 +31,7 @@ export function FileInput({
   className,
   autoUpload = false,
   uploadFieldName,
+  uploadService,
 }: FileInputProps) {
   const { register, watch, setValue, formState: { errors } } = useFormContext();
   const { t } = useTranslation();
@@ -44,6 +45,7 @@ export function FileInput({
   const file = watch(name);
   const error = errors[name];
   const uploadField = uploadFieldName ? watch(uploadFieldName) : (typeof file === 'string' ? file : null);
+
 
   // Auto-upload functionality
   const uploadFile = useCallback(async (fileToUpload: File) => {
@@ -69,7 +71,10 @@ export function FileInput({
     }, 200);
 
     try {
-      const { url } = await servicesService.uploadImage(fileToUpload);
+      if (!uploadService) {
+        throw new Error("Upload service not provided");
+      }
+      const { url } = await uploadService(fileToUpload);
       clearInterval(progressInterval);
       setUploadProgress(100);
       
@@ -92,7 +97,7 @@ export function FileInput({
         setUploadProgress(0);
       }, 500);
     }
-  }, [uploadFieldName, setValue]);
+  }, [uploadFieldName, setValue, uploadService]);
 
   useEffect(() => {
     if (autoUpload && file instanceof File && !isUploading) {
@@ -202,12 +207,16 @@ export function FileInput({
           onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
         />
         
-        {(preview || uploadField) ? (
+        {(preview || (uploadField && typeof uploadField === 'string' && uploadField.trim() !== '')) ? (
           <div className="flex flex-col items-center space-y-4">
             <div className="relative">
               <div className="relative w-32 h-32">
                 <img
-                  src={uploadField || preview}
+                  src={
+                    (uploadField && typeof uploadField === 'string' && uploadField.trim() !== '')
+                      ? uploadField
+                      : (preview ?? '')
+                  }
                   alt="Preview"
                   className="w-32 h-32 object-cover rounded-lg"
                 />

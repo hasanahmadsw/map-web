@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
 import { languagesService } from "@/services/languages.service";
-import type { ApiErrorDetail } from "@/types/common.types";
+import type { ApiError } from "@/types/common.types";
 import type { CreateLanguageDTO, Language } from "@/types/language.types";
 
 const qk = {
@@ -17,8 +17,8 @@ function getErrorMessage(err: unknown): string | null {
   if (typeof err === "string") return err;
   if (err instanceof Error) return err.message ?? null;
   try {
-    const maybe = err as ApiErrorDetail;
-    return maybe?.message ?? null;
+    const maybe = err as ApiError;
+    return maybe?.error?.message ?? null;
   } catch {
     return null;
   }
@@ -57,7 +57,7 @@ export function useLanguages(options: UseLanguagesOptions = {}): UseLanguagesRet
   const queryClient = useQueryClient();
 
   const {
-    data: languages,
+    data: languagesData,
     isLoading,
     isError,
     error,
@@ -71,6 +71,9 @@ export function useLanguages(options: UseLanguagesOptions = {}): UseLanguagesRet
     retry: 1,
     refetchOnWindowFocus: false,
   });
+
+  // Ensure languages is always an array
+  const languages = Array.isArray(languagesData) ? languagesData : undefined;
 
   // Mutation: create (optimistic add + rollback)
   const createMutation = useMutation({

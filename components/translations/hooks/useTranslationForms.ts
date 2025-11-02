@@ -6,6 +6,7 @@ import { useTranslation } from "@/providers/translations-provider";
 import { autoTranslateArticleSchema, createArticleTranslationSchema } from "@/schemas/articles.schemas";
 import { autoTranslateStaffSchema, createStaffTranslationSchema } from "@/schemas/staff.schemas";
 import { autoTranslateServiceSchema, createServiceTranslationSchema } from "@/schemas/services.schemas";
+import { autoTranslateSolutionSchema, createSolutionTranslationSchema } from "@/schemas/solutions.schemas";
 import type { TAutoTranslateForm, TCreateTranslationForm } from "@/schemas/translations.schemas";
 import { autoTranslateSchema, createTranslationSchema } from "@/schemas/translations.schemas";
 import type { EntityType } from "@/types/translations.types";
@@ -24,6 +25,8 @@ export const useTranslationForms = (entityType: EntityType, hasContent = false, 
         return createStaffTranslationSchema(validationDict);
       case "service":
         return createServiceTranslationSchema(validationDict);
+      case "solution":
+        return createSolutionTranslationSchema(validationDict);
       default:
         return createTranslationSchema(validationDict, hasContent, hasMeta, hasSubServices);
     }
@@ -37,6 +40,8 @@ export const useTranslationForms = (entityType: EntityType, hasContent = false, 
         return autoTranslateStaffSchema(validationDict);
       case "service":
         return autoTranslateServiceSchema(validationDict);
+      case "solution":
+        return autoTranslateSolutionSchema(validationDict);
       default:
         return autoTranslateSchema(validationDict);
     }
@@ -52,6 +57,9 @@ export const useTranslationForms = (entityType: EntityType, hasContent = false, 
       ...(entityType === "service" && { 
         shortDescription: "",
         subServices: [],
+      }),
+      ...(entityType === "solution" && { 
+        shortDescription: "",
       }),
       ...(hasContent && {
         content: "",

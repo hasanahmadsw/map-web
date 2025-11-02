@@ -57,7 +57,7 @@ export function EntityTranslations<T extends Translation>({
     cancelEditing,
     updateEditingTranslation,
     getEditingTranslation,
-  } = useTranslationEditing();
+  } = useTranslationEditing(entityType);
   const { deleteDialogOpen, setDeleteDialogOpen, translationToDelete, handleDeleteClick, cancelDelete } =
     useDeleteDialog();
 
@@ -72,6 +72,9 @@ export function EntityTranslations<T extends Translation>({
         ...(entityType === "service" && { 
           shortDescription: data.shortDescription,
           subServices: data.subServices || [],
+        }),
+        ...(entityType === "solution" && { 
+          shortDescription: data.shortDescription,
         }),
         ...(hasContent && {
           content: data.content,
@@ -112,6 +115,9 @@ export function EntityTranslations<T extends Translation>({
         ...(entityType === "service" && { 
           shortDescription: data.shortDescription,
           subServices: data.subServices || [],
+        }),
+        ...(entityType === "solution" && { 
+          shortDescription: data.shortDescription,
         }),
         ...(hasContent && {
           content: data.content,
@@ -157,6 +163,9 @@ export function EntityTranslations<T extends Translation>({
         ...(entityType === "service" && { 
           shortDescription: editingTranslation.shortDescription || "",
           subServices: editingTranslation.subServices || [],
+        }),
+        ...(entityType === "solution" && { 
+          shortDescription: editingTranslation.shortDescription || "",
         }),
         ...(hasContent && {
           content: editingTranslation.content,

@@ -1,24 +1,26 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Save } from "lucide-react";
+import { Image, Loader2, Save, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { CheckboxInput } from "@/components/shared/input/CheckboxInput";
 import { FileInput } from "@/components/shared/input/FileInput";
+import { MediaPickerDialog } from "@/components/media/media-picker-dialog";
 import { SearchableMultiSelectInput } from "@/components/shared/input/SearchableMultiSelectInput";
 import { SelectInput } from "@/components/shared/input/SelectInput";
 import { TextAreaInput } from "@/components/shared/input/TextAreaInput";
 import { TextInput } from "@/components/shared/input/TextInput";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useArticlesStaff } from "@/hooks/useArticles";
+import { useArticlesStaff } from "@/hooks/articles/useArticles";
 import { useLanguages } from "@/hooks/useLanguages";
 import { AiProvider } from "@/providers/ai-provider";
 import { useTranslation } from "@/providers/translations-provider";
 import { createArticleSchema, type TCreateArticleForm } from "@/schemas/articles.schemas";
+import { articlesService } from "@/services/articles.service";
 import ArticleEditor from "../editor";
 
 export function AddArticleForm() {
@@ -26,6 +28,7 @@ export function AddArticleForm() {
   const { createArticle, isCreating, createError } = useArticlesStaff();
   const { languages, isLoading: languagesLoading } = useLanguages(); // Get all languages
   const { t } = useTranslation();
+  const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
 
   const form = useForm<z.input<ReturnType<typeof createArticleSchema>>>({
     resolver: zodResolver(createArticleSchema(t.articles)),
@@ -146,14 +149,52 @@ export function AddArticleForm() {
         </div>
 
         
-        <FileInput
-          name="imageFile"
-          label={t.articles.featuredImage}
-          placeholder={t.articles.selectImage}
-          accept="image/*"
-          maxSize={10}
-          autoUpload={true}
-          uploadFieldName="image"
+        <div className="space-y-2">
+          <label className="text-sm font-medium">{t.articles.featuredImage}</label>
+          <div className="flex items-center gap-4">
+            {form.watch("image") && (
+              <div className="relative w-32 h-32 rounded-lg overflow-hidden border">
+                <img
+                  src={form.watch("image")}
+                  alt="Featured"
+                  className="w-full h-full object-cover"
+                />
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  className="absolute top-1 right-1 h-6 w-6 rounded-full p-0"
+                  onClick={() => {
+                    form.setValue("image", "");
+                  }}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </div>
+            )}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsMediaPickerOpen(true)}
+            >
+              <Image className="mr-2 h-4 w-4" />
+              {form.watch("image") ? t.articles.selectImage : t.articles.featuredImage}
+            </Button>
+          </div>
+        </div>
+
+        <MediaPickerDialog
+          open={isMediaPickerOpen}
+          onOpenChange={setIsMediaPickerOpen}
+          onSelect={(media) => {
+            const selectedMedia = Array.isArray(media) ? media[0] : media;
+            if (selectedMedia) {
+              form.setValue("image", selectedMedia.url);
+            }
+          }}
+          mode="single"
+          filter="image"
+          initialSelected={form.watch("image") ? [form.watch("image") as string] : []}
         />
 
         {/* <TextAreaInput

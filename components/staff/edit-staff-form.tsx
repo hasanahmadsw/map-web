@@ -1,11 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Save } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { Image, Loader2, Save, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { FileInput } from "@/components/shared/input/FileInput";
+import { MediaPickerDialog } from "@/components/media/media-picker-dialog";
 import { PasswordInput } from "@/components/shared/input/PasswordInput";
 import { SelectInput } from "@/components/shared/input/SelectInput";
 import { EntityTranslations } from "@/components/translations/translations";
@@ -14,10 +15,11 @@ import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ROLES, Role } from "@/enums/roles.enum";
-import { useStaff, useStaffById } from "@/hooks/useStaff";
-import { useStaffTranslations } from "@/hooks/useStaffTranslations";
+import { useStaff, useStaffById } from "@/hooks/staff/useStaff";
+import { useStaffTranslations } from "@/hooks/staff/useStaffTranslations";
 import { useTranslation } from "@/providers/translations-provider";
 import { editStaffSchema, type TEditStaffDTO } from "@/schemas/staff.schemas";
+import { staffService } from "@/services/staff.service";
 import { formatValidationMessage } from "@/schemas/common.schemas";
 
 interface EditStaffFormProps {
@@ -30,6 +32,7 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
   const { updateStaff, isUpdating, updateError } = useStaff();
   const { t } = useTranslation();
   const staffTranslationsHooks = useStaffTranslations(parseInt(staffId, 10));
+  const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
 
   // Memoize the resolver to prevent unnecessary re-renders
   const resolver = useMemo(() => zodResolver(editStaffSchema(t.validation)), [t.validation]);
@@ -143,13 +146,52 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FileInput
-                name="image"
-                label={t.common.image}
-                placeholder={t.common.chooseFile}
-                accept="image/*"
-                maxSize={10}
-                autoUpload={true}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">{t.common.image}</label>
+                <div className="flex items-center gap-4">
+                  {staffForm.watch("image") && (
+                    <div className="relative w-32 h-32 rounded-lg overflow-hidden border">
+                      <img
+                        src={staffForm.watch("image") as string}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-1 right-1 h-6 w-6 rounded-full p-0"
+                        onClick={() => {
+                          staffForm.setValue("image", "", { shouldDirty: true });
+                        }}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  )}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsMediaPickerOpen(true)}
+                  >
+                    <Image className="mr-2 h-4 w-4" />
+                    {staffForm.watch("image") ? t.common.chooseFile : t.common.image}
+                  </Button>
+                </div>
+              </div>
+
+              <MediaPickerDialog
+                open={isMediaPickerOpen}
+                onOpenChange={setIsMediaPickerOpen}
+                onSelect={(media) => {
+                  const selectedMedia = Array.isArray(media) ? media[0] : media;
+                  if (selectedMedia) {
+                    staffForm.setValue("image", selectedMedia.url, { shouldDirty: true });
+                  }
+                }}
+                mode="single"
+                filter="image"
+                initialSelected={staffForm.watch("image") ? [staffForm.watch("image") as string] : []}
               />
             </div>
 

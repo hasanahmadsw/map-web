@@ -14,9 +14,10 @@ import { TextAreaInput } from "@/components/shared/input/TextAreaInput";
 import { TextInput } from "@/components/shared/input/TextInput";
 import { Button } from "@/components/ui/button";
 import { useLanguages } from "@/hooks/useLanguages";
-import { useStaff } from "@/hooks/useStaff";
+import { useStaff } from "@/hooks/staff/useStaff";
 import { useTranslation } from "@/providers/translations-provider";
 import { createStaffSchema, type TCreateStaffDTO } from "@/schemas/staff.schemas";
+import { staffService } from "@/services/staff.service";
 import { Role, ROLES } from "@/enums/roles.enum";
 import { formatValidationMessage } from "@/schemas/common.schemas";
 
@@ -191,6 +192,7 @@ export function AddStaffMember() {
         accept="image/*"
         maxSize={10}
         autoUpload={true}
+        uploadService={staffService.uploadPicture}
       />
 
       <SelectInput

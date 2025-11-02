@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/useAuth";
-import { useStaff } from "@/hooks/useStaff";
+import { useStaff } from "@/hooks/staff/useStaff";
 import { useTranslation } from "@/providers/translations-provider";
 import { useRouter } from "next/navigation";
 

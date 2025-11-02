@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
-import { useStaff } from "@/hooks/useStaff";
+import { useStaff } from "@/hooks/staff/useStaff";
 import { useTranslation } from "@/providers/translations-provider";
 import { useLang } from "@/hooks/useLang";
 

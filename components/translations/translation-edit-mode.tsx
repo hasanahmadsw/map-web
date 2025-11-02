@@ -213,6 +213,15 @@ export const TranslationEditMode: React.FC<TranslationEditModeProps> = ({
               />
             )}
 
+            {entityType === "solution" && (
+              <SimpleTextAreaInput
+                label={t.solutions?.shortDescription || "Short Description"}
+                value={editingTranslation.shortDescription || ""}
+                onChange={(value) => onUpdate(translation.id, "shortDescription", value)}
+                className="min-h-[80px]"
+              />
+            )}
+
             {hasSubServices && (
               <Form {...subServicesForm}>
                 <SubServicesInput

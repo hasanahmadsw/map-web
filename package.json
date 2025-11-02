@@ -78,6 +78,7 @@
     "react": "19.1.0",
     "react-day-picker": "^9.9.0",
     "react-dom": "19.1.0",
+    "react-dropzone": "^14.3.8",
     "react-froala-wysiwyg": "^4.6.2",
     "react-hook-form": "^7.62.0",
     "react-hotkeys-hook": "^5.1.0",

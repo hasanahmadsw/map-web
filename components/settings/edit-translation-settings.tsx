@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Save, X, Edit, Globe } from "lucide-react";
 import { useTranslation } from "@/providers/translations-provider";
-import { useSettingsTranslations } from "@/hooks/useSettingsTranslations";
+import { useSettingsTranslations } from "@/hooks/settings/useSettingsTranslations";
 import { useLang } from "@/hooks/useLang";
 import { editTranslationFormSchema } from "@/schemas/settings.schemas";
 import { toast } from "sonner";

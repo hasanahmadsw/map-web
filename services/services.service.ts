@@ -8,19 +8,15 @@ import type {
   TServiceSearchForm,
   TUpdateServiceStatusForm,
 } from "@/schemas/services.schemas";
-import type { PaginatedResponse } from "@/types/common.types";
+import type { ApiResponse } from "@/types/common.types";
 import type { StaffService, ServiceResponse, ServiceTranslation } from "@/types/services.types";
 import { ApiService } from "./base.service";
+import { toQS } from "@/utils/api-utils";
 
 const BASE = "/services";
 
 type Id = number;
 type RequestOpts = { signal?: AbortSignal; headers?: Record<string, string> };
-
-const toQS = (params: Record<string, unknown>) => {
-  const entries = Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== "");
-  return entries.length ? `?${new URLSearchParams(entries as any).toString()}` : "";
-};
 
 const enc = (v: string | number) => encodeURIComponent(String(v));
 
@@ -40,18 +36,17 @@ export const servicesService = {
   async getAllForStaff(
     params: StaffListParams = {},
     opts?: RequestOpts,
-  ): Promise<PaginatedResponse<StaffService>> {
-    const qs = toQS(params);
-    const res = await ApiService.get<PaginatedResponse<StaffService>>(`${BASE}/staff${qs}`, opts);
-    return res as unknown as PaginatedResponse<StaffService>;
+  ): Promise<ApiResponse<StaffService[]>> {
+    const res = await ApiService.get<StaffService[]>(`${BASE}/staff${toQS(params)}`, opts);
+    return res;
   },
 
-  async getServicesByLanguage(lang: string, opts?: RequestOpts): Promise<PaginatedResponse<StaffService>> {
-    const res = await ApiService.get<PaginatedResponse<StaffService>>(
+  async getServicesByLanguage(lang: string, opts?: RequestOpts): Promise<ApiResponse<StaffService[]>> {
+    const res = await ApiService.get<StaffService[]>(
       `${BASE}/staff/language/${enc(lang)}`,
       opts,
     );
-    return res as unknown as PaginatedResponse<StaffService>;
+    return res;
   },
 
   async getById(id: Id, opts?: RequestOpts): Promise<StaffService> {
@@ -138,9 +133,9 @@ export const servicesService = {
       isFeatured?: boolean;
     },
     opts?: RequestOpts,
-  ): Promise<PaginatedResponse<ServiceResponse>> {
-    const res = await ApiService.get<PaginatedResponse<ServiceResponse>>(`/services/published${toQS(payload)}`, opts);
-    return res as unknown as PaginatedResponse<ServiceResponse>;
+  ): Promise<ApiResponse<ServiceResponse[]>> {
+    const res = await ApiService.get<ServiceResponse[]>(`/services/published${toQS(payload)}`, opts);
+    return res;
   },
 
   async getBySlug(slug: string, lang: string, opts?: RequestOpts): Promise<ServiceResponse> {
@@ -149,9 +144,9 @@ export const servicesService = {
   },
 
   // Search services
-  async search(payload: TServiceSearchForm, opts?: RequestOpts): Promise<PaginatedResponse<ServiceResponse>> {
-    const res = await ApiService.get<PaginatedResponse<ServiceResponse>>(`${BASE}/search${toQS(payload as Record<string, unknown>)}`, opts);
-    return res as unknown as PaginatedResponse<ServiceResponse>;
+  async search(payload: TServiceSearchForm, opts?: RequestOpts): Promise<ApiResponse<ServiceResponse[]>> {
+    const res = await ApiService.get<ServiceResponse[]>(`${BASE}/search${toQS(payload as Record<string, unknown>)}`, opts);
+    return res;
   },
 
   // Upload service image

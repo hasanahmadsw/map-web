@@ -1,27 +1,22 @@
-export interface ApiMeta {
+export interface ApiResponse<T> {
+  data: T;
+  pagination?: PaginationMeta;
   message: string;
   statusCode: number;
   timestamp: string;
-  status?: "success" | "error";
-  path?: string;
-  method?: string;
-  requestId?: string;
 }
 
-export interface ApiErrorDetail {
+export interface ApiError {
   message: string;
-  error?: string;
   statusCode: number;
-}
-
-export interface ErrorResponse {
-  meta: ApiMeta;
-  error: ApiErrorDetail;
-}
-
-export interface ApiResponse<T> {
-  data: T;
-  meta: ApiMeta;
+  timestamp: string;
+  path: string;
+  method: string;
+  error: {
+    message: string;
+    error: string;
+    statusCode: number;
+  };
 }
 
 export interface PaginationMeta {
@@ -35,11 +30,10 @@ export interface PaginationMeta {
   hasPrevPage: boolean;
 }
 
-export interface PaginatedResponse<TItem> {
-  data: TItem[];
+export interface PaginatedResponse<T> extends ApiResponse<T> {
   pagination: PaginationMeta;
-  meta: ApiMeta;
 }
+
 
 export enum SortBy {
   CREATED_AT = "createdAt",

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { DataTable } from "@/components/shared/data-table";
 import { useStaffTableConfig } from "@/components/staff/staff-table.config";
-import { useStaff } from "@/hooks/useStaff";
+import { useStaff } from "@/hooks/staff/useStaff";
 import { useTranslation } from "@/providers/translations-provider";
 
 export function StaffTable() {

@@ -14,14 +14,15 @@ import { FileInput } from '@/components/shared/input/FileInput';
 import { EntityTranslations } from '@/components/translations/translations';
 import { Separator } from '@/components/ui/separator';
 import { useTranslation } from '@/providers/translations-provider';
-import { useStaff } from '@/hooks/useStaff';
-import { useStaffTranslations } from '@/hooks/useStaffTranslations';
- import { Save, Loader2 } from 'lucide-react';
+import { useStaff } from '@/hooks/staff/useStaff';
+import { useStaffTranslations } from '@/hooks/staff/useStaffTranslations';
+import { Save, Loader2 } from 'lucide-react';
 import { updateMeSchema } from '@/schemas/staff.schemas';
 import { z } from 'zod';
 import type { TUpdateMeDTO } from '@/schemas/staff.schemas';
 import { useAuth } from '@/hooks/useAuth';
 import { formatValidationMessage } from '@/schemas/common.schemas';
+import { staffService } from '@/services/staff.service';
 
 interface EditProfilePageProps {
   params: Promise<{ lang: string }>;
@@ -151,6 +152,7 @@ export default function EditProfilePage({ params }: EditProfilePageProps) {
                     maxSize={5}
                     autoUpload={true}
                     uploadFieldName="image"
+                    uploadService={staffService.uploadPicture}
                   />
                 </div>
                 

@@ -1,8 +1,6 @@
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
+
 import { Suspense } from "react";
 import { EditArticleForm } from "@/components/articles/edit-article-form";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getTranslations, type Lang } from "@/utils/dictionary-utils";
 import EditArticleLoading from "./loading";
