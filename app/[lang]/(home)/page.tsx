@@ -44,7 +44,17 @@ export default async function Page({
   const jsonLd = await newsHomePageSchema(lang);
 
   return (
-    <>
+     <div className="bg-dark-section relative min-h-screen overflow-hidden">
+      {/* Background Pattern */}
+    
+
+      {/* Gradient Orbs */}
+      <div className="orb-blue-large absolute top-0 -left-40 h-[30rem] w-[30rem]" />
+      <div className="orb-purple-large absolute top-1/4 -right-40 h-[30rem] w-[30rem]" />
+      <div className="orb-blue-large absolute top-1/2 -left-40 h-[30rem] w-[30rem]" />
+      <div className="orb-purple-large absolute top-3/4 -right-40 h-[30rem] w-[30rem]" />
+      <div className="orb-blue-large absolute bottom-0 -left-40 h-[30rem] w-[30rem]" />
+      <div className="orb-purple-large absolute -right-40 bottom-0 h-[30rem] w-[30rem]" />
       <script
         id="news-home-jsonld"
         type="application/ld+json"
@@ -52,7 +62,7 @@ export default async function Page({
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
-      <main className="min-h-screen bg-background max-w-7xl mx-auto">
+      <main className="min-h-screen max-w-7xl mx-auto">
         <HeroSection lang={lang} t={t} />
         <StatisticsSection lang={lang} t={t} />
         <SolutionsSection lang={lang} t={t} />
@@ -61,7 +71,7 @@ export default async function Page({
         <FAQSection lang={lang} t={t} />
         <CTASection lang={lang} t={t} />
       </main>
-    </>
+    </div>
   );
 }
 

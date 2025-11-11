@@ -16,7 +16,7 @@ const socialIcons = {
 
 export function Footer({ lang, t }: FooterProps) {
   return (
-    <footer className="border-t max-w-7xl mx-auto">
+    <footer className="max-w-7xl mx-auto bg-dark-section">
       <div className="container max-w-7xl py-10">
         <div className="space-y-8">
           {/* Main Links Grid */}

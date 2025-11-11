@@ -17,27 +17,33 @@ export function ServiceCard({ service, className, lang }: ServiceCardProps) {
     <Link 
       href={`/${lang}/services/${service.slug}`}
       className={cn(
-        "group relative block overflow-hidden rounded-xl glass-card p-6",
-        "flex flex-col min-h-[280px]",
+        "group relative block overflow-hidden rounded-xl glass-card",
+        "flex flex-col",
         className
       )}
     >
-      {/* Subtle Background Pattern/Image */}
+      {/* Image at Top */}
       {service.featuredImage && service.featuredImage.trim() !== "" ? (
-        <div className="absolute inset-0 opacity-30 group-hover:opacity-60 transition-opacity duration-300">
+        <div className="relative w-full h-48 overflow-hidden">
           <Image
             src={service.featuredImage}
             alt={service.name || "Service image"}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
             unoptimized={service.featuredImage.includes("supabase.co")}
           />
         </div>
-      ) : null}
+      ) : (
+        <div className="relative w-full h-48 overflow-hidden bg-muted flex items-center justify-center">
+          <div className="text-muted-foreground opacity-50">
+            {renderIcon(service.icon, { size: 48, fallback: "Video" })}
+          </div>
+        </div>
+      )}
 
-      {/* Glass Content Panel */}
-      <div className="relative z-10 flex flex-col h-full">
+      {/* Content Below Image */}
+      <div className="p-6 flex flex-col flex-1">
         {/* Icon */}
         <div className="mb-4">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 backdrop-blur-sm">
