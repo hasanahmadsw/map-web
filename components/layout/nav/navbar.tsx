@@ -1,12 +1,14 @@
 "use client";
 
-import { Menu, Home, Newspaper, Tag, Users, BookOpen, X, LogOut, Settings, User, Globe, Moon, Sun, Monitor } from "lucide-react";
+import { Menu, Home, Briefcase, FileText, FolderKanban, X, LogOut, Settings, User, Globe, Moon, Sun, Monitor } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import * as React from "react";
 import { LanguageSwitcher } from "@/components/layout/nav/language-switcher";
 import { ThemeToggle } from "@/components/layout/nav/theme-toggle";
 import { UserMenu } from "@/components/layout/nav/user-menu";
+import { SolutionsDropdown, MobileSolutionsAccordion } from "@/components/layout/nav/solutions-dropdown";
+import { CompanyDropdown, MobileCompanyAccordion } from "@/components/layout/nav/company-dropdown";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -29,10 +31,9 @@ export function Navbar({ isAuthenticated }: NavbarProps) {
   const lang = useLang();
   const navigation = [
     { name: t.navigation.home, href: "/", icon: Home },
-    { name: t.navigation.news, href: "/news", icon: Newspaper },
-    { name: t.navigation.topics, href: "/topics", icon: BookOpen },
-    { name: t.navigation.tags, href: "/tags", icon: Tag },
-    { name: t.navigation.authors, href: "/authors", icon: Users },
+    { name: "Services", href: "/services", icon: Briefcase },
+    { name: "Blogs", href: "/blogs", icon: FileText },
+    { name: "Projects", href: "/projects", icon: FolderKanban },
   ];
 
   return (
@@ -64,6 +65,8 @@ export function Navbar({ isAuthenticated }: NavbarProps) {
               {item.name}
             </Link>
           ))}
+          <SolutionsDropdown />
+          <CompanyDropdown />
         </div>
 
         {/* Desktop actions */}
@@ -127,6 +130,8 @@ export function Navbar({ isAuthenticated }: NavbarProps) {
                     </Link>
                   )
                 })}
+                <MobileSolutionsAccordion onLinkClick={() => setOpen(false)} />
+                <MobileCompanyAccordion onLinkClick={() => setOpen(false)} />
               </div>
 
               {/* Footer Section */}

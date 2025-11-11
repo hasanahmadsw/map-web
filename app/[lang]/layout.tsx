@@ -9,7 +9,7 @@ import QueryProvider from "@/providers/query-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { TranslationsProvider } from "@/providers/translations-provider";
 import { myCookies, readCookieFromCookies } from "@/utils/cookies";
-import { getDirection, getTranslations, type Lang } from "@/utils/dictionary-utils";
+import { getDirection, getTranslations, sanitizeLang, type Lang } from "@/utils/dictionary-utils";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,11 +28,12 @@ export const metadata: Metadata = {
 
 interface RootLayoutProps {
   children: React.ReactNode;
-  params: Promise<{ lang: Lang }>;
+  params: Promise<{ lang: string }>;
 }
 
 export default async function RootLayout({ params, children }: Readonly<RootLayoutProps>) {
-  const { lang } = await params;
+  const { lang: rawLang } = await params;
+  const lang = sanitizeLang(rawLang);
   const translations = await getTranslations(lang);
   const authToken = await readCookieFromCookies(myCookies.auth, await cookies());
   const isAuthenticated = !!authToken;

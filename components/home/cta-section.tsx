@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Translations } from "@/utils/dictionary-utils"
 
@@ -12,7 +11,7 @@ export function CTASection({ lang, t }: CTASectionProps) {
   return (
     <section className="py-16">
       <div className="container max-w-6xl mx-auto">
-        <div className="rounded-3xl bg-muted">
+        <div className="rounded-3xl glass-card">
           <div className="px-10 py-12 md:px-26 md:py-20 space-y-10">
             {/* Top Section */}
             <div className="space-y-6">
@@ -25,12 +24,11 @@ export function CTASection({ lang, t }: CTASectionProps) {
 
               <div className="pt-4">
                 <Link href={`/${lang}/contact`}>
-                  <Button
-                    size="lg"
-                    className="px-8 py-6 text-base rounded-full"
+                  <button
+                    className="glass-button px-8 py-4 cursor-pointer text-base rounded-full font-medium"
                   >
                     Contact Us
-                  </Button>
+                  </button>
                 </Link>
               </div>
             </div>

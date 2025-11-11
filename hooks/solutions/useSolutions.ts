@@ -303,3 +303,59 @@ export function useSolutionSearch(options: UseSolutionSearchOptions = {}) {
     refetch,
   };
 }
+
+// Public solutions hook for navigation
+interface UseSolutionsOptions {
+  lang: string
+  limit?: number
+  isPublished?: boolean
+  isFeatured?: boolean
+  sortBy?: "createdAt" | "updatedAt" | "name" | "order"
+  sortOrder?: "asc" | "desc"
+  enabled?: boolean
+}
+
+export function useSolutions(options: UseSolutionsOptions) {
+  const { lang, limit = 10, isPublished, isFeatured, sortBy = "order", sortOrder = "asc", enabled = true } = options
+
+  const {
+    data: pageData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery<PublicSolutionsPage>({
+    queryKey: qk.public(lang, 1, limit),
+    queryFn: () => {
+      // Backend has an issue with "order" as sortBy, so we'll omit it and let backend use default
+      const params: Parameters<typeof solutionsService.getAll>[0] = {
+        lang,
+        limit,
+        isPublished,
+        isFeatured,
+      }
+      
+      // Only add sortBy if it's not "order" to avoid backend error
+      if (sortBy && sortBy !== "order") {
+        params.sortBy = sortBy
+        params.sortOrder = sortOrder
+      }
+      
+      return solutionsService.getAll(params)
+    },
+    enabled: enabled && !!lang,
+    staleTime: 10_000,
+    gcTime: 5 * 60_000,
+    retry: 1,
+  })
+
+  const solutionsData = pageData?.data
+  const solutions = Array.isArray(solutionsData) ? solutionsData : []
+
+  return {
+    data: pageData,
+    solutions,
+    isLoading,
+    isError,
+    error: (error as Error | undefined)?.message ?? null,
+  }
+}

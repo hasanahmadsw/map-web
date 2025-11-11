@@ -29,7 +29,7 @@ export function AddServiceForm() {
   const router = useRouter();
   const { createService, isCreating, createError } = useServicesStaff();
   const { languages, isLoading: languagesLoading } = useLanguages();
-  const { solutions, isLoading: solutionsLoading } = useSolutionsStaff({ limit: 1000 });
+  const { solutions, isLoading: solutionsLoading } = useSolutionsStaff({ limit: 100 });
   const { t } = useTranslation();
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
 

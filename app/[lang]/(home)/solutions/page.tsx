@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { solutionsService } from "@/services/solutions.service"
-import { getTranslations, type Lang } from "@/utils/dictionary-utils"
+import { getTranslations, sanitizeLang, type Lang } from "@/utils/dictionary-utils"
 import { createEnhancedMetadata } from "@/utils/seo/meta/enhanced-meta"
 import { SolutionCard } from "@/components/home/solution-card"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination"
@@ -25,10 +25,11 @@ export async function generateMetadata({
   params,
   searchParams,
 }: SolutionsPageParams & SolutionsPageSearchParams): Promise<Metadata> {
-  const { lang } = await params
+  const { lang: rawLang } = await params
   const { search, page } = await searchParams
+  const lang = sanitizeLang(rawLang)
 
-  const t = await getTranslations(lang as Lang)
+  const t = await getTranslations(lang)
   const siteURL = process.env.NEXT_PUBLIC_SITE_URL!
 
   let title = t.solutions?.title || "Solutions"
@@ -45,7 +46,7 @@ export async function generateMetadata({
   }
 
   const metadata = createEnhancedMetadata({
-    lang: lang as Lang,
+    lang,
     title: { absolute: title },
     description,
     type: "website",
@@ -67,8 +68,9 @@ export async function generateMetadata({
 }
 
 export default async function SolutionsPage({ params, searchParams }: SolutionsPageParams & SolutionsPageSearchParams) {
-  const { lang } = await params
+  const { lang: rawLang } = await params
   const { search, page, limit, isFeatured } = await searchParams
+  const lang = sanitizeLang(rawLang)
 
   const pageNum = page ? Number(page) : 1
   const limitNum = limit ? Number(limit) : 12
@@ -82,7 +84,9 @@ export default async function SolutionsPage({ params, searchParams }: SolutionsP
     isFeatured: isFeatured === "true" ? true : undefined,
   })
 
-  const t = await getTranslations(lang as Lang)
+  console.log(solutions)
+
+  const t = await getTranslations(lang)
   const solutionsData = solutions.data || []
   const totalPages = solutions.pagination?.totalPages || 1
   const totalSolutions = solutions.pagination?.total || 0

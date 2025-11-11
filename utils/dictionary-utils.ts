@@ -94,3 +94,25 @@ export function getLocalizedRoute(lang: Lang, path: string): string {
   const cleanPath = path.startsWith("/") ? path.slice(1) : path;
   return cleanPath ? `/${lang}/${cleanPath}` : `/${lang}`;
 }
+
+/**
+ * Sanitizes and validates a language parameter from route params.
+ * Extracts only valid 2-letter language codes, handling cases like "sw.js" -> "sw"
+ * @param lang - The language parameter from route params (may contain file extensions)
+ * @returns A valid Lang or the default language
+ */
+export function sanitizeLang(lang: string | undefined | null): Lang {
+  if (!lang) {
+    return i18n.defaultLang;
+  }
+
+  // Extract only the first 2 characters if it's a valid language code
+  // This handles cases like "sw.js" -> "sw"
+  const normalizedLang = lang.toLowerCase().slice(0, 2);
+  
+  if (i18n.langs.includes(normalizedLang as Lang)) {
+    return normalizedLang as Lang;
+  }
+
+  return i18n.defaultLang;
+}

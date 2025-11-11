@@ -21,14 +21,14 @@ export function HeroSection({ lang, t }: HeroSectionProps) {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
           <Link
-            className={cn(buttonVariants({ size: "lg" }), "rounded-full")}
+            className={cn("glass-button rounded-full px-4 py-2 text-sm font-medium flex items-center justify-center gap-2")}
             href={`/${lang}/solutions`}
           >
             Explore Solutions
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
-            className={cn(buttonVariants({ variant: "outline", size: "lg" }), "rounded-full")}
+            className={cn("glass-button rounded-full px-4 py-2 text-sm font-medium")}
             href={`/${lang}/news`}
           >
             {t.news?.readMore || "Read Articles"}

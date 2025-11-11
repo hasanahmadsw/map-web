@@ -2,7 +2,7 @@ import React from 'react'
 import { newsHomePageSchema } from "@/utils/seo/schema/newsHomePageSchema";
 import { createEnhancedMetadata } from "@/utils/seo/meta/enhanced-meta";
 import type { Metadata } from "next";
-import { Lang, getTranslations } from '@/utils/dictionary-utils';
+import { Lang, getTranslations, sanitizeLang } from '@/utils/dictionary-utils';
 import { HeroSection } from "@/components/home/hero-section";
 import { StatisticsSection } from "@/components/home/statistics-section";
 import { SolutionsSection } from "@/components/home/solutions-section";
@@ -18,11 +18,12 @@ export async function generateMetadata({
 }: {
   params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
-  const { lang } = await params;
-  const {metadata:dict} = await getTranslations(lang as Lang);
+  const { lang: rawLang } = await params;
+  const lang = sanitizeLang(rawLang);
+  const {metadata:dict} = await getTranslations(lang);
 
   const metaData = createEnhancedMetadata({
-    lang: lang as Lang,
+    lang,
     title: { absolute: dict.pages?.home },
     description: dict.descriptions?.home,
     keywords: dict.keywords?.home,
@@ -36,10 +37,11 @@ export default async function Page({
 }: {
   params: Promise<{ lang: string }>;
 }) {
-  const { lang } = await params;
-  const t = await getTranslations(lang as Lang);
+  const { lang: rawLang } = await params;
+  const lang = sanitizeLang(rawLang);
+  const t = await getTranslations(lang);
   
-  const jsonLd = await newsHomePageSchema(lang as Lang);
+  const jsonLd = await newsHomePageSchema(lang);
 
   return (
     <>
