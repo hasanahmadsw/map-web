@@ -6,8 +6,6 @@ import { createEnhancedMetadata } from "@/utils/seo/meta/enhanced-meta"
 import Image from "next/image"
 import DivHtml from "@/components/shared/div-html"
 import { Badge } from "@/components/ui/badge"
-import { buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { ServiceCard } from "@/components/home/service-card"
@@ -25,7 +23,6 @@ export const dynamic = "force-dynamic"
 export async function generateMetadata({ params }: SolutionPageProps): Promise<Metadata> {
   const { slug, lang } = await params
   const solution = await solutionsService.getBySlug(slug, lang as Lang)
-  console.log(solution)
   
   if (!solution) {
     notFound()
@@ -101,9 +98,9 @@ export default async function SolutionPage({ params }: SolutionPageProps) {
           <div className="space-y-4">
             <Link
               href={`/${lang}/solutions`}
-              className={cn(buttonVariants({ variant: "ghost" }), "text-white hover:text-white hover:bg-white/10 w-fit")}
+              className="glass-button text-white hover:text-white w-fit px-4 py-2 rounded-full flex items-center gap-2"
             >
-              <ArrowLeft className="mr-2 h-4 w-4" />
+              <ArrowLeft className="h-4 w-4" />
               Back to Solutions
             </Link>
             
@@ -171,13 +168,13 @@ export default async function SolutionPage({ params }: SolutionPageProps) {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                className={cn(buttonVariants({ size: "lg" }), "rounded-full")}
+                className="glass-button px-8 py-4 cursor-pointer text-base rounded-full font-medium"
                 href={`/${lang}/contact`}
               >
                 Contact Us
               </Link>
               <Link
-                className={cn(buttonVariants({ variant: "outline", size: "lg" }), "rounded-full")}
+                className="glass-button px-8 py-4 cursor-pointer text-base rounded-full font-medium"
                 href={`/${lang}/solutions`}
               >
                 View All Solutions

@@ -84,8 +84,6 @@ export default async function SolutionsPage({ params, searchParams }: SolutionsP
     isFeatured: isFeatured === "true" ? true : undefined,
   })
 
-  console.log(solutions)
-
   const t = await getTranslations(lang)
   const solutionsData = solutions.data || []
   const totalPages = solutions.pagination?.totalPages || 1

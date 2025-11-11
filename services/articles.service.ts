@@ -122,10 +122,6 @@ export const articlesService = {
       search?: string
       page?: number
       limit?: number
-      sortBy?: SortBy
-      sortOrder?: SortOrder
-      topicId?: string
-      tagId?: string
     },
     opts?: RequestOpts,
   ): Promise<ApiResponse<Article[]>> {

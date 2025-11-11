@@ -128,14 +128,14 @@ export default async function ServicesPage({ params, searchParams }: ServicesPag
             {totalPages > 1 && (
               <div className="mt-12 flex justify-center">
                 <Pagination>
-                  <PaginationContent>
+                  <PaginationContent className="gap-2">
                     <PaginationItem>
                       {pageNum > 1 ? (
                         <Link href={createPageUrl(pageNum - 1)}>
-                          <PaginationPrevious>Previous</PaginationPrevious>
+                          <PaginationPrevious className="glass-button rounded-full px-4 py-2">Previous</PaginationPrevious>
                         </Link>
                       ) : (
-                        <PaginationPrevious aria-disabled>Previous</PaginationPrevious>
+                        <PaginationPrevious aria-disabled className="opacity-50 cursor-not-allowed rounded-full px-4 py-2">Previous</PaginationPrevious>
                       )}
                     </PaginationItem>
                     {Array.from({ length: Math.min(totalPages, 5) }).map((_, idx) => {
@@ -143,7 +143,13 @@ export default async function ServicesPage({ params, searchParams }: ServicesPag
                       return (
                         <PaginationItem key={pageNumber}>
                           <Link href={createPageUrl(pageNumber)}>
-                            <PaginationLink isActive={pageNumber === pageNum}>
+                            <PaginationLink 
+                              isActive={pageNumber === pageNum}
+                              className={pageNumber === pageNum 
+                                ? "glass-button rounded-full px-4 py-2 bg-primary/20 border-primary/30" 
+                                : "glass-button rounded-full px-4 py-2"
+                              }
+                            >
                               {pageNumber}
                             </PaginationLink>
                           </Link>
@@ -153,10 +159,10 @@ export default async function ServicesPage({ params, searchParams }: ServicesPag
                     <PaginationItem>
                       {pageNum < totalPages ? (
                         <Link href={createPageUrl(pageNum + 1)}>
-                          <PaginationNext>Next</PaginationNext>
+                          <PaginationNext className="glass-button rounded-full px-4 py-2">Next</PaginationNext>
                         </Link>
                       ) : (
-                        <PaginationNext aria-disabled>Next</PaginationNext>
+                        <PaginationNext aria-disabled className="opacity-50 cursor-not-allowed rounded-full px-4 py-2">Next</PaginationNext>
                       )}
                     </PaginationItem>
                   </PaginationContent>

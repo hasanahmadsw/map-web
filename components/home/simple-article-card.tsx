@@ -1,6 +1,6 @@
 import React from "react"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import Image from "next/image"
 import { cn } from "@/lib/utils"
 import type { Article } from "@/types/articles.types"
 
@@ -11,55 +11,57 @@ interface SimpleArticleCardProps {
 }
 
 export function SimpleArticleCard({ article, lang, index }: SimpleArticleCardProps) {
-  // Strip HTML from excerpt for display
-  const getPlainText = (html: string) => {
-    return html.replace(/<[^>]*>/g, "").trim()
-  }
+  const coverImage = article.featuredImage || article.image || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80"
+  
+  // Calculate reading time (approximate: 200 words per minute)
+  const wordCount = article.content?.split(/\s+/).length || 0
+  const readingTime = Math.max(1, Math.ceil(wordCount / 200))
 
-  const plainExcerpt = getPlainText(article.excerpt || "")
+  const formattedDate = article.createdAt
+    ? new Date(article.createdAt).toLocaleDateString(lang, {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "Date not available"
 
   return (
-    <div
-      className={cn(
-        "group animate-in fade-in slide-in-from-bottom-4 duration-500 h-64",
-        `delay-${index * 100}`
-      )}
-    >
-      <Link href={`/${lang}/news/${article.slug}`} className="block h-full">
-        <div className="h-full p-6 border-s-2 border-s-border hover:border-s-primary transition-all duration-300 space-y-4 flex flex-col">
-          {/* Date */}
-          <div className="text-sm text-muted-foreground">
-            {article.createdAt
-              ? new Date(article.createdAt).toLocaleDateString(lang, {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
-              : "Date not available"}
-          </div>
+    <article className="group relative isolate flex flex-col justify-end overflow-hidden rounded-2xl glass-card px-8 pb-8 pt-80 transition-all duration-300 hover:bg-background/40">
+      {/* Background Image */}
+      <Image
+        src={coverImage}
+        alt={article.name}
+        fill
+        className="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        unoptimized={coverImage.includes("unsplash.com") || coverImage.includes("supabase.co")}
+      />
 
-          {/* Title */}
-          <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-200 leading-tight">
-            {article.name.length > 65
-              ? article.name.slice(0, 65) + "..."
-              : article.name}
-          </h3>
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-background via-background/60 to-transparent" />
 
-          {/* Description */}
-          <div className="text-muted-foreground leading-relaxed line-clamp-3 flex-1 overflow-hidden text-sm">
-            {plainExcerpt.length > 100
-              ? plainExcerpt.slice(0, 100) + "..."
-              : plainExcerpt}
-          </div>
-
-          {/* Read More Link */}
-          <div className="flex items-center gap-2 text-foreground group-hover:text-primary transition-colors duration-200 mt-auto">
-            <span className="font-medium text-sm">Read more</span>
-            <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+      {/* Date and Reading Time */}
+      <div className="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-muted-foreground mb-3">
+        <time dateTime={article.createdAt} className="mr-8">
+          {formattedDate}
+        </time>
+        <div className="-ml-4 flex items-center gap-x-4">
+          <svg viewBox="0 0 2 2" className="-ml-0.5 h-0.5 w-0.5 flex-none fill-muted-foreground/50">
+            <circle cx={1} cy={1} r={1} />
+          </svg>
+          <div className="flex gap-x-2.5">
+            {readingTime} min read
           </div>
         </div>
-      </Link>
-    </div>
+      </div>
+
+      {/* Title */}
+      <h3 className="text-lg font-semibold leading-6 text-foreground">
+        <Link href={`/${lang}/news/${article.slug}`}>
+          <span className="absolute inset-0" />
+          {article.name}
+        </Link>
+      </h3>
+    </article>
   )
 }
 

@@ -3,8 +3,6 @@ import { NewsControls } from "@/components/articles/public/news-controls";
 import { NewsHeader } from "@/components/articles/public/news-header";
 import { NewsResults } from "@/components/articles/public/news-results";
 import { articlesService } from "@/services/articles.service";
-import { tagsService } from "@/services/tags.service";
-import { topicsService } from "@/services/topics.service";
 import { type SortBy, SortOrder } from "@/types/common.types";
 import { getTranslations, type Lang } from "@/utils/dictionary-utils";
 import { createEnhancedMetadata } from "@/utils/seo/meta/enhanced-meta";
@@ -108,8 +106,6 @@ export default async function NewsPage({ params, searchParams }: NewsPageParams 
   const { lang } = await params;
   const { search, topics, page, limit, sortBy, sortOrder, tagId, topicId } = await searchParams;
 
-  const topicsData = await topicsService.getAll(lang);
-  const tags = await tagsService.getAll(lang as Lang);
   const pageNum = page ? Number(page) : 1;
   const limitNum = limit ? Number(limit) : 10;
   const articles = await articlesService.getAll({
@@ -135,7 +131,6 @@ export default async function NewsPage({ params, searchParams }: NewsPageParams 
       tagId: tagId || undefined,
       topicId: topicId || undefined,
     },
-    tags,
   );
   return (
     <>
@@ -151,12 +146,11 @@ export default async function NewsPage({ params, searchParams }: NewsPageParams 
       <div className="container mx-auto px-4 py-8">
         <NewsHeader title={t.news.latestNews} description={t.news.stayUpdated} />
 
-        <NewsControls topics={topicsData} />
 
         <NewsResults
           t={t}
           articles={articles.data}
-          totalArticles={articles.pagination.total}
+          totalArticles={articles.pagination?.total || 0}
           lang={lang}
           currentPage={pageNum}
           limit={limitNum}

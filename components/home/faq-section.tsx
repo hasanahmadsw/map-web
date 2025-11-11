@@ -1,5 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Translations } from "@/utils/dictionary-utils"
+import Image from "next/image"
 
 interface FAQItem {
   question: string
@@ -37,24 +38,31 @@ export function FAQSection({ lang, t }: FAQSectionProps) {
   ]
 
   return (
-    <section className="space-y-8 py-16">
-      <div className="text-center space-y-4">
-        <h2 className="text-3xl font-semibold tracking-tight">
-          Frequently Asked Questions
-        </h2>
-      </div>
+    <section className="relative w-full py-16 overflow-hidden">
+   
 
-      <div className="max-w-4xl mx-auto container px-4">
-        <Accordion type="single" collapsible className="space-y-4">
-          {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+      {/* Content */}
+      <div className="relative z-10 space-y-8">
+        <div className="text-center space-y-4">
+          <h2 className="text-3xl font-semibold tracking-tight">
+            Frequently Asked Questions
+          </h2>
+        </div>
+
+        <div className="max-w-4xl mx-auto container px-4">
+          <div className="glass-card rounded-2xl p-6 md:p-8">
+            <Accordion type="single" collapsible className="space-y-4">
+              {faqs.map((faq, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionTrigger className="text-left">{faq.question}</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
       </div>
     </section>
   )
