@@ -47,6 +47,7 @@
     "list": "قائمة",
     "goHome": "العودة للرئيسية",
     "selected": "محدد",
+    "page": "صفحة",
     "of": "من",
     "entries": "مدخلات",
     "showing": "عرض",
@@ -86,6 +87,13 @@
     "imageUploadedSuccessfully": "تم رفع الصورة بنجاح",
     "confirmDeleteArticle": "هل أنت متأكد من حذف هذا {entity}؟",
     "confirmDeleteArticleMessage": "هل أنت متأكد من حذف هذا {entity}؟ لا يمكن التراجع عن هذا الإجراء وسيتم حذف {entity} نهائياً من النظام.",
+    "searchPlaceholder": "بحث...",
+    "columns": "الأعمدة",
+    "total": "الإجمالي",
+    "searchingFor": "البحث عن",
+    "results": "نتائج",
+    "result": "نتيجة",
+    "found": "تم العثور على",
     "actions": {
       "delete": "حذف",
       "cancel": "إلغاء",
@@ -803,5 +811,9 @@
       "next": "التالي",
       "fileType": "نوع الملف"
     }
+  },
+  "action": {
+    "tryAgain": "حاول مرة أخرى",
+    "clearAll": "مسح الكل"
   }
 }

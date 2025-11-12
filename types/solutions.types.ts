@@ -1,5 +1,6 @@
+import type { ServiceResponse } from "./services.types";
+import type { BaseListParams } from "@/hooks/list/useListUrlState";
 
-import { ServiceResponse } from "./services.types";
 export interface StaffSolution {
   id: number;
   slug: string;
@@ -53,4 +54,10 @@ export interface SolutionTranslation {
   language: Record<string, any>;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface ISolutionParams extends BaseListParams {
+  isPublished?: boolean;
+  isFeatured?: boolean;
+  sort?: "createdAt" | "updatedAt" | "name" | "order";
 }

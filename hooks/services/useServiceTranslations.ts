@@ -7,39 +7,24 @@ import type {
   TEditServiceTranslationForm,
 } from "@/schemas/services.schemas";
 import { servicesService } from "@/services/services.service";
+import { servicesQueryKeys } from "@/hooks/keys";
 import type { ServiceTranslation } from "@/types/services.types";
-
-const qk = {
-  translations: (serviceId: number) => ["services", "translations", serviceId] as const,
-};
 
 export function useServiceTranslations(serviceId: number, enabled = true) {
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError, error, refetch } = useQuery<ServiceTranslation[]>({
-    queryKey: qk.translations(serviceId),
+    queryKey: servicesQueryKeys.detail(serviceId).concat(["translations"]),
     queryFn: () => servicesService.getServiceTranslations(serviceId),
     enabled: enabled && !!serviceId,
-    staleTime: 10_000,
-    retry: 1,
   });
-
-  // Helpers to write the cache locally
-  const setList = (updater: (old?: ServiceTranslation[]) => ServiceTranslation[] | unknown) => {
-    queryClient.setQueryData(qk.translations(serviceId), updater);
-  };
 
   // Create
   const createMutation = useMutation({
     mutationFn: (payload: TCreateServiceTranslationForm) =>
       servicesService.createServiceTranslation(serviceId, payload),
-    onSuccess: (created) => {
-      setList((old) => {
-        const cur = (old as ServiceTranslation[] | undefined) ?? [];
-        return [created, ...cur];
-      });
-      // for confirmation
-      queryClient.invalidateQueries({ queryKey: qk.translations(serviceId) });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: servicesQueryKeys.detail(serviceId).concat(["translations"]) });
     },
   });
 
@@ -47,24 +32,16 @@ export function useServiceTranslations(serviceId: number, enabled = true) {
   const updateMutation = useMutation({
     mutationFn: ({ translationId, payload }: { translationId: number; payload: TEditServiceTranslationForm }) =>
       servicesService.updateServiceTranslation(serviceId, translationId, payload),
-    onSuccess: (updated) => {
-      setList((old) => {
-        const cur = (old as ServiceTranslation[] | undefined) ?? [];
-        return cur.map((t) => (t.id === updated.id ? { ...t, ...updated } : t));
-      });
-      queryClient.invalidateQueries({ queryKey: qk.translations(serviceId) });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: servicesQueryKeys.detail(serviceId).concat(["translations"]) });
     },
   });
 
   // Delete
   const deleteMutation = useMutation({
     mutationFn: (translationId: number) => servicesService.deleteServiceTranslation(serviceId, translationId),
-    onSuccess: (_void, translationId) => {
-      setList((old) => {
-        const cur = (old as ServiceTranslation[] | undefined) ?? [];
-        return cur.filter((t) => t.id !== translationId);
-      });
-      queryClient.invalidateQueries({ queryKey: qk.translations(serviceId) });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: servicesQueryKeys.detail(serviceId).concat(["translations"]) });
     },
   });
 
@@ -73,7 +50,7 @@ export function useServiceTranslations(serviceId: number, enabled = true) {
     mutationFn: (payload: TAutoTranslateServiceForm) => servicesService.autoTranslateService(serviceId, payload),
     onSuccess: () => {
       // usually the server builds new translations → update from the source
-      queryClient.invalidateQueries({ queryKey: qk.translations(serviceId) });
+      queryClient.invalidateQueries({ queryKey: servicesQueryKeys.detail(serviceId).concat(["translations"]) });
     },
   });
 

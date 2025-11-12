@@ -57,3 +57,12 @@ export interface ServiceTranslation {
   createdAt: string;
   updatedAt: string;
 }
+
+import type { BaseListParams } from "@/hooks/list/useListUrlState";
+
+export interface IServiceParams extends BaseListParams {
+  isPublished?: boolean;
+  isFeatured?: boolean;
+    sort?: "createdAt" | "updatedAt" | "name";
+  orderDirection?: "ASC" | "DESC";
+}

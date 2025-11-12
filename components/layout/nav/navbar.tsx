@@ -16,11 +16,11 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { useTranslation } from "@/providers/translations-provider";
 import { useLang } from "@/hooks/useLang";
 import { useAuth } from "@/hooks/useAuth";
-import { useStaff } from "@/hooks/staff/useStaff";
+import { useStaffMe } from "@/hooks/staff/useStaffMe";
 import { useLanguages } from "@/hooks/useLanguages";
 import { useTheme } from "next-themes";
 import { getLocalizedRoute, i18n, type Lang } from "@/utils/dictionary-utils";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface NavbarProps {
   isAuthenticated: boolean;
@@ -180,7 +180,7 @@ function MobileUserMenu({
   onLinkClick: () => void 
 }) {
   const { logout } = useAuth()
-  const { currentStaff, isLoading } = useStaff()
+  const { currentStaff, isLoading } = useStaffMe()
 
   const getUserInitials = (name?: string) => {
     if (!name) return "U"
@@ -262,7 +262,7 @@ function MobileLanguageSwitcher({
   const currentLang = useLang()
   const pathname = usePathname()
   const { languages, isLoading } = useLanguages()
-
+  const router = useRouter()
   const languageNames: Record<Lang, string> = {
     en: "English",
     ar: "العربية",
@@ -296,12 +296,12 @@ function MobileLanguageSwitcher({
       flag: languageFlags[lang] || "🌐",
       code: lang,
     }))
-  }, [languages])
+  }, [languageFlags, languageNames, languages])
 
   const handleLanguageChange = (newLang: Lang) => {
     if (newLang === currentLang) return
     const newPath = getLocalizedRoute(newLang, currentPath)
-    window.location.href = newPath
+    router.push(newPath)
     onLanguageChange()
   }
 

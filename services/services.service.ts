@@ -26,7 +26,7 @@ type StaffListParams = {
   search?: string;
   lang?: string;
   sort?: "createdAt" | "updatedAt" | "name" | "order";
-  order?: "asc" | "desc";
+  orderDirection?: "ASC" | "DESC";
   isPublished?: boolean;
   isFeatured?: boolean;
 };

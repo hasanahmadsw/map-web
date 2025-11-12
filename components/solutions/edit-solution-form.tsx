@@ -14,7 +14,8 @@ import { TextInput } from "@/components/shared/input/TextInput";
 import { EntityTranslations } from "@/components/translations/translations";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useSolutionStaffById, useSolutionsStaff } from "@/hooks/solutions/useSolutions";
+import { useSolutionById } from "@/hooks/solutions/useSolutionById";
+import { useSolutionMutations } from "@/hooks/solutions/mutations";
 import { useSolutionTranslations } from "@/hooks/solutions/useSolutionTranslations";
 import { useTranslation } from "@/providers/translations-provider";
 import {
@@ -31,14 +32,14 @@ interface EditSolutionFormProps {
 
 export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
   const { t } = useTranslation();
-  const { updateSolution, isUpdating, updateError } = useSolutionsStaff();
+  const { update } = useSolutionMutations();
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
   const {
-    data: solution,
+    solution,
     isLoading: isLoadingSolution,
     isError: isErrorSolution,
     refetch: refetchSolution,
-  } = useSolutionStaffById(Number(solutionId));
+  } = useSolutionById(solutionId);
   const solutionTranslationsHooks = useSolutionTranslations(Number(solutionId));
 
   const form = useForm<z.input<ReturnType<typeof editSolutionSchema>>>({
@@ -78,11 +79,34 @@ export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
     }
     
     try {
-      await updateSolution(Number(solutionId), data as TEditSolutionForm);
-      toast.success(t.common?.success || "Solution updated successfully");
+      // Transform order to number if it exists and ensure it's a valid integer >= 0
+      let orderValue: number | undefined = undefined;
+      if (data.order !== undefined && data.order !== null) {
+        const parsed = typeof data.order === "string" 
+          ? Number.parseInt(data.order, 10)
+          : typeof data.order === "number"
+          ? Math.floor(data.order)
+          : undefined;
+        
+        if (parsed !== undefined && !isNaN(parsed) && parsed >= 0) {
+          orderValue = parsed;
+        } else if (parsed !== undefined) {
+          toast.error("Order must be a non-negative integer");
+          return;
+        }
+      }
+
+      const payload: TEditSolutionForm = {
+        ...data,
+        order: orderValue,
+      } as TEditSolutionForm;
+
+      await update.mutateAsync({ id: Number(solutionId), data: payload });
+      toast.success(t.validation?.updatedSuccessfully || "Solution updated successfully");
       refetchSolution(); // Refetch to get updated data
     } catch (error) {
-      toast.error(updateError || t.common?.error || "Failed to update solution");
+      const errorMessage = (update.error as Error | undefined)?.message || t.validation?.failedToUpdate || "Failed to update solution";
+      toast.error(errorMessage);
     }
   };
 
@@ -249,10 +273,10 @@ export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
             </Card>
 
             <div className="flex items-center gap-2">
-              <Button type="submit" disabled={isUpdating || !form.formState.isDirty}>
-                {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Button type="submit" disabled={update.isPending || !form.formState.isDirty}>
+                {update.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 <Save className="mr-2 h-4 w-4" />
-                {isUpdating ? t.validation?.updating || "Updating..." : t.validation?.update || "Update"}
+                {update.isPending ? t.validation?.updating || "Updating..." : t.validation?.update || "Update"}
               </Button>
             </div>
           </form>

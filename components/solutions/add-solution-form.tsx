@@ -15,7 +15,7 @@ import { TextAreaInput } from "@/components/shared/input/TextAreaInput";
 import { TextInput } from "@/components/shared/input/TextInput";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useSolutionsStaff } from "@/hooks/solutions/useSolutions";
+import { useSolutionMutations } from "@/hooks/solutions/mutations";
 import { useLanguages } from "@/hooks/useLanguages";
 import { useTranslation } from "@/providers/translations-provider";
 import { createSolutionSchema, type TCreateSolutionForm } from "@/schemas/solutions.schemas";
@@ -24,7 +24,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export function AddSolutionForm() {
   const router = useRouter();
-  const { createSolution, isCreating, createError } = useSolutionsStaff();
+  const { create } = useSolutionMutations();
   const { languages, isLoading: languagesLoading } = useLanguages();
   const { t } = useTranslation();
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
@@ -61,6 +61,23 @@ export function AddSolutionForm() {
 
   const onSubmit = async (data: z.input<ReturnType<typeof createSolutionSchema>>) => {
     try {
+      // Transform order to number and ensure it's a valid integer >= 0
+      let orderValue = 0;
+      if (data.order !== undefined && data.order !== null) {
+        const parsed = typeof data.order === "string" 
+          ? Number.parseInt(data.order, 10)
+          : typeof data.order === "number"
+          ? Math.floor(data.order)
+          : 0;
+        
+        if (!isNaN(parsed) && parsed >= 0) {
+          orderValue = parsed;
+        } else {
+          toast.error("Order must be a non-negative integer");
+          return;
+        }
+      }
+
       // Create solution payload
       const solutionPayload = {
         slug: data.slug,
@@ -68,7 +85,7 @@ export function AddSolutionForm() {
         featuredImage: data.featuredImage,
         isPublished: data.isPublished ?? false,
         isFeatured: data.isFeatured ?? false,
-        order: data.order || 0,
+        order: orderValue,
         name: data.name,
         description: data.description,
         shortDescription: data.shortDescription,
@@ -81,11 +98,12 @@ export function AddSolutionForm() {
         translateTo: data.translateTo || [],
       };
 
-      await createSolution(solutionPayload as TCreateSolutionForm);
+      await create.mutateAsync(solutionPayload as TCreateSolutionForm);
       toast.success(t.validation?.createdSuccessfully || "Solution created successfully");
       router.push("/dashboard/solutions");
-    } catch {
-      toast.error(createError || t.validation?.failedToCreate || "Failed to create solution");
+    } catch (error) {
+      const errorMessage = (create.error as Error | undefined)?.message || t.validation?.failedToCreate || "Failed to create solution";
+      toast.error(errorMessage);
     }
   };
 
@@ -293,14 +311,14 @@ export function AddSolutionForm() {
             type="button"
             variant="outline"
             onClick={() => router.push("/dashboard/solutions")}
-            disabled={isCreating}
+            disabled={create.isPending}
           >
             {t.common?.cancel || "Cancel"}
           </Button>
-          <Button type="submit" disabled={isCreating}>
-            {isCreating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button type="submit" disabled={create.isPending}>
+            {create.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             <Save className="mr-2 h-4 w-4" />
-            {isCreating ? t.common?.creating || "Creating..." : t.common?.adding || "Add Solution"}
+            {create.isPending ? t.common?.creating || "Creating..." : t.common?.adding || "Add Solution"}
           </Button>
         </div>
       </form>

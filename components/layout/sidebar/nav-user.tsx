@@ -14,14 +14,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/useAuth";
-import { useStaff } from "@/hooks/staff/useStaff";
+import { useStaffMe } from "@/hooks/staff/useStaffMe";
 import { useTranslation } from "@/providers/translations-provider";
 import { useRouter } from "next/navigation";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
   const { logout } = useAuth();
-  const { currentStaff } = useStaff();
+  const { currentStaff } = useStaffMe();
   const { t } = useTranslation();
   const router = useRouter();
   return (

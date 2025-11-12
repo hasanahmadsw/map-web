@@ -15,9 +15,10 @@ import { TextInput } from "@/components/shared/input/TextInput";
 import { EntityTranslations } from "@/components/translations/translations";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useServiceStaffById, useServicesStaff } from "@/hooks/services/useServices";
+import { useServiceById } from "@/hooks/services/useServiceById";
+import { useServiceMutations } from "@/hooks/services/mutations";
 import { useServiceTranslations } from "@/hooks/services/useServiceTranslations";
-import { useSolutionsStaff } from "@/hooks/solutions/useSolutions";
+import { useSolutionsStaff } from "@/hooks/solutions/useSolutionsStaff";
 import { useTranslation } from "@/providers/translations-provider";
 import {
   editServiceSchema,
@@ -26,6 +27,7 @@ import {
 import { servicesService } from "@/services/services.service";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { StaffSolution } from "@/types/solutions.types";
 
 interface EditServiceFormProps {
   serviceId: string;
@@ -33,14 +35,14 @@ interface EditServiceFormProps {
 
 export function EditServiceForm({ serviceId }: EditServiceFormProps) {
   const { t } = useTranslation();
-  const { updateService, isUpdating, updateError } = useServicesStaff();
+  const { update } = useServiceMutations();
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
   const {
-    data: service,
+    service,
     isLoading: isLoadingService,
     isError: isErrorService,
     refetch: refetchService,
-  } = useServiceStaffById(Number(serviceId));
+  } = useServiceById(serviceId);
   const serviceTranslationsHooks = useServiceTranslations(Number(serviceId));
   const { solutions, isLoading: solutionsLoading } = useSolutionsStaff({ limit: 100 });
 
@@ -93,11 +95,34 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
     }
     
     try {
-      await updateService(Number(serviceId), data as TEditServiceForm);
-      toast.success(t.common?.success || "Service updated successfully");
+      // Transform order to number if it exists and ensure it's a valid integer >= 0
+      let orderValue: number | undefined = undefined;
+      if (data.order !== undefined && data.order !== null) {
+        const parsed = typeof data.order === "string" 
+          ? Number.parseInt(data.order, 10)
+          : typeof data.order === "number"
+          ? Math.floor(data.order)
+          : undefined;
+        
+        if (parsed !== undefined && !isNaN(parsed) && parsed >= 0) {
+          orderValue = parsed;
+        } else if (parsed !== undefined) {
+          toast.error("Order must be a non-negative integer");
+          return;
+        }
+      }
+
+      const payload: TEditServiceForm = {
+        ...data,
+        order: orderValue,
+      } as TEditServiceForm;
+
+      await update.mutateAsync({ id: Number(serviceId), data: payload });
+      toast.success(t.validation?.updatedSuccessfully || "Service updated successfully");
       refetchService(); // Refetch to get updated data
     } catch (error) {
-      toast.error(updateError || t.common?.error || "Failed to update service");
+      const errorMessage = (update.error as Error | undefined)?.message || t.validation?.failedToUpdate || "Failed to update service";
+      toast.error(errorMessage);
     }
   };
 
@@ -247,9 +272,9 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
                   placeholder={t.services?.selectSolutions || "Select solutions"}
                   searchPlaceholder={t.services?.searchSolutions || "Search solutions..."}
                   emptyMessage={t.services?.noSolutionsFound || "No solutions found"}
-                  options={solutions.map((solution) => ({
+                  options={solutions.map((solution: StaffSolution) => ({
                     id: solution.id,
-                    translations: solution.translations?.map((t) => ({ name: t.name })) || [],
+                    translations: solution.translations?.map((t: { name: string }) => ({ name: t.name })) || [],
                   }))}
                   disabled={solutionsLoading}
                 />
@@ -285,10 +310,10 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
             </Card>
 
             <div className="flex items-center gap-2">
-              <Button type="submit" disabled={isUpdating || !form.formState.isDirty}>
-                {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <Button type="submit" disabled={update.isPending || !form.formState.isDirty}>
+                {update.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 <Save className="mr-2 h-4 w-4" />
-                {isUpdating ? t.validation?.updating || "Updating..." : t.validation?.update || "Update"}
+                {update.isPending ? t.validation?.updating || "Updating..." : t.validation?.update || "Update"}
               </Button>
             </div>
           </form>

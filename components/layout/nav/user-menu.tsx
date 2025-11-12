@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
-import { useStaff } from "@/hooks/staff/useStaff";
+import { useStaffMe } from "@/hooks/staff/useStaffMe";
 import { useTranslation } from "@/providers/translations-provider";
 import { useLang } from "@/hooks/useLang";
 
@@ -26,7 +26,7 @@ interface UserMenuProps {
 
 export function UserMenu({ variant = "ghost", size = "icon", showLabel = false, className }: UserMenuProps) {
   const { logout } = useAuth();
-  const { currentStaff, isLoading } = useStaff();
+  const { currentStaff, isLoading } = useStaffMe();
   const { t } = useTranslation();
   const lang = useLang();
   const handleLogout = async () => {

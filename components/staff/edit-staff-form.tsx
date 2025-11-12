@@ -12,14 +12,13 @@ import { SelectInput } from "@/components/shared/input/SelectInput";
 import { EntityTranslations } from "@/components/translations/translations";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ROLES, Role } from "@/enums/roles.enum";
-import { useStaff, useStaffById } from "@/hooks/staff/useStaff";
+import { useStaffById } from "@/hooks/staff/useStaffById";
+import { useStaffMutations } from "@/hooks/staff/mutations";
 import { useStaffTranslations } from "@/hooks/staff/useStaffTranslations";
 import { useTranslation } from "@/providers/translations-provider";
 import { editStaffSchema, type TEditStaffDTO } from "@/schemas/staff.schemas";
-import { staffService } from "@/services/staff.service";
 import { formatValidationMessage } from "@/schemas/common.schemas";
 
 interface EditStaffFormProps {
@@ -29,7 +28,7 @@ interface EditStaffFormProps {
 export function EditStaffForm({ staffId }: EditStaffFormProps) {
   // Get staff data
   const { staff, isLoading, error } = useStaffById(parseInt(staffId, 10));
-  const { updateStaff, isUpdating, updateError } = useStaff();
+  const { update } = useStaffMutations();
   const { t } = useTranslation();
   const staffTranslationsHooks = useStaffTranslations(parseInt(staffId, 10));
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
@@ -77,15 +76,16 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
         formData.append('image', data.image);
       }
       
-      await updateStaff(parseInt(staffId, 10), formData);
+      await update.mutateAsync({ id: parseInt(staffId, 10), data: formData });
       toast.success(formatValidationMessage(t.validation.updatedSuccessfully, {
         entity: t.staffs.staff,
       }));
     } catch (error) {
       console.error("Update error:", error);
-      toast.error(updateError || formatValidationMessage(t.validation.failedToUpdate, {
+      const errorMessage = (update.error as Error | undefined)?.message || formatValidationMessage(t.validation.failedToUpdate, {
         entity: t.staffs.staff,
-      }));
+      });
+      toast.error(errorMessage);
     }
   };
 
@@ -130,7 +130,7 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
                 name="password"
                 label={t.common.password}
                 placeholder={t.common.passwordPlaceholder}
-                disabled={isUpdating}
+                disabled={update.isPending}
               />
 
               <SelectInput
@@ -197,11 +197,11 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
 
             <Button 
               type="submit" 
-              disabled={isUpdating}
+              disabled={update.isPending}
             >
-              {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {update.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               <Save className="mr-2 h-4 w-4" />
-                  {isUpdating ? t.validation.updating : t.validation.update}
+                  {update.isPending ? t.validation.updating : t.validation.update}
             </Button>
           </form>
         </Form>

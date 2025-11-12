@@ -17,8 +17,8 @@ import { TextAreaInput } from "@/components/shared/input/TextAreaInput";
 import { TextInput } from "@/components/shared/input/TextInput";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useServicesStaff } from "@/hooks/services/useServices";
-import { useSolutionsStaff } from "@/hooks/solutions/useSolutions";
+import { useServiceMutations } from "@/hooks/services/mutations";
+import { useSolutionsStaff } from "@/hooks/solutions/useSolutionsStaff";
 import { useLanguages } from "@/hooks/useLanguages";
 import { useTranslation } from "@/providers/translations-provider";
 import { createServiceSchema, type TCreateServiceForm } from "@/schemas/services.schemas";
@@ -27,7 +27,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export function AddServiceForm() {
   const router = useRouter();
-  const { createService, isCreating, createError } = useServicesStaff();
+  const { create } = useServiceMutations();
   const { languages, isLoading: languagesLoading } = useLanguages();
   const { solutions, isLoading: solutionsLoading } = useSolutionsStaff({ limit: 100 });
   const { t } = useTranslation();
@@ -67,6 +67,23 @@ export function AddServiceForm() {
 
   const onSubmit = async (data: z.input<ReturnType<typeof createServiceSchema>>) => {
     try {
+      // Transform order to number and ensure it's a valid integer >= 0
+      let orderValue = 0;
+      if (data.order !== undefined && data.order !== null) {
+        const parsed = typeof data.order === "string" 
+          ? Number.parseInt(data.order, 10)
+          : typeof data.order === "number"
+          ? Math.floor(data.order)
+          : 0;
+        
+        if (!isNaN(parsed) && parsed >= 0) {
+          orderValue = parsed;
+        } else {
+          toast.error("Order must be a non-negative integer");
+          return;
+        }
+      }
+
       // Create service payload with sub-services
       const servicePayload = {
         slug: data.slug,
@@ -74,7 +91,7 @@ export function AddServiceForm() {
         featuredImage: data.featuredImage,
         isPublished: data.isPublished ?? false,
         isFeatured: data.isFeatured ?? false,
-        order: data.order || 0,
+        order: orderValue,
         subServices: data.subServices?.filter(sub => sub.title && sub.description) || [],
         solutionIds: data.solutionIds || [],
         name: data.name,
@@ -89,11 +106,12 @@ export function AddServiceForm() {
         translateTo: data.translateTo || [],
       };
 
-      await createService(servicePayload as TCreateServiceForm);
+      await create.mutateAsync(servicePayload as TCreateServiceForm);
       toast.success(t.validation?.createdSuccessfully || "Service created successfully");
       router.push("/dashboard/services");
-    } catch {
-      toast.error(createError || t.validation?.failedToCreate || "Failed to create service");
+    } catch (error) {
+      const errorMessage = (create.error as Error | undefined)?.message || t.validation?.failedToCreate || "Failed to create service";
+      toast.error(errorMessage);
     }
   };
 
@@ -334,14 +352,14 @@ export function AddServiceForm() {
             type="button"
             variant="outline"
             onClick={() => router.push("/dashboard/services")}
-            disabled={isCreating}
+            disabled={create.isPending}
           >
             {t.common?.cancel || "Cancel"}
           </Button>
-          <Button type="submit" disabled={isCreating}>
-            {isCreating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button type="submit" disabled={create.isPending}>
+            {create.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             <Save className="mr-2 h-4 w-4" />
-            {isCreating ? t.common?.creating || "Creating..." : t.common?.adding || "Add Service"}
+            {create.isPending ? t.common?.creating || "Creating..." : t.common?.adding || "Add Service"}
           </Button>
         </div>
       </form>

@@ -1,69 +1,80 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type {
+  TAutoTranslateSolutionForm,
+  TCreateSolutionTranslationForm,
+  TEditSolutionTranslationForm,
+} from "@/schemas/solutions.schemas";
 import { solutionsService } from "@/services/solutions.service";
+import { solutionsQueryKeys } from "@/hooks/keys";
 import type { SolutionTranslation } from "@/types/solutions.types";
-import type { TranslationHooks } from "@/types/translations.types";
 
-const qk = {
-  translations: (solutionId: number) => ["solutions", "translations", solutionId] as const,
-};
-
-export function useSolutionTranslations(solutionId: number): TranslationHooks<SolutionTranslation> {
+export function useSolutionTranslations(solutionId: number, enabled = true) {
   const queryClient = useQueryClient();
 
-  const {
-    data: translations = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery<SolutionTranslation[]>({
-    queryKey: qk.translations(solutionId),
+  const { data, isLoading, isError, error, refetch } = useQuery<SolutionTranslation[]>({
+    queryKey: solutionsQueryKeys.detail(solutionId).concat(["translations"]),
     queryFn: () => solutionsService.getSolutionTranslations(solutionId),
-    enabled: !!solutionId,
-    retry: 1,
+    enabled: enabled && !!solutionId,
   });
 
-  const createTranslationMutation = useMutation({
-    mutationFn: (data: any) => solutionsService.createSolutionTranslation(solutionId, data),
+  // Create
+  const createMutation = useMutation({
+    mutationFn: (payload: TCreateSolutionTranslationForm) =>
+      solutionsService.createSolutionTranslation(solutionId, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: qk.translations(solutionId) });
+      queryClient.invalidateQueries({ queryKey: solutionsQueryKeys.detail(solutionId).concat(["translations"]) });
     },
   });
 
-  const updateTranslationMutation = useMutation({
-    mutationFn: ({ translationId, data }: { translationId: number; data: any }) =>
-      solutionsService.updateSolutionTranslation(solutionId, translationId, data),
+  // Update
+  const updateMutation = useMutation({
+    mutationFn: ({ translationId, payload }: { translationId: number; payload: TEditSolutionTranslationForm }) =>
+      solutionsService.updateSolutionTranslation(solutionId, translationId, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: qk.translations(solutionId) });
+      queryClient.invalidateQueries({ queryKey: solutionsQueryKeys.detail(solutionId).concat(["translations"]) });
     },
   });
 
-  const deleteTranslationMutation = useMutation({
+  // Delete
+  const deleteMutation = useMutation({
     mutationFn: (translationId: number) => solutionsService.deleteSolutionTranslation(solutionId, translationId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: qk.translations(solutionId) });
+      queryClient.invalidateQueries({ queryKey: solutionsQueryKeys.detail(solutionId).concat(["translations"]) });
     },
   });
 
+  // Auto-translate
   const autoTranslateMutation = useMutation({
-    mutationFn: (data: any) => solutionsService.autoTranslateSolution(solutionId, data),
+    mutationFn: (payload: TAutoTranslateSolutionForm) => solutionsService.autoTranslateSolution(solutionId, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: qk.translations(solutionId) });
+      // usually the server builds new translations → update from the source
+      queryClient.invalidateQueries({ queryKey: solutionsQueryKeys.detail(solutionId).concat(["translations"]) });
     },
   });
 
   return {
-    translations,
+    translations: data ?? [],
     isLoading,
-    createTranslation: createTranslationMutation.mutateAsync,
-    updateTranslation: (translationId: number, data: any) =>
-      updateTranslationMutation.mutateAsync({ translationId, data }),
-    deleteTranslation: deleteTranslationMutation.mutateAsync,
-    autoTranslate: autoTranslateMutation.mutateAsync,
-    isCreating: createTranslationMutation.isPending,
-    isUpdating: updateTranslationMutation.isPending,
-    isDeleting: deleteTranslationMutation.isPending,
+    isError,
+    error: (error as Error | undefined)?.message ?? null,
+    refetch,
+
+    createTranslation: (payload: TCreateSolutionTranslationForm) => createMutation.mutateAsync(payload),
+    updateTranslation: (translationId: number, payload: TEditSolutionTranslationForm) =>
+      updateMutation.mutateAsync({ translationId, payload }),
+    deleteTranslation: (translationId: number) => deleteMutation.mutateAsync(translationId),
+    autoTranslate: (payload: TAutoTranslateSolutionForm) => autoTranslateMutation.mutateAsync(payload),
+
+    isCreating: createMutation.isPending,
+    isUpdating: updateMutation.isPending,
+    isDeleting: deleteMutation.isPending,
     isTranslating: autoTranslateMutation.isPending,
+
+    createError: (createMutation.error as Error | undefined)?.message ?? null,
+    updateError: (updateMutation.error as Error | undefined)?.message ?? null,
+    deleteError: (deleteMutation.error as Error | undefined)?.message ?? null,
+    translateError: (autoTranslateMutation.error as Error | undefined)?.message ?? null,
   };
 }

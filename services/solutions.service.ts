@@ -12,6 +12,7 @@ import type { ApiResponse } from "@/types/common.types";
 import type { StaffSolution, SolutionResponse, SolutionTranslation } from "@/types/solutions.types";
 import { ApiService } from "./base.service";
 import { toQS } from "@/utils/api-utils";
+import type { ISolutionParams } from "@/types/solutions.types";
 
 const BASE = "/solutions";
 
@@ -20,21 +21,11 @@ type RequestOpts = { signal?: AbortSignal; headers?: Record<string, string> };
 
 const enc = (v: string | number) => encodeURIComponent(String(v));
 
-type StaffListParams = {
-  page?: number;
-  limit?: number;
-  search?: string;
-  lang?: string;
-  sort?: "createdAt" | "updatedAt" | "name" | "order";
-  order?: "asc" | "desc";
-  isPublished?: boolean;
-  isFeatured?: boolean;
-};
 
 export const solutionsService = {
   // Staff Solutions
   async getAllForStaff(
-    params: StaffListParams = {},
+    params: ISolutionParams = {},
     opts?: RequestOpts,
   ): Promise<ApiResponse<StaffSolution[]>> {
     const res = await ApiService.get<StaffSolution[]>(`${BASE}/staff${toQS(params)}`, opts);

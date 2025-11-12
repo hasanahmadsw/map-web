@@ -3,10 +3,13 @@
 import * as React from "react"
 import Link from "next/link"
 import { ChevronDown } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
 import { cn } from "@/lib/utils"
 import { useLang } from "@/hooks/useLang"
-import { useSolutions } from "@/hooks/solutions/useSolutions"
+import { solutionsService } from "@/services/solutions.service"
+import { solutionsQueryKeys } from "@/hooks/keys"
 import type { SolutionResponse } from "@/types/solutions.types"
+import type { ApiResponse } from "@/types/common.types"
 import DivHtml from "@/components/shared/div-html"
 import { renderIcon } from "@/utils/icon-resolver"
 
@@ -18,12 +21,19 @@ export function SolutionsDropdown({ onLinkClick }: SolutionsDropdownProps) {
   const lang = useLang()
   const [isHovered, setIsHovered] = React.useState(false)
 
-  const { data: solutionsResponse } = useSolutions({
-    lang,
-    limit: 10,
-    isPublished: true,
-    sortBy: "order",
-    sortOrder: "asc",
+  const { data: solutionsResponse } = useQuery<ApiResponse<SolutionResponse[]>>({
+    queryKey: [...solutionsQueryKeys.all, "public", lang, 10, true, "order", "asc"],
+    queryFn: () => solutionsService.getAll({
+      lang,
+      limit: 10,
+      isPublished: true,
+      sortBy: "order",
+      sortOrder: "asc",
+    }),
+    enabled: !!lang,
+    staleTime: 10_000,
+    gcTime: 5 * 60_000,
+    retry: 1,
   })
 
   const solutions = solutionsResponse?.data || []
@@ -134,12 +144,19 @@ export function MobileSolutionsAccordion({ onLinkClick }: MobileSolutionsAccordi
   const lang = useLang()
   const [isOpen, setIsOpen] = React.useState(false)
 
-  const { data: solutionsResponse } = useSolutions({
-    lang,
-    limit: 10,
-    isPublished: true,
-    sortBy: "order",
-    sortOrder: "asc",
+  const { data: solutionsResponse } = useQuery<ApiResponse<SolutionResponse[]>>({
+    queryKey: [...solutionsQueryKeys.all, "public", lang, 10, true, "order", "asc"],
+    queryFn: () => solutionsService.getAll({
+      lang,
+      limit: 10,
+      isPublished: true,
+      sortBy: "order",
+      sortOrder: "asc",
+    }),
+    enabled: !!lang,
+    staleTime: 10_000,
+    gcTime: 5 * 60_000,
+    retry: 1,
   })
 
   const solutions = solutionsResponse?.data || []

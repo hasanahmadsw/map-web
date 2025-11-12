@@ -14,7 +14,7 @@ import { TextAreaInput } from "@/components/shared/input/TextAreaInput";
 import { TextInput } from "@/components/shared/input/TextInput";
 import { Button } from "@/components/ui/button";
 import { useLanguages } from "@/hooks/useLanguages";
-import { useStaff } from "@/hooks/staff/useStaff";
+import { useStaffMutations } from "@/hooks/staff/mutations";
 import { useTranslation } from "@/providers/translations-provider";
 import { createStaffSchema, type TCreateStaffDTO } from "@/schemas/staff.schemas";
 import { staffService } from "@/services/staff.service";
@@ -22,7 +22,7 @@ import { Role, ROLES } from "@/enums/roles.enum";
 import { formatValidationMessage } from "@/schemas/common.schemas";
 
 export function AddStaffMember() {
-  const { createStaff, isCreating, createError } = useStaff();
+  const { create } = useStaffMutations();
   const { languages, isLoading: isLoadingLanguages } = useLanguages();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -83,16 +83,17 @@ export function AddStaffMember() {
         image: data.image || undefined,
       };
       
-      await createStaff(payload);
+      await create.mutateAsync(payload);
       toast.success(formatValidationMessage(t.validation.createdSuccessfully, {
         entity: t.staffs.staff,
       }));
       setOpen(false);
       form.reset();
     } catch (error) {
-      toast.error(createError || formatValidationMessage(t.validation.failedToCreate, {
+      const errorMessage = (create.error as Error | undefined)?.message || formatValidationMessage(t.validation.failedToCreate, {
         entity: t.staffs.staff,
-      }));
+      });
+      toast.error(errorMessage);
       throw error; // Re-throw to let FormDialog know there was an error
     }
   };
@@ -136,7 +137,7 @@ export function AddStaffMember() {
       onSubmit={form.handleSubmit(onSubmit)}
       submitLabel={t.common.add}
       cancelLabel={t.common.cancel}
-      isLoading={isCreating}
+      isLoading={create.isPending}
       loadingLabel={t.common.loading}
       maxWidth="sm:max-w-[800px]"
       form={form}
@@ -162,7 +163,7 @@ export function AddStaffMember() {
           name="password"
           label={t.common.password}
           placeholder={t.common.passwordPlaceholder}
-          disabled={isCreating}
+          disabled={create.isPending}
         />
   
         <SelectInput
