@@ -8,10 +8,36 @@ interface SimpleArticleCardProps {
   article: Article
   lang: string
   index: number
+  priority?: boolean
 }
 
-export function SimpleArticleCard({ article, lang, index }: SimpleArticleCardProps) {
+// Generate a lightweight blur data URL for placeholder (optimized SVG)
+const shimmer = (w: number, h: number) => `
+<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
+  <rect width="${w}" height="${h}" fill="#f0f0f0"/>
+  <rect width="${w}" height="${h}" fill="url(#grad)" opacity="0.5">
+    <animate attributeName="x" from="-${w}" to="${w}" dur="1.5s" repeatCount="indefinite"/>
+  </rect>
+  <defs>
+    <linearGradient id="grad">
+      <stop offset="0%" stop-color="#f0f0f0"/>
+      <stop offset="50%" stop-color="#e0e0e0"/>
+      <stop offset="100%" stop-color="#f0f0f0"/>
+    </linearGradient>
+  </defs>
+</svg>`
+
+const toBase64 = (str: string) =>
+  typeof window === 'undefined'
+    ? Buffer.from(str).toString('base64')
+    : window.btoa(str)
+
+const blurDataURL = `data:image/svg+xml;base64,${toBase64(shimmer(800, 600))}`
+
+export function SimpleArticleCard({ article, lang, index, priority = false }: SimpleArticleCardProps) {
+  // Pre-compute values to avoid repeated calculations
   const coverImage = article.featuredImage || article.image || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80"
+  const isUnoptimized = coverImage.includes("unsplash.com") || coverImage.includes("supabase.co")
   
   // Calculate reading time (approximate: 200 words per minute)
   const wordCount = article.content?.split(/\s+/).length || 0
@@ -32,8 +58,13 @@ export function SimpleArticleCard({ article, lang, index }: SimpleArticleCardPro
         src={coverImage}
         alt={article.name}
         fill
-        className="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        unoptimized={coverImage.includes("unsplash.com") || coverImage.includes("supabase.co")}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        className="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 will-change-transform"
+        loading={priority ? "eager" : "lazy"}
+        priority={priority}
+        placeholder="blur"
+        blurDataURL={blurDataURL}
+        unoptimized={isUnoptimized}
       />
 
       {/* Gradient Overlay */}

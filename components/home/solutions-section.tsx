@@ -48,20 +48,7 @@ export async function SolutionsSection({ lang, t }: SolutionsSectionProps) {
 
   return (
     <section className="relative w-full py-16 overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 -z-10">
-        <Image
-          src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1920&q=80"
-          alt="Solutions background"
-          fill
-          className="object-cover"
-          unoptimized
-        />
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-blue-600/40 to-blue-900/50" />
-        {/* Glass Effect Overlay */}
-        <div className="absolute inset-0 backdrop-blur-[1px]" />
-      </div>
+    
 
       {/* Content */}
       <div className="container max-w-7xl px-6 md:px-0 relative z-10">
@@ -73,11 +60,12 @@ export async function SolutionsSection({ lang, t }: SolutionsSectionProps) {
             {t.solutions?.description}
           </p>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {solutions.map((solution) => (
+            {solutions.map((solution, index) => (
               <SolutionCard 
                 key={solution.id} 
                 solution={solution} 
                 lang={lang}
+                priority={index < 3}
               />
             ))}
           </div>

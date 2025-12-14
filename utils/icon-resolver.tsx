@@ -90,6 +90,15 @@ const iconMap: Record<string, LucideIcon> = {
 // Default fallback icon
 const DefaultIcon = Video
 
+// Create a lowercase lookup map for O(1) performance instead of O(n) find()
+const iconMapLowercase: Record<string, string> = Object.keys(iconMap).reduce(
+  (acc, key) => {
+    acc[key.toLowerCase()] = key
+    return acc
+  },
+  {} as Record<string, string>
+)
+
 /**
  * Checks if a string is an emoji
  */
@@ -119,10 +128,8 @@ export function resolveIcon(
     return <span>{iconName}</span>
   }
 
-  // Try to find the icon in the map (case-insensitive)
-  const iconKey = Object.keys(iconMap).find(
-    (key) => key.toLowerCase() === iconName.toLowerCase()
-  )
+  // Use cached lowercase lookup for O(1) performance
+  const iconKey = iconMapLowercase[iconName.toLowerCase()]
 
   if (iconKey) {
     const IconComponent = iconMap[iconKey]
@@ -148,9 +155,8 @@ export function getIconComponent(
     return iconMap[fallback] || DefaultIcon
   }
 
-  const iconKey = Object.keys(iconMap).find(
-    (key) => key.toLowerCase() === iconName.toLowerCase()
-  )
+  // Use cached lowercase lookup for O(1) performance
+  const iconKey = iconMapLowercase[iconName.toLowerCase()]
 
   return iconKey ? iconMap[iconKey] : iconMap[fallback] || DefaultIcon
 }
@@ -163,9 +169,8 @@ export function isValidLucideIcon(iconName: string | undefined | null): boolean 
     return false
   }
 
-  return Object.keys(iconMap).some(
-    (key) => key.toLowerCase() === iconName.toLowerCase()
-  )
+  // Use cached lowercase lookup for O(1) performance
+  return iconMapLowercase.hasOwnProperty(iconName.toLowerCase())
 }
 
 /**
@@ -197,10 +202,8 @@ export function renderIcon(
     )
   }
 
-  // Try to find the icon in the map
-  const iconKey = Object.keys(iconMap).find(
-    (key) => key.toLowerCase() === iconName.toLowerCase()
-  )
+  // Use cached lowercase lookup for O(1) performance
+  const iconKey = iconMapLowercase[iconName.toLowerCase()]
 
   if (iconKey) {
     const IconComponent = iconMap[iconKey]

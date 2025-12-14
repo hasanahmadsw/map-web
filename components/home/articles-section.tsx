@@ -43,6 +43,7 @@ export async function ArticlesSection({ lang, t }: ArticlesSectionProps) {
                 article={article}
                 lang={lang}
                 index={index}
+                priority={index < 2}
               />
             ))}
           </div>

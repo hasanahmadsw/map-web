@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { newsHomePageSchema } from "@/utils/seo/schema/newsHomePageSchema";
 import { createEnhancedMetadata } from "@/utils/seo/meta/enhanced-meta";
 import type { Metadata } from "next";
@@ -12,6 +12,23 @@ import { FAQSection } from "@/components/home/faq-section";
 import { CTASection } from "@/components/home/cta-section";
 
 export const dynamic = "force-dynamic";
+
+// Loading fallback component
+function SectionSkeleton() {
+  return (
+    <div className="w-full py-16">
+      <div className="container max-w-7xl">
+        <div className="h-8 w-64 bg-muted/50 rounded animate-pulse mb-4" />
+        <div className="h-4 w-96 bg-muted/30 rounded animate-pulse mb-8" />
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-64 bg-muted/30 rounded-xl animate-pulse" />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export async function generateMetadata({
   params,
@@ -48,13 +65,12 @@ export default async function Page({
       {/* Background Pattern */}
     
 
-      {/* Gradient Orbs */}
-      <div className="orb-blue-large absolute top-0 -left-40 h-[30rem] w-[30rem]" />
-      <div className="orb-purple-large absolute top-1/4 -right-40 h-[30rem] w-[30rem]" />
-      <div className="orb-blue-large absolute top-1/2 -left-40 h-[30rem] w-[30rem]" />
-      <div className="orb-purple-large absolute top-3/4 -right-40 h-[30rem] w-[30rem]" />
-      <div className="orb-blue-large absolute bottom-0 -left-40 h-[30rem] w-[30rem]" />
-      <div className="orb-purple-large absolute -right-40 bottom-0 h-[30rem] w-[30rem]" />
+      {/* Optimized Gradient Orbs - Reduced count and added will-change for performance */}
+      <div className="orb-blue-large absolute top-0 -left-40 h-[30rem] w-[30rem] will-change-transform" />
+      <div className="orb-purple-large absolute top-1/4 -right-40 h-[30rem] w-[30rem] will-change-transform" />
+      <div className="orb-blue-large absolute top-1/2 -left-40 h-[30rem] w-[30rem] will-change-transform" />
+      <div className="orb-purple-large absolute top-3/4 -right-40 h-[30rem] w-[30rem] will-change-transform" />
+      
       <script
         id="news-home-jsonld"
         type="application/ld+json"
@@ -63,13 +79,30 @@ export default async function Page({
         }}
       />
       <main className="min-h-screen max-w-7xl mx-auto">
+        {/* Above-the-fold sections - no Suspense for immediate render */}
         <HeroSection lang={lang} t={t} />
         <StatisticsSection lang={lang} t={t} />
-        <SolutionsSection lang={lang} t={t} />
-        <ServicesSection lang={lang} t={t} />
-        <ArticlesSection lang={lang} t={t} />
-        <FAQSection lang={lang} t={t} />
-        <CTASection lang={lang} t={t} />
+        
+        {/* Below-the-fold sections - wrapped in Suspense for streaming */}
+        <Suspense fallback={<SectionSkeleton />}>
+          <SolutionsSection lang={lang} t={t} />
+        </Suspense>
+        
+        <Suspense fallback={<SectionSkeleton />}>
+          <ServicesSection lang={lang} t={t} />
+        </Suspense>
+        
+        <Suspense fallback={<SectionSkeleton />}>
+          <ArticlesSection lang={lang} t={t} />
+        </Suspense>
+        
+        <Suspense fallback={<SectionSkeleton />}>
+          <FAQSection lang={lang} t={t} />
+        </Suspense>
+        
+        <Suspense fallback={<SectionSkeleton />}>
+          <CTASection lang={lang} t={t} />
+        </Suspense>
       </main>
     </div>
   );

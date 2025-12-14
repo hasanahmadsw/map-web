@@ -86,7 +86,6 @@ export default async function SolutionsPage({ params, searchParams }: SolutionsP
   const t = await getTranslations(lang)
   const solutionsData = solutions.data || []
   const totalPages = solutions.pagination?.totalPages || 1
-  const totalSolutions = solutions.pagination?.total || 0
 
   const createPageUrl = (page: number) => {
     const params = new URLSearchParams()

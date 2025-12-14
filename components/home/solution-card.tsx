@@ -10,9 +10,37 @@ interface SolutionCardProps {
   solution: SolutionResponse
   className?: string
   lang: string
+  priority?: boolean
 }
 
-export function SolutionCard({ solution, className, lang }: SolutionCardProps) {
+// Generate a lightweight blur data URL for placeholder (optimized SVG)
+const shimmer = (w: number, h: number) => `
+<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg">
+  <rect width="${w}" height="${h}" fill="#f0f0f0"/>
+  <rect width="${w}" height="${h}" fill="url(#grad)" opacity="0.5">
+    <animate attributeName="x" from="-${w}" to="${w}" dur="1.5s" repeatCount="indefinite"/>
+  </rect>
+  <defs>
+    <linearGradient id="grad">
+      <stop offset="0%" stop-color="#f0f0f0"/>
+      <stop offset="50%" stop-color="#e0e0e0"/>
+      <stop offset="100%" stop-color="#f0f0f0"/>
+    </linearGradient>
+  </defs>
+</svg>`
+
+const toBase64 = (str: string) =>
+  typeof window === 'undefined'
+    ? Buffer.from(str).toString('base64')
+    : window.btoa(str)
+
+const blurDataURL = `data:image/svg+xml;base64,${toBase64(shimmer(400, 300))}`
+
+export function SolutionCard({ solution, className, lang, priority = false }: SolutionCardProps) {
+  // Pre-compute values to avoid repeated calculations
+  const hasImage = Boolean(solution.featuredImage?.trim())
+  const isSupabaseImage = hasImage && solution.featuredImage.includes("supabase.co")
+
   return (
     <Link 
       href={`/${lang}/solutions/${solution.slug}`}
@@ -23,24 +51,28 @@ export function SolutionCard({ solution, className, lang }: SolutionCardProps) {
       )}
     >
       {/* Subtle Background Pattern/Image */}
-      {solution.featuredImage && solution.featuredImage.trim() !== "" ? (
-        <div className="absolute inset-0 opacity-30 group-hover:opacity-60 transition-opacity duration-300">
+      {hasImage && (
+        <div className="absolute inset-0 opacity-30 group-hover:opacity-60 transition-opacity duration-300 will-change-opacity">
           <Image
             src={solution.featuredImage}
             alt={solution.name || "Solution image"}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
-            unoptimized={solution.featuredImage.includes("supabase.co")}
+            loading={priority ? "eager" : "lazy"}
+            priority={priority}
+            placeholder="blur"
+            blurDataURL={blurDataURL}
+            unoptimized={isSupabaseImage}
           />
         </div>
-      ) : null}
+      )}
 
       {/* Glass Content Panel */}
       <div className="relative z-10 flex flex-col h-full">
         {/* Icon */}
         <div className="mb-4">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 backdrop-blur-sm">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10">
             {renderIcon(solution.icon, { size: 24, fallback: "Video" })}
           </div>
         </div>
@@ -60,7 +92,7 @@ export function SolutionCard({ solution, className, lang }: SolutionCardProps) {
           {/* CTA */}
           <div className="flex items-center text-sm font-medium text-primary mt-auto pt-4 border-t border-border/50">
             <span>Explore Solution</span>
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 will-change-transform" />
           </div>
         </div>
       </div>

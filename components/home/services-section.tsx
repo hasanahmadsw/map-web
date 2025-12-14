@@ -61,8 +61,13 @@ export async function ServicesSection({ lang, t }: ServicesSectionProps) {
             {t.services?.description}
           </p>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => (
-              <ServiceCard key={service.id} service={service} lang={lang} />
+            {services.map((service, index) => (
+              <ServiceCard 
+                key={service.id} 
+                service={service} 
+                lang={lang}
+                priority={index < 3}
+              />
             ))}
           </div>
           <div className="mt-12 flex justify-center">
