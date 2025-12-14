@@ -3,7 +3,6 @@ import { NewsControls } from "@/components/articles/public/news-controls";
 import { NewsHeader } from "@/components/articles/public/news-header";
 import { NewsResults } from "@/components/articles/public/news-results";
 import { articlesService } from "@/services/articles.service";
-import { type SortBy, SortOrder } from "@/types/common.types";
 import { getTranslations, type Lang } from "@/utils/dictionary-utils";
 import { createEnhancedMetadata } from "@/utils/seo/meta/enhanced-meta";
 import { newsPageSchema } from "@/utils/seo/schema/newsPageSchema";
@@ -18,10 +17,6 @@ interface NewsPageSearchParams {
     topics?: string;
     page?: string;
     limit?: string;
-    sortBy?: "createdAt" | "updatedAt" | "name" | "publishedAt" | "viewCount";
-    sortOrder?: "ASC" | "DESC";
-    tagId?: string;
-    topicId?: string;
   }>;
 }
 
@@ -32,7 +27,7 @@ export async function generateMetadata({
   searchParams,
 }: NewsPageParams & NewsPageSearchParams): Promise<Metadata> {
   const { lang } = await params;
-  const { search, topics, page, tagId, topicId } = await searchParams;
+  const { search, topics, page } = await searchParams;
 
   const t = await getTranslations(lang as Lang);
   const siteURL = process.env.NEXT_PUBLIC_SITE_URL!;
@@ -48,12 +43,6 @@ export async function generateMetadata({
   } else if (topics) {
     title = `${title} - ${topics}`;
     description = `${description} - ${topics} topics and categories`;
-  } else if (tagId) {
-    title = `${title} - Tag: ${tagId}`;
-    description = `${description} - Articles tagged with ${tagId}`;
-  } else if (topicId) {
-    title = `${title} - Topic: ${topicId}`;
-    description = `${description} - Articles in ${topicId} category`;
   }
 
   // Add page number to title if not first page
@@ -68,8 +57,6 @@ export async function generateMetadata({
     ...baseKeywords,
     ...(search ? [search, "search results"] : []),
     ...(topics ? [topics, "topics"] : []),
-    ...(tagId ? [tagId, "tags", "tagged content"] : []),
-    ...(topicId ? [topicId, "categories"] : []),
     "latest news",
     "breaking news",
     "current events",
@@ -104,19 +91,14 @@ export async function generateMetadata({
 
 export default async function NewsPage({ params, searchParams }: NewsPageParams & NewsPageSearchParams) {
   const { lang } = await params;
-  const { search, topics, page, limit, sortBy, sortOrder, tagId, topicId } = await searchParams;
+  const { search, topics, page, limit } = await searchParams;
 
   const pageNum = page ? Number(page) : 1;
   const limitNum = limit ? Number(limit) : 10;
   const articles = await articlesService.getAll({
-    lang,
     search: search || "",
     page: pageNum,
     limit: limitNum,
-    sortBy: (sortBy as SortBy) || undefined,
-    sortOrder: (sortOrder as SortOrder) || SortOrder.DESC,
-    topicId: topicId || topics || undefined,
-    tagId: tagId || undefined,
   });
   const t = await getTranslations(lang as Lang);
 
@@ -128,8 +110,6 @@ export default async function NewsPage({ params, searchParams }: NewsPageParams 
       search: search || undefined,
       topics: topics || undefined,
       page: pageNum,
-      tagId: tagId || undefined,
-      topicId: topicId || undefined,
     },
   );
   return (
@@ -157,10 +137,6 @@ export default async function NewsPage({ params, searchParams }: NewsPageParams 
           searchParams={{
             search: search || "",
             topics: topics || "",
-            sortBy: sortBy || "",
-            sortOrder: sortOrder || "",
-            tagId: tagId || "",
-            topicId: topicId || "",
           }}
         />
       </div>

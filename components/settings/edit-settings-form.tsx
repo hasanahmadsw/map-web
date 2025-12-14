@@ -8,14 +8,15 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Save,  X, Link, BarChart3, Code, Plus, Check } from "lucide-react";
+import { Save,  X, Link, BarChart3, Code, Plus, Check, Image, Globe } from "lucide-react";
 import { useTranslation } from "@/providers/translations-provider";
 import { useSettings } from "@/hooks/settings/useSettings";
 import { useLang } from "@/hooks/useLang";
+import { useLanguages } from "@/hooks/useLanguages";
+import { Select } from "@/components/ui/select";
 import { updateSettingsSchema } from "@/schemas/settings.schemas";
 import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import EditTranslationsSettings from "./edit-translation-settings";
+import { MediaPickerDialog } from "@/components/media/media-picker-dialog";
 
 interface EditSettingsFormProps {
   settings: any;
@@ -25,9 +26,21 @@ export default function EditSettingsForm({ settings }: EditSettingsFormProps) {
   const router = useRouter();
   const lang = useLang();
   const { t } = useTranslation();
-  const { updateSettings, isUpdating, updateError } = useSettings({ lang });
+  const { languages } = useLanguages();
+  const { updateSettings, isUpdating, updateError } = useSettings();
 
   const [formData, setFormData] = useState({
+    siteName: settings?.siteName || "",
+    siteDescription: settings?.siteDescription || "",
+    siteLogo: settings?.siteLogo || "",
+    siteDarkLogo: settings?.siteDarkLogo || "",
+    siteFavicon: settings?.siteFavicon || "",
+    defaultLanguage: settings?.defaultLanguage || "en",
+    meta: {
+      title: settings?.meta?.title || "",
+      description: settings?.meta?.description || "",
+      keywords: settings?.meta?.keywords || [],
+    },
     social: settings?.social || [],
     analytics: {
       googleAnalytics: settings?.analytics?.googleAnalytics || "",
@@ -48,6 +61,9 @@ export default function EditSettingsForm({ settings }: EditSettingsFormProps) {
   const [newAnalyticsScript, setNewAnalyticsScript] = useState("");
   const [newHeaderScript, setNewHeaderScript] = useState("");
   const [newFooterScript, setNewFooterScript] = useState("");
+  const [newKeyword, setNewKeyword] = useState("");
+  const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
+  const [mediaPickerType, setMediaPickerType] = useState<"logo" | "darkLogo" | "favicon" | null>(null);
 
 
   const handleInputChange = (field: string, value: string) => {
@@ -169,6 +185,48 @@ export default function EditSettingsForm({ settings }: EditSettingsFormProps) {
     }));
   };
 
+  const addKeyword = () => {
+    const keyword = newKeyword.trim();
+    if (keyword) {
+      const currentKeywords = formData.meta.keywords || [];
+      if (!currentKeywords.includes(keyword)) {
+        setFormData(prev => ({
+          ...prev,
+          meta: {
+            ...prev.meta,
+            keywords: [...currentKeywords, keyword],
+          },
+        }));
+      }
+      setNewKeyword("");
+    }
+  };
+
+  const removeKeyword = (keyword: string) => {
+    setFormData(prev => ({
+      ...prev,
+      meta: {
+        ...prev.meta,
+        keywords: prev.meta.keywords.filter((k: string) => k !== keyword),
+      },
+    }));
+  };
+
+  const handleMediaSelect = (media: any) => {
+    const selectedMedia = Array.isArray(media) ? media[0] : media;
+    if (selectedMedia && mediaPickerType) {
+      if (mediaPickerType === "logo") {
+        setFormData(prev => ({ ...prev, siteLogo: selectedMedia.url }));
+      } else if (mediaPickerType === "darkLogo") {
+        setFormData(prev => ({ ...prev, siteDarkLogo: selectedMedia.url }));
+      } else if (mediaPickerType === "favicon") {
+        setFormData(prev => ({ ...prev, siteFavicon: selectedMedia.url }));
+      }
+      setMediaPickerType(null);
+      setIsMediaPickerOpen(false);
+    }
+  };
+
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -189,18 +247,252 @@ export default function EditSettingsForm({ settings }: EditSettingsFormProps) {
   };
 
   return (
-    <Tabs defaultValue="settings" className="w-full">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="settings">
-          {t.settings?.general || "General Settings"}
-        </TabsTrigger>
-        <TabsTrigger value="translations">
-          {"Translations"}
-        </TabsTrigger>
-      </TabsList>
-
-      <TabsContent value="settings" className="space-y-6 pt-6">
+    <div className="space-y-6">
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Basic Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Globe className="h-5 w-5" />
+                {t.settings?.basicInformation || "Basic Information"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="siteName">{t.settings?.siteName || "Site Name"}</Label>
+                  <Input
+                    id="siteName"
+                    value={formData.siteName}
+                    onChange={(e) => handleInputChange("siteName", e.target.value)}
+                    placeholder="Enter site name"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="defaultLanguage">{t.settings?.defaultLanguage || "Default Language"}</Label>
+                  <select
+                    id="defaultLanguage"
+                    value={formData.defaultLanguage}
+                    onChange={(e) => handleInputChange("defaultLanguage", e.target.value)}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {languages?.map((lang) => (
+                      <option key={lang.code} value={lang.code}>
+                        {lang.name} ({lang.code})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="siteDescription">{t.settings?.siteDescription || "Site Description"}</Label>
+                <Textarea
+                  id="siteDescription"
+                  value={formData.siteDescription}
+                  onChange={(e) => handleInputChange("siteDescription", e.target.value)}
+                  placeholder="Enter site description"
+                  rows={3}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Site Images */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Image className="h-5 w-5" />
+                Site Images
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Site Logo */}
+                <div className="space-y-2">
+                  <Label>{t.settings?.siteLogo || "Site Logo"}</Label>
+                  <div className="flex items-center gap-2">
+                    {formData.siteLogo && (
+                      <div className="relative w-20 h-20 rounded-lg overflow-hidden border">
+                        <img
+                          src={formData.siteLogo}
+                          alt="Logo"
+                          className="w-full h-full object-cover"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-1 right-1 h-5 w-5 rounded-full p-0"
+                          onClick={() => handleInputChange("siteLogo", "")}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    )}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        setMediaPickerType("logo");
+                        setIsMediaPickerOpen(true);
+                      }}
+                    >
+                      <Image className="mr-2 h-4 w-4" />
+                      {formData.siteLogo ? "Change" : "Select"}
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Dark Logo */}
+                <div className="space-y-2">
+                  <Label>{t.settings?.siteDarkLogo || "Dark Logo"}</Label>
+                  <div className="flex items-center gap-2">
+                    {formData.siteDarkLogo && (
+                      <div className="relative w-20 h-20 rounded-lg overflow-hidden border">
+                        <img
+                          src={formData.siteDarkLogo}
+                          alt="Dark Logo"
+                          className="w-full h-full object-cover"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-1 right-1 h-5 w-5 rounded-full p-0"
+                          onClick={() => handleInputChange("siteDarkLogo", "")}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    )}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        setMediaPickerType("darkLogo");
+                        setIsMediaPickerOpen(true);
+                      }}
+                    >
+                      <Image className="mr-2 h-4 w-4" />
+                      {formData.siteDarkLogo ? "Change" : "Select"}
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Favicon */}
+                <div className="space-y-2">
+                  <Label>{t.settings?.siteFavicon || "Favicon"}</Label>
+                  <div className="flex items-center gap-2">
+                    {formData.siteFavicon && (
+                      <div className="relative w-16 h-16 rounded-lg overflow-hidden border">
+                        <img
+                          src={formData.siteFavicon}
+                          alt="Favicon"
+                          className="w-full h-full object-cover"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-1 right-1 h-5 w-5 rounded-full p-0"
+                          onClick={() => handleInputChange("siteFavicon", "")}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    )}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => {
+                        setMediaPickerType("favicon");
+                        setIsMediaPickerOpen(true);
+                      }}
+                    >
+                      <Image className="mr-2 h-4 w-4" />
+                      {formData.siteFavicon ? "Change" : "Select"}
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <MediaPickerDialog
+            open={isMediaPickerOpen}
+            onOpenChange={setIsMediaPickerOpen}
+            onSelect={handleMediaSelect}
+            mode="single"
+            filter="image"
+            initialSelected={
+              mediaPickerType === "logo" && formData.siteLogo ? [formData.siteLogo] :
+              mediaPickerType === "darkLogo" && formData.siteDarkLogo ? [formData.siteDarkLogo] :
+              mediaPickerType === "favicon" && formData.siteFavicon ? [formData.siteFavicon] : []
+            }
+          />
+
+          {/* Meta Information */}
+          <Card>
+            <CardHeader>
+              <CardTitle>{t.settings?.metaInformation || "Meta Information"}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="metaTitle">{t.settings?.metaTitle || "Meta Title"}</Label>
+                  <Input
+                    id="metaTitle"
+                    value={formData.meta.title}
+                    onChange={(e) => handleInputChange("meta.title", e.target.value)}
+                    placeholder="Enter meta title"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="metaDescription">{t.settings?.metaDescription || "Meta Description"}</Label>
+                <Textarea
+                  id="metaDescription"
+                  value={formData.meta.description}
+                  onChange={(e) => handleInputChange("meta.description", e.target.value)}
+                  placeholder="Enter meta description"
+                  rows={3}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="keywords">{t.common?.keywords || "Keywords"}</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="keywords"
+                    value={newKeyword}
+                    onChange={(e) => setNewKeyword(e.target.value)}
+                    placeholder={t.common?.addKeyword || "Add keyword"}
+                    onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addKeyword())}
+                    className="flex-1"
+                  />
+                  <Button type="button" onClick={addKeyword} variant="outline">
+                    {t.common?.add || "Add"}
+                  </Button>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {(formData.meta.keywords || []).map((keyword: string) => (
+                    <Badge key={keyword} variant="secondary" className="flex items-center gap-1 text-xs">
+                      {keyword}
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="h-4 w-4 p-0 hover:bg-destructive/20"
+                        onClick={() => removeKeyword(keyword)}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Social Links */}
           <Card>
             <CardHeader>
@@ -439,11 +731,6 @@ export default function EditSettingsForm({ settings }: EditSettingsFormProps) {
             </Button>
           </div>
         </form>
-      </TabsContent>
-
-      <TabsContent value="translations" className="space-y-6 pt-6">
-        <EditTranslationsSettings settings={settings} />
-      </TabsContent>
-    </Tabs>
+    </div>
   );
 }

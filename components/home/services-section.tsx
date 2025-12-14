@@ -16,7 +16,6 @@ export async function ServicesSection({ lang, t }: ServicesSectionProps) {
   let servicesResponse
   try {
     servicesResponse = await servicesService.getAll({
-      lang,
       limit: 6,
       isPublished: true,
       isFeatured: true,
@@ -25,7 +24,6 @@ export async function ServicesSection({ lang, t }: ServicesSectionProps) {
     // If no featured services, get regular published services
     if (!servicesResponse.data || servicesResponse.data.length === 0) {
       servicesResponse = await servicesService.getAll({
-        lang,
         limit: 6,
         isPublished: true,
       })
@@ -34,7 +32,6 @@ export async function ServicesSection({ lang, t }: ServicesSectionProps) {
     // If there's an error with featured, try regular published services
     try {
       servicesResponse = await servicesService.getAll({
-        lang,
         limit: 6,
         isPublished: true,
       })

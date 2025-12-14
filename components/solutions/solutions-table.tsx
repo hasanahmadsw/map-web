@@ -213,7 +213,7 @@ export function SolutionsTable() {
           onConfirm={handleDeleteSolution}
           title={common.confirmDelete || "Confirm Delete"}
           description={fmt(validation.confirmDeleteArticle || "Are you sure you want to delete this {{entity}}? This action cannot be undone and will permanently remove the {{entity}} from the system.", {
-            entity: solutionToDelete.translations?.[0]?.name || solutionToDelete.slug,
+            entity: solutionToDelete.name || solutionToDelete.slug,
           })}
           isLoading={deleteSolution.isPending}
           variant="destructive"

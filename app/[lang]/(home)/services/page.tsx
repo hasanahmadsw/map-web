@@ -74,7 +74,6 @@ export default async function ServicesPage({ params, searchParams }: ServicesPag
   const limitNum = limit ? Number(limit) : 12
 
   const services = await servicesService.getAll({
-    lang,
     search: search || "",
     page: pageNum,
     limit: limitNum,

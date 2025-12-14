@@ -22,9 +22,8 @@ export function SolutionsDropdown({ onLinkClick }: SolutionsDropdownProps) {
   const [isHovered, setIsHovered] = React.useState(false)
 
   const { data: solutionsResponse } = useQuery<ApiResponse<SolutionResponse[]>>({
-    queryKey: [...solutionsQueryKeys.all, "public", lang, 10, true, "order", "asc"],
+    queryKey: [...solutionsQueryKeys.all, "public", 10, true, "order", "asc"],
     queryFn: () => solutionsService.getAll({
-      lang,
       limit: 10,
       isPublished: true,
       sortBy: "order",
@@ -145,9 +144,8 @@ export function MobileSolutionsAccordion({ onLinkClick }: MobileSolutionsAccordi
   const [isOpen, setIsOpen] = React.useState(false)
 
   const { data: solutionsResponse } = useQuery<ApiResponse<SolutionResponse[]>>({
-    queryKey: [...solutionsQueryKeys.all, "public", lang, 10, true, "order", "asc"],
+    queryKey: [...solutionsQueryKeys.all, "public", 10, true, "order", "asc"],
     queryFn: () => solutionsService.getAll({
-      lang,
       limit: 10,
       isPublished: true,
       sortBy: "order",

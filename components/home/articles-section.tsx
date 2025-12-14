@@ -14,7 +14,6 @@ interface ArticlesSectionProps {
 export async function ArticlesSection({ lang, t }: ArticlesSectionProps) {
   // Fetch articles directly from API
   const articlesResponse = await articlesService.getAll({
-    lang,
     limit: 6,
   })
 

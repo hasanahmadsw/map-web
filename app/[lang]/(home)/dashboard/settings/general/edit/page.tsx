@@ -5,7 +5,7 @@ import { Lang, getTranslations } from "@/utils/dictionary-utils";
 export default async function EditSettingsPage({ params }: { params: Promise<{ lang: Lang }> }) {
   const { lang } = await params;
 const  t  = await getTranslations(lang);
-const data = await settingsService.getSettings({ lang });
+const data = await settingsService.getSettings();
 const settings = data.data;
 
   return (

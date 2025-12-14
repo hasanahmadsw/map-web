@@ -20,7 +20,7 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug, lang } = await params;
-  const article = await articlesService.getBySlug(slug, lang as Lang);
+  const article = await articlesService.getBySlug(slug);
   
   if (!article) {
     notFound();
@@ -76,7 +76,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug, lang } = await params;
   const t = await getTranslations(lang as Lang);
-  const article = await articlesService.getBySlug(slug, lang as Lang);
+  const article = await articlesService.getBySlug(slug);
 
   if (!article) {
     notFound();

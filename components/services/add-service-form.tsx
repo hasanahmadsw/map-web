@@ -17,6 +17,9 @@ import { TextAreaInput } from "@/components/shared/input/TextAreaInput";
 import { TextInput } from "@/components/shared/input/TextInput";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { useServiceMutations } from "@/hooks/services/mutations";
 import { useSolutionsStaff } from "@/hooks/solutions/useSolutionsStaff";
 import { useLanguages } from "@/hooks/useLanguages";
@@ -32,6 +35,7 @@ export function AddServiceForm() {
   const { solutions, isLoading: solutionsLoading } = useSolutionsStaff({ limit: 100 });
   const { t } = useTranslation();
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
+  const [newKeyword, setNewKeyword] = useState("");
 
   const form = useForm<z.input<ReturnType<typeof createServiceSchema>>>({
     resolver: zodResolver(createServiceSchema(t.validation)),
@@ -64,6 +68,22 @@ export function AddServiceForm() {
       form.setValue("translateTo", allLanguageCodes);
     }
   }, [languages, form]);
+
+  const addKeyword = () => {
+    const keyword = newKeyword.trim();
+    if (keyword) {
+      const currentKeywords = form.getValues("meta.keywords") || [];
+      if (!currentKeywords.includes(keyword)) {
+        form.setValue("meta.keywords", [...currentKeywords, keyword]);
+      }
+      setNewKeyword("");
+    }
+  };
+
+  const removeKeyword = (keyword: string) => {
+    const currentKeywords = form.getValues("meta.keywords") || [];
+    form.setValue("meta.keywords", currentKeywords.filter((k: string) => k !== keyword));
+  };
 
   const onSubmit = async (data: z.input<ReturnType<typeof createServiceSchema>>) => {
     try {
@@ -272,7 +292,7 @@ export function AddServiceForm() {
               emptyMessage={t.services?.noSolutionsFound || "No solutions found"}
               options={solutions.map((solution) => ({
                 id: solution.id,
-                translations: solution.translations?.map((t) => ({ name: t.name })) || [],
+                name: solution.name,
               }))}
             />
           </CardContent>
@@ -315,6 +335,40 @@ export function AddServiceForm() {
               placeholder={t.services?.metaDescriptionPlaceholder || "Enter meta description"}
               className="min-h-[80px]"
             />
+
+            {/* Keywords */}
+            <div className="space-y-2">
+              <Label htmlFor="keywords">{t.common?.keywords || "Keywords"}</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="keywords"
+                  value={newKeyword}
+                  onChange={(e) => setNewKeyword(e.target.value)}
+                  placeholder={t.common?.addKeyword || "Add keyword"}
+                  onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addKeyword())}
+                  className="flex-1"
+                />
+                <Button type="button" onClick={addKeyword} variant="outline">
+                  {t.common?.add || "Add"}
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {(form.watch("meta.keywords") || []).map((keyword: string) => (
+                  <Badge key={keyword} variant="secondary" className="flex items-center gap-1 text-xs">
+                    {keyword}
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="h-4 w-4 p-0 hover:bg-destructive/20"
+                      onClick={() => removeKeyword(keyword)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </Badge>
+                ))}
+              </div>
+            </div>
           </CardContent>
         </Card>
 

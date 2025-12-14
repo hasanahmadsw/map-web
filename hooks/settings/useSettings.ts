@@ -6,7 +6,6 @@ import type { Settings } from "@/types/settings.types";
 import type { TUpdateSettingsDTO } from "@/schemas/settings.schemas";
 
 interface UseSettingsOptions {
-  lang?: string;
   enabled?: boolean;
 }
 
@@ -23,7 +22,7 @@ interface UseSettingsReturn {
   refetch: () => void;
 }
 
-export function useSettings({ lang, enabled = true }: UseSettingsOptions = {}): UseSettingsReturn {
+export function useSettings({ enabled = true }: UseSettingsOptions = {}): UseSettingsReturn {
   const queryClient = useQueryClient();
 
   const {
@@ -33,8 +32,8 @@ export function useSettings({ lang, enabled = true }: UseSettingsOptions = {}): 
     error,
     refetch,
   } = useQuery({
-    queryKey: ["settings", lang],
-    queryFn: () => settingsService.getSettings({ lang }),
+    queryKey: ["settings"],
+    queryFn: () => settingsService.getSettings(),
     enabled,
     select: (data) => data.data as Settings,
   });
@@ -43,7 +42,7 @@ export function useSettings({ lang, enabled = true }: UseSettingsOptions = {}): 
     mutationFn: ({ payload }: { payload: TUpdateSettingsDTO }) => 
       settingsService.updateSettings(payload),
     onSuccess: (updated) => {
-      queryClient.setQueryData(["settings", lang], (old: any) => ({
+      queryClient.setQueryData(["settings"], (old: any) => ({
         ...old,
         data: updated,
       }));

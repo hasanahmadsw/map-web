@@ -13,8 +13,7 @@ export function useArticlesTableConfig() {
       key: "title",
       label: t.articles.articleTitle,
       render: (article: any) => {
-        const translation = article.translations?.[0];
-        return <div className="font-medium">{translation?.name || article.slug}</div>;
+        return <div className="font-medium">{article.name || article.slug}</div>;
       },
     },
     {

@@ -213,7 +213,7 @@ export function ServicesTable() {
           onConfirm={handleDeleteService}
           title={common.confirmDelete || "Confirm Delete"}
           description={fmt(validation.confirmDeleteArticle || "Are you sure you want to delete this {{entity}}? This action cannot be undone and will permanently remove the {{entity}} from the system.", {
-            entity: serviceToDelete.translations?.[0]?.name || serviceToDelete.slug,
+            entity: serviceToDelete.name || serviceToDelete.slug,
           })}
           isLoading={deleteService.isPending}
           variant="destructive"

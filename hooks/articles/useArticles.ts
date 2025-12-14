@@ -8,7 +8,7 @@ import type { ArticleStaffResponse } from "@/types/articles.types";
 import type { ApiResponse } from "@/types/common.types";
 
 const qk = {
-  list: (page: number, limit: number, lang?: string) => ["articles", "staff", { page, limit, lang }] as const,
+  list: (page: number, limit: number) => ["articles", "staff", { page, limit }] as const,
   byId: (id: number) => ["articles", "staff", id] as const,
 };
 
@@ -19,7 +19,6 @@ const sameId = (a: string | number, b: string | number) => String(a) === String(
 interface UseArticlesStaffOptions {
   page?: number;
   limit?: number;
-  lang?: string; // if you use /articles/staff/language/:lang
   enabled?: boolean;
 }
 
@@ -54,12 +53,9 @@ interface UseArticlesStaffReturn {
 }
 
 export function useArticlesStaff(options: UseArticlesStaffOptions = {}): UseArticlesStaffReturn {
-  const { page = 1, limit = 10, lang, enabled = true } = options;
+  const { page = 1, limit = 10, enabled = true } = options;
   const [currentPage, setCurrentPage] = useState(page);
   const queryClient = useQueryClient();
-
-  const fetchList = () =>
-    lang ? articlesService.getArticlesByLanguage(lang) : articlesService.getAllForStaff({ page: currentPage, limit });
 
   const {
     data: pageData,
@@ -68,8 +64,8 @@ export function useArticlesStaff(options: UseArticlesStaffOptions = {}): UseArti
     error,
     refetch,
   } = useQuery<StaffArticlesPage>({
-    queryKey: qk.list(currentPage, limit, lang),
-    queryFn: fetchList,
+    queryKey: qk.list(currentPage, limit),
+    queryFn: () => articlesService.getAllForStaff({ page: currentPage, limit }),
     enabled,
     placeholderData: (previousData) => previousData,
     staleTime: 10_000,

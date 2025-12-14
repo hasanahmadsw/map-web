@@ -10,7 +10,14 @@ export interface StaffSolution {
   featuredImage: string;
   viewCount: number;
   order: number;
-  translations: SolutionTranslation[];
+  name: string;
+  description: string;
+  shortDescription: string;
+  meta: {
+    title: string;
+    keywords: string[];
+    description: string;
+  };
   services: ServiceResponse[];
   createdAt: string;
   updatedAt: string;
@@ -39,24 +46,8 @@ export interface SolutionResponse {
 }
 
 
-export interface SolutionTranslation {
-  id: number;
-  solutionId: number;
-  languageCode: string;
-  name: string;
-  description: string;
-  shortDescription: string;
-  meta: {
-    title: string;
-    keywords: string[];
-    description: string;
-  };
-  language: Record<string, any>;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ISolutionParams extends BaseListParams {
+export interface SolutionListParams extends BaseListParams {
+  search?: string;
   isPublished?: boolean;
   isFeatured?: boolean;
   sort?: "createdAt" | "updatedAt" | "name" | "order";

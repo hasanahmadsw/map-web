@@ -4,17 +4,12 @@ import { ApiService } from "./base.service";
 
 export const authService = {
   async login(credentials: LoginDTO): Promise<AuthResponse> {
-    const response = await ApiService.post<AuthResponse>("/staff/login", credentials, {}, true);
-    return response.data;
+    const res = await ApiService.post<AuthResponse>("/login", credentials, {}, true);
+    return res.data;
   },
 
   async getMe(): Promise<Staff> {
-    try {
-      const response = await ApiService.get<Staff>("/staff/me");
-      return response.data;
-    } catch (error) {
-      console.error("Get user data error:", error);
-      throw error;
-    }
+    const res = await ApiService.get<Staff>("/admin/staff/me");
+    return res.data;
   },
 };

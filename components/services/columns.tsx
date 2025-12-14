@@ -49,14 +49,13 @@ export function useServiceColumns(opts: {
       enableGlobalFilter: true,
       cell: ({ row }) => {
         const service = row.original;
-        const translation = service.translations?.[0];
         return (
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
               <Settings className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <div className="font-medium">{translation?.name || service.slug}</div>
+              <div className="font-medium">{service.name || service.slug}</div>
               <div className="text-muted-foreground text-sm">ID: {service.id}</div>
             </div>
           </div>
@@ -70,10 +69,9 @@ export function useServiceColumns(opts: {
       enableSorting: false,
       cell: ({ row }) => {
         const service = row.original;
-        const translation = service.translations?.[0];
         return (
           <div className="max-w-xs truncate text-sm text-muted-foreground">
-            {translation?.shortDescription || translation?.description || ""}
+            {service.shortDescription || service.description || ""}
           </div>
         );
       },
@@ -85,8 +83,7 @@ export function useServiceColumns(opts: {
       enableSorting: false,
       cell: ({ row }) => {
         const service = row.original;
-        const translation = service.translations?.[0];
-        const subServicesCount = translation?.subServices?.length || 0;
+        const subServicesCount = service.subServices?.length || 0;
         return (
           <div className="text-sm text-muted-foreground">
             {subServicesCount} {subServicesCount === 1 ? "service" : "services"}

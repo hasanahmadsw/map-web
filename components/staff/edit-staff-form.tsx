@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,14 +10,14 @@ import { FileInput } from "@/components/shared/input/FileInput";
 import { MediaPickerDialog } from "@/components/media/media-picker-dialog";
 import { PasswordInput } from "@/components/shared/input/PasswordInput";
 import { SelectInput } from "@/components/shared/input/SelectInput";
-import { EntityTranslations } from "@/components/translations/translations";
+import { TextAreaInput } from "@/components/shared/input/TextAreaInput";
+import { TextInput } from "@/components/shared/input/TextInput";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ROLES, Role } from "@/enums/roles.enum";
 import { useStaffById } from "@/hooks/staff/useStaffById";
 import { useStaffMutations } from "@/hooks/staff/mutations";
-import { useStaffTranslations } from "@/hooks/staff/useStaffTranslations";
+import { useLanguages } from "@/hooks/useLanguages";
 import { useTranslation } from "@/providers/translations-provider";
 import { editStaffSchema, type TEditStaffDTO } from "@/schemas/staff.schemas";
 import { formatValidationMessage } from "@/schemas/common.schemas";
@@ -29,8 +30,8 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
   // Get staff data
   const { staff, isLoading, error } = useStaffById(parseInt(staffId, 10));
   const { update } = useStaffMutations();
+  const { languages } = useLanguages();
   const { t } = useTranslation();
-  const staffTranslationsHooks = useStaffTranslations(parseInt(staffId, 10));
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
 
   // Memoize the resolver to prevent unnecessary re-renders
@@ -39,9 +40,13 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
   const staffForm = useForm<TEditStaffDTO>({
     resolver,
     defaultValues: {
+      name: "",
+      email: "",
       image: "",
       password: "",
       role: Role.AUTHOR,
+      bio: "",
+      languageCode: "en",
     },
     mode: "onSubmit", // Only validate on submit
   });
@@ -50,8 +55,12 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
   useEffect(() => {
     if (staff) {
       // Use setValue to update individual fields
+      staffForm.setValue("name", staff.name || "");
+      staffForm.setValue("email", staff.email || "");
       staffForm.setValue("image", staff.image || "");
       staffForm.setValue("role", staff.role as Role);
+      staffForm.setValue("bio", staff.bio || "");
+      staffForm.setValue("languageCode", "en"); // Default since translations were removed
       // Don't set password as it should be empty for security
     }
   }, [staff, staffForm]);
@@ -60,6 +69,16 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
     try {
       // Create FormData for file upload
       const formData = new FormData();
+      
+      // Add name if provided
+      if (data.name) {
+        formData.append('name', data.name);
+      }
+      
+      // Add email if provided
+      if (data.email) {
+        formData.append('email', data.email);
+      }
       
       // Add password if provided and not empty
       if (data.password && data.password.trim() !== "") {
@@ -71,9 +90,19 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
         formData.append('role', data.role);
       }
       
+      // Add bio if provided
+      if (data.bio !== undefined) {
+        formData.append('bio', data.bio || "");
+      }
+      
       // Add image URL (uploaded via FileInput auto-upload)
       if (data.image) {
         formData.append('image', data.image);
+      }
+      
+      // Add languageCode if provided
+      if (data.languageCode) {
+        formData.append('languageCode', data.languageCode);
       }
       
       await update.mutateAsync({ id: parseInt(staffId, 10), data: formData });
@@ -110,21 +139,36 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
   }
 
   return (
-    <Tabs defaultValue="staff" className="w-full">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="staff">
-          {t.staffs?.staff || "Staff Settings"}
-        </TabsTrigger>
-        <TabsTrigger value="translations">
-          {"Translations"}
-        </TabsTrigger>
-      </TabsList>
-
-      <TabsContent value="staff" className="space-y-6 pt-6">
+    <div className="space-y-6">
         <Form {...staffForm}>
           <form onSubmit={staffForm.handleSubmit(onUpdateStaff)} className="space-y-4">
-            {/* Editable fields */}
-            <div className="grid grid-cols-1 md:grid-cols-2 items-end gap-4">
+            {/* Basic Information */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <TextInput
+                control={staffForm.control}
+                name="name"
+                label={t.common.name}
+                placeholder={t.common.namePlaceholder}
+              />
+              <TextInput
+                control={staffForm.control}
+                name="email"
+                label={t.common.email}
+                placeholder={t.common.emailPlaceholder}
+                type="email"
+              />
+            </div>
+
+            <TextAreaInput
+              control={staffForm.control}
+              name="bio"
+              label={t.common.bio}
+              placeholder={t.common.bioPlaceholder}
+              className="min-h-[100px]"
+            />
+
+            {/* Security & Role */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <PasswordInput
                 control={staffForm.control}
                 name="password"
@@ -144,6 +188,20 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
                 }))}
               />
             </div>
+
+            {/* Language */}
+            <SelectInput
+              control={staffForm.control}
+              name="languageCode"
+              label={t.common.defaultLanguage}
+              placeholder={t.common.selectLanguage}
+              options={
+                languages?.map((lang) => ({
+                  value: lang.code,
+                  label: `${lang.name} (${lang.code})`,
+                })) || []
+              }
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -205,17 +263,6 @@ export function EditStaffForm({ staffId }: EditStaffFormProps) {
             </Button>
           </form>
         </Form>
-      </TabsContent>
-
-      <TabsContent value="translations" className="space-y-6">
-        <EntityTranslations
-          entityId={parseInt(staffId, 10)}
-          entityType="staff"
-          hooks={staffTranslationsHooks}
-          hasContent={false}
-          hasMeta={false}
-        />
-      </TabsContent>
-    </Tabs>
+    </div>
   );
 }

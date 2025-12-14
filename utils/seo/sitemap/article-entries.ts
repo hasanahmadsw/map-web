@@ -9,9 +9,8 @@ export default async function getArticleEntries(): Promise<MetadataRoute.Sitemap
 
   try {
     for (const lang of languages) {
-      // Get all published articles for each language
+      // Get all published articles
       const articles = await articlesService.getAll({ 
-        lang, 
         limit: 1000 // Get all articles
       });
 

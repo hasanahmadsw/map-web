@@ -10,13 +10,17 @@ import { CheckboxInput } from "@/components/shared/input/CheckboxInput";
 import { FileInput } from "@/components/shared/input/FileInput";
 import { MediaPickerDialog } from "@/components/media/media-picker-dialog";
 import { IconSelectInput } from "@/components/shared/input/IconSelectInput";
+import { SelectInput } from "@/components/shared/input/SelectInput";
+import { TextAreaInput } from "@/components/shared/input/TextAreaInput";
 import { TextInput } from "@/components/shared/input/TextInput";
-import { EntityTranslations } from "@/components/translations/translations";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { useSolutionById } from "@/hooks/solutions/useSolutionById";
 import { useSolutionMutations } from "@/hooks/solutions/mutations";
-import { useSolutionTranslations } from "@/hooks/solutions/useSolutionTranslations";
+import { useLanguages } from "@/hooks/useLanguages";
 import { useTranslation } from "@/providers/translations-provider";
 import {
   editSolutionSchema,
@@ -24,7 +28,6 @@ import {
 } from "@/schemas/solutions.schemas";
 import { solutionsService } from "@/services/solutions.service";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface EditSolutionFormProps {
   solutionId: string;
@@ -33,14 +36,15 @@ interface EditSolutionFormProps {
 export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
   const { t } = useTranslation();
   const { update } = useSolutionMutations();
+  const { languages } = useLanguages();
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
+  const [newKeyword, setNewKeyword] = useState("");
   const {
     solution,
     isLoading: isLoadingSolution,
     isError: isErrorSolution,
     refetch: refetchSolution,
   } = useSolutionById(solutionId);
-  const solutionTranslationsHooks = useSolutionTranslations(Number(solutionId));
 
   const form = useForm<z.input<ReturnType<typeof editSolutionSchema>>>({
     resolver: zodResolver(editSolutionSchema(t.validation)),
@@ -51,6 +55,15 @@ export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
       isPublished: false,
       isFeatured: false,
       order: 0,
+      name: "",
+      description: "",
+      shortDescription: "",
+      meta: {
+        title: "",
+        description: "",
+        keywords: [],
+      },
+      languageCode: "en",
     },
   });
 
@@ -64,9 +77,34 @@ export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
         isPublished: solution.isPublished,
         isFeatured: solution.isFeatured,
         order: solution.order,
+        name: solution.name,
+        description: solution.description,
+        shortDescription: solution.shortDescription,
+        meta: {
+          title: solution.meta?.title || "",
+          description: solution.meta?.description || "",
+          keywords: solution.meta?.keywords || [],
+        },
+        languageCode: "en", // Default since translations were removed
       });
     }
   }, [solution, form]);
+
+  const addKeyword = () => {
+    const keyword = newKeyword.trim();
+    if (keyword) {
+      const currentKeywords = form.getValues("meta.keywords") || [];
+      if (!currentKeywords.includes(keyword)) {
+        form.setValue("meta.keywords", [...currentKeywords, keyword], { shouldDirty: true });
+      }
+      setNewKeyword("");
+    }
+  };
+
+  const removeKeyword = (keyword: string) => {
+    const currentKeywords = form.getValues("meta.keywords") || [];
+    form.setValue("meta.keywords", currentKeywords.filter((k: string) => k !== keyword), { shouldDirty: true });
+  };
 
 
   const onSubmit = async (
@@ -136,17 +174,7 @@ export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
   }
 
   return (
-    <Tabs defaultValue="solution" className="w-full">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="solution">
-          {t.solutions?.basicInformation || "Solution Settings"}
-        </TabsTrigger>
-        <TabsTrigger value="translations">
-          {"Translations"}
-        </TabsTrigger>
-      </TabsList>
-
-      <TabsContent value="solution" className="space-y-6">
+    <div className="space-y-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Basic Information */}
@@ -161,18 +189,24 @@ export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <TextInput
                     control={form.control}
+                    name="name"
+                    label={t.solutions?.solutionName || "Solution Name"}
+                    placeholder={t.solutions?.solutionNamePlaceholder || "Enter solution name"}
+                  />
+                  <TextInput
+                    control={form.control}
                     name="slug"
                     label={t.solutions?.slug || "Slug"}
                     placeholder={t.solutions?.slugPlaceholder || "solution-slug"}
                   />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <IconSelectInput
                     name="icon"
                     label={t.solutions?.icon || "Icon"}
                     placeholder={t.solutions?.iconPlaceholder || "Select an icon"}
                   />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <TextInput
                     control={form.control}
                     name="order"
@@ -180,8 +214,23 @@ export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
                     placeholder="0"
                     type="number"
                   />
-                
                 </div>
+
+                <TextAreaInput
+                  control={form.control}
+                  name="description"
+                  label={t.solutions?.description || "Description"}
+                  placeholder={t.solutions?.descriptionPlaceholder || "Enter solution description"}
+                  className="min-h-[100px]"
+                />
+
+                <TextAreaInput
+                  control={form.control}
+                  name="shortDescription"
+                  label={t.solutions?.shortDescription || "Short Description"}
+                  placeholder={t.solutions?.shortDescriptionPlaceholder || "Enter short description"}
+                  className="min-h-[80px]"
+                />
               </CardContent>
             </Card>
 
@@ -244,6 +293,80 @@ export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
               </CardContent>
             </Card>
 
+            {/* Meta Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t.solutions?.metaInformation || "Meta Information"}</CardTitle>
+                <CardDescription>
+                  {t.solutions?.metaInformationDescription || "SEO and meta information for this solution."}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <TextInput
+                    control={form.control}
+                    name="meta.title"
+                    label={t.solutions?.metaTitle || "Meta Title"}
+                    placeholder={t.solutions?.metaTitlePlaceholder || "Enter meta title"}
+                  />
+                  <SelectInput
+                    control={form.control}
+                    name="languageCode"
+                    label={t.common?.defaultLanguage || "Default Language"}
+                    placeholder={t.common?.selectLanguage || "Select a language"}
+                    options={
+                      languages?.map((lang) => ({
+                        value: lang.code,
+                        label: `${lang.name} (${lang.code})`,
+                      })) || []
+                    }
+                  />
+                </div>
+
+                <TextAreaInput
+                  control={form.control}
+                  name="meta.description"
+                  label={t.solutions?.metaDescription || "Meta Description"}
+                  placeholder={t.solutions?.metaDescriptionPlaceholder || "Enter meta description"}
+                  className="min-h-[80px]"
+                />
+
+                {/* Keywords */}
+                <div className="space-y-2">
+                  <Label htmlFor="keywords">{t.common?.keywords || "Keywords"}</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="keywords"
+                      value={newKeyword}
+                      onChange={(e) => setNewKeyword(e.target.value)}
+                      placeholder={t.common?.addKeyword || "Add keyword"}
+                      onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addKeyword())}
+                      className="flex-1"
+                    />
+                    <Button type="button" onClick={addKeyword} variant="outline">
+                      {t.common?.add || "Add"}
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {(form.watch("meta.keywords") || []).map((keyword: string) => (
+                      <Badge key={keyword} variant="secondary" className="flex items-center gap-1 text-xs">
+                        {keyword}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-4 w-4 p-0 hover:bg-destructive/20"
+                          onClick={() => removeKeyword(keyword)}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Status Options */}
             <Card>
               <CardHeader>
@@ -281,18 +404,6 @@ export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
             </div>
           </form>
         </Form>
-      </TabsContent>
-
-      <TabsContent value="translations" className="space-y-6">
-        <EntityTranslations
-          entityId={Number(solutionId)}
-          entityType="solution"
-          hooks={solutionTranslationsHooks}
-          hasContent={false}
-          hasMeta={true}
-          hasSubServices={false}
-        />
-      </TabsContent>
-    </Tabs>
+    </div>
   );
 }

@@ -58,49 +58,18 @@ export const editServiceSchema = (validationDict: Record<string, string>) =>
       isFeatured: z.boolean().optional(),
       order: z.number().int().min(0).optional(),
       solutionIds: z.array(z.number().int().positive()).optional(),
-    },
-    validationDict.atLeastOne || "At least one field must be provided",
-  ).strict();
-
-// Create service translation schema
-export const createServiceTranslationSchema = (validationDict: Record<string, string>) =>
-  z
-    .object({
-      languageCode: languageCodeSchema(validationDict),
-      name: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)),
-      description: trimmed(1000, validationDict).min(10, minLengthValidation(10, validationDict)),
-      shortDescription: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)),
-      meta: z.object({
-        title: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)),
-        description: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)),
-        keywords: z.array(trimmed(50, validationDict)).optional(),
-      }),
-      subServices: z.array(subServiceSchema(validationDict)).optional(),
-    })
-    .strict();
-
-// Edit service translation schema
-export const editServiceTranslationSchema = (validationDict: Record<string, string>) =>
-  atLeastOne(
-    {
       name: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)).optional(),
       description: trimmed(1000, validationDict).min(10, minLengthValidation(10, validationDict)).optional(),
       shortDescription: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)).optional(),
-      meta: z
-        .object({
-          title: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)).optional(),
-          description: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)).optional(),
-          keywords: z.array(trimmed(50, validationDict)).optional(),
-        })
-        .optional(),
+      meta: z.object({
+        title: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)).optional(),
+        description: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)).optional(),
+        keywords: z.array(trimmed(50, validationDict)).optional(),
+      }).optional(),
       subServices: z.array(subServiceSchema(validationDict)).optional(),
     },
     validationDict.atLeastOne || "At least one field must be provided",
-  );
-
-// Auto-translate service schema
-export const autoTranslateServiceSchema = (validationDict: Record<string, string>) =>
-  autoTranslateSchema(validationDict);
+  ).strict();
 
 // Bulk service operation schema
 export const bulkServiceOperationSchema = (validationDict: Record<string, string>) =>
@@ -146,9 +115,6 @@ export const updateServiceStatusSchema = (validationDict: Record<string, string>
 // Types
 export type TCreateServiceForm = z.infer<ReturnType<typeof createServiceSchema>>;
 export type TEditServiceForm = z.infer<ReturnType<typeof editServiceSchema>>;
-export type TCreateServiceTranslationForm = z.infer<ReturnType<typeof createServiceTranslationSchema>>;
-export type TEditServiceTranslationForm = z.infer<ReturnType<typeof editServiceTranslationSchema>>;
-export type TAutoTranslateServiceForm = z.infer<ReturnType<typeof autoTranslateServiceSchema>>;
 export type TBulkServiceOperationForm = z.infer<ReturnType<typeof bulkServiceOperationSchema>>;
 export type TServiceSearchForm = z.infer<typeof serviceSearchSchema>;
 export type TUpdateServiceStatusForm = z.infer<typeof updateServiceStatusSchema>;

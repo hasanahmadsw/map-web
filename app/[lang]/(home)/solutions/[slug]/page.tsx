@@ -22,7 +22,7 @@ export const dynamic = "force-dynamic"
 
 export async function generateMetadata({ params }: SolutionPageProps): Promise<Metadata> {
   const { slug, lang } = await params
-  const solution = await solutionsService.getBySlug(slug, lang as Lang)
+  const solution = await solutionsService.getBySlug(slug)
   
   if (!solution) {
     notFound()
@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: SolutionPageProps): Promise<M
 export default async function SolutionPage({ params }: SolutionPageProps) {
   const { slug, lang } = await params
   const t = await getTranslations(lang as Lang)
-  const solution = await solutionsService.getBySlug(slug, lang as Lang)
+  const solution = await solutionsService.getBySlug(slug)
 
   if (!solution) {
     notFound()

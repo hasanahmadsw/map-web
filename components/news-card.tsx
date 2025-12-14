@@ -10,68 +10,12 @@ import DivHtml from "./shared/div-html";
 
 interface NewsCardProps {
   article: Article;
-  variant?: "horizontal" | "vertical";
   className?: string;
   lang: string;
   t:Translations
 }
 
-export function NewsCard({ article, variant = "vertical", t, className, lang }: NewsCardProps) {
-
-
-  // if (variant === "horizontal") {
-  //   return (
-  //     <Card className={cn("group hover:shadow-md transition-all duration-200 p-0", className)}>
-  //       <div className="flex">
-  //         <Link
-  //           href={`/news/${article.slug}`}
-  //           className="relative w-32 h-24 md:w-40 md:h-28 flex-shrink-0 overflow-hidden rounded-l-lg"
-  //         >
-  //           <Image
-  //             src={`https://picsum.photos/400/300?random=${article.id}`}
-  //             alt={`${article.name || "News image"} thumbnail`}
-  //             fill
-  //             sizes="(max-width: 768px) 128px, 160px"
-  //             className="object-cover group-hover:scale-105 transition-transform duration-200"
-  //           />
-  //         </Link>
-  //         <div className="flex-1 flex flex-col justify-between p-4 space-y-2">
-  //           <div>
-  //             <div className="flex items-center gap-2 mb-2">
-  //               {article?.topics?.slice(0, 3).map((topic) => (
-  //                 <Badge key={topic.slug} variant="default" className="text-xs">
-  //                   {topic.name}
-  //                 </Badge>
-  //               ))}
-
-  //               {article.tags.slice(0, 3).map((tag) => (
-  //                 <Badge key={tag.slug} variant="secondary" className="text-xs">
-  //                   {tag.name}
-  //                 </Badge>
-  //               ))}
-  //             </div>
-  //             <h3 className="font-semibold text-sm md:text-base line-clamp-2 mb-2 group-hover:text-primary transition-colors">
-  //               <Link href={`/news/${article.slug}`} className="hover:underline">
-  //                 {article.name}
-  //               </Link>
-  //             </h3>
-  //             <DivHtml html={article.excerpt} />
-  //           </div>
-  //           <div className="flex items-center justify-between text-xs text-muted-foreground">
-  //             <div className="flex items-center gap-1">
-  //               <Calendar className="h-3 w-3" />
-  //               <span>{formatDate(article.createdAt, lang)}</span>
-  //             </div>
-  //             <div className="flex items-center gap-1">
-  //               <Clock className="h-3 w-3" />
-  //               <span>{article.viewCount} { t.common.views}</span>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </Card>
-  //   );
-  // }
+export function NewsCard({ article, t, className, lang }: NewsCardProps) {
 
   return (
     <Card className={cn("group hover:shadow-md transition-all duration-200 p-0", className)}>
@@ -95,8 +39,8 @@ export function NewsCard({ article, variant = "vertical", t, className, lang }: 
       <CardContent className="p-4">
         <div className="flex items-center gap-2 mb-3">
           {article?.topics?.slice(0, 3).map((topic) => (
-            <Badge key={topic.slug} variant="default" className="text-xs">
-              {topic.name}
+            <Badge key={topic} variant="default" className="text-xs">
+              {topic}
             </Badge>
           ))}
           {article?.topics?.length > 3 && (
@@ -105,8 +49,8 @@ export function NewsCard({ article, variant = "vertical", t, className, lang }: 
             </Badge>
           )}
           {article.tags.slice(0, 3).map((tag) => (
-            <Badge key={tag.slug} variant="secondary" className="text-xs">
-              {tag.name}
+            <Badge key={tag} variant="secondary" className="text-xs">
+              {tag}
             </Badge>
           ))}
         </div>

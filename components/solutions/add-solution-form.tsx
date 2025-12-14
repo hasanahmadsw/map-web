@@ -15,6 +15,9 @@ import { TextAreaInput } from "@/components/shared/input/TextAreaInput";
 import { TextInput } from "@/components/shared/input/TextInput";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { useSolutionMutations } from "@/hooks/solutions/mutations";
 import { useLanguages } from "@/hooks/useLanguages";
 import { useTranslation } from "@/providers/translations-provider";
@@ -28,6 +31,7 @@ export function AddSolutionForm() {
   const { languages, isLoading: languagesLoading } = useLanguages();
   const { t } = useTranslation();
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
+  const [newKeyword, setNewKeyword] = useState("");
 
   const form = useForm<z.input<ReturnType<typeof createSolutionSchema>>>({
     resolver: zodResolver(createSolutionSchema(t.validation)),
@@ -58,6 +62,22 @@ export function AddSolutionForm() {
       form.setValue("translateTo", allLanguageCodes);
     }
   }, [languages, form]);
+
+  const addKeyword = () => {
+    const keyword = newKeyword.trim();
+    if (keyword) {
+      const currentKeywords = form.getValues("meta.keywords") || [];
+      if (!currentKeywords.includes(keyword)) {
+        form.setValue("meta.keywords", [...currentKeywords, keyword]);
+      }
+      setNewKeyword("");
+    }
+  };
+
+  const removeKeyword = (keyword: string) => {
+    const currentKeywords = form.getValues("meta.keywords") || [];
+    form.setValue("meta.keywords", currentKeywords.filter((k: string) => k !== keyword));
+  };
 
   const onSubmit = async (data: z.input<ReturnType<typeof createSolutionSchema>>) => {
     try {
@@ -274,6 +294,40 @@ export function AddSolutionForm() {
               placeholder={t.solutions?.metaDescriptionPlaceholder || "Enter meta description"}
               className="min-h-[80px]"
             />
+
+            {/* Keywords */}
+            <div className="space-y-2">
+              <Label htmlFor="keywords">{t.common?.keywords || "Keywords"}</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="keywords"
+                  value={newKeyword}
+                  onChange={(e) => setNewKeyword(e.target.value)}
+                  placeholder={t.common?.addKeyword || "Add keyword"}
+                  onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addKeyword())}
+                  className="flex-1"
+                />
+                <Button type="button" onClick={addKeyword} variant="outline">
+                  {t.common?.add || "Add"}
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {(form.watch("meta.keywords") || []).map((keyword: string) => (
+                  <Badge key={keyword} variant="secondary" className="flex items-center gap-1 text-xs">
+                    {keyword}
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="h-4 w-4 p-0 hover:bg-destructive/20"
+                      onClick={() => removeKeyword(keyword)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </Badge>
+                ))}
+              </div>
+            </div>
           </CardContent>
         </Card>
 

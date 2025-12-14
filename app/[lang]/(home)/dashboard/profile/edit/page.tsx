@@ -11,11 +11,8 @@ import { Badge } from '@/components/ui/badge';
 import { Form } from '@/components/ui/form';
 import { TextInput } from '@/components/shared/input/TextInput';
 import { FileInput } from '@/components/shared/input/FileInput';
-import { EntityTranslations } from '@/components/translations/translations';
-import { Separator } from '@/components/ui/separator';
 import { useTranslation } from '@/providers/translations-provider';
 import { useStaff } from '@/hooks/staff/useStaff';
-import { useStaffTranslations } from '@/hooks/staff/useStaffTranslations';
 import { Save, Loader2 } from 'lucide-react';
 import { updateMeSchema } from '@/schemas/staff.schemas';
 import { z } from 'zod';
@@ -33,7 +30,6 @@ export default function EditProfilePage({ params }: EditProfilePageProps) {
   const { t } = useTranslation();
   const { data: user } = useAuth();
   const { updateMe, isUpdatingMe, updateError } = useStaff();
-  const staffTranslationsHooks = useStaffTranslations(user?.id || 0, !!user?.id);
 
   // Profile form
   interface UpdateMeFormValues extends TUpdateMeDTO { file?: File }
@@ -169,17 +165,6 @@ export default function EditProfilePage({ params }: EditProfilePageProps) {
           </Form>
         </CardContent>
       </Card>
-
-      <Separator />
-
-      {/* Translations Management */}
-      <EntityTranslations
-        entityId={user.id}
-        entityType="staff"
-        hooks={staffTranslationsHooks}
-        hasContent={false}
-        hasMeta={false}
-      />
     </div>
   );
 }

@@ -1,4 +1,6 @@
-export interface StaffService {
+import type { BaseListParams } from "./common.types";
+
+  export interface StaffService {
   id: number;
   slug: string;
   icon: string;
@@ -7,7 +9,15 @@ export interface StaffService {
   featuredImage: string;
   viewCount: number;
   order: number;
-  translations: ServiceTranslation[];
+  name: string;
+  description: string;
+  shortDescription: string;
+  meta: {
+    title: string;
+    keywords: string[];
+    description: string;
+  };
+  subServices: SubService[];
   solutions?: Array<{ id: number } | number>;
   createdAt: string;
   updatedAt: string;
@@ -40,29 +50,9 @@ export interface SubService {
   features: string[];
 }
 
-export interface ServiceTranslation {
-  id: number;
-  serviceId: number;
-  languageCode: string;
-  name: string;
-  description: string;
-  shortDescription: string;
-  meta: {
-    title: string;
-    keywords: string[];
-    description: string;
-  };
-  subServices: SubService[];
-  language: Record<string, any>;
-  createdAt: string;
-  updatedAt: string;
-}
-
-import type { BaseListParams } from "@/hooks/list/useListUrlState";
 
 export interface IServiceParams extends BaseListParams {
+  search?: string;
   isPublished?: boolean;
   isFeatured?: boolean;
-    sort?: "createdAt" | "updatedAt" | "name";
-  orderDirection?: "ASC" | "DESC";
 }

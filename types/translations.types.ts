@@ -5,22 +5,6 @@ export interface BaseTranslation {
   createdAt?: string;
 }
 
-export interface ArticleTranslation extends BaseTranslation {
-  content: string;
-  excerpt: string;
-  tags?: string;
-  topics?: string;
-  meta: {
-    title: string;
-    description: string;
-    keywords: string[];
-  };
-}
-
-export interface StaffTranslation extends BaseTranslation {
-  bio: string;
-}
-
 export interface TagTranslation extends BaseTranslation {
   description: string;
 }
@@ -29,33 +13,7 @@ export interface TopicTranslation extends BaseTranslation {
   description: string;
 }
 
-export interface ServiceTranslation extends BaseTranslation {
-  description: string;
-  shortDescription: string;
-  meta: {
-    title: string;
-    description: string;
-    keywords: string[];
-  };
-  subServices: Array<{
-    icon: string;
-    title: string;
-    description: string;
-    features: string[];
-  }>;
-}
-
-export interface SolutionTranslation extends BaseTranslation {
-  description: string;
-  shortDescription: string;
-  meta: {
-    title: string;
-    description: string;
-    keywords: string[];
-  };
-}
-
-export type Translation = ArticleTranslation | TagTranslation | TopicTranslation | StaffTranslation | ServiceTranslation | SolutionTranslation;
+export type Translation = TagTranslation | TopicTranslation;
 
 export interface EditableTranslation {
   id: number;
@@ -95,4 +53,4 @@ export interface TranslationHooks<T extends Translation> {
   isTranslating: boolean;
 }
 
-export type EntityType = "article" | "tag" | "topic" | "staff" | "service" | "solution";
+export type EntityType = "tag" | "topic";

@@ -11,14 +11,19 @@ import { FileInput } from "@/components/shared/input/FileInput";
 import { MediaPickerDialog } from "@/components/media/media-picker-dialog";
 import { IconSelectInput } from "@/components/shared/input/IconSelectInput";
 import { SearchableMultiSelectInput } from "@/components/shared/input/SearchableMultiSelectInput";
+import { SelectInput } from "@/components/shared/input/SelectInput";
+import { SubServicesInput } from "@/components/shared/input/SubServicesInput";
+import { TextAreaInput } from "@/components/shared/input/TextAreaInput";
 import { TextInput } from "@/components/shared/input/TextInput";
-import { EntityTranslations } from "@/components/translations/translations";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { useServiceById } from "@/hooks/services/useServiceById";
 import { useServiceMutations } from "@/hooks/services/mutations";
-import { useServiceTranslations } from "@/hooks/services/useServiceTranslations";
 import { useSolutionsStaff } from "@/hooks/solutions/useSolutionsStaff";
+import { useLanguages } from "@/hooks/useLanguages";
 import { useTranslation } from "@/providers/translations-provider";
 import {
   editServiceSchema,
@@ -26,7 +31,6 @@ import {
 } from "@/schemas/services.schemas";
 import { servicesService } from "@/services/services.service";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { StaffSolution } from "@/types/solutions.types";
 
 interface EditServiceFormProps {
@@ -36,14 +40,15 @@ interface EditServiceFormProps {
 export function EditServiceForm({ serviceId }: EditServiceFormProps) {
   const { t } = useTranslation();
   const { update } = useServiceMutations();
+  const { languages } = useLanguages();
   const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
+  const [newKeyword, setNewKeyword] = useState("");
   const {
     service,
     isLoading: isLoadingService,
     isError: isErrorService,
     refetch: refetchService,
   } = useServiceById(serviceId);
-  const serviceTranslationsHooks = useServiceTranslations(Number(serviceId));
   const { solutions, isLoading: solutionsLoading } = useSolutionsStaff({ limit: 100 });
 
   const form = useForm<z.input<ReturnType<typeof editServiceSchema>>>({
@@ -56,16 +61,22 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
       isFeatured: false,
       order: 0,
       solutionIds: [],
+      name: "",
+      description: "",
+      shortDescription: "",
+      meta: {
+        title: "",
+        description: "",
+        keywords: [],
+      },
+      subServices: [],
+      languageCode: "en",
     },
   });
 
   // Reset form when service data is loaded
   useEffect(() => {
     if (service) {
-      // Get the first translation for language code
-      const firstTranslation = service.translations?.[0];
-      const languageCode = firstTranslation?.languageCode || "";
-
       // Extract solution IDs from the solutions array
       const serviceSolutions = service.solutions || [];
       const solutionIds = Array.isArray(serviceSolutions)
@@ -80,9 +91,35 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
         isFeatured: service.isFeatured,
         order: service.order,
         solutionIds: solutionIds,
+        name: service.name,
+        description: service.description,
+        shortDescription: service.shortDescription,
+        meta: {
+          title: service.meta?.title || "",
+          description: service.meta?.description || "",
+          keywords: service.meta?.keywords || [],
+        },
+        subServices: service.subServices || [],
+        languageCode: "en", // Default since translations were removed
       });
     }
   }, [service, form]);
+
+  const addKeyword = () => {
+    const keyword = newKeyword.trim();
+    if (keyword) {
+      const currentKeywords = form.getValues("meta.keywords") || [];
+      if (!currentKeywords.includes(keyword)) {
+        form.setValue("meta.keywords", [...currentKeywords, keyword], { shouldDirty: true });
+      }
+      setNewKeyword("");
+    }
+  };
+
+  const removeKeyword = (keyword: string) => {
+    const currentKeywords = form.getValues("meta.keywords") || [];
+    form.setValue("meta.keywords", currentKeywords.filter((k: string) => k !== keyword), { shouldDirty: true });
+  };
 
 
   const onSubmit = async (
@@ -152,17 +189,7 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
   }
 
   return (
-    <Tabs defaultValue="service" className="w-full">
-      <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="service">
-          {t.services?.basicInformation || "Service Settings"}
-        </TabsTrigger>
-        <TabsTrigger value="translations">
-          {"Translations"}
-        </TabsTrigger>
-      </TabsList>
-
-      <TabsContent value="service" className="space-y-6">
+    <div className="space-y-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Basic Information */}
@@ -177,18 +204,24 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <TextInput
                     control={form.control}
+                    name="name"
+                    label={t.services?.serviceName || "Service Name"}
+                    placeholder={t.services?.serviceNamePlaceholder || "Enter service name"}
+                  />
+                  <TextInput
+                    control={form.control}
                     name="slug"
                     label={t.services?.slug || "Slug"}
                     placeholder={t.services?.slugPlaceholder || "service-slug"}
                   />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <IconSelectInput
                     name="icon"
                     label={t.services?.icon || "Icon"}
                     placeholder={t.services?.iconPlaceholder || "Select an icon"}
                   />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <TextInput
                     control={form.control}
                     name="order"
@@ -196,8 +229,23 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
                     placeholder="0"
                     type="number"
                   />
-                
                 </div>
+
+                <TextAreaInput
+                  control={form.control}
+                  name="description"
+                  label={t.services?.description || "Description"}
+                  placeholder={t.services?.descriptionPlaceholder || "Enter service description"}
+                  className="min-h-[100px]"
+                />
+
+                <TextAreaInput
+                  control={form.control}
+                  name="shortDescription"
+                  label={t.services?.shortDescription || "Short Description"}
+                  placeholder={t.services?.shortDescriptionPlaceholder || "Enter short description"}
+                  className="min-h-[80px]"
+                />
               </CardContent>
             </Card>
 
@@ -260,9 +308,22 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
               </CardContent>
             </Card>
 
+            {/* Sub Services */}
+            <SubServicesInput
+              control={form.control}
+              name="subServices"
+              label={t.services?.subServices || "Sub Services"}
+              description={t.services?.subServicesDescription || "Add sub-services for this service."}
+            />
+
             {/* Solutions */}
             <Card>
-             
+              <CardHeader>
+                <CardTitle>{t.services?.solutions || "Solutions"}</CardTitle>
+                <CardDescription>
+                  {t.services?.solutionsDescription || "Select solutions related to this service."}
+                </CardDescription>
+              </CardHeader>
               <CardContent>
                 <SearchableMultiSelectInput
                   control={form.control}
@@ -274,10 +335,84 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
                   emptyMessage={t.services?.noSolutionsFound || "No solutions found"}
                   options={solutions.map((solution: StaffSolution) => ({
                     id: solution.id,
-                    translations: solution.translations?.map((t: { name: string }) => ({ name: t.name })) || [],
+                    name: solution.name,
                   }))}
                   disabled={solutionsLoading}
                 />
+              </CardContent>
+            </Card>
+
+            {/* Meta Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t.services?.metaInformation || "Meta Information"}</CardTitle>
+                <CardDescription>
+                  {t.services?.metaInformationDescription || "SEO and meta information for this service."}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <TextInput
+                    control={form.control}
+                    name="meta.title"
+                    label={t.services?.metaTitle || "Meta Title"}
+                    placeholder={t.services?.metaTitlePlaceholder || "Enter meta title"}
+                  />
+                  <SelectInput
+                    control={form.control}
+                    name="languageCode"
+                    label={t.common?.defaultLanguage || "Default Language"}
+                    placeholder={t.common?.selectLanguage || "Select a language"}
+                    options={
+                      languages?.map((lang) => ({
+                        value: lang.code,
+                        label: `${lang.name} (${lang.code})`,
+                      })) || []
+                    }
+                  />
+                </div>
+
+                <TextAreaInput
+                  control={form.control}
+                  name="meta.description"
+                  label={t.services?.metaDescription || "Meta Description"}
+                  placeholder={t.services?.metaDescriptionPlaceholder || "Enter meta description"}
+                  className="min-h-[80px]"
+                />
+
+                {/* Keywords */}
+                <div className="space-y-2">
+                  <Label htmlFor="keywords">{t.common?.keywords || "Keywords"}</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      id="keywords"
+                      value={newKeyword}
+                      onChange={(e) => setNewKeyword(e.target.value)}
+                      placeholder={t.common?.addKeyword || "Add keyword"}
+                      onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addKeyword())}
+                      className="flex-1"
+                    />
+                    <Button type="button" onClick={addKeyword} variant="outline">
+                      {t.common?.add || "Add"}
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {(form.watch("meta.keywords") || []).map((keyword: string) => (
+                      <Badge key={keyword} variant="secondary" className="flex items-center gap-1 text-xs">
+                        {keyword}
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-4 w-4 p-0 hover:bg-destructive/20"
+                          onClick={() => removeKeyword(keyword)}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -318,18 +453,6 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
             </div>
           </form>
         </Form>
-      </TabsContent>
-
-      <TabsContent value="translations" className="space-y-6">
-        <EntityTranslations
-          entityId={Number(serviceId)}
-          entityType="service"
-          hooks={serviceTranslationsHooks}
-          hasContent={false}
-          hasMeta={true}
-          hasSubServices={true}
-        />
-      </TabsContent>
-    </Tabs>
+    </div>
   );
 }

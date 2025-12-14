@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { Role, ROLES } from "../enums/roles.enum";
 import { atLeastOne, emailSchema, languageCodeSchema, passwordSchema, formatValidationMessage } from "./common.schemas";
-import { autoTranslateSchema } from "./translations.schemas";
 
 const baseStaffShape = (t: any) => {
   const minLengthMessage = (min: number) => formatValidationMessage(t.minLength, { min });
@@ -27,12 +26,22 @@ export const createStaffSchema = (t: any) => z.object(baseStaffShape(t)).strict(
 
 export const editStaffSchema = (t: any) => {
   const atLeastOneMessage = formatValidationMessage(t.atLeastOne, { entity: "staff" });
+  const minLengthMessage = (min: number) => formatValidationMessage(t.minLength, { min });
   
   return atLeastOne(
     {
+      name: z.string()
+        .trim()
+        .min(1, t.required)
+        .max(200, formatValidationMessage(t.maxLength, { entity: "staff", max: 200 }))
+        .min(2, minLengthMessage(2))
+        .optional(),
+      email: emailSchema(t).optional(),
       password: z.union([z.literal(""), z.string().min(8, t.passwordTooShort || "Password must be at least 8 characters")]).optional(),
       role: z.nativeEnum(Role).optional(),
+      bio: z.string().optional(),
       image: z.string().optional(),
+      languageCode: languageCodeSchema(t).optional(),
     },
     atLeastOneMessage,
   ).strict();
@@ -51,48 +60,8 @@ export const updateMeSchema = (t: any) => {
     .strict();
 };
 
-export const createStaffTranslationSchema = (validationDict: any) => {
-  const minLengthMessage = (min: number) => formatValidationMessage(validationDict.minLength, { min });
-  const requiredMessage = formatValidationMessage(validationDict.required, { entity: "staff" });
-  
-  return z
-    .object({
-      languageCode: languageCodeSchema(validationDict),
-      name: z.string()
-        .trim()
-        .min(1, requiredMessage)
-        .max(200, formatValidationMessage(validationDict.maxLength, { entity: "staff", max: 200 }))
-        .min(2, minLengthMessage(2)),
-      bio: z.string().optional(),
-    })
-    .strict();
-};
-
-export const updateStaffTranslationSchema = (t: any) => {
-  const minLengthMessage = (min: number) => formatValidationMessage(t.minLength, { min });
-  const requiredMessage = formatValidationMessage(t.required, { entity: "staff" });
-  const atLeastOneMessage = formatValidationMessage(t.atLeastOne, { entity: "staff" });
-  
-  return atLeastOne(
-    {
-      name: z.string()
-        .trim()
-        .min(1, requiredMessage)
-        .max(200, formatValidationMessage(t.maxLength, { entity: "staff", max: 200 }))
-        .min(2, minLengthMessage(2))
-        .optional(),
-      bio: z.string().optional(),
-    },
-    atLeastOneMessage,
-  );
-};
-
-export const autoTranslateStaffSchema = (t: any) => autoTranslateSchema(t);
 
 // Types
 export type TCreateStaffDTO = z.infer<ReturnType<typeof createStaffSchema>>;
 export type TEditStaffDTO = z.infer<ReturnType<typeof editStaffSchema>>;
 export type TUpdateMeDTO = z.infer<ReturnType<typeof updateMeSchema>>;
-export type TCreateStaffTranslationDTO = z.infer<ReturnType<typeof createStaffTranslationSchema>>;
-export type TUpdateStaffTranslationDTO = z.infer<ReturnType<typeof updateStaffTranslationSchema>>;
-export type TAutoTranslateStaffDTO = z.infer<ReturnType<typeof autoTranslateStaffSchema>>;

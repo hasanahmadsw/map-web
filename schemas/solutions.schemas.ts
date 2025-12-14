@@ -46,47 +46,18 @@ export const editSolutionSchema = (validationDict: Record<string, string>) =>
       isPublished: z.boolean().optional(),
       isFeatured: z.boolean().optional(),
       order: z.number().int().min(0).optional(),
-    },
-    validationDict.atLeastOne || "At least one field must be provided",
-  ).strict();
-
-// Create solution translation schema
-export const createSolutionTranslationSchema = (validationDict: Record<string, string>) =>
-  z
-    .object({
-      languageCode: languageCodeSchema(validationDict),
-      name: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)),
-      description: trimmed(1000, validationDict).min(10, minLengthValidation(10, validationDict)),
-      shortDescription: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)),
-      meta: z.object({
-        title: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)),
-        description: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)),
-        keywords: z.array(trimmed(50, validationDict)).optional(),
-      }),
-    })
-    .strict();
-
-// Edit solution translation schema
-export const editSolutionTranslationSchema = (validationDict: Record<string, string>) =>
-  atLeastOne(
-    {
       name: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)).optional(),
       description: trimmed(1000, validationDict).min(10, minLengthValidation(10, validationDict)).optional(),
       shortDescription: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)).optional(),
-      meta: z
-        .object({
-          title: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)).optional(),
-          description: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)).optional(),
-          keywords: z.array(trimmed(50, validationDict)).optional(),
-        })
-        .optional(),
+      meta: z.object({
+        title: trimmed(200, validationDict).min(2, minLengthValidation(2, validationDict)).optional(),
+        description: trimmed(300, validationDict).min(5, minLengthValidation(5, validationDict)).optional(),
+        keywords: z.array(trimmed(50, validationDict)).optional(),
+      }).optional(),
+      languageCode: languageCodeSchema(validationDict).optional(),
     },
     validationDict.atLeastOne || "At least one field must be provided",
-  );
-
-// Auto-translate solution schema
-export const autoTranslateSolutionSchema = (validationDict: Record<string, string>) =>
-  autoTranslateSchema(validationDict);
+  ).strict();
 
 // Bulk solution operation schema
 export const bulkSolutionOperationSchema = (validationDict: Record<string, string>) =>
@@ -132,9 +103,6 @@ export const updateSolutionStatusSchema = (validationDict: Record<string, string
 // Types
 export type TCreateSolutionForm = z.infer<ReturnType<typeof createSolutionSchema>>;
 export type TEditSolutionForm = z.infer<ReturnType<typeof editSolutionSchema>>;
-export type TCreateSolutionTranslationForm = z.infer<ReturnType<typeof createSolutionTranslationSchema>>;
-export type TEditSolutionTranslationForm = z.infer<ReturnType<typeof editSolutionTranslationSchema>>;
-export type TAutoTranslateSolutionForm = z.infer<ReturnType<typeof autoTranslateSolutionSchema>>;
 export type TBulkSolutionOperationForm = z.infer<ReturnType<typeof bulkSolutionOperationSchema>>;
 export type TSolutionSearchForm = z.infer<typeof solutionSearchSchema>;
 export type TUpdateSolutionStatusForm = z.infer<typeof updateSolutionStatusSchema>;

@@ -15,7 +15,6 @@ export async function SolutionsSection({ lang, t }: SolutionsSectionProps) {
   let solutionsResponse
   try {
     solutionsResponse = await solutionsService.getAll({
-      lang,
       limit: 6,
       isPublished: true,
       isFeatured: true,
@@ -24,7 +23,6 @@ export async function SolutionsSection({ lang, t }: SolutionsSectionProps) {
     // If no featured solutions, get regular published solutions
     if (!solutionsResponse.data || solutionsResponse.data.length === 0) {
       solutionsResponse = await solutionsService.getAll({
-        lang,
         limit: 6,
         isPublished: true,
       })
@@ -33,7 +31,6 @@ export async function SolutionsSection({ lang, t }: SolutionsSectionProps) {
     // If there's an error with featured, try regular published solutions
     try {
       solutionsResponse = await solutionsService.getAll({
-        lang,
         limit: 6,
         isPublished: true,
       })

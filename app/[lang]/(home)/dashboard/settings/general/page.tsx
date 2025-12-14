@@ -27,7 +27,7 @@ export default async function SettingsPage({ params }: { params: Promise<{ lang:
   const { lang } = await params;
   const t = await getTranslations(lang as Lang);
   const settingsT = t.settings || {};
-const {data : settings} = await settingsService.getSettings({ lang });
+const {data : settings} = await settingsService.getSettings();
 console.log(settings)
 
   if (!settings) {

@@ -34,15 +34,8 @@ export interface PaginatedResponse<T> extends ApiResponse<T> {
   pagination: PaginationMeta;
 }
 
-
-export enum SortBy {
-  CREATED_AT = "createdAt",
-  UPDATED_AT = "updatedAt",
-  NAME = "name",
-  VIEW_COUNT = "viewCount",
-}
-
-export enum SortOrder {
-  ASC = "ASC",
-  DESC = "DESC",
+export interface BaseListParams {
+  page?: number;
+  limit?: number;
+  orderDirection?: "ASC" | "DESC";
 }
