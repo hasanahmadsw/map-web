@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { NewsControls } from "@/components/articles/public/news-controls";
-import { NewsHeader } from "@/components/articles/public/news-header";
-import { NewsResults } from "@/components/articles/public/news-results";
+import { NewsControls } from "@/components/website/articles/news-controls";
+import { NewsHeader } from "@/components/website/articles/news-header";
+import { NewsResults } from "@/components/website/articles/news-results";
 import { articlesService } from "@/services/articles.service";
 import { getTranslations, type Lang } from "@/utils/dictionary-utils";
 import { createEnhancedMetadata } from "@/utils/seo/meta/enhanced-meta";

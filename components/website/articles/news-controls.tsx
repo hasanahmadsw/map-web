@@ -8,7 +8,7 @@ import { useTranslation } from "@/providers/translations-provider";
 import type { Topic } from "@/types/topics.types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SortBy, SortOrder } from "@/types/common.types";
-import { VariantToggle, ViewVariant } from "@/components/articles/public/variant-toggle";
+import { VariantToggle, ViewVariant } from "@/components/website/articles/variant-toggle";
 import { ArrowDownAZ, ArrowUpAZ } from "lucide-react";
 
 interface NewsControlsProps {

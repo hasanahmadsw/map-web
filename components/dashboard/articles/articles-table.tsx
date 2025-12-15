@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useArticlesStaff } from "@/hooks/articles/useArticles";
 import { DataTable } from "@/components/shared/data-table";
-import { useArticlesTableConfig } from "@/components/articles/articles-table.config";
+import { useArticlesTableConfig } from "@/components/dashboard/articles/articles-table.config";
 import { Plus } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { useTranslation } from "@/providers/translations-provider";
 import { useRouter } from "next/navigation";
 
