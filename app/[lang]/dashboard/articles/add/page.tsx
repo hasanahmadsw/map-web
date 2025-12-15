@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { AddArticleForm } from '@/components/dashboard/articles/form/add-article-form';
 import { Button } from '@/components/ui/button';
-import { getTranslations, type Lang } from '@/utils/dictionary-utils';
+
 import { type Metadata } from 'next';
 
 interface AddArticlePageProps {
@@ -14,14 +14,9 @@ interface AddArticlePageProps {
 
 export const metadata: Metadata = {
   title: 'Add Article',
-  description: 'Create a new article with content, tags, and topics.',
 };
 
-export default async function AddArticlePage({ params }: AddArticlePageProps) {
-  const { lang } = await params;
-  const translations = await getTranslations(lang as Lang);
-  const t = translations.articles;
-
+export default async function AddArticlePage() {
   return (
     <div className="space-y-6 p-4">
       <header className="flex items-center space-x-4">

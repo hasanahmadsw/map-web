@@ -1,15 +1,17 @@
-"use client";
+'use client';
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import type { TCreateArticleForm, TEditArticleForm } from "@/schemas/articles.schemas";
-import { articlesService } from "@/services/articles.service";
-import type { ArticleStaffResponse } from "@/types/articles.types";
-import type { ApiResponse } from "@/types/common.types";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+
+import { articlesService } from '@/services/articles.service';
+import type { ArticleStaffResponse } from '@/types/articles.types';
+import type { ApiResponse } from '@/types/common.types';
+import { TCreateArticleForm } from '@/validations/articles/create-article.schema';
+import { TUpdateArticleForm } from '@/validations/articles/update-article.schema';
 
 const qk = {
-  list: (page: number, limit: number) => ["articles", "staff", { page, limit }] as const,
-  byId: (id: number) => ["articles", "staff", id] as const,
+  list: (page: number, limit: number) => ['articles', 'staff', { page, limit }] as const,
+  byId: (id: number) => ['articles', 'staff', id] as const,
 };
 
 type StaffArticlesPage = ApiResponse<ArticleStaffResponse[]>;
@@ -24,7 +26,7 @@ interface UseArticlesStaffOptions {
 
 interface UseArticlesStaffReturn {
   articles: ArticleStaffResponse[];
-  pagination: StaffArticlesPage["pagination"];
+  pagination: StaffArticlesPage['pagination'];
   totalPages: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
@@ -38,7 +40,7 @@ interface UseArticlesStaffReturn {
 
   getById: (id: number) => Promise<ArticleStaffResponse>;
   createArticle: (payload: TCreateArticleForm) => Promise<ArticleStaffResponse>;
-  updateArticle: (id: number, payload: TEditArticleForm) => Promise<ArticleStaffResponse>;
+  updateArticle: (id: number, payload: Partial<TUpdateArticleForm>) => Promise<ArticleStaffResponse>;
   deleteArticle: (id: number) => Promise<void>;
 
   isCreating: boolean;
@@ -67,39 +69,42 @@ export function useArticlesStaff(options: UseArticlesStaffOptions = {}): UseArti
     queryKey: qk.list(currentPage, limit),
     queryFn: () => articlesService.getAllForStaff({ page: currentPage, limit }),
     enabled,
-    placeholderData: (previousData) => previousData,
+    placeholderData: previousData => previousData,
     staleTime: 10_000,
     gcTime: 5 * 60_000,
     retry: 1,
   });
 
   const writeList = (updater: (old?: StaffArticlesPage) => StaffArticlesPage | unknown) => {
-    queryClient.setQueriesData({ queryKey: ["articles", "staff"] }, updater);
+    queryClient.setQueriesData({ queryKey: ['articles', 'staff'] }, updater);
   };
 
   const upsertItemInCaches = (item: ArticleStaffResponse) => {
-    writeList((old) => {
+    writeList(old => {
       const cur = old as StaffArticlesPage | undefined;
       if (!cur?.data) return old;
-      const idx = cur.data.findIndex((t) => sameId(t.id, item.id));
-      const newData = idx === -1 ? [item, ...cur.data] : cur.data.map((t, i) => (i === idx ? { ...t, ...item } : t));
+      const idx = cur.data.findIndex(t => sameId(t.id, item.id));
+      const newData =
+        idx === -1 ? [item, ...cur.data] : cur.data.map((t, i) => (i === idx ? { ...t, ...item } : t));
       return { ...cur, data: newData };
     });
     queryClient.setQueryData(qk.byId(item.id), item);
   };
 
   const removeItemFromCaches = (id: number) => {
-    writeList((old) => {
+    writeList(old => {
       const cur = old as StaffArticlesPage | undefined;
       if (!cur?.data) return old;
-      const newData = cur.data.filter((t) => !sameId(t.id, id));
+      const newData = cur.data.filter(t => !sameId(t.id, id));
       return {
         ...cur,
         data: newData,
-        pagination: cur.pagination ? {
-          ...cur.pagination,
-          total: Math.max(0, (cur.pagination.total ?? newData.length) - 1),
-        } : undefined,
+        pagination: cur.pagination
+          ? {
+              ...cur.pagination,
+              total: Math.max(0, (cur.pagination.total ?? newData.length) - 1),
+            }
+          : undefined,
       };
     });
     queryClient.removeQueries({ queryKey: qk.byId(id) });
@@ -108,17 +113,18 @@ export function useArticlesStaff(options: UseArticlesStaffOptions = {}): UseArti
   // CRUD mutations
   const createMutation = useMutation({
     mutationFn: (payload: TCreateArticleForm) => articlesService.create(payload),
-    onSuccess: (created) => {
+    onSuccess: created => {
       upsertItemInCaches(created);
-      queryClient.invalidateQueries({ queryKey: ["articles", "staff"] });
+      queryClient.invalidateQueries({ queryKey: ['articles', 'staff'] });
     },
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, payload }: { id: number; payload: TEditArticleForm }) => articlesService.update(id, payload),
-    onSuccess: (updated) => {
+    mutationFn: ({ id, payload }: { id: number; payload: Partial<TUpdateArticleForm> }) =>
+      articlesService.update(id, payload),
+    onSuccess: updated => {
       upsertItemInCaches(updated);
-      queryClient.invalidateQueries({ queryKey: ["articles", "staff"] });
+      queryClient.invalidateQueries({ queryKey: ['articles', 'staff'] });
     },
   });
 
@@ -126,7 +132,7 @@ export function useArticlesStaff(options: UseArticlesStaffOptions = {}): UseArti
     mutationFn: (id: number) => articlesService.delete(id),
     onSuccess: (_void, id) => {
       removeItemFromCaches(id);
-      queryClient.invalidateQueries({ queryKey: ["articles", "staff"] });
+      queryClient.invalidateQueries({ queryKey: ['articles', 'staff'] });
     },
   });
 
@@ -145,17 +151,17 @@ export function useArticlesStaff(options: UseArticlesStaffOptions = {}): UseArti
     hasNextPage,
     hasPrevPage,
     setPage: setCurrentPage,
-    nextPage: () => hasNextPage && setCurrentPage((p) => p + 1),
-    prevPage: () => hasPrevPage && setCurrentPage((p) => Math.max(1, p - 1)),
+    nextPage: () => hasNextPage && setCurrentPage(p => p + 1),
+    prevPage: () => hasPrevPage && setCurrentPage(p => Math.max(1, p - 1)),
 
     isLoading,
     isError,
     error: (error as Error | undefined)?.message ?? null,
 
-    getById: (id) => articlesService.getById(id),
-    createArticle: (payload) => createMutation.mutateAsync(payload),
+    getById: id => articlesService.getById(id),
+    createArticle: payload => createMutation.mutateAsync(payload),
     updateArticle: (id, payload) => updateMutation.mutateAsync({ id, payload }),
-    deleteArticle: (id) => deleteMutation.mutateAsync(id),
+    deleteArticle: id => deleteMutation.mutateAsync(id),
 
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,

@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { MoreHorizontal } from "lucide-react";
-import Link from "next/link";
-import { type ReactNode, useState } from "react";
-import TableNavigationFooter from "@/components/shared/table-footer";
-import { Button } from "@/components/ui/button";
+import { MoreHorizontal } from 'lucide-react';
+import Link from 'next/link';
+import { type ReactNode, useState } from 'react';
+import TableNavigationFooter from '@/components/shared/table/table-footer';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useTranslation } from "@/providers/translations-provider";
-import { ConfirmationDialog } from "@/components/confirmation-dialog";
+} from '@/components/ui/dropdown-menu';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useTranslation } from '@/providers/translations-provider';
+import { ConfirmationDialog } from '@/components/confirmation-dialog';
 
 // Types
 export interface TableColumn<T = any> {
@@ -31,7 +31,7 @@ export interface TableAction<T = any> {
   icon?: ReactNode;
   onClick?: (item: T) => void;
   href?: (item: T) => string;
-  variant?: "default" | "destructive";
+  variant?: 'default' | 'destructive';
   disabled?: (item: T) => boolean;
 }
 
@@ -54,7 +54,7 @@ export interface DataTableProps<T = any> {
   getItemId: (item: T) => number;
 
   // Entity
-  entityName: string; 
+  entityName: string;
 
   // Pagination
   pagination?: PaginationData;
@@ -91,7 +91,7 @@ export function DataTable<T = any>({
   selectable = true,
   onSelectionChange,
   getItemId,
-  entityName ,
+  entityName,
   pagination,
   onPageChange,
   onPrevious,
@@ -119,7 +119,7 @@ export function DataTable<T = any>({
 
   const handleSelectItem = (itemId: number) => {
     const newSelection = selectedItems.includes(itemId)
-      ? selectedItems.filter((id) => id !== itemId)
+      ? selectedItems.filter(id => id !== itemId)
       : [...selectedItems, itemId];
 
     setSelectedItems(newSelection);
@@ -144,14 +144,14 @@ export function DataTable<T = any>({
 
   const handleConfirmDelete = async () => {
     if (itemToDelete === null) return;
-    
+
     try {
       await onDelete?.(itemToDelete);
-      setSelectedItems((prev) => prev.filter((id) => id !== itemToDelete));
+      setSelectedItems(prev => prev.filter(id => id !== itemToDelete));
       setDeleteDialogOpen(false);
       setItemToDelete(null);
     } catch (error) {
-      console.error("Failed to delete item:", error);
+      console.error('Failed to delete item:', error);
     }
   };
 
@@ -162,7 +162,7 @@ export function DataTable<T = any>({
 
   const renderLoadingSkeleton = () => {
     // Fixed widths to prevent hydration mismatch
-    const skeletonWidths = ["w-24", "w-32", "w-20", "w-28", "w-16", "w-36", "w-22", "w-30"];
+    const skeletonWidths = ['w-24', 'w-32', 'w-20', 'w-28', 'w-16', 'w-36', 'w-22', 'w-30'];
 
     return Array.from({ length: loadingRows }).map((_, i) => (
       <TableRow key={i}>
@@ -180,12 +180,14 @@ export function DataTable<T = any>({
         )}
         {columns.map((column, colIndex) => (
           <TableCell key={colIndex}>
-            <div className={`h-4 bg-muted animate-pulse rounded ${skeletonWidths[colIndex % skeletonWidths.length]}`} />
+            <div
+              className={`bg-muted h-4 animate-pulse rounded ${skeletonWidths[colIndex % skeletonWidths.length]}`}
+            />
           </TableCell>
         ))}
         {actions.length > 0 && (
           <TableCell>
-            <div className="h-8 w-8 bg-muted animate-pulse rounded" />
+            <div className="bg-muted h-8 w-8 animate-pulse rounded" />
           </TableCell>
         )}
       </TableRow>
@@ -196,11 +198,11 @@ export function DataTable<T = any>({
     <TableRow key="empty-state">
       <TableCell
         colSpan={columns.length + (selectable ? 1 : 0) + (actions.length > 0 ? 1 : 0)}
-        className="text-center py-8"
+        className="py-8 text-center"
       >
         <div className="flex flex-col items-center space-y-2">
           {emptyStateIcon}
-          <p className="text-muted-foreground">{emptyStateMessage || "No data found"}</p>
+          <p className="text-muted-foreground">{emptyStateMessage || 'No data found'}</p>
         </div>
       </TableCell>
     </TableRow>
@@ -218,10 +220,10 @@ export function DataTable<T = any>({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{"Actions"}</DropdownMenuLabel>
+          <DropdownMenuLabel>{'Actions'}</DropdownMenuLabel>
           {actions.map((action, index) => {
             const isDisabled = action.disabled?.(item) || false;
-            const isDeleteAction = action.variant === "destructive";
+            const isDeleteAction = action.variant === 'destructive';
 
             if (action.href) {
               return (
@@ -237,7 +239,7 @@ export function DataTable<T = any>({
             return (
               <DropdownMenuItem
                 key={action.key}
-                className={isDeleteAction ? "text-destructive" : ""}
+                className={isDeleteAction ? 'text-destructive' : ''}
                 onClick={() => {
                   if (isDeleteAction && onDelete) {
                     handleDeleteClick(getItemId(item));
@@ -259,10 +261,10 @@ export function DataTable<T = any>({
 
   if (isError) {
     return (
-      <div className="flex items-center justify-center h-32">
+      <div className="flex h-32 items-center justify-center">
         <div className="text-center">
-          <p className="text-destructive">{errorMessage || "Failed to load data"}</p>
-          {error && <p className="text-sm text-muted-foreground">{error}</p>}
+          <p className="text-destructive">{errorMessage || 'Failed to load data'}</p>
+          {error && <p className="text-muted-foreground text-sm">{error}</p>}
         </div>
       </div>
     );
@@ -293,7 +295,7 @@ export function DataTable<T = any>({
                   />
                 </TableHead>
               )}
-              {columns.map((column) => (
+              {columns.map(column => (
                 <TableHead key={column.key} className={column.className}>
                   {column.label}
                 </TableHead>
@@ -306,7 +308,7 @@ export function DataTable<T = any>({
               ? renderLoadingSkeleton()
               : safeData.length === 0
                 ? renderEmptyState()
-                : safeData.map((item) => (
+                : safeData.map(item => (
                     <TableRow key={getItemId(item)}>
                       {selectable && (
                         <TableCell>
@@ -318,7 +320,7 @@ export function DataTable<T = any>({
                           />
                         </TableCell>
                       )}
-                      {columns.map((column) => (
+                      {columns.map(column => (
                         <TableCell key={column.key} className={column.className}>
                           {column.render ? column.render(item) : (item as any)[column.key]}
                         </TableCell>
@@ -352,11 +354,14 @@ export function DataTable<T = any>({
       <ConfirmationDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
-        title={t.common.confirmDeleteArticle?.replace(/\{\{entity\}\}/g, entityName) || "Confirm Delete"}
-        description={ t.validation.confirmDeleteArticle?.replace(/\{\{entity\}\}/g, entityName) || `Are you sure you want to delete this ${entityName}? This action cannot be undone.`}
-        confirmText={t.common.delete || "Delete"}
-        cancelText={t.common.cancel || "Cancel"}
-        loadingText={t.common.deleting || "Deleting..."}
+        title={t.common.confirmDeleteArticle?.replace(/\{\{entity\}\}/g, entityName) || 'Confirm Delete'}
+        description={
+          t.validation.confirmDeleteArticle?.replace(/\{\{entity\}\}/g, entityName) ||
+          `Are you sure you want to delete this ${entityName}? This action cannot be undone.`
+        }
+        confirmText={t.common.delete || 'Delete'}
+        cancelText={t.common.cancel || 'Cancel'}
+        loadingText={t.common.deleting || 'Deleting...'}
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
         isLoading={isDeleting}

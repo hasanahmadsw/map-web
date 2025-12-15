@@ -1,23 +1,24 @@
 import type {
-  TCreateSolutionForm,
-  TEditSolutionForm,
   TBulkSolutionOperationForm,
   TSolutionSearchForm,
   TUpdateSolutionStatusForm,
-} from "@/schemas/solutions.schemas";
-import type { ApiResponse } from "@/types/common.types";
-import type { StaffSolution, SolutionResponse } from "@/types/solutions.types";
-import { ApiService } from "./base.service";
-import { toQS } from "@/utils/api-utils";
-import type { SolutionListParams } from "@/types/solutions.types";
+} from '@/schemas/solutions.schemas';
 
-const BASE = "/solutions";
-const ADMIN_BASE = "/admin/solutions";
+import type { TCreateSolutionForm } from '@/validations/solutions/create-solution.schema';
+
+import type { ApiResponse } from '@/types/common.types';
+import type { StaffSolution, SolutionResponse } from '@/types/solutions.types';
+import { ApiService } from './base.service';
+import { toQS } from '@/utils/api-utils';
+import type { SolutionListParams } from '@/types/solutions.types';
+import { TUpdateSolutionForm } from '@/validations/solutions/update-solution.schema';
+
+const BASE = '/solutions';
+const ADMIN_BASE = '/admin/solutions';
 type Id = number;
 type RequestOpts = { signal?: AbortSignal; headers?: Record<string, string> };
 
 const enc = (v: string | number) => encodeURIComponent(String(v));
-
 
 export const solutionsService = {
   // Staff Solutions
@@ -39,7 +40,7 @@ export const solutionsService = {
     return res.data;
   },
 
-  async update(id: Id, payload: TEditSolutionForm, opts?: RequestOpts): Promise<StaffSolution> {
+  async update(id: Id, payload: Partial<TUpdateSolutionForm>, opts?: RequestOpts): Promise<StaffSolution> {
     const res = await ApiService.patch<StaffSolution>(`${ADMIN_BASE}/${enc(id)}`, payload, opts);
     return res.data;
   },
@@ -77,7 +78,10 @@ export const solutionsService = {
 
   // Search solutions
   async search(payload: TSolutionSearchForm, opts?: RequestOpts): Promise<ApiResponse<SolutionResponse[]>> {
-    const res = await ApiService.get<SolutionResponse[]>(`${BASE}/search${toQS(payload as Record<string, unknown>)}`, opts);
+    const res = await ApiService.get<SolutionResponse[]>(
+      `${BASE}/search${toQS(payload as Record<string, unknown>)}`,
+      opts,
+    );
     return res;
   },
 
@@ -85,7 +89,7 @@ export const solutionsService = {
   async uploadImage(file: File, opts?: RequestOpts): Promise<{ url: string }> {
     const formData = new FormData();
     formData.append('picture', file, file.name);
-    
+
     const res = await ApiService.post<{ url: string }>(`${ADMIN_BASE}/upload-picture`, formData, {
       ...opts,
     });

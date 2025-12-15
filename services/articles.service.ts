@@ -1,28 +1,21 @@
-import { ApiResponse } from "@/types/common.types";
-import { ApiService } from "./base.service";
-import { Article, ArticleListParams } from "@/types/articles.types";
-import type {
-  TCreateArticleForm,
-  TEditArticleForm,
-} from "@/schemas/articles.schemas";
-import { toQS } from "@/utils/api-utils";
+import { ApiResponse } from '@/types/common.types';
+import { ApiService } from './base.service';
+import { Article, ArticleListParams } from '@/types/articles.types';
 
-const BASE = "/articles";
-const ADMIN_BASE = "/admin/articles";
+import { toQS } from '@/utils/api-utils';
+import { TCreateArticleForm } from '@/validations/articles/create-article.schema';
+import { TUpdateArticleForm } from '@/validations/articles/update-article.schema';
+
+const BASE = '/articles';
+const ADMIN_BASE = '/admin/articles';
 type Id = number;
 type RequestOpts = { signal?: AbortSignal; headers?: Record<string, string> };
 
-
 const enc = (v: string | number) => encodeURIComponent(String(v));
-
-
 
 export const articlesService = {
   // Staff Services
-  async getAllForStaff(
-    params: ArticleListParams = {},
-    opts?: RequestOpts,
-  ): Promise<ApiResponse<Article[]>> {
+  async getAllForStaff(params: ArticleListParams = {}, opts?: RequestOpts): Promise<ApiResponse<Article[]>> {
     const res = await ApiService.get<Article[]>(`${ADMIN_BASE}/${toQS(params)}`, opts);
     return res;
   },
@@ -37,7 +30,7 @@ export const articlesService = {
     return res.data;
   },
 
-  async update(id: Id, payload: TEditArticleForm, opts?: RequestOpts): Promise<Article> {
+  async update(id: Id, payload: Partial<TUpdateArticleForm>, opts?: RequestOpts): Promise<Article> {
     const res = await ApiService.patch<Article>(`${ADMIN_BASE}/${enc(id)}`, payload, opts);
     return res.data;
   },
@@ -47,12 +40,11 @@ export const articlesService = {
     return res.data;
   },
 
-
   // Upload picture
   async uploadPicture(file: File, opts?: RequestOpts): Promise<{ url: string }> {
     const formData = new FormData();
     formData.append('picture', file, file.name);
-    
+
     const res = await ApiService.post<{ url: string }>(`${ADMIN_BASE}/upload-picture`, formData, {
       ...opts,
     });
@@ -60,10 +52,7 @@ export const articlesService = {
   },
 
   // Public Services
-  async getAll(
-    params: ArticleListParams = {},
-    opts?: RequestOpts,
-  ): Promise<ApiResponse<Article[]>> {
+  async getAll(params: ArticleListParams = {}, opts?: RequestOpts): Promise<ApiResponse<Article[]>> {
     const res = await ApiService.get<Article[]>(`/articles/published${toQS(params)}`, opts);
     return res;
   },

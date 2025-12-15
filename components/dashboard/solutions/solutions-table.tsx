@@ -10,13 +10,13 @@ import { Filter } from 'lucide-react';
 import { DataTable } from '@/components/shared/table/data-table';
 
 import { useRouter } from 'next/navigation';
-import { useArticleMutations } from '@/hooks/articles/mutations';
-import { useArticlesController } from '@/hooks/articles/useArticlesController';
+import { useSolutionMutations } from '@/hooks/solutions/mutations';
+import { useSolutionsController } from '@/hooks/solutions/useSolutionsController';
 import { useLang } from '@/hooks/useLang';
-import { useArticleColumns } from './columns';
+import { useSolutionColumns } from './columns';
 import { TableHeader, type FilterInfo } from '@/components/shared/table/table-header';
 
-import type { Article } from '@/types/articles.types';
+import type { StaffSolution } from '@/types/solutions.types';
 import dynamic from 'next/dynamic';
 import DialogSkeleton from '../../shared/skeletons/dialog-skeleton';
 
@@ -28,14 +28,14 @@ const ConfirmationDialogDynamic = dynamic(
   },
 );
 
-export function ArticlesTable() {
+export function SolutionsTable() {
   const lang = useLang();
   const router = useRouter();
 
-  const [articleToDelete, setArticleToDelete] = useState<Article | null>(null);
+  const [solutionToDelete, setSolutionToDelete] = useState<StaffSolution | null>(null);
 
   const {
-    items: articlesList,
+    items: solutionsList,
     total,
     totalPages,
     error,
@@ -53,37 +53,37 @@ export function ArticlesTable() {
     setPageSize,
     setFilter,
     clearAll,
-  } = useArticlesController();
+  } = useSolutionsController();
 
   const publishedFilter = urlState.isPublished ?? undefined;
   const featuredFilter = urlState.isFeatured ?? undefined;
 
-  const { del: deleteArticle } = useArticleMutations();
+  const { del: deleteSolution } = useSolutionMutations();
 
-  const handleDeleteArticle = async () => {
-    if (!articleToDelete) return;
+  const handleDeleteSolution = async () => {
+    if (!solutionToDelete) return;
 
     try {
-      await deleteArticle.mutateAsync(articleToDelete.id);
+      await deleteSolution.mutateAsync(solutionToDelete.id);
 
-      toast.success('Article deleted successfully');
+      toast.success('Solution deleted successfully');
 
-      setArticleToDelete(null);
+      setSolutionToDelete(null);
     } catch (error) {
-      const errMsg = (error as Error).message || 'Failed to delete Article';
+      const errMsg = (error as Error).message || 'Failed to delete Solution';
 
       toast.error(errMsg);
-      console.error('Error deleting article:', error);
+      console.error('Error deleting solution:', error);
     }
   };
 
-  const columns = useArticleColumns({
+  const columns = useSolutionColumns({
     lang,
-    onDelete: setArticleToDelete,
+    onDelete: setSolutionToDelete,
   });
 
-  const handleAddArticle = () => {
-    router.push(`/${lang}/dashboard/articles/add`);
+  const handleAddSolution = () => {
+    router.push(`/${lang}/dashboard/solutions/add`);
   };
 
   // Prepare filter information for the header
@@ -114,7 +114,7 @@ export function ArticlesTable() {
       <Card>
         {/* ========================== Page Header ========================== */}
         <TableHeader
-          title="Articles Management"
+          title="Solutions Management"
           total={total}
           currentPage={currentPage}
           totalPages={totalPages}
@@ -122,18 +122,18 @@ export function ArticlesTable() {
           searchTerm={searchTerm}
           filters={filterInfo}
           onClearAllFilters={clearAll}
-          onAdd={handleAddArticle}
-          addButtonText={`Add Article`}
-          entityName="Article"
-          entityNamePlural="Articles"
+          onAdd={handleAddSolution}
+          addButtonText={`Add Solution`}
+          entityName="Solution"
+          entityNamePlural="Solutions"
         />
 
         {/* ========================== Table ========================== */}
         <CardContent>
           <DataTable
-            tableId="articles-table"
+            tableId="solutions-table"
             columns={columns}
-            data={articlesList}
+            data={solutionsList}
             isLoading={isPending}
             error={error}
             refetch={refetch}
@@ -168,7 +168,7 @@ export function ArticlesTable() {
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="all">All</SelectItem>
                     <SelectItem value="published">Published</SelectItem>
                     <SelectItem value="draft">Draft</SelectItem>
                   </SelectContent>
@@ -185,9 +185,9 @@ export function ArticlesTable() {
                     <SelectValue placeholder="Featured" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="yes">Feature</SelectItem>
-                    <SelectItem value="no">Unfeature</SelectItem>
+                    <SelectItem value="all">All</SelectItem>
+                    <SelectItem value="yes">Yes</SelectItem>
+                    <SelectItem value="no">No</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -204,14 +204,14 @@ export function ArticlesTable() {
       </Card>
 
       {/* ========================== Delete Modal ========================== */}
-      {articleToDelete && (
+      {solutionToDelete && (
         <ConfirmationDialogDynamic
-          open={!!articleToDelete}
-          onOpenChange={open => !open && setArticleToDelete(null)}
-          onConfirm={handleDeleteArticle}
+          open={!!solutionToDelete}
+          onOpenChange={open => !open && setSolutionToDelete(null)}
+          onConfirm={handleDeleteSolution}
           title="Confirm Delete"
-          description="Are you sure you want to delete this Article? This action cannot be undone and will permanently remove the Article from the system."
-          isLoading={deleteArticle.isPending}
+          description="Are you sure you want to delete this Solution? This action cannot be undone and will permanently remove the Solution from the system."
+          isLoading={deleteSolution.isPending}
           variant="destructive"
         />
       )}

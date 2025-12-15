@@ -9,7 +9,6 @@ interface EditArticlePageProps {
 
 export const metadata: Metadata = {
   title: 'Edit Article',
-  description: 'Update article information.',
 };
 
 export default async function EditArticlePage({ params }: EditArticlePageProps) {

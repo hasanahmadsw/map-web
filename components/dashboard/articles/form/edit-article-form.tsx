@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { LoadingButton } from '@/components/shared/buttons/loading-button';
 import { updateArticleSchema, TUpdateArticleForm } from '@/validations/articles/update-article.schema';
 import ResponseError from '@/components/shared/response-error';
+import { getChangedValues } from '@/utils/format';
 
 interface EditArticleFormProps {
   articleId: string;
@@ -41,22 +42,6 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
 
   const form = useForm<TUpdateArticleForm>({
     resolver: zodResolver(updateArticleSchema()) as Resolver<TUpdateArticleForm>,
-    defaultValues: {
-      slug: '',
-      name: '',
-      content: '',
-      excerpt: '',
-      meta: {
-        title: '',
-        description: '',
-        keywords: [],
-      },
-      isPublished: false,
-      isFeatured: false,
-      tags: '',
-      topics: '',
-      image: '',
-    },
   });
 
   // Reset form when article data is loaded
@@ -82,6 +67,8 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
   }, [article, form]);
 
   const onSubmit = async (data: TUpdateArticleForm) => {
+    const changedValues = getChangedValues(form.formState.defaultValues as TUpdateArticleForm, data);
+
     try {
       // Convert comma-separated strings to arrays
       // const processStringArray = (str: string | string[] | undefined): string[] => {
@@ -95,7 +82,7 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
       //   return [];
       // };
 
-      await updateArticle(Number(articleId), data as any);
+      await updateArticle(Number(articleId), changedValues);
       toast.success('Article updated successfully');
       router.push('/dashboard/articles');
     } catch {

@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { LoadingButton } from '@/components/shared/buttons/loading-button';
 import { createArticleSchema, TCreateArticleForm } from '@/validations/articles/create-article.schema';
 import ResponseError from '@/components/shared/response-error';
+import { sanitizeDto } from '@/utils/format';
 
 export function AddArticleForm() {
   const router = useRouter();
@@ -35,6 +36,8 @@ export function AddArticleForm() {
   });
 
   const onSubmit = async (data: TCreateArticleForm) => {
+    const santizedData = sanitizeDto(data) as TCreateArticleForm;
+
     try {
       // Convert comma-separated strings to arrays
       // const processStringArray = (str: string | string[] | undefined): string[] => {
@@ -48,7 +51,7 @@ export function AddArticleForm() {
       //   return [];
       // };
 
-      await createArticle(data);
+      await createArticle(santizedData);
       toast.success('Article created successfully');
       router.push('/dashboard/articles');
     } catch {
