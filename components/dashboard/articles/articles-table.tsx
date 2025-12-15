@@ -19,6 +19,7 @@ import { TableHeader, type FilterInfo } from '@/components/shared/table/table-he
 import type { Article } from '@/types/articles.types';
 import dynamic from 'next/dynamic';
 import DialogSkeleton from '../../shared/skeletons/dialog-skeleton';
+import { SelectFilter } from '@/components/shared/selects/select-filter';
 
 const ConfirmationDialogDynamic = dynamic(
   () => import('@/components/confirmation-dialog').then(mod => mod.ConfirmationDialog),
@@ -157,39 +158,32 @@ export function ArticlesTable() {
             }}
             toolbarRight={
               <div className="flex flex-wrap items-center gap-2">
-                <Select
+                <SelectFilter
                   value={publishedFilter === undefined ? 'all' : publishedFilter ? 'published' : 'draft'}
                   onValueChange={val =>
                     setFilter('isPublished', val === 'all' ? undefined : val === 'published' ? true : false)
                   }
-                >
-                  <SelectTrigger className="h-9 w-40">
-                    <Filter className="mr-2 h-4 w-4" />
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
-                    <SelectItem value="published">Published</SelectItem>
-                    <SelectItem value="draft">Draft</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select
+                  options={[
+                    { value: 'all', label: 'All' },
+                    { value: 'published', label: 'Published' },
+                    { value: 'draft', label: 'Draft' },
+                  ]}
+                  allOptionLabel="All Status"
+                  className="w-32"
+                />
+                <SelectFilter
                   value={featuredFilter === undefined ? 'all' : featuredFilter ? 'yes' : 'no'}
                   onValueChange={val =>
                     setFilter('isFeatured', val === 'all' ? undefined : val === 'yes' ? true : false)
                   }
-                >
-                  <SelectTrigger className="h-9 w-40">
-                    <Filter className="mr-2 h-4 w-4" />
-                    <SelectValue placeholder="Featured" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="yes">Feature</SelectItem>
-                    <SelectItem value="no">Unfeature</SelectItem>
-                  </SelectContent>
-                </Select>
+                  options={[
+                    { value: 'all', label: 'All' },
+                    { value: 'yes', label: 'Yes' },
+                    { value: 'no', label: 'No' },
+                  ]}
+                  allOptionLabel="All Featured"
+                  className="w-32"
+                />
 
                 {hasActiveFilters && (
                   <Button variant="ghost" size="sm" onClick={clearAll} className="gap-1">

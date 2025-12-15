@@ -19,6 +19,7 @@ import { TableHeader, type FilterInfo } from '@/components/shared/table/table-he
 import type { StaffSolution } from '@/types/solutions.types';
 import dynamic from 'next/dynamic';
 import DialogSkeleton from '../../shared/skeletons/dialog-skeleton';
+import { SelectFilter } from '@/components/shared/selects/select-filter';
 
 const ConfirmationDialogDynamic = dynamic(
   () => import('@/components/confirmation-dialog').then(mod => mod.ConfirmationDialog),
@@ -157,39 +158,19 @@ export function SolutionsTable() {
             }}
             toolbarRight={
               <div className="flex flex-wrap items-center gap-2">
-                <Select
+                <SelectFilter
                   value={publishedFilter === undefined ? 'all' : publishedFilter ? 'published' : 'draft'}
                   onValueChange={val =>
                     setFilter('isPublished', val === 'all' ? undefined : val === 'published' ? true : false)
                   }
-                >
-                  <SelectTrigger className="h-9 w-40">
-                    <Filter className="mr-2 h-4 w-4" />
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="published">Published</SelectItem>
-                    <SelectItem value="draft">Draft</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select
-                  value={featuredFilter === undefined ? 'all' : featuredFilter ? 'yes' : 'no'}
-                  onValueChange={val =>
-                    setFilter('isFeatured', val === 'all' ? undefined : val === 'yes' ? true : false)
-                  }
-                >
-                  <SelectTrigger className="h-9 w-40">
-                    <Filter className="mr-2 h-4 w-4" />
-                    <SelectValue placeholder="Featured" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="yes">Yes</SelectItem>
-                    <SelectItem value="no">No</SelectItem>
-                  </SelectContent>
-                </Select>
+                  options={[
+                    { value: 'all', label: 'All' },
+                    { value: 'published', label: 'Published' },
+                    { value: 'draft', label: 'Draft' },
+                  ]}
+                  allOptionLabel="All Status"
+                  className="w-32"
+                />
 
                 {hasActiveFilters && (
                   <Button variant="ghost" size="sm" onClick={clearAll} className="gap-1">

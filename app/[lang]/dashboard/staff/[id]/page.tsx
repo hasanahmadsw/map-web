@@ -1,11 +1,11 @@
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { Suspense } from "react";
-import { EditStaffForm } from "@/components/staff/edit-staff-form";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getTranslations, type Lang } from "@/utils/dictionary-utils";
-import EditStaffLoading from "./loading";
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
+import { Suspense } from 'react';
+import { EditStaffForm } from '@/components/dashboard/staff/form/edit-staff-form';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { getTranslations, type Lang } from '@/utils/dictionary-utils';
+import EditStaffLoading from './loading';
 
 interface EditStaffPageProps {
   params: Promise<{
@@ -22,7 +22,6 @@ export default async function EditStaffPage({ params }: EditStaffPageProps) {
   return (
     <div className="space-y-6 p-4">
       <div className="flex items-center space-x-4">
-      
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{t.editStaff}</h1>
           <p className="text-muted-foreground">{t.editStaffDescription}</p>
