@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { Plus, Trash2 } from "lucide-react";
-import type { Control, FieldPath, FieldValues } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { StandaloneIconSelectInput } from "@/components/shared/input/StandaloneIconSelectInput";
-import { useTranslation } from "@/providers/translations-provider";
+import { Plus, Trash2 } from 'lucide-react';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { StandaloneIconSelectInput } from '@/components/shared/input/StandaloneIconSelectInput';
+import { useTranslation } from '@/providers/translations-provider';
 
 interface SubService {
   icon: string;
@@ -45,9 +45,9 @@ export function SubServicesInput<T extends FieldValues>({
 
         const addSubService = () => {
           const newSubService: SubService = {
-            icon: "",
-            title: "",
-            description: "",
+            icon: '',
+            title: '',
+            description: '',
             features: [],
           };
           field.onChange([...(subServices as SubService[]), newSubService]);
@@ -67,7 +67,7 @@ export function SubServicesInput<T extends FieldValues>({
           const updated = [...(subServices as SubService[])];
           updated[subServiceIndex] = {
             ...updated[subServiceIndex],
-            features: [...(updated[subServiceIndex].features || []), ""],
+            features: [...(updated[subServiceIndex].features || []), ''],
           };
           field.onChange(updated);
         };
@@ -75,7 +75,7 @@ export function SubServicesInput<T extends FieldValues>({
         const removeFeature = (subServiceIndex: number, featureIndex: number) => {
           const updated = [...(subServices as SubService[])];
           updated[subServiceIndex].features = updated[subServiceIndex].features.filter(
-            (_: string, i: number) => i !== featureIndex
+            (_: string, i: number) => i !== featureIndex,
           );
           field.onChange(updated);
         };
@@ -88,18 +88,14 @@ export function SubServicesInput<T extends FieldValues>({
 
         return (
           <FormItem className={className}>
-            <div className="space-y-2">
-              <FormLabel className="text-base">{label}</FormLabel>
-              {description && <p className="text-sm text-muted-foreground">{description}</p>}
-            </div>
             <FormControl>
               <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-lg">{t.services?.subServices || "Sub Services"}</CardTitle>
-                      <p className="text-sm text-muted-foreground">
-                        {t.services?.subServicesDescription || "Manage sub-services for this service."}
+                      <CardTitle className="text-lg">{t.services?.subServices || 'Sub Services'}</CardTitle>
+                      <p className="text-muted-foreground text-sm">
+                        {t.services?.subServicesDescription || 'Manage sub-services for this service.'}
                       </p>
                     </div>
                     <Button
@@ -110,7 +106,7 @@ export function SubServicesInput<T extends FieldValues>({
                       disabled={disabled}
                     >
                       <Plus className="mr-2 h-4 w-4" />
-                      {t.services?.addSubService || "Add Sub Service"}
+                      {t.services?.addSubService || 'Add Sub Service'}
                     </Button>
                   </div>
                 </CardHeader>
@@ -120,7 +116,7 @@ export function SubServicesInput<T extends FieldValues>({
                       <CardHeader>
                         <div className="flex items-center justify-between">
                           <CardTitle className="text-lg">
-                            {t.services?.subService || "Sub Service"} {index + 1}
+                            {t.services?.subService || 'Sub Service'} {index + 1}
                           </CardTitle>
                           <Button
                             type="button"
@@ -134,34 +130,32 @@ export function SubServicesInput<T extends FieldValues>({
                         </div>
                       </CardHeader>
                       <CardContent className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                           <StandaloneIconSelectInput
-                            value={subService.icon || ""}
-                            onChange={(value) => updateSubService(index, "icon", value)}
-                            label={t.services?.icon || "Icon"}
-                            placeholder={t.services?.iconPlaceholder || "Select an icon"}
+                            value={subService.icon || ''}
+                            onChange={value => updateSubService(index, 'icon', value)}
+                            label={t.services?.icon || 'Icon'}
+                            placeholder={t.services?.iconPlaceholder || 'Select an icon'}
                             disabled={disabled}
                           />
                           <div className="space-y-2">
-                            <label className="text-sm font-medium">
-                              {t.services?.title || "Title"}
-                            </label>
+                            <label className="text-sm font-medium">{t.services?.title || 'Title'}</label>
                             <Input
-                              placeholder={t.services?.titlePlaceholder || "Enter title"}
-                              value={subService.title || ""}
-                              onChange={(e) => updateSubService(index, "title", e.target.value)}
+                              placeholder={t.services?.titlePlaceholder || 'Enter title'}
+                              value={subService.title || ''}
+                              onChange={e => updateSubService(index, 'title', e.target.value)}
                               disabled={disabled}
                             />
                           </div>
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-medium">
-                            {t.services?.description || "Description"}
+                            {t.services?.description || 'Description'}
                           </label>
                           <Textarea
-                            placeholder={t.services?.descriptionPlaceholder || "Enter description"}
-                            value={subService.description || ""}
-                            onChange={(e) => updateSubService(index, "description", e.target.value)}
+                            placeholder={t.services?.descriptionPlaceholder || 'Enter description'}
+                            value={subService.description || ''}
+                            onChange={e => updateSubService(index, 'description', e.target.value)}
                             className="min-h-[80px]"
                             disabled={disabled}
                           />
@@ -169,7 +163,7 @@ export function SubServicesInput<T extends FieldValues>({
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
                             <label className="text-sm font-medium">
-                              {t.services?.features || "Features"}
+                              {t.services?.features || 'Features'}
                             </label>
                             <Button
                               type="button"
@@ -185,9 +179,9 @@ export function SubServicesInput<T extends FieldValues>({
                             {(subService.features || []).map((feature: string, featureIndex: number) => (
                               <div key={featureIndex} className="flex gap-2">
                                 <Input
-                                  placeholder={t.services?.featurePlaceholder || "Enter feature"}
+                                  placeholder={t.services?.featurePlaceholder || 'Enter feature'}
                                   value={feature}
-                                  onChange={(e) => updateFeature(index, featureIndex, e.target.value)}
+                                  onChange={e => updateFeature(index, featureIndex, e.target.value)}
                                   disabled={disabled}
                                 />
                                 <Button

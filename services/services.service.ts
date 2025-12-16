@@ -1,17 +1,17 @@
 import type {
-  TCreateServiceForm,
-  TEditServiceForm,
   TBulkServiceOperationForm,
   TServiceSearchForm,
   TUpdateServiceStatusForm,
-} from "@/schemas/services.schemas";
-import type { ApiResponse, BaseListParams } from "@/types/common.types";
-import type { StaffService, ServiceResponse } from "@/types/services.types";
-import { ApiService } from "./base.service";
-import { toQS } from "@/utils/api-utils";
+} from '@/schemas/services.schemas';
+import type { ApiResponse, BaseListParams } from '@/types/common.types';
+import type { StaffService, ServiceResponse } from '@/types/services.types';
+import { ApiService } from './base.service';
+import { toQS } from '@/utils/api-utils';
+import { TCreateServiceForm } from '@/validations/services/create-service.schema';
+import { TEditServiceForm } from '@/validations/services/edit-service.schema';
 
-const BASE = "/services";
-const ADMIN_BASE = "/admin/services";
+const BASE = '/services';
+const ADMIN_BASE = '/admin/services';
 type Id = number;
 type RequestOpts = { signal?: AbortSignal; headers?: Record<string, string> };
 
@@ -43,7 +43,7 @@ export const servicesService = {
     return res.data;
   },
 
-  async update(id: Id, payload: TEditServiceForm, opts?: RequestOpts): Promise<StaffService> {
+  async update(id: Id, payload: Partial<TEditServiceForm>, opts?: RequestOpts): Promise<StaffService> {
     const res = await ApiService.patch<StaffService>(`${ADMIN_BASE}/${enc(id)}`, payload, opts);
     return res.data;
   },
@@ -66,10 +66,7 @@ export const servicesService = {
   },
 
   // Public Services
-  async getAll(
-    params: ServiceListParams = {},
-    opts?: RequestOpts,
-  ): Promise<ApiResponse<ServiceResponse[]>> {
+  async getAll(params: ServiceListParams = {}, opts?: RequestOpts): Promise<ApiResponse<ServiceResponse[]>> {
     const res = await ApiService.get<ServiceResponse[]>(`/services/published${toQS(params)}`, opts);
     return res;
   },
@@ -81,7 +78,10 @@ export const servicesService = {
 
   // Search services
   async search(payload: TServiceSearchForm, opts?: RequestOpts): Promise<ApiResponse<ServiceResponse[]>> {
-    const res = await ApiService.get<ServiceResponse[]>(`${BASE}/search${toQS(payload as Record<string, unknown>)}`, opts);
+    const res = await ApiService.get<ServiceResponse[]>(
+      `${BASE}/search${toQS(payload as Record<string, unknown>)}`,
+      opts,
+    );
     return res;
   },
 
@@ -89,7 +89,7 @@ export const servicesService = {
   async uploadImage(file: File, opts?: RequestOpts): Promise<{ url: string }> {
     const formData = new FormData();
     formData.append('picture', file, file.name);
-    
+
     const res = await ApiService.post<{ url: string }>(`${ADMIN_BASE}/upload-picture`, formData, {
       ...opts,
     });

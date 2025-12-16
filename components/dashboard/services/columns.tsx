@@ -1,58 +1,51 @@
-"use client";
+'use client';
 
-import type { ColumnDef } from "@tanstack/react-table";
-import { Edit, MoreHorizontal, Trash2, Settings, Star, Calendar } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import type { ColumnDef } from '@tanstack/react-table';
+import { Edit, MoreHorizontal, Trash2, Settings, Star, Calendar } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useTranslation } from "@/providers/translations-provider";
-import { useLang } from "@/hooks/useLang";
-import type { StaffService } from "@/types/services.types";
-import type { Lang } from "@/utils/dictionary-utils";
+} from '@/components/ui/dropdown-menu';
+import type { StaffService } from '@/types/services.types';
 
-function formatDate(dateString: string, lang: Lang) {
-  return new Date(dateString).toLocaleDateString(lang === "ar" ? "ar-SA" : "en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
+function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
   });
 }
 
 export function useServiceColumns(opts: {
-  lang: Lang;
   onDelete: (service: StaffService) => void;
 }): ColumnDef<StaffService>[] {
-  const { lang, onDelete } = opts;
-  const { t } = useTranslation();
+  const { onDelete } = opts;
+
   const router = useRouter();
-  const currentLang = useLang();
-  const common = t.common || {};
-  const services = t.services || {};
 
   const handleEdit = (service: StaffService) => {
-    router.push(`/${currentLang}/dashboard/services/${service.id}`);
+    router.push(`/dashboard/services/${service.id}`);
   };
 
   return [
     // Service name
     {
-      id: "name",
-      header: services.serviceName || common.name || "Service Name",
-      accessorKey: "name",
+      id: 'name',
+      header: 'Service Name',
+      accessorKey: 'name',
       enableSorting: true,
       enableGlobalFilter: true,
       cell: ({ row }) => {
         const service = row.original;
         return (
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-              <Settings className="h-5 w-5 text-primary" />
+            <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-lg">
+              <Settings className="text-primary h-5 w-5" />
             </div>
             <div>
               <div className="font-medium">{service.name || service.slug}</div>
@@ -64,59 +57,57 @@ export function useServiceColumns(opts: {
     },
     // Description
     {
-      id: "description",
-      header: services.description || "Description",
+      id: 'description',
+      header: 'Description',
       enableSorting: false,
       cell: ({ row }) => {
         const service = row.original;
         return (
-          <div className="max-w-xs truncate text-sm text-muted-foreground">
-            {service.shortDescription || service.description || ""}
+          <div className="text-muted-foreground max-w-xs truncate text-sm">
+            {service.shortDescription || service.description || ''}
           </div>
         );
       },
     },
     // Sub Services
     {
-      id: "subServices",
-      header: services.subServices || "Sub Services",
+      id: 'subServices',
+      header: 'Sub Services',
       enableSorting: false,
       cell: ({ row }) => {
         const service = row.original;
         const subServicesCount = service.subServices?.length || 0;
         return (
-          <div className="text-sm text-muted-foreground">
-            {subServicesCount} {subServicesCount === 1 ? "service" : "services"}
+          <div className="text-muted-foreground text-sm">
+            {subServicesCount} {subServicesCount === 1 ? 'service' : 'services'}
           </div>
         );
       },
     },
     // Order
     {
-      id: "order",
-      header: services.order || "Order",
+      id: 'order',
+      header: 'Order',
       enableSorting: true,
-      accessorKey: "order",
-      cell: ({ row }) => (
-        <div className="text-sm font-mono">{row.original.order || 0}</div>
-      ),
+      accessorKey: 'order',
+      cell: ({ row }) => <div className="font-mono text-sm">{row.original.order || 0}</div>,
     },
     // Status
     {
-      id: "status",
-      header: common.status || "Status",
+      id: 'status',
+      header: 'Status',
       enableSorting: false,
       cell: ({ row }) => {
         const service = row.original;
         return (
           <div className="flex items-center gap-2">
-            <Badge variant={service.isPublished ? "default" : "secondary"}>
-              {service.isPublished ? (common.published || "Published") : (common.draft || "Draft")}
+            <Badge variant={service.isPublished ? 'default' : 'secondary'}>
+              {service.isPublished ? 'Published' : 'Draft'}
             </Badge>
             {service.isFeatured && (
               <Badge variant="outline" className="text-xs">
                 <Star className="mr-1 h-3 w-3" />
-                {services.featured || "Featured"}
+                Featured
               </Badge>
             )}
           </div>
@@ -125,21 +116,21 @@ export function useServiceColumns(opts: {
     },
     // Created date
     {
-      id: "createdAt",
-      header: common.createdAt || "Created At",
+      id: 'createdAt',
+      header: 'Created At',
       enableSorting: true,
-      accessorKey: "createdAt",
+      accessorKey: 'createdAt',
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
           <Calendar className="text-muted-foreground h-4 w-4" />
-          <span className="text-sm">{formatDate(row.original.createdAt, lang)}</span>
+          <span className="text-sm">{formatDate(row.original.createdAt)}</span>
         </div>
       ),
     },
     // Actions
     {
-      id: "actions",
-      header: typeof common.actions === "string" ? common.actions : "Actions",
+      id: 'actions',
+      header: 'Actions',
       enableSorting: false,
       cell: ({ row }) => {
         const service = row.original;
@@ -154,11 +145,11 @@ export function useServiceColumns(opts: {
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => handleEdit(service)}>
                 <Edit className="mr-2 h-4 w-4 text-green-500" />
-                {common.edit || "Edit"}
+                Edit
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onDelete(service)} className="text-destructive">
                 <Trash2 className="mr-2 h-4 w-4 text-red-500" />
-                {common.delete || "Delete"}
+                Delete
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -167,4 +158,3 @@ export function useServiceColumns(opts: {
     },
   ];
 }
-
