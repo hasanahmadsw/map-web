@@ -85,12 +85,25 @@ export default function EditSettingsForm({ settings }: EditSettingsFormProps) {
     <div className="space-y-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          {/* Basic Information */}
           <BasicInformationSection />
+
+          {/* Site Images */}
           <SiteImagesSection />
+
+          {/* Meta Information */}
           <MetaInformationSection />
+
+          {/* Social Links */}
           <SocialLinksSection />
+
+          {/* Analytics */}
           <AnalyticsSection />
+
+          {/* Contact Information */}
           <ContactInformationSection />
+
+          {/* Custom Scripts */}
           <CustomScriptsSection />
 
           <ResponseError error={updateError as unknown as Error} />

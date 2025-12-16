@@ -138,10 +138,12 @@ export function NavMain({
                             }}
                             onClick={() => handleItemClick(subItem.url)}
                           >
-                            {loadingPath === item.url && (
-                              <Loader2 className="text-primary size-5 animate-spin" />
-                            )}
-                            <Link href={subItem.url}>{subItem.title}</Link>
+                            <Link href={subItem.url}>
+                              {loadingPath === subItem.url && (
+                                <Loader2 className="text-primary size-5 animate-spin" />
+                              )}
+                              {subItem.title}
+                            </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       );

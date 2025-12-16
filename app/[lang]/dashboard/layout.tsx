@@ -3,7 +3,7 @@ import { AppSidebar } from '@/components/layout/sidebar/app-sidebar';
 import { DashboardBreadcrumb } from '@/components/shared/breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { getDirection, type Lang } from '@/utils/dictionary-utils';
+
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -13,18 +13,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function DashboardLayout({
-  params,
-  children,
-}: {
-  params: Promise<{ lang: Lang }>;
-  children: React.ReactNode;
-}) {
-  const { lang } = await params;
-  const direction = getDirection(lang) === 'rtl' ? 'right' : 'left';
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <AppSidebar side={direction} />
+      <AppSidebar side="left" />
       <SidebarInset className="m-0! h-full max-w-full overflow-x-hidden rounded-none! border-none! p-0! shadow-none">
         <header className="flex h-16 w-full shrink-0 items-center justify-between gap-2 px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2">
