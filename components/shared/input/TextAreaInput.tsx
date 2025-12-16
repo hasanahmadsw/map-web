@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import type { Control, FieldPath, FieldValues } from "react-hook-form";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
 
 interface TextAreaInputProps<T extends FieldValues> {
   control: Control<T>;
@@ -13,7 +13,7 @@ interface TextAreaInputProps<T extends FieldValues> {
   className?: string;
   rows?: number;
   maxHeight?: string;
-  resize?: "none" | "both" | "horizontal" | "vertical";
+  resize?: 'none' | 'both' | 'horizontal' | 'vertical';
   disabled?: boolean;
 }
 
@@ -25,15 +25,15 @@ export function TextAreaInput<T extends FieldValues>({
   className,
   rows = 4,
   maxHeight,
-  resize = "vertical",
+  resize = 'vertical',
   disabled = false,
 }: TextAreaInputProps<T>) {
   const textareaStyles = cn(
     className,
-    resize === "none" && "resize-none",
-    resize === "horizontal" && "resize-x",
-    resize === "vertical" && "resize-y",
-    resize === "both" && "resize",
+    resize === 'none' && 'resize-none',
+    resize === 'horizontal' && 'resize-x',
+    resize === 'vertical' && 'resize-y',
+    resize === 'both' && 'resize',
   );
 
   const dynamicStyles = {
@@ -55,6 +55,7 @@ export function TextAreaInput<T extends FieldValues>({
               style={dynamicStyles}
               disabled={disabled}
               {...field}
+              value={field.value ?? ''}
             />
           </FormControl>
           <FormMessage />

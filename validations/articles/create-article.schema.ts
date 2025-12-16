@@ -25,17 +25,21 @@ function createArticleSchema() {
       .min(3, fmt(validation.string.minLength, { min: 3 }))
       .max(1024, fmt(validation.string.maxLength, { max: 1024 })),
 
-    meta: z.object({
-      title: z
-        .string(validation.required)
-        .trim()
-        .max(256, fmt(validation.string.maxLength, { max: 256 })),
-      description: z
-        .string(validation.required)
-        .trim()
-        .max(1024, fmt(validation.string.maxLength, { max: 1024 })),
-      keywords: z.array(z.string().max(50, fmt(validation.string.maxLength, { max: 50 }))).optional(),
-    }),
+    meta: z
+      .object({
+        title: z
+          .string(validation.required)
+          .trim()
+          .max(256, fmt(validation.string.maxLength, { max: 256 }))
+          .optional(),
+        description: z
+          .string(validation.required)
+          .trim()
+          .max(1024, fmt(validation.string.maxLength, { max: 1024 }))
+          .optional(),
+        keywords: z.array(z.string().max(50, fmt(validation.string.maxLength, { max: 50 }))).optional(),
+      })
+      .optional(),
 
     isPublished: z.boolean().default(false),
     isFeatured: z.boolean().default(false),

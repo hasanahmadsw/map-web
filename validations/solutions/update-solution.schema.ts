@@ -9,18 +9,12 @@ function updateSolutionSchema() {
       .string()
       .min(2, fmt(validation.string.minLength, { min: 2 }))
       .max(200, fmt(validation.string.maxLength, { max: 200 }))
-      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, validation.string.slugRegex)
-      .optional(),
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, validation.string.slugRegex),
     icon: z
       .string()
       .trim()
-      .max(100, fmt(validation.string.maxLength, { max: 100 }))
-      .optional(),
-    featuredImage: z
-      .string()
-      .trim()
-      .max(500, fmt(validation.string.maxLength, { max: 500 }))
-      .optional(),
+      .max(100, fmt(validation.string.maxLength, { max: 100 })),
+    featuredImage: z.string(validation.required).min(1, validation.required),
     isPublished: z.boolean().optional(),
     isFeatured: z.boolean().optional(),
     order: numberValidation(1, 100).optional(),
@@ -28,21 +22,17 @@ function updateSolutionSchema() {
       .string()
       .trim()
       .min(2, fmt(validation.string.minLength, { min: 2 }))
-      .max(200, fmt(validation.string.maxLength, { max: 200 }))
-      .optional(),
+      .max(200, fmt(validation.string.maxLength, { max: 200 })),
     description: z
       .string()
       .trim()
       .min(10, fmt(validation.string.minLength, { min: 10 }))
-      .max(1000, fmt(validation.string.maxLength, { max: 1000 }))
-      .optional(),
+      .max(1000, fmt(validation.string.maxLength, { max: 1000 })),
     shortDescription: z
       .string()
       .trim()
       .min(5, fmt(validation.string.minLength, { min: 5 }))
-      .max(300, fmt(validation.string.maxLength, { max: 300 }))
-      .optional(),
-
+      .max(300, fmt(validation.string.maxLength, { max: 300 })),
     meta: z
       .object({
         title: z

@@ -15,11 +15,7 @@ function createSolutionSchema() {
       .trim()
       .min(1, validation.required)
       .max(100, fmt(validation.string.maxLength, { max: 100 })),
-    featuredImage: z
-      .string(validation.required)
-      .trim()
-      .min(1, validation.required)
-      .max(500, fmt(validation.string.maxLength, { max: 500 })),
+    featuredImage: z.string(validation.required).min(1, validation.required),
     isPublished: z.boolean().default(false),
     isFeatured: z.boolean().default(false),
     order: numberValidation(1, 100).optional(),
@@ -39,17 +35,19 @@ function createSolutionSchema() {
       .min(5, fmt(validation.string.minLength, { min: 5 }))
       .max(300, fmt(validation.string.maxLength, { max: 300 })),
 
-    meta: z.object({
-      title: z
-        .string(validation.required)
-        .trim()
-        .max(200, fmt(validation.string.maxLength, { max: 200 })),
-      description: z
-        .string(validation.required)
-        .trim()
-        .max(300, fmt(validation.string.maxLength, { max: 300 })),
-      keywords: z.array(z.string().max(50, fmt(validation.string.maxLength, { max: 50 }))).optional(),
-    }),
+    meta: z
+      .object({
+        title: z
+          .string(validation.required)
+          .trim()
+          .max(200, fmt(validation.string.maxLength, { max: 200 })),
+        description: z
+          .string(validation.required)
+          .trim()
+          .max(300, fmt(validation.string.maxLength, { max: 300 })),
+        keywords: z.array(z.string().max(50, fmt(validation.string.maxLength, { max: 50 }))).optional(),
+      })
+      .optional(),
   });
 }
 

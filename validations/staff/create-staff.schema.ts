@@ -13,19 +13,18 @@ function createStaffSchema() {
         .max(200, fmt(validation.string.maxLength, { max: 200 })),
       email: z.email(validation.email.invalid).max(128, fmt(validation.string.maxLength, { max: 128 })),
       password: z
-        .string()
+        .string(validation.required)
         .trim()
         .min(1, validation.required)
         .min(8, fmt(validation.password.minLength, { min: 8 }))
         .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, validation.password.regex),
-      confirmPassword: z.string().min(1, validation.required),
+      confirmPassword: z.string(validation.required).min(1, validation.required),
       role: z.enum(Role, { message: validation.required }),
       bio: z
         .string(validation.required)
         .trim()
-        .min(3, fmt(validation.string.minLength, { min: 3 }))
-        .max(1024, fmt(validation.string.maxLength, { max: 1024 })),
-
+        .max(1024, fmt(validation.string.maxLength, { max: 1024 }))
+        .optional(),
       image: z.string().optional(),
     })
     .refine(data => data.password === data.confirmPassword, {

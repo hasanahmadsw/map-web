@@ -15,7 +15,7 @@ import {
   type TUpdateSettingsForm,
 } from '@/validations/settings/update-settings.schema';
 import ResponseError from '@/components/shared/response-error';
-import { sanitizeDto } from '@/utils/format';
+import { getChangedValues, sanitizeDto } from '@/utils/format';
 import type { Settings } from '@/types/settings.types';
 
 import { BasicInformationSection } from './form/partial/basic-information-section';
@@ -70,11 +70,10 @@ export default function EditSettingsForm({ settings }: EditSettingsFormProps) {
       toast.error('Settings not found');
       return;
     }
-
-    const sanitizedData = sanitizeDto(data) as TUpdateSettingsForm;
+    const changedValues = getChangedValues(form.formState.defaultValues as TUpdateSettingsForm, data);
 
     try {
-      await updateSettings(sanitizedData);
+      await updateSettings(changedValues);
       toast.success('Settings updated successfully');
       router.refresh();
     } catch {

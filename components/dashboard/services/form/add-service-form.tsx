@@ -12,7 +12,6 @@ import { useServiceMutations } from '@/hooks/services/mutations';
 import { BasicInformationSection } from './partial/basic-information-section';
 import { SolutionsSection } from './partial/solutions-section';
 import { MetaInformationSection } from './partial/meta-information-section';
-import { KeywordsSection } from './partial/keywords-section';
 import { StatusOptionsSection } from './partial/status-options-section';
 
 import { Button } from '@/components/ui/button';
@@ -75,9 +74,6 @@ function AddServiceForm() {
 
         {/* SEO and metadata */}
         <MetaInformationSection />
-
-        {/* Search and categorization keywords */}
-        <KeywordsSection />
 
         {/* Publishing and workflow status */}
         <StatusOptionsSection />

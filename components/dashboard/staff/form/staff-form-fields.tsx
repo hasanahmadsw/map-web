@@ -1,13 +1,13 @@
 'use client';
 
 import { useFormContext } from 'react-hook-form';
-import { FileInput } from '@/components/shared/input/FileInput';
+// import { FileInput } from '@/components/shared/input/FileInput';
 import { PasswordInput } from '@/components/shared/input/PasswordInput';
 import { SelectInput } from '@/components/shared/input/SelectInput';
 import { TextAreaInput } from '@/components/shared/input/TextAreaInput';
 import { TextInput } from '@/components/shared/input/TextInput';
-import { ROLES } from '@/enums/roles.enum';
-import { staffService } from '@/services/staff.service';
+import { ROLE_OPTIONS, ROLES } from '@/enums/roles.enum';
+// import { staffService } from '@/services/staff.service';
 
 function StaffFormFields() {
   const { control } = useFormContext();
@@ -32,7 +32,7 @@ function StaffFormFields() {
           name="role"
           label="Role"
           placeholder="Select role"
-          options={ROLES.map(r => ({
+          options={ROLE_OPTIONS.map(r => ({
             value: r,
             label: r.charAt(0).toUpperCase() + r.slice(1),
           }))}
@@ -47,7 +47,7 @@ function StaffFormFields() {
         className="min-h-[100px]"
       />
 
-      <FileInput
+      {/* <FileInput
         name="image"
         label="Image"
         placeholder="Choose image"
@@ -55,7 +55,7 @@ function StaffFormFields() {
         maxSize={10}
         autoUpload={true}
         uploadService={staffService.uploadPicture}
-      />
+      /> */}
     </>
   );
 }

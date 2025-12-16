@@ -76,11 +76,7 @@ function updateSettingsSchema() {
       .optional(),
     contact: z
       .object({
-        email: z
-
-          .email(validation.email.invalid)
-
-          .max(254, fmt(validation.string.maxLength, { max: 254 })),
+        email: z.email(validation.email.invalid).max(254, fmt(validation.string.maxLength, { max: 254 })),
         phone: z
           .string()
           .trim()

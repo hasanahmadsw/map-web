@@ -163,6 +163,7 @@ export function ServicesTable() {
           onConfirm={handleDeleteService}
           title="Confirm Delete"
           description="Are you sure you want to delete this Service? This action cannot be undone and will permanently remove the Service from the system."
+          loadingText="Deleting..."
           isLoading={deleteService.isPending}
           variant="destructive"
         />

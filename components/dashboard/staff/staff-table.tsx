@@ -87,6 +87,7 @@ function StaffTable() {
       toast.success('Staff deleted successfully');
 
       setSelectedStaff(null);
+      setActiveDialog(null);
     } catch (error) {
       const errMsg = (error as Error).message || 'Failed to delete staff';
 
@@ -224,6 +225,7 @@ function StaffTable() {
           onConfirm={handleDeleteStaff}
           title="Confirm Delete"
           description="Are you sure you want to delete this staff member? This action cannot be undone and will permanently remove the staff member from the system."
+          loadingText="Deleting..."
           isLoading={deleteStaff.isPending}
           variant="destructive"
         />

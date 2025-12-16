@@ -32,15 +32,11 @@ function AddStaffMember({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
   });
 
   const onSubmit = async (data: TCreateStaffForm) => {
-    try {
-      const payload = {
-        ...data,
-        image: data.image || undefined,
-      };
+    const { confirmPassword, ...rest } = data;
 
-      await create.mutateAsync(payload);
+    try {
+      await create.mutateAsync(rest as TCreateStaffForm);
       toast.success('Staff created successfully');
-      form.reset();
 
       onClose();
     } catch (error) {
@@ -51,7 +47,7 @@ function AddStaffMember({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-h-[500px] overflow-y-auto sm:max-h-[550px] sm:max-w-[800px]">
+      <DialogContent className="max-h-[500px] overflow-y-auto sm:max-h-[550px] sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="text-start">Add Staff</DialogTitle>
           <DialogDescription className="text-start">Add a new staff member to the system.</DialogDescription>

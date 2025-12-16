@@ -22,6 +22,7 @@ import { useStaffMutations } from '@/hooks/staff/mutations';
 import { editStaffSchema, TEditStaffForm } from '@/validations/staff/edit-staff.schema';
 import { LoadingButton } from '@/components/shared/buttons/loading-button';
 import { Staff } from '@/types/staff.types';
+import { getChangedValues } from '@/utils/format';
 
 interface EditStaffFormProps {
   isOpen: boolean;
@@ -40,19 +41,18 @@ function EditStaffForm({ isOpen, onClose, staff }: EditStaffFormProps) {
       name: staff.name,
       email: staff.email,
       role: staff.role as TEditStaffForm['role'],
-      bio: staff.bio,
+      bio: staff.bio || '',
       image: staff.image || undefined,
     },
   });
 
   const onSubmit = async (data: TEditStaffForm) => {
-    try {
-      const payload = {
-        ...data,
-        image: data.image || undefined,
-      };
+    const { confirmPassword, ...rest } = data;
 
-      await update.mutateAsync({ id: staff.id, data: payload });
+    const changedValues = getChangedValues(form.formState.defaultValues as TEditStaffForm, rest);
+
+    try {
+      await update.mutateAsync({ id: staff.id, data: changedValues });
       toast.success('Staff updated successfully');
 
       setOpen(false);
@@ -65,7 +65,7 @@ function EditStaffForm({ isOpen, onClose, staff }: EditStaffFormProps) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-h-[500px] overflow-y-auto sm:max-h-[550px] sm:max-w-[800px]">
+      <DialogContent className="max-h-[500px] overflow-y-auto sm:max-h-[550px] sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="text-start">Edit Staff</DialogTitle>
           <DialogDescription className="text-start">Update staff member information.</DialogDescription>

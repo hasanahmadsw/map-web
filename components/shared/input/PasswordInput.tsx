@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
-import type { Control, FieldPath, FieldValues } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 interface PasswordInputProps<T extends FieldValues> {
   control: Control<T>;
@@ -23,7 +23,7 @@ export function PasswordInput<T extends FieldValues>({
   name,
   label,
   placeholder,
-  autoComplete = "current-password",
+  autoComplete = 'current-password',
   className,
   autoFocus = false,
   disabled = false,
@@ -40,13 +40,14 @@ export function PasswordInput<T extends FieldValues>({
           <FormControl>
             <div className="relative">
               <Input
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 placeholder={placeholder}
                 autoComplete={autoComplete}
                 disabled={disabled}
-                className={`pe-10 ${className || ""}`}
-                aria-invalid={fieldState.error ? "true" : "false"}
+                className={`pe-10 ${className || ''}`}
+                aria-invalid={fieldState.error ? 'true' : 'false'}
                 {...field}
+                value={field.value ?? ''}
                 autoFocus={autoFocus}
               />
               <Button

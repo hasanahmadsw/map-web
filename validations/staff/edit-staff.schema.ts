@@ -23,9 +23,8 @@ function editStaffSchema() {
       bio: z
         .string(validation.required)
         .trim()
-        .min(3, fmt(validation.string.minLength, { min: 3 }))
-        .max(1024, fmt(validation.string.maxLength, { max: 1024 })),
-
+        .max(1024, fmt(validation.string.maxLength, { max: 1024 }))
+        .optional(),
       image: z.string().optional(),
     })
     .refine(data => (data?.password ? data.password === data.confirmPassword : true), {
