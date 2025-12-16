@@ -19,46 +19,32 @@ import { Form } from '@/components/ui/form';
 
 import { useStaffMutations } from '@/hooks/staff/mutations';
 
-import { editStaffSchema, TEditStaffForm } from '@/validations/staff/edit-staff.schema';
+import { createStaffSchema, TCreateStaffForm } from '@/validations/staff/create-staff.schema';
 import { LoadingButton } from '@/components/shared/buttons/loading-button';
-import { Staff } from '@/types/staff.types';
 
-interface EditStaffFormProps {
-  isOpen: boolean;
-  onClose: () => void;
-  staff: Staff;
-}
-
-function EditStaffForm({ isOpen, onClose, staff }: EditStaffFormProps) {
-  const { update } = useStaffMutations();
+function AddStaffMember({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  const { create } = useStaffMutations();
 
   const [open, setOpen] = useState(isOpen);
 
-  const form = useForm<TEditStaffForm>({
-    resolver: zodResolver(editStaffSchema()),
-    defaultValues: {
-      name: staff.name,
-      email: staff.email,
-      role: staff.role as TEditStaffForm['role'],
-      bio: staff.bio,
-      image: staff.image || undefined,
-    },
+  const form = useForm<TCreateStaffForm>({
+    resolver: zodResolver(createStaffSchema()),
   });
 
-  const onSubmit = async (data: TEditStaffForm) => {
+  const onSubmit = async (data: TCreateStaffForm) => {
     try {
       const payload = {
         ...data,
         image: data.image || undefined,
       };
 
-      await update.mutateAsync({ id: staff.id, data: payload });
-      toast.success('Staff updated successfully');
+      await create.mutateAsync(payload);
+      toast.success('Staff created successfully');
+      form.reset();
 
-      setOpen(false);
       onClose();
     } catch (error) {
-      const errorMessage = (update.error as Error)?.message || 'Failed to update staff';
+      const errorMessage = (create.error as Error)?.message || 'Failed to create staff';
       toast.error(errorMessage);
     }
   };
@@ -67,18 +53,18 @@ function EditStaffForm({ isOpen, onClose, staff }: EditStaffFormProps) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-h-[500px] overflow-y-auto sm:max-h-[550px] sm:max-w-[800px]">
         <DialogHeader>
-          <DialogTitle className="text-start">Edit Staff</DialogTitle>
-          <DialogDescription className="text-start">Update staff member information.</DialogDescription>
+          <DialogTitle className="text-start">Add Staff</DialogTitle>
+          <DialogDescription className="text-start">Add a new staff member to the system.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <StaffFormFields />
 
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={onClose} disabled={update.isPending}>
+              <Button type="button" variant="outline" onClick={onClose} disabled={create.isPending}>
                 Cancel
               </Button>
-              <LoadingButton isLoading={update.isPending} loadingText="Updating..." defaultText="Update" />
+              <LoadingButton isLoading={create.isPending} loadingText="Adding..." defaultText="Add" />
             </DialogFooter>
           </form>
         </Form>
@@ -87,4 +73,4 @@ function EditStaffForm({ isOpen, onClose, staff }: EditStaffFormProps) {
   );
 }
 
-export default EditStaffForm;
+export default AddStaffMember;

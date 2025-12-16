@@ -1,15 +1,13 @@
-import type {
-  TCreateStaffDTO,
-  TEditStaffDTO,
-  TUpdateMeDTO,
-} from "@/schemas/staff.schemas";
-import type { ApiResponse } from "@/types/common.types";
-import type { Role, Staff } from "@/types/staff.types";
-import { ApiService } from "./base.service";
-import { toQS } from "@/utils/api-utils";
+import type { ApiResponse } from '@/types/common.types';
+import type { Role, Staff } from '@/types/staff.types';
+import { ApiService } from './base.service';
+import { toQS } from '@/utils/api-utils';
+import { TCreateStaffForm } from '@/validations/staff/create-staff.schema';
+import { TEditStaffForm } from '@/validations/staff/edit-staff.schema';
+import { TUpdateMeDTO } from '@/schemas/staff.schemas';
 
-const BASE = "/staff";
-const ADMIN_BASE = "/admin/staff";
+const BASE = '/staff';
+const ADMIN_BASE = '/admin/staff';
 type Id = string | number;
 
 type RequestOpts = {
@@ -22,14 +20,14 @@ type GetAllParams = {
   limit?: number;
   search?: string;
   role?: Role;
-  sort?: "createdAt" | "name";
-  order?: "asc" | "desc";
+  sort?: 'createdAt' | 'name';
+  order?: 'asc' | 'desc';
 };
 
 const encId = (id: Id) => encodeURIComponent(String(id));
 
 export const staffService = {
-  async create(payload: TCreateStaffDTO, opts?: RequestOpts): Promise<Staff> {
+  async create(payload: TCreateStaffForm, opts?: RequestOpts): Promise<Staff> {
     const res = await ApiService.post<Staff>(`${ADMIN_BASE}`, payload, opts);
     return res.data;
   },
@@ -44,7 +42,7 @@ export const staffService = {
     return res.data;
   },
 
-  async update(id: Id, payload: TEditStaffDTO | FormData, opts?: RequestOpts): Promise<Staff> {
+  async update(id: Id, payload: Partial<TEditStaffForm> | FormData, opts?: RequestOpts): Promise<Staff> {
     const res = await ApiService.patch<Staff>(`${ADMIN_BASE}/${encId(id)}`, payload, opts);
     return res.data;
   },
@@ -64,7 +62,7 @@ export const staffService = {
     const formData = new FormData();
     // Backend expects the binary under the "picture" key
     formData.append('picture', file, file.name);
-    
+
     const res = await ApiService.post<{ url: string }>(`${ADMIN_BASE}/upload-picture`, formData, {
       ...opts,
     });

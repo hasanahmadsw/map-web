@@ -5,29 +5,30 @@ import { useState, useMemo } from 'react';
 import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Filter } from 'lucide-react';
+
 import { DataTable } from '@/components/shared/table/data-table';
-import { ConfirmationDialog } from '@/components/confirmation-dialog';
 
 import { useStaffMutations } from '@/hooks/staff/mutations';
 import { useStaffController } from '@/hooks/staff/useStaffController';
-import { useTranslation } from '@/providers/translations-provider';
-import { useLang } from '@/hooks/useLang';
 import { useStaffColumns } from './columns';
 import { TableHeader, type FilterInfo } from '@/components/shared/table/table-header';
 
 import type { Staff } from '@/types/staff.types';
 import type { Role } from '@/types/staff.types';
-import { fmt } from '@/utils/dictionary-utils';
 import dynamic from 'next/dynamic';
 import DialogSkeleton from '@/components/shared/skeletons/dialog-skeleton';
 import { SelectFilter } from '@/components/shared/selects/select-filter';
 
-const AddStaffMemberDynamic = dynamic(() => import('./form/add-staff').then(mod => mod.AddStaffMember), {
+const AddStaffMemberDynamic = dynamic(() => import('./form/add-staff-form'), {
   ssr: false,
   loading: () => <DialogSkeleton />,
 });
+
+const EditStaffMemberDynamic = dynamic(() => import('./form/edit-staff-form'), {
+  ssr: false,
+  loading: () => <DialogSkeleton />,
+});
+
 const ConfirmationDialogDynamic = dynamic(
   () => import('@/components/confirmation-dialog').then(mod => mod.ConfirmationDialog),
   {
@@ -36,16 +37,11 @@ const ConfirmationDialogDynamic = dynamic(
   },
 );
 
-function StaffTable() {
-  const lang = useLang();
-  const { t } = useTranslation();
-  const common = t.common || {};
-  const staffs = t.staffs || {};
-  const action = t.action || {};
-  const validation = t.validation || {};
+type DialogType = 'add' | 'edit' | 'delete' | null;
 
-  const [staffToDelete, setStaffToDelete] = useState<Staff | null>(null);
-  const [isAddModalOpen, setAddModalOpen] = useState(false);
+function StaffTable() {
+  const [activeDialog, setActiveDialog] = useState<DialogType>(null);
+  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
 
   const {
     items: staff,
@@ -72,25 +68,27 @@ function StaffTable() {
 
   const { del: deleteStaff } = useStaffMutations();
 
+  const handleEdit = (staff: Staff) => {
+    setSelectedStaff(staff);
+    setActiveDialog('edit');
+  };
+
+  const handleDelete = (staff: Staff) => {
+    setSelectedStaff(staff);
+    setActiveDialog('delete');
+  };
+
   const handleDeleteStaff = async () => {
-    if (!staffToDelete) return;
+    if (!selectedStaff) return;
 
     try {
-      await deleteStaff.mutateAsync(staffToDelete.id);
+      await deleteStaff.mutateAsync(selectedStaff.id);
 
-      toast.success(
-        fmt(validation.deletedSuccessfully || '{entity} deleted successfully', {
-          entity: staffs.staff || 'Staff',
-        }),
-      );
+      toast.success('Staff deleted successfully');
 
-      setStaffToDelete(null);
+      setSelectedStaff(null);
     } catch (error) {
-      const errMsg =
-        (error as Error).message ||
-        fmt(validation.failedToDelete || 'Failed to delete {entity}', {
-          entity: staffs.staff || 'Staff',
-        });
+      const errMsg = (error as Error).message || 'Failed to delete staff';
 
       toast.error(errMsg);
       console.error('Error deleting staff:', error);
@@ -98,12 +96,12 @@ function StaffTable() {
   };
 
   const columns = useStaffColumns({
-    lang,
-    onDelete: setStaffToDelete,
+    onEdit: handleEdit,
+    onDelete: handleDelete,
   });
 
   const handleAddStaff = () => {
-    setAddModalOpen(true);
+    setActiveDialog('add');
   };
 
   // Prepare filter information for the header
@@ -121,20 +119,20 @@ function StaffTable() {
               : roleFilter;
       filters.push({
         key: 'role',
-        label: staffs.role || 'Role',
+        label: 'Role',
         value: roleLabel,
       });
     }
 
     return filters;
-  }, [roleFilter, staffs.role]);
+  }, [roleFilter]);
 
   return (
     <>
       <Card>
         {/* ========================== Page Header ========================== */}
         <TableHeader
-          title={staffs.staffMembers || 'Staff Members'}
+          title={'Staff Members'}
           total={total}
           currentPage={currentPage}
           totalPages={totalPages}
@@ -143,9 +141,9 @@ function StaffTable() {
           filters={filterInfo}
           onClearAllFilters={clearAll}
           onAdd={handleAddStaff}
-          addButtonText={`${common.add || 'Add'} ${staffs.staff || 'Staff'}`}
-          entityName={staffs.staff || 'Staff'}
-          entityNamePlural={staffs.staffMembers || 'Staff'}
+          addButtonText={`Add Staff`}
+          entityName={'Staff'}
+          entityNamePlural={'Staff'}
         />
 
         {/* ========================== Table ========================== */}
@@ -157,7 +155,7 @@ function StaffTable() {
             isLoading={isPending}
             error={error}
             refetch={refetch}
-            emptyMessage={common.notFound || staffs.noStaff || 'No data found'}
+            emptyMessage={'No data found'}
             pageIndex={currentPage}
             pageSize={pageSize}
             totalRows={total}
@@ -172,14 +170,16 @@ function StaffTable() {
             initialGlobalFilter={searchTerm}
             manualFiltering={true}
             messages={{
-              searchPlaceholder: common.searchPlaceholder || staffs.searchStaff || 'Search...',
-              noData: common.notFound || staffs.noStaff || 'No data found',
+              searchPlaceholder: 'Search...',
+              noData: 'No data found',
             }}
             toolbarRight={
               <div className="flex flex-wrap items-center gap-2">
                 <SelectFilter
                   value={roleFilter || 'all'}
-                  onValueChange={val => setFilter('role', val === 'all' ? undefined : (val as Role))}
+                  onValueChange={val =>
+                    setFilter('role', (val as string) === 'all' ? undefined : (val as Role))
+                  }
                   options={[
                     { value: 'all', label: 'All' },
                     { value: 'superadmin', label: 'Super Admin' },
@@ -192,26 +192,35 @@ function StaffTable() {
 
                 {hasActiveFilters && (
                   <Button variant="ghost" size="sm" onClick={clearAll} className="gap-1">
-                    {action.clearAll || common.clear || 'Clear All'}
+                    Clear All
                   </Button>
                 )}
               </div>
             }
-            lang={lang}
+            lang="en"
           />
         </CardContent>
       </Card>
 
       {/* ========================== Add Modal ========================== */}
-      {isAddModalOpen && (
-        <AddStaffMemberDynamic isOpen={isAddModalOpen} onClose={() => setAddModalOpen(false)} />
+      {activeDialog === 'add' && (
+        <AddStaffMemberDynamic isOpen={activeDialog === 'add'} onClose={() => setActiveDialog(null)} />
+      )}
+
+      {/* ========================== Edit Modal ========================== */}
+      {activeDialog === 'edit' && (
+        <EditStaffMemberDynamic
+          isOpen={activeDialog === 'edit'}
+          onClose={() => setActiveDialog(null)}
+          staff={selectedStaff as Staff}
+        />
       )}
 
       {/* ========================== Delete Modal ========================== */}
-      {staffToDelete && (
+      {activeDialog === 'delete' && (
         <ConfirmationDialogDynamic
-          open={!!staffToDelete}
-          onOpenChange={open => !open && setStaffToDelete(null)}
+          open={activeDialog === 'delete'}
+          onOpenChange={open => !open && setActiveDialog(null)}
           onConfirm={handleDeleteStaff}
           title="Confirm Delete"
           description="Are you sure you want to delete this staff member? This action cannot be undone and will permanently remove the staff member from the system."
