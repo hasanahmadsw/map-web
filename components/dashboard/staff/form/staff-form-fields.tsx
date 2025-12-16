@@ -7,6 +7,7 @@ import { SelectInput } from '@/components/shared/input/SelectInput';
 import { TextAreaInput } from '@/components/shared/input/TextAreaInput';
 import { TextInput } from '@/components/shared/input/TextInput';
 import { ROLE_OPTIONS, ROLES } from '@/enums/roles.enum';
+import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
 // import { staffService } from '@/services/staff.service';
 
 function StaffFormFields() {
@@ -47,15 +48,8 @@ function StaffFormFields() {
         className="min-h-[100px]"
       />
 
-      {/* <FileInput
-        name="image"
-        label="Image"
-        placeholder="Choose image"
-        accept="image/*"
-        maxSize={10}
-        autoUpload={true}
-        uploadService={staffService.uploadPicture}
-      /> */}
+      {/* Featured image */}
+      <MediaSelectInput control={control} name="image" label="Profile Image" typeFilter="image" />
     </>
   );
 }
