@@ -3,6 +3,11 @@ import Link from 'next/link';
 
 import { AddSolutionForm } from '@/components/dashboard/solutions/form/add-solution-form';
 import { Button } from '@/components/ui/button';
+import { type Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Add Article',
+};
 
 export default async function AddSolutionPage() {
   return (

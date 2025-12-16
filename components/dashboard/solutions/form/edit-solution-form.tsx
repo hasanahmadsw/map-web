@@ -20,7 +20,6 @@ import {
 import ResponseError from '@/components/shared/response-error';
 import { BasicInformationSection } from './partials/basic-information-section';
 import { MetaInformationSection } from './partials/meta-information-section';
-import { KeywordsSection } from './partials/keywords-section';
 import { StatusOptionsSection } from './partials/status-options-section';
 import { getChangedValues } from '@/utils/format';
 import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
@@ -117,9 +116,6 @@ export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
 
         {/* SEO and metadata */}
         <MetaInformationSection />
-
-        {/* Search and categorization keywords */}
-        <KeywordsSection />
 
         {/* Publishing and workflow status */}
         <StatusOptionsSection />

@@ -14,7 +14,6 @@ import { useArticleStaffById, useArticlesStaff } from '@/hooks/articles/useArtic
 import { BasicInformationSection } from './partial/basic-information-section';
 
 import { MetaInformationSection } from './partial/meta-information-section';
-import { KeywordsSection } from './partial/keywords-section';
 import { TagsTopicsSection } from './partial/tags-topics-section';
 import { StatusOptionsSection } from './partial/status-options-section';
 
@@ -59,8 +58,8 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
         },
         isPublished: article.isPublished,
         isFeatured: article.isFeatured,
-        tags: Array.isArray(article.tags) ? article.tags.join(', ') : '',
-        topics: Array.isArray(article.topics) ? article.topics.join(', ') : '',
+        tags: article?.tags || [],
+        topics: article?.topics || [],
         image: article.image || '',
       });
     }
@@ -70,18 +69,6 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
     const changedValues = getChangedValues(form.formState.defaultValues as TUpdateArticleForm, data);
 
     try {
-      // Convert comma-separated strings to arrays
-      // const processStringArray = (str: string | string[] | undefined): string[] => {
-      //   if (Array.isArray(str)) return str;
-      //   if (typeof str === 'string') {
-      //     return str
-      //       .split(',')
-      //       .map(item => item.trim())
-      //       .filter(item => item.length > 0);
-      //   }
-      //   return [];
-      // };
-
       await updateArticle(Number(articleId), changedValues);
       toast.success('Article updated successfully');
       router.push('/dashboard/articles');
@@ -104,7 +91,7 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
     return (
       <div className="flex h-32 items-center justify-center">
         <div className="text-center">
-          <p className="text-destructive mb-2">Failed to load article</p>
+          <p className="text-destructive mb-2">{errorArticle?.message || 'Failed to load article'}</p>
           <Button onClick={() => refetchArticle()} variant="outline">
             Retry
           </Button>
@@ -124,9 +111,6 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
 
         {/* SEO and metadata */}
         <MetaInformationSection />
-
-        {/* Search and categorization keywords */}
-        <KeywordsSection />
 
         {/* Content classification tags */}
         <TagsTopicsSection />

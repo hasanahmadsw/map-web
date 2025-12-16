@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import type { Control, FieldPath, FieldValues } from "react-hook-form";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 interface TextInputProps<T extends FieldValues> {
   control: Control<T>;
@@ -21,7 +21,7 @@ export function TextInput<T extends FieldValues>({
   name,
   label,
   placeholder,
-  type = "text",
+  type = 'text',
   autoComplete,
   className,
   autoFocus = false,
@@ -42,6 +42,7 @@ export function TextInput<T extends FieldValues>({
               autoComplete={autoComplete}
               disabled={disabled}
               {...field}
+              value={field.value ?? ''}
               autoFocus={autoFocus}
             />
           </FormControl>

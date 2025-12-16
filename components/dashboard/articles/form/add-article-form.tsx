@@ -12,7 +12,6 @@ import { useArticlesStaff } from '@/hooks/articles/useArticles';
 import { BasicInformationSection } from './partial/basic-information-section';
 
 import { MetaInformationSection } from './partial/meta-information-section';
-import { KeywordsSection } from './partial/keywords-section';
 import { TagsTopicsSection } from './partial/tags-topics-section';
 import { StatusOptionsSection } from './partial/status-options-section';
 
@@ -39,18 +38,6 @@ export function AddArticleForm() {
     const santizedData = sanitizeDto(data) as TCreateArticleForm;
 
     try {
-      // Convert comma-separated strings to arrays
-      // const processStringArray = (str: string | string[] | undefined): string[] => {
-      //   if (Array.isArray(str)) return str;
-      //   if (typeof str === 'string') {
-      //     return str
-      //       .split(',')
-      //       .map(item => item.trim())
-      //       .filter(item => item.length > 0);
-      //   }
-      //   return [];
-      // };
-
       await createArticle(santizedData);
       toast.success('Article created successfully');
       router.push('/dashboard/articles');
@@ -70,9 +57,6 @@ export function AddArticleForm() {
 
         {/* SEO and metadata */}
         <MetaInformationSection />
-
-        {/* Search and categorization keywords */}
-        <KeywordsSection />
 
         {/* Content classification tags */}
         <TagsTopicsSection />

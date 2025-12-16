@@ -6,12 +6,6 @@ import { Button } from '@/components/ui/button';
 
 import { type Metadata } from 'next';
 
-interface AddArticlePageProps {
-  params: Promise<{
-    lang: string;
-  }>;
-}
-
 export const metadata: Metadata = {
   title: 'Add Article',
 };

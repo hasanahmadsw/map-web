@@ -16,7 +16,7 @@ export default async function EditArticlePage({ params }: EditArticlePageProps) 
 
   return (
     <div className="space-y-6 p-4">
-      <header className="flex items-center space-x-4">
+      <header>
         <h1 className="text-3xl font-bold tracking-tight">Edit Article</h1>
         <p className="text-muted-foreground">Update article information.</p>
       </header>

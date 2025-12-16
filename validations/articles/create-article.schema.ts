@@ -7,6 +7,7 @@ function createArticleSchema() {
     slug: z
       .string(validation.required)
       .min(3, fmt(validation.string.minLength, { min: 2 }))
+      .max(200, fmt(validation.string.maxLength, { max: 200 }))
       .regex(/^[a-z0-9-]+$/, validation.string.slugRegex),
     name: z
       .string(validation.required)
@@ -28,22 +29,21 @@ function createArticleSchema() {
       title: z
         .string(validation.required)
         .trim()
-        .min(3, fmt(validation.string.minLength, { min: 3 }))
         .max(256, fmt(validation.string.maxLength, { max: 256 })),
       description: z
         .string(validation.required)
         .trim()
-        .min(3, fmt(validation.string.minLength, { min: 3 }))
         .max(1024, fmt(validation.string.maxLength, { max: 1024 })),
-      keywords: z.array(z.number()).min(1, fmt(validation.custom.addAtLeastOne, { entity: 'one' })),
+      keywords: z.array(z.string().max(50, fmt(validation.string.maxLength, { max: 50 }))).optional(),
     }),
 
     isPublished: z.boolean().default(false),
     isFeatured: z.boolean().default(false),
-    tags: z.string().optional(),
-    topics: z.string().optional(),
 
-    image: z.string().optional(),
+    tags: z.array(z.string().max(50, fmt(validation.string.maxLength, { max: 50 }))).optional(),
+    topics: z.array(z.string().max(50, fmt(validation.string.maxLength, { max: 50 }))).optional(),
+
+    image: z.string(validation.required).min(1, validation.required),
   });
 }
 

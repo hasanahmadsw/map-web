@@ -204,6 +204,7 @@ export function ArticlesTable() {
           onConfirm={handleDeleteArticle}
           title="Confirm Delete"
           description="Are you sure you want to delete this Article? This action cannot be undone and will permanently remove the Article from the system."
+          loadingText="Deleting..."
           isLoading={deleteArticle.isPending}
           variant="destructive"
         />

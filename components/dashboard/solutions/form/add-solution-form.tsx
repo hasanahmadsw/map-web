@@ -13,7 +13,6 @@ import { useSolutionMutations } from '@/hooks/solutions/mutations';
 import ResponseError from '@/components/shared/response-error';
 import { BasicInformationSection } from './partials/basic-information-section';
 import { MetaInformationSection } from './partials/meta-information-section';
-import { KeywordsSection } from './partials/keywords-section';
 import { StatusOptionsSection } from './partials/status-options-section';
 import { createSolutionSchema, TCreateSolutionForm } from '@/validations/solutions/create-solution.schema';
 import { sanitizeDto } from '@/utils/format';
@@ -28,11 +27,6 @@ export function AddSolutionForm() {
     defaultValues: {
       isPublished: false,
       isFeatured: false,
-      order: 0,
-
-      meta: {
-        keywords: [],
-      },
     },
   });
 
@@ -64,9 +58,6 @@ export function AddSolutionForm() {
 
         {/* SEO and metadata */}
         <MetaInformationSection />
-
-        {/* Search and categorization keywords */}
-        <KeywordsSection />
 
         {/* Publishing and workflow status */}
         <StatusOptionsSection />

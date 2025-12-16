@@ -192,6 +192,7 @@ export function SolutionsTable() {
           onConfirm={handleDeleteSolution}
           title="Confirm Delete"
           description="Are you sure you want to delete this Solution? This action cannot be undone and will permanently remove the Solution from the system."
+          loadingText="Deleting..."
           isLoading={deleteSolution.isPending}
           variant="destructive"
         />

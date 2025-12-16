@@ -12,8 +12,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useCreateFolder } from '@/hooks/api/media/use-media';
-import { useTranslation } from '@/providers/translations-provider';
-import { createFolderSchema } from '@/validations/media';
+import { createFolderSchema } from '@/validations/media/create-folder.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useForm, useWatch } from 'react-hook-form';

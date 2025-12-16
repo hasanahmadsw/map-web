@@ -4,6 +4,14 @@ import { DashboardBreadcrumb } from '@/components/shared/breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { getDirection, type Lang } from '@/utils/dictionary-utils';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s | MAP',
+    default: 'MAP',
+  },
+};
 
 export default async function DashboardLayout({
   params,
