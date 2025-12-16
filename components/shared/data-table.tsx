@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useTranslation } from '@/providers/translations-provider';
-import { ConfirmationDialog } from '@/components/confirmation-dialog';
+import { ConfirmationDialog } from '@/components/shared/confirmation-dialog';
 
 // Types
 export interface TableColumn<T = any> {

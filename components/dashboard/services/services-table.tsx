@@ -18,7 +18,7 @@ import DialogSkeleton from '@/components/shared/skeletons/dialog-skeleton';
 import dynamic from 'next/dynamic';
 
 const ConfirmationDialogDynamic = dynamic(
-  () => import('@/components/confirmation-dialog').then(mod => mod.ConfirmationDialog),
+  () => import('@/components/shared/confirmation-dialog').then(mod => mod.ConfirmationDialog),
   {
     ssr: false,
     loading: () => <DialogSkeleton />,

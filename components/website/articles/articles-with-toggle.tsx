@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { NewsCard } from "@/components/news-card";
-import type { Article } from "@/types/articles.types";
-import { VariantToggle, ViewVariant } from "./variant-toggle";
-import { useTranslation } from "@/providers/translations-provider";
+import { useState } from 'react';
+import { NewsCard } from '@/components/website/news-card';
+import type { Article } from '@/types/articles.types';
+import { VariantToggle, ViewVariant } from './variant-toggle';
+import { useTranslation } from '@/providers/translations-provider';
 
 interface ArticlesWithToggleProps {
   articles: Article[];
@@ -13,7 +13,7 @@ interface ArticlesWithToggleProps {
 
 export function ArticlesWithToggle({ articles, lang }: ArticlesWithToggleProps) {
   const [selectedVariant, setSelectedVariant] = useState<ViewVariant>(ViewVariant.VERTICAL);
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
   return (
     <>
       <VariantToggle defaultVariant={selectedVariant} onVariantChange={setSelectedVariant} />
@@ -22,11 +22,11 @@ export function ArticlesWithToggle({ articles, lang }: ArticlesWithToggleProps) 
       <div
         className={
           selectedVariant === ViewVariant.VERTICAL
-            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            : "space-y-4"
+            ? 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'
+            : 'space-y-4'
         }
       >
-        {articles.map((article) => (
+        {articles.map(article => (
           <NewsCard lang={lang} key={article.id} article={article} variant={selectedVariant} t={t} />
         ))}
       </div>

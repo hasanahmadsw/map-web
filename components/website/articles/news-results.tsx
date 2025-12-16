@@ -1,9 +1,16 @@
-import type { Article } from "@/types/articles.types";
-import { EmptyStateWrapper } from "./empty-state-wrapper";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import { NewsCard } from "@/components/news-card";
-import Link from "next/link";
-import { Translations, getTranslations } from "@/utils/dictionary-utils";
+import type { Article } from '@/types/articles.types';
+import { EmptyStateWrapper } from './empty-state-wrapper';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+import { NewsCard } from '@/components/website/news-card';
+import Link from 'next/link';
+import { Translations, getTranslations } from '@/utils/dictionary-utils';
 
 interface NewsResultsProps {
   articles: Article[];
@@ -12,7 +19,7 @@ interface NewsResultsProps {
   currentPage: number;
   limit: number;
   searchParams?: Record<string, string>;
-  t:Translations
+  t: Translations;
 }
 
 export function NewsResults({
@@ -29,30 +36,26 @@ export function NewsResults({
   const createPageUrl = (page: number) => {
     const params = new URLSearchParams(searchParams);
     if (page <= 1) {
-      params.delete("page");
+      params.delete('page');
     } else {
-      params.set("page", String(page));
+      params.set('page', String(page));
     }
     const queryString = params.toString();
-    return queryString ? `?${queryString}` : "";
+    return queryString ? `?${queryString}` : '';
   };
 
   if (articles.length === 0) {
     return (
-      <EmptyStateWrapper
-        title="No articles found"
-        description="No articles found"
-        buttonText="Reload"
-      />
+      <EmptyStateWrapper title="No articles found" description="No articles found" buttonText="Reload" />
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {articles.map((article) => (
-            <NewsCard key={article.id} article={article} lang={lang} t={t} />
-          ))}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {articles.map(article => (
+          <NewsCard key={article.id} article={article} lang={lang} t={t} />
+        ))}
       </div>
       {totalPages > 1 && (
         <Pagination>
@@ -71,9 +74,7 @@ export function NewsResults({
               return (
                 <PaginationItem key={page}>
                   <Link href={createPageUrl(page)}>
-                    <PaginationLink isActive={page === currentPage}>
-                      {page}
-                    </PaginationLink>
+                    <PaginationLink isActive={page === currentPage}>{page}</PaginationLink>
                   </Link>
                 </PaginationItem>
               );

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Image, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { MediaPickerDialog } from '@/components/media/media-picker-dialog';
+import { MediaPickerDialog } from '@/components/dashboard/media/media-picker-dialog';
 
 export function FeaturedImageSection() {
   const { watch, setValue } = useFormContext();

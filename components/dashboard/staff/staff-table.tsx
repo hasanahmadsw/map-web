@@ -30,7 +30,7 @@ const EditStaffMemberDynamic = dynamic(() => import('./form/edit-staff-form'), {
 });
 
 const ConfirmationDialogDynamic = dynamic(
-  () => import('@/components/confirmation-dialog').then(mod => mod.ConfirmationDialog),
+  () => import('@/components/shared/confirmation-dialog').then(mod => mod.ConfirmationDialog),
   {
     ssr: false,
     loading: () => <DialogSkeleton />,

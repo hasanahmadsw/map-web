@@ -1,8 +1,8 @@
-import MediaGallery from "@/components/media/media-gallery";
-import { Card, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { getTranslations, Lang } from "@/utils/dictionary-utils";
-import { Suspense } from "react";
+import MediaGallery from '@/components/dashboard/media/media-gallery';
+import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { getTranslations, Lang } from '@/utils/dictionary-utils';
+import { Suspense } from 'react';
 
 function MediaGallerySkeleton() {
   return (
@@ -60,4 +60,3 @@ export default async function MediaPage({ params }: MediaPageProps) {
     </div>
   );
 }
-

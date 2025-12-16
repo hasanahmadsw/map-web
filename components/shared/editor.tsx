@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import Highlight from "@tiptap/extension-highlight";
-import LinkExtension from "@tiptap/extension-link";
-import Placeholder from "@tiptap/extension-placeholder";
-import { EditorContent, useEditor } from "@tiptap/react";
-import { BubbleMenu } from "@tiptap/react/menus";
-import StarterKit from "@tiptap/starter-kit";
+import Highlight from '@tiptap/extension-highlight';
+import LinkExtension from '@tiptap/extension-link';
+import Placeholder from '@tiptap/extension-placeholder';
+import { EditorContent, useEditor } from '@tiptap/react';
+import { BubbleMenu } from '@tiptap/react/menus';
+import StarterKit from '@tiptap/starter-kit';
 import {
   Bold,
   Check,
@@ -29,14 +29,14 @@ import {
   Undo2,
   Unlink,
   X,
-} from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { AiMenu } from "@/components/ai/ai-menu";
-import { SlashCommandMenu } from "@/components/editor/slash-command-menu";
-import { useSlashCommand } from "@/components/editor/use-slash-command";
+} from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { AiMenu } from '@/components/ai/ai-menu';
+import { SlashCommandMenu } from '@/components/shared/editor/slash-command-menu';
+import { useSlashCommand } from '@/components/shared/editor/use-slash-command';
 
 export default function ArticleEditor({
-  initialHTML = "",
+  initialHTML = '',
   onChange,
 }: {
   initialHTML?: string;
@@ -64,7 +64,7 @@ export default function ArticleEditor({
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Placeholder.configure({ placeholder: "Write Something... Press / to Get Started" }),
+      Placeholder.configure({ placeholder: 'Write Something... Press / to Get Started' }),
       LinkExtension.configure({
         openOnClick: false,
         autolink: true,
@@ -79,8 +79,8 @@ export default function ArticleEditor({
     content: initialHTML,
     editorProps: {
       attributes: {
-        dir: "auto",
-        class: "prose max-w-none min-h-[220px] p-3 outline-none",
+        dir: 'auto',
+        class: 'prose max-w-none min-h-[220px] p-3 outline-none',
       },
     },
     onUpdate: ({ editor }) => onChange?.(editor.getHTML()),
@@ -101,16 +101,19 @@ export default function ArticleEditor({
       event: KeyboardEvent,
     ) => {
       // Handle slash command detection
-      if (event.key === "/") {
+      if (event.key === '/') {
         const { from } = view.state.selection;
         const textBefore = view.state.doc.textBetween(Math.max(0, from - 50), from);
 
         // Check if we're at the start of a line or after whitespace (including spaces, tabs, newlines)
         const isAtLineStart =
-          textBefore === "" || textBefore.endsWith("\n") || textBefore.endsWith(" ") || textBefore.endsWith("\t");
+          textBefore === '' ||
+          textBefore.endsWith('\n') ||
+          textBefore.endsWith(' ') ||
+          textBefore.endsWith('\t');
 
         // Also check if we're at the beginning of a word (after whitespace or punctuation)
-        const isAtWordStart = textBefore === "" || /[\s\n\t.,!?;:]$/.test(textBefore);
+        const isAtWordStart = textBefore === '' || /[\s\n\t.,!?;:]$/.test(textBefore);
 
         if (isAtLineStart || isAtWordStart) {
           // Get cursor coordinates for positioning
@@ -121,19 +124,19 @@ export default function ArticleEditor({
       }
 
       // Handle escape to close slash command
-      if (event.key === "Escape" && slashCommand.state.show) {
+      if (event.key === 'Escape' && slashCommand.state.show) {
         slashCommand.handlers.onClose();
         return true;
       }
 
       // Handle backspace to close slash command if query is empty
-      if (event.key === "Backspace" && slashCommand.state.show && slashCommand.state.query === "") {
+      if (event.key === 'Backspace' && slashCommand.state.show && slashCommand.state.query === '') {
         slashCommand.handlers.onClose();
         return true;
       }
 
       // Handle Enter to execute first command when slash menu is open
-      if (event.key === "Enter" && slashCommand.state.show && slashCommand.filteredCommands.length > 0) {
+      if (event.key === 'Enter' && slashCommand.state.show && slashCommand.filteredCommands.length > 0) {
         event.preventDefault();
         slashCommand.handlers.onExecute(slashCommand.filteredCommands[0]);
         return true;
@@ -155,19 +158,19 @@ export default function ArticleEditor({
       slashCommand.updateQueryFromEditor();
     };
 
-    editor.on("update", handleUpdate);
+    editor.on('update', handleUpdate);
 
     return () => {
-      editor.off("update", handleUpdate);
+      editor.off('update', handleUpdate);
     };
   }, [editor, slashCommand]);
 
   const getCurrentHeading = () => {
-    if (!editor) return "Paragraph";
-    if (editor.isActive("heading", { level: 1 })) return "H1";
-    if (editor.isActive("heading", { level: 2 })) return "H2";
-    if (editor.isActive("heading", { level: 3 })) return "H3";
-    return "Paragraph";
+    if (!editor) return 'Paragraph';
+    if (editor.isActive('heading', { level: 1 })) return 'H1';
+    if (editor.isActive('heading', { level: 2 })) return 'H2';
+    if (editor.isActive('heading', { level: 3 })) return 'H3';
+    return 'Paragraph';
   };
 
   // Reusable Editor Button Component
@@ -176,17 +179,17 @@ export default function ArticleEditor({
     onClick,
     title,
     children,
-    size = "default",
+    size = 'default',
   }: {
     active: boolean;
     onClick: () => void;
     title: string;
     children: React.ReactNode;
-    size?: "default" | "sm" | "lg";
+    size?: 'default' | 'sm' | 'lg';
   }) => {
-    const baseClasses = "cursor-pointer rounded-md border text-sm transition-colors hover:bg-muted/50";
-    const sizeClasses = size === "sm" ? "px-2 py-2" : size === "lg" ? "px-2 py-2" : "px-2 py-2";
-    const activeClasses = active ? "bg-muted" : "border-border hover:border-muted";
+    const baseClasses = 'cursor-pointer rounded-md border text-sm transition-colors hover:bg-muted/50';
+    const sizeClasses = size === 'sm' ? 'px-2 py-2' : size === 'lg' ? 'px-2 py-2' : 'px-2 py-2';
+    const activeClasses = active ? 'bg-muted' : 'border-border hover:border-muted';
 
     return (
       <button
@@ -215,7 +218,7 @@ export default function ArticleEditor({
             left: coords.left - editorRect.left,
           });
         } catch (error) {
-          console.warn("Error calculating control position:", error);
+          console.warn('Error calculating control position:', error);
         }
       };
 
@@ -229,17 +232,22 @@ export default function ArticleEditor({
         }
       };
 
-      window.addEventListener("scroll", handleUpdate, true);
-      window.addEventListener("resize", handleUpdate);
+      window.addEventListener('scroll', handleUpdate, true);
+      window.addEventListener('resize', handleUpdate);
 
       return () => {
-        window.removeEventListener("scroll", handleUpdate, true);
-        window.removeEventListener("resize", handleUpdate);
+        window.removeEventListener('scroll', handleUpdate, true);
+        window.removeEventListener('resize', handleUpdate);
       };
     } else {
       setControlPosition(null);
     }
-  }, [aiStreamingState.streamPosition, aiStreamingState.isStreaming, aiStreamingState.controlsVisible, editor]);
+  }, [
+    aiStreamingState.streamPosition,
+    aiStreamingState.isStreaming,
+    aiStreamingState.controlsVisible,
+    editor,
+  ]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -249,8 +257,8 @@ export default function ArticleEditor({
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   if (!editor) return null;
@@ -262,7 +270,7 @@ export default function ArticleEditor({
         {/* Heading Dropdown Menu */}
         <div className="relative" ref={dropdownRef}>
           <EditorButton
-            active={editor.isActive("heading") || editor.isActive("paragraph")}
+            active={editor.isActive('heading') || editor.isActive('paragraph')}
             onClick={() => setIsHeadingMenuOpen(!isHeadingMenuOpen)}
             title="Text Format"
           >
@@ -273,10 +281,10 @@ export default function ArticleEditor({
           </EditorButton>
 
           {isHeadingMenuOpen && (
-            <div className="absolute top-full left-0 mt-1 bg-card border rounded-lg shadow-lg z-10 min-w-[120px]">
-              <div className="p-1 space-y-1 flex flex-col  ">
+            <div className="bg-card absolute top-full left-0 z-10 mt-1 min-w-[120px] rounded-lg border shadow-lg">
+              <div className="flex flex-col space-y-1 p-1">
                 <EditorButton
-                  active={editor.isActive("paragraph")}
+                  active={editor.isActive('paragraph')}
                   onClick={() => {
                     editor.chain().focus().setParagraph().run();
                     setIsHeadingMenuOpen(false);
@@ -289,7 +297,7 @@ export default function ArticleEditor({
                   </div>
                 </EditorButton>
                 <EditorButton
-                  active={editor.isActive("heading", { level: 1 })}
+                  active={editor.isActive('heading', { level: 1 })}
                   onClick={() => {
                     editor.chain().focus().setHeading({ level: 1 }).run();
                     setIsHeadingMenuOpen(false);
@@ -302,7 +310,7 @@ export default function ArticleEditor({
                   </div>
                 </EditorButton>
                 <EditorButton
-                  active={editor.isActive("heading", { level: 2 })}
+                  active={editor.isActive('heading', { level: 2 })}
                   onClick={() => {
                     editor.chain().focus().setHeading({ level: 2 }).run();
                     setIsHeadingMenuOpen(false);
@@ -315,7 +323,7 @@ export default function ArticleEditor({
                   </div>
                 </EditorButton>
                 <EditorButton
-                  active={editor.isActive("heading", { level: 3 })}
+                  active={editor.isActive('heading', { level: 3 })}
                   onClick={() => {
                     editor.chain().focus().setHeading({ level: 3 }).run();
                     setIsHeadingMenuOpen(false);
@@ -334,28 +342,28 @@ export default function ArticleEditor({
 
         {/* Marks */}
         <EditorButton
-          active={editor.isActive("bold")}
+          active={editor.isActive('bold')}
           onClick={() => editor.chain().focus().toggleBold().run()}
           title="Bold"
         >
           <Bold className="h-4 w-4" />
         </EditorButton>
         <EditorButton
-          active={editor.isActive("italic")}
+          active={editor.isActive('italic')}
           onClick={() => editor.chain().focus().toggleItalic().run()}
           title="Italic"
         >
           <Italic className="h-4 w-4" />
         </EditorButton>
         <EditorButton
-          active={editor.isActive("strike")}
+          active={editor.isActive('strike')}
           onClick={() => editor.chain().focus().toggleStrike().run()}
           title="Strikethrough"
         >
           <Strikethrough className="h-4 w-4" />
         </EditorButton>
         <EditorButton
-          active={editor.isActive("code")}
+          active={editor.isActive('code')}
           onClick={() => editor.chain().focus().toggleCode().run()}
           title="Inline code"
         >
@@ -364,28 +372,28 @@ export default function ArticleEditor({
 
         {/* Blocks */}
         <EditorButton
-          active={editor.isActive("blockquote")}
+          active={editor.isActive('blockquote')}
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           title="Blockquote"
         >
           <Quote className="h-4 w-4" />
         </EditorButton>
         <EditorButton
-          active={editor.isActive("bulletList")}
+          active={editor.isActive('bulletList')}
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           title="Bullet list"
         >
           <List className="h-4 w-4" />
         </EditorButton>
         <EditorButton
-          active={editor.isActive("orderedList")}
+          active={editor.isActive('orderedList')}
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           title="Ordered list"
         >
           <ListOrdered className="h-4 w-4" />
         </EditorButton>
         <EditorButton
-          active={editor.isActive("codeBlock")}
+          active={editor.isActive('codeBlock')}
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           title="Code block"
         >
@@ -400,7 +408,11 @@ export default function ArticleEditor({
         >
           <Minus className="h-4 w-4" />
         </EditorButton>
-        <EditorButton active={false} onClick={() => editor.chain().focus().setHardBreak().run()} title="Hard break">
+        <EditorButton
+          active={false}
+          onClick={() => editor.chain().focus().setHardBreak().run()}
+          title="Hard break"
+        >
           <CornerDownLeft className="h-4 w-4" />
         </EditorButton>
 
@@ -413,11 +425,11 @@ export default function ArticleEditor({
         </EditorButton>
 
         <EditorButton
-          active={editor.isActive("link")}
+          active={editor.isActive('link')}
           onClick={() => {
-            const url = prompt("ضع الرابط هنا:");
+            const url = prompt('ضع الرابط هنا:');
             if (url) {
-              editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+              editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
             }
           }}
           title="Add link"
@@ -425,7 +437,11 @@ export default function ArticleEditor({
           <Link className="h-4 w-4" />
         </EditorButton>
 
-        <EditorButton active={false} onClick={() => editor.chain().focus().unsetLink().run()} title="Remove link">
+        <EditorButton
+          active={false}
+          onClick={() => editor.chain().focus().unsetLink().run()}
+          title="Remove link"
+        >
           <Unlink className="h-4 w-4" />
         </EditorButton>
 
@@ -434,9 +450,9 @@ export default function ArticleEditor({
       </div>
       {/* Floating bubble menu (appears on text selection) */}
       <BubbleMenu editor={editor}>
-        <div className="flex items-center gap-1 bg-card border border-muted shadow-md rounded-md p-1 animate-in fade-in-0 zoom-in-95 duration-150">
+        <div className="bg-card border-muted animate-in fade-in-0 zoom-in-95 flex items-center gap-1 rounded-md border p-1 shadow-md duration-150">
           <EditorButton
-            active={editor.isActive("bold")}
+            active={editor.isActive('bold')}
             onClick={() => editor.chain().focus().toggleBold().run()}
             title="Bold"
             size="sm"
@@ -444,7 +460,7 @@ export default function ArticleEditor({
             <Bold className="h-4 w-4" />
           </EditorButton>
           <EditorButton
-            active={editor.isActive("italic")}
+            active={editor.isActive('italic')}
             onClick={() => editor.chain().focus().toggleItalic().run()}
             title="Italic"
             size="sm"
@@ -452,7 +468,7 @@ export default function ArticleEditor({
             <Italic className="h-4 w-4" />
           </EditorButton>
           <EditorButton
-            active={editor.isActive("strike")}
+            active={editor.isActive('strike')}
             onClick={() => editor.chain().focus().toggleStrike().run()}
             title="Strikethrough"
             size="sm"
@@ -460,7 +476,7 @@ export default function ArticleEditor({
             <Strikethrough className="h-4 w-4" />
           </EditorButton>
           <EditorButton
-            active={editor.isActive("code")}
+            active={editor.isActive('code')}
             onClick={() => editor.chain().focus().toggleCode().run()}
             title="Inline code"
             size="sm"
@@ -468,7 +484,7 @@ export default function ArticleEditor({
             <Code className="h-4 w-4" />
           </EditorButton>
           <EditorButton
-            active={editor.isActive("blockquote")}
+            active={editor.isActive('blockquote')}
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
             title="Blockquote"
             size="sm"
@@ -477,18 +493,18 @@ export default function ArticleEditor({
           </EditorButton>
 
           {/* AI Components in Bubble Menu */}
-          <div className="border-l border-muted mx-1" />
+          <div className="border-muted mx-1 border-l" />
           <AiMenu editor={editor} onStreamingStateChange={setAiStreamingState} />
         </div>
       </BubbleMenu>
 
-      <div className="border rounded-lg relative overflow-visible">
+      <div className="relative overflow-visible rounded-lg border">
         <EditorContent editor={editor} />
 
         {/* AI Streaming Controls - Positioned under the streaming text */}
         {(aiStreamingState.isStreaming || aiStreamingState.controlsVisible) && controlPosition && (
           <div
-            className="absolute z-50 flex items-center gap-2 rounded-xl border bg-card backdrop-blur px-4 py-3 shadow"
+            className="bg-card absolute z-50 flex items-center gap-2 rounded-xl border px-4 py-3 shadow backdrop-blur"
             style={{
               top: controlPosition.top,
               left: controlPosition.left,
@@ -498,7 +514,7 @@ export default function ArticleEditor({
               <button
                 type="button"
                 onClick={aiStreamingState.onStop}
-                className="inline-flex items-center gap-1 px-4 py-2 rounded-xl border hover:bg-muted text-sm cursor-pointer"
+                className="hover:bg-muted inline-flex cursor-pointer items-center gap-1 rounded-xl border px-4 py-2 text-sm"
                 title="Stop"
               >
                 <Square className="h-3.5 w-3.5" /> Stop
@@ -508,7 +524,7 @@ export default function ArticleEditor({
                 <button
                   type="button"
                   onClick={aiStreamingState.onAccept}
-                  className="inline-flex items-center gap-1 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-500 hover:from-blue-700 hover:to-indigo-600 text-white text-sm cursor-pointer"
+                  className="inline-flex cursor-pointer items-center gap-1 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-500 px-4 py-2 text-sm text-white hover:from-blue-700 hover:to-indigo-600"
                   title="Accept"
                 >
                   <Check className="h-3.5 w-3.5" /> Accept
@@ -516,7 +532,7 @@ export default function ArticleEditor({
                 <button
                   type="button"
                   onClick={aiStreamingState.onReject}
-                  className="inline-flex items-center gap-1 px-4 py-2 rounded-xl bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-600 hover:to-red-700 text-white text-sm cursor-pointer"
+                  className="inline-flex cursor-pointer items-center gap-1 rounded-xl bg-gradient-to-r from-orange-600 to-red-600 px-4 py-2 text-sm text-white hover:from-orange-600 hover:to-red-700"
                   title="Reject"
                 >
                   <X className="h-3.5 w-3.5" /> Discard

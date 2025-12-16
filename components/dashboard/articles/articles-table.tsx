@@ -21,7 +21,7 @@ import DialogSkeleton from '../../shared/skeletons/dialog-skeleton';
 import { SelectFilter } from '@/components/shared/selects/select-filter';
 
 const ConfirmationDialogDynamic = dynamic(
-  () => import('@/components/confirmation-dialog').then(mod => mod.ConfirmationDialog),
+  () => import('@/components/shared/confirmation-dialog').then(mod => mod.ConfirmationDialog),
   {
     ssr: false,
     loading: () => <DialogSkeleton />,

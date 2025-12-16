@@ -1,13 +1,12 @@
-
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import { ArticleContent } from "@/components/article-content";
-import { RelatedArticles } from "@/components/related-articles";
-import { articlesService } from "@/services/articles.service";
-import { getTranslations, Lang } from "@/utils/dictionary-utils";
-import { createEnhancedMetadata } from "@/utils/seo/meta/enhanced-meta";
-import { articlePageSchema } from "@/utils/seo/schema/articlePageSchema";
-import { cn } from "@/lib/utils";
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+import { ArticleContent } from '@/components/website/article-content';
+import { RelatedArticles } from '@/components/website/related-articles';
+import { articlesService } from '@/services/articles.service';
+import { getTranslations, Lang } from '@/utils/dictionary-utils';
+import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
+import { articlePageSchema } from '@/utils/seo/schema/articlePageSchema';
+import { cn } from '@/lib/utils';
 
 interface ArticlePageProps {
   params: Promise<{
@@ -16,12 +15,12 @@ interface ArticlePageProps {
   }>;
 }
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { slug, lang } = await params;
   const article = await articlesService.getBySlug(slug);
-  
+
   if (!article) {
     notFound();
   }
@@ -39,7 +38,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   // Build author information
   const authors = [
     {
-      name: t.metadata?.siteName ,
+      name: t.metadata?.siteName,
       url: siteURL,
     },
   ];
@@ -48,7 +47,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     lang: lang as Lang,
     title: { absolute: article.name },
     description: article.excerpt || `${article.name} - Read the full article on ${t.metadata?.siteName}`,
-    type: "article",
+    type: 'article',
     keywords,
     publishedTime: article.createdAt,
     modifiedTime: article.updatedAt,
@@ -56,17 +55,17 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     pathname: `/news/${article.slug}`,
     image: article.image || undefined,
     openGraphOverrides: {
-      type: "article",
+      type: 'article',
       publishedTime: article.createdAt,
       modifiedTime: article.updatedAt,
       authors: authors.map(author => author.name),
-      section: article.topics?.map(topic => topic.name).join(", ") || "News",
+      section: article.topics?.map(topic => topic.name).join(', ') || 'News',
       tags: article.tags?.map(tag => tag.name) || [],
     },
     twitterOverrides: {
-      card: "summary_large_image",
-      creator: "@newswebsite",
-      site: "@newswebsite",
+      card: 'summary_large_image',
+      creator: '@newswebsite',
+      site: '@newswebsite',
     },
   });
 
@@ -94,13 +93,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           __html: JSON.stringify(structuredData),
         }}
       />
-      
-      <div className="min-h-screen bg-background">
+
+      <div className="bg-background min-h-screen">
         <div className="container mx-auto px-8 py-8">
           {/* Article Content and Related Articles */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
             {/* Article Content Component */}
-            <div className={cn(article.relatedArticles ? "lg:col-span-2" : "lg:col-span-3")}>
+            <div className={cn(article.relatedArticles ? 'lg:col-span-2' : 'lg:col-span-3')}>
               <ArticleContent t={t} lang={lang} article={article} />
             </div>
 
@@ -108,12 +107,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             {article.relatedArticles && (
               <div className="lg:col-span-1">
                 <div className="sticky top-24">
-                  <RelatedArticles 
-                    lang={lang} 
-                    currentArticle={article} 
-                    t={t} 
-                    allArticles={article.relatedArticles || []} 
-                    maxArticles={4} 
+                  <RelatedArticles
+                    lang={lang}
+                    currentArticle={article}
+                    t={t}
+                    allArticles={article.relatedArticles || []}
+                    maxArticles={4}
                   />
                 </div>
               </div>
