@@ -1,57 +1,24 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { useTranslation } from "@/providers/translations-provider";
-import { Media } from "@/types/media.types";
-import { ChevronLeft, ChevronRight, Download, X } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Button } from '@/components/ui/button';
+import { Media } from '@/types/media.types';
+import { ChevronLeft, ChevronRight, Download, X } from 'lucide-react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 interface MediaViewerModalProps {
-  media: Media | null;
+  media: Media;
   allMedia: Media[];
   onClose: () => void;
   onNavigate?: (media: Media) => void;
 }
 
-export function MediaViewerModal({  
-  media, 
-  allMedia, 
-  onClose,
-  onNavigate 
-}: MediaViewerModalProps) {
-  const { t } = useTranslation();
+export function MediaViewerModal({ media, allMedia, onClose, onNavigate }: MediaViewerModalProps) {
   const [currentIndex, setCurrentIndex] = useState(-1);
 
-  useEffect(() => {
-    if (media && allMedia.length > 0) {
-      const index = allMedia.findIndex((m) => m.url === media.url);
-      setCurrentIndex(index);
-    }
-  }, [media, allMedia]);
+  const isImage = media.mimeType.startsWith('image/');
+  const isVideo = media.mimeType.startsWith('video/');
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!media) return;
-      
-      if (e.key === "Escape") {
-        onClose();
-      } else if (e.key === "ArrowLeft") {
-        handlePrevious();
-      } else if (e.key === "ArrowRight") {
-        handleNext();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [media, currentIndex]);
-
-  if (!media) return null;
-
-  const isImage = media.mimeType.startsWith("image/");
-  const isVideo = media.mimeType.startsWith("video/");
-  
   const canNavigatePrevious = currentIndex > 0;
   const canNavigateNext = currentIndex < allMedia.length - 1;
 
@@ -69,32 +36,56 @@ export function MediaViewerModal({
     }
   };
 
+  useEffect(() => {
+    if (media && allMedia.length > 0) {
+      const index = allMedia.findIndex(m => m.url === media.url);
+      setCurrentIndex(index);
+    }
+  }, [media, allMedia]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!media) return;
+
+      if (e.key === 'Escape') {
+        onClose();
+      } else if (e.key === 'ArrowLeft') {
+        handlePrevious();
+      } else if (e.key === 'ArrowRight') {
+        handleNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [media, currentIndex]);
+
+  if (!media) return null;
+
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95" onClick={onClose}>
       {/* Close Button */}
       <Button
         variant="ghost"
         size="icon"
-        className="absolute right-4 top-4 z-50 h-10 w-10 rounded-full text-white hover:bg-white/20"
+        className="absolute top-4 right-4 z-50 h-10 w-10 rounded-full text-white hover:bg-white/20"
         onClick={onClose}
       >
         <X className="h-6 w-6" />
-        <span className="sr-only">{t.media.viewer.close}</span>
+        <span className="sr-only">Close</span>
       </Button>
 
       {/* Download Button */}
       <Button
         variant="ghost"
         size="icon"
-        className="absolute right-16 top-4 z-50 h-10 w-10 rounded-full text-white hover:bg-white/20"
+        className="absolute top-4 right-16 z-50 h-10 w-10 rounded-full text-white hover:bg-white/20"
         asChild
       >
         <a href={media.url} download={media.name}>
           <Download className="h-5 w-5" />
-          <span className="sr-only">{t.media.viewer.download}</span>
+          <span className="sr-only">Download</span>
         </a>
       </Button>
 
@@ -103,14 +94,14 @@ export function MediaViewerModal({
         <Button
           variant="ghost"
           size="icon"
-          className="absolute left-4 top-1/2 z-50 h-12 w-12 -translate-y-1/2 rounded-full text-white hover:bg-white/20"
-          onClick={(e) => {
+          className="absolute top-1/2 left-4 z-50 h-12 w-12 -translate-y-1/2 rounded-full text-white hover:bg-white/20"
+          onClick={e => {
             e.stopPropagation();
             handlePrevious();
           }}
         >
           <ChevronLeft className="h-8 w-8" />
-          <span className="sr-only">{t.media.viewer.previous}</span>
+          <span className="sr-only">Previous</span>
         </Button>
       )}
 
@@ -119,22 +110,19 @@ export function MediaViewerModal({
         <Button
           variant="ghost"
           size="icon"
-          className="absolute right-4 top-1/2 z-50 h-12 w-12 -translate-y-1/2 rounded-full text-white hover:bg-white/20"
-          onClick={(e) => {
+          className="absolute top-1/2 right-4 z-50 h-12 w-12 -translate-y-1/2 rounded-full text-white hover:bg-white/20"
+          onClick={e => {
             e.stopPropagation();
             handleNext();
           }}
         >
           <ChevronRight className="h-8 w-8" />
-          <span className="sr-only">{t.media.viewer.next}</span>
+          <span className="sr-only">Next</span>
         </Button>
       )}
 
       {/* Media Content */}
-      <div 
-        className="relative max-h-[90vh] max-w-[90vw]"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="relative max-h-[90vh] max-w-[90vw]" onClick={e => e.stopPropagation()}>
         {isImage && (
           <Image
             src={media.url}
@@ -145,35 +133,33 @@ export function MediaViewerModal({
             priority
           />
         )}
-        
+
         {isVideo && (
           <video
             src={media.url}
             controls
             autoPlay
             className="max-h-[90vh] max-w-[90vw] rounded"
-            onClick={(e) => e.stopPropagation()}
-            onDoubleClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
+            onDoubleClick={e => e.stopPropagation()}
           >
             Your browser does not support the video tag.
           </video>
         )}
 
         {!isImage && !isVideo && (
-          <div className="flex h-96 w-96 items-center justify-center rounded bg-muted">
+          <div className="bg-muted flex h-96 w-96 items-center justify-center rounded">
             <div className="text-center">
               <span className="text-6xl">📄</span>
               <p className="mt-4 text-white">{media.name}</p>
-              <p className="mt-2 text-sm text-white/70">
-                {t.media.viewer.fileType}: {media.mimeType}
-              </p>
+              <p className="mt-2 text-sm text-white/70">File type: {media.mimeType}</p>
             </div>
           </div>
         )}
 
         {/* Media Info */}
         {!isVideo && (
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 pointer-events-none">
+          <div className="pointer-events-none absolute right-0 bottom-0 left-0 bg-linear-to-t from-black/80 to-transparent p-4">
             <p className="text-sm font-medium text-white">{media.name}</p>
             <div className="mt-1 flex items-center gap-4 text-xs text-white/70">
               <span>{(media.size / 1024 / 1024).toFixed(2)} MB</span>
@@ -190,4 +176,3 @@ export function MediaViewerModal({
     </div>
   );
 }
-

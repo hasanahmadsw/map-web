@@ -10,7 +10,6 @@ import { Form } from '@/components/ui/form';
 import { useServiceMutations } from '@/hooks/services/mutations';
 
 import { BasicInformationSection } from './partial/basic-information-section';
-import { FeaturedImageSection } from './partial/featured-image-section';
 import { SolutionsSection } from './partial/solutions-section';
 import { MetaInformationSection } from './partial/meta-information-section';
 import { KeywordsSection } from './partial/keywords-section';
@@ -22,6 +21,7 @@ import { createServiceSchema, type TCreateServiceForm } from '@/validations/serv
 import ResponseError from '@/components/shared/response-error';
 import { sanitizeDto } from '@/utils/format';
 import { SubServicesInput } from '@/components/shared/input/SubServicesInput';
+import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
 
 function AddServiceForm() {
   const router = useRouter();
@@ -54,8 +54,13 @@ function AddServiceForm() {
         {/* Main service information */}
         <BasicInformationSection />
 
-        {/* Primary visual content */}
-        <FeaturedImageSection />
+        {/* Featured image */}
+        <MediaSelectInput
+          control={form.control}
+          name="featuredImage"
+          label="Featured Image"
+          typeFilter="image"
+        />
 
         {/* Sub-services for this service */}
         <SubServicesInput

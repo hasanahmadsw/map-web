@@ -12,18 +12,18 @@ import { Button } from '@/components/ui/button';
 import { LoadingButton } from '@/components/shared/buttons/loading-button';
 import { useSolutionById } from '@/hooks/solutions/useSolutionById';
 import { useSolutionMutations } from '@/hooks/solutions/mutations';
-import { useTranslation } from '@/providers/translations-provider';
+
 import {
   updateSolutionSchema,
   type TUpdateSolutionForm,
 } from '@/validations/solutions/update-solution.schema';
 import ResponseError from '@/components/shared/response-error';
 import { BasicInformationSection } from './partials/basic-information-section';
-import { FeaturedImageSection } from './partials/featured-image-section';
 import { MetaInformationSection } from './partials/meta-information-section';
 import { KeywordsSection } from './partials/keywords-section';
 import { StatusOptionsSection } from './partials/status-options-section';
 import { getChangedValues } from '@/utils/format';
+import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
 
 interface EditSolutionFormProps {
   solutionId: string;
@@ -107,8 +107,13 @@ export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
         {/* Main solution information */}
         <BasicInformationSection />
 
-        {/* Primary visual content */}
-        <FeaturedImageSection />
+        {/* Featured image */}
+        <MediaSelectInput
+          control={form.control}
+          name="featuredImage"
+          label="Featured Image"
+          typeFilter="image"
+        />
 
         {/* SEO and metadata */}
         <MetaInformationSection />

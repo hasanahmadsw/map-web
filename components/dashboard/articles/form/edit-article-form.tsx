@@ -13,7 +13,6 @@ import { useArticleStaffById, useArticlesStaff } from '@/hooks/articles/useArtic
 
 import { BasicInformationSection } from './partial/basic-information-section';
 
-import { FeaturedImageSection } from './partial/featured-image-section';
 import { MetaInformationSection } from './partial/meta-information-section';
 import { KeywordsSection } from './partial/keywords-section';
 import { TagsTopicsSection } from './partial/tags-topics-section';
@@ -24,6 +23,7 @@ import { LoadingButton } from '@/components/shared/buttons/loading-button';
 import { updateArticleSchema, TUpdateArticleForm } from '@/validations/articles/update-article.schema';
 import ResponseError from '@/components/shared/response-error';
 import { getChangedValues } from '@/utils/format';
+import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
 
 interface EditArticleFormProps {
   articleId: string;
@@ -119,8 +119,8 @@ export function EditArticleForm({ articleId }: EditArticleFormProps) {
         {/* Main article/product information */}
         <BasicInformationSection />
 
-        {/* Primary visual content */}
-        <FeaturedImageSection />
+        {/* Featured image */}
+        <MediaSelectInput control={form.control} name="image" label="Featured Image" typeFilter="image" />
 
         {/* SEO and metadata */}
         <MetaInformationSection />

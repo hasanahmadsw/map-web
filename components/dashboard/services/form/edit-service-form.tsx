@@ -13,7 +13,6 @@ import { useServiceById } from '@/hooks/services/useServiceById';
 import { useServiceMutations } from '@/hooks/services/mutations';
 
 import { BasicInformationSection } from './partial/basic-information-section';
-import { FeaturedImageSection } from './partial/featured-image-section';
 import { SolutionsSection } from './partial/solutions-section';
 import { MetaInformationSection } from './partial/meta-information-section';
 import { KeywordsSection } from './partial/keywords-section';
@@ -25,6 +24,7 @@ import { editServiceSchema, type TEditServiceForm } from '@/validations/services
 import ResponseError from '@/components/shared/response-error';
 import { getChangedValues } from '@/utils/format';
 import { SubServicesInput } from '@/components/shared/input/SubServicesInput';
+import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
 
 interface EditServiceFormProps {
   serviceId: string;
@@ -117,8 +117,13 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
         {/* Main service information */}
         <BasicInformationSection />
 
-        {/* Primary visual content */}
-        <FeaturedImageSection />
+        {/* Featured image */}
+        <MediaSelectInput
+          control={form.control}
+          name="featuredImage"
+          label="Featured Image"
+          typeFilter="image"
+        />
 
         {/* Sub-services for this service */}
         <SubServicesInput

@@ -1,59 +1,27 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import {
-  Settings,
-  Edit,
-  Trash2,
-  Mail,
-  Phone,
-  Globe,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Instagram,
-  Link,
-} from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
-import { Lang, getTranslations } from '@/utils/dictionary-utils';
+import { Settings } from 'lucide-react';
+
 import { settingsService } from '@/services/settings.service';
-import { SettingsGeneral } from '@/components/dashboard/settings/settings-general';
 
-function getSocialIcon(platform: string) {
-  switch (platform.toLowerCase()) {
-    case 'facebook':
-      return Facebook;
-    case 'twitter':
-      return Twitter;
-    case 'linkedin':
-      return Linkedin;
-    case 'instagram':
-      return Instagram;
-    default:
-      return Globe;
-  }
-}
+import EditSettingsForm from '@/components/dashboard/settings/edit-settings-form';
 
-export default async function SettingsPage({ params }: { params: Promise<{ lang: Lang }> }) {
-  const { lang } = await params;
-  const t = await getTranslations(lang as Lang);
-  const settingsT = t.settings || {};
+export default async function SettingsPage() {
   const { data: settings } = await settingsService.getSettings();
-  console.log(settings);
 
   if (!settings) {
     return (
       <div className="space-y-6 p-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">{settingsT.settingsManagement}</h1>
-          <p className="text-muted-foreground">{settingsT.settingsManagementDescription}</p>
-        </div>
+        <header>
+          <h1 className="text-3xl font-bold tracking-tight">Settings Management</h1>
+          <p className="text-muted-foreground">Manage your settings and their translations.</p>
+        </header>
         <Card>
           <CardContent className="flex items-center justify-center py-8">
             <div className="text-center">
               <Settings className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-              <h3 className="mb-2 text-lg font-medium">{t.settings?.failedToLoadSettings}</h3>
-              <p className="text-muted-foreground">{settingsT.failedToLoadSettings}</p>
+              <h3 className="mb-2 text-lg font-medium">Failed to load settings</h3>
+              <p className="text-muted-foreground">Failed to load settings</p>
             </div>
           </CardContent>
         </Card>
@@ -63,12 +31,12 @@ export default async function SettingsPage({ params }: { params: Promise<{ lang:
 
   return (
     <div className="space-y-6 p-4">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">{settingsT.settingsManagement}</h1>
-        <p className="text-muted-foreground">{settingsT.settingsManagementDescription}</p>
-      </div>
+      <header>
+        <h1 className="text-3xl font-bold tracking-tight">Settings Management</h1>
+        <p className="text-muted-foreground">Manage your settings and their translations.</p>
+      </header>
 
-      <SettingsGeneral settings={settings} />
+      <EditSettingsForm settings={settings} />
     </div>
   );
 }

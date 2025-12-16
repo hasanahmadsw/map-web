@@ -11,7 +11,6 @@ import { useArticlesStaff } from '@/hooks/articles/useArticles';
 
 import { BasicInformationSection } from './partial/basic-information-section';
 
-import { FeaturedImageSection } from './partial/featured-image-section';
 import { MetaInformationSection } from './partial/meta-information-section';
 import { KeywordsSection } from './partial/keywords-section';
 import { TagsTopicsSection } from './partial/tags-topics-section';
@@ -22,6 +21,7 @@ import { LoadingButton } from '@/components/shared/buttons/loading-button';
 import { createArticleSchema, TCreateArticleForm } from '@/validations/articles/create-article.schema';
 import ResponseError from '@/components/shared/response-error';
 import { sanitizeDto } from '@/utils/format';
+import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
 
 export function AddArticleForm() {
   const router = useRouter();
@@ -65,8 +65,8 @@ export function AddArticleForm() {
         {/* Main article/product information */}
         <BasicInformationSection />
 
-        {/* Primary visual content */}
-        <FeaturedImageSection />
+        {/* Featured image */}
+        <MediaSelectInput control={form.control} name="image" label="Featured Image" typeFilter="image" />
 
         {/* SEO and metadata */}
         <MetaInformationSection />
