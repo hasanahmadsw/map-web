@@ -1,64 +1,51 @@
+import { articlesService } from '@/services/articles.service';
+import { SimpleArticleCard } from './simple-article-card';
 
-import { articlesService } from "@/services/articles.service"
-import { SimpleArticleCard } from "./simple-article-card"
-import { cn } from "@/lib/utils"
-import Link from "next/link"
-import { Translations } from "@/utils/dictionary-utils"
-import { ArrowRight } from "lucide-react"
+import Link from 'next/link';
 
-interface ArticlesSectionProps {
-  lang: string
-  t: Translations
-}
+import { ArrowRight } from 'lucide-react';
 
-export async function ArticlesSection({ lang, t }: ArticlesSectionProps) {
-  // Fetch articles directly from API
-  const articlesResponse = await articlesService.getAll({
-    limit: 6,
-  })
+export async function ArticlesSection() {
+  let articlesResponse;
 
-  const articles = articlesResponse.data || []
+  try {
+    articlesResponse = await articlesService.getAll({
+      limit: 6,
+    });
+  } catch {
+    articlesResponse = { data: [] };
+  }
+
+  const articles = articlesResponse.data || [];
 
   if (articles.length === 0) {
-    return null
+    return null;
   }
 
   return (
-    <section className="relative w-full py-16 overflow-hidden">
-   
-
-      {/* Content */}
-      <div className="container max-w-7xl relative z-10">
-        <div className="space-y-4">
-          <h2 className="max-w-2xl text-3xl font-medium">
-            {t.articles?.title || "Latest Articles"}
-          </h2>
-          <p className="max-w-2xl text-muted-foreground pb-6">
-            {t.articles?.contentArticlesDescription || "Stay updated with our latest news and insights"}
-          </p>
-          <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
-            {articles.slice(0, 4).map((article, index) => (
-              <SimpleArticleCard
-                key={article.id}
-                article={article}
-                lang={lang}
-                index={index}
-                priority={index < 2}
-              />
-            ))}
-          </div>
-          <div className="mt-12 flex justify-center">
-            <Link
-              className={cn("glass-button rounded-full px-8 py-4 cursor-pointer text-base font-medium")}
-              href={`/${lang}/news`}
-            >
-              {t.common?.actions?.view || "View All"}
-              <ArrowRight className="ml-2 h-4 w-4 inline" />
-            </Link>
-          </div>
-        </div>
+    <section className="relative container w-full max-w-7xl space-y-4 overflow-hidden py-16">
+      <h2 className="max-w-2xl text-3xl font-medium"> Latest Articles</h2>
+      <p className="text-muted-foreground max-w-2xl pb-6">'Stay updated with our latest news and insights'</p>
+      <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
+        {articles.slice(0, 4).map((article, index) => (
+          <SimpleArticleCard
+            key={article.id}
+            article={article}
+            lang="en"
+            index={index}
+            priority={index < 2}
+          />
+        ))}
+      </div>
+      <div className="mt-12 flex justify-center">
+        <Link
+          className="glass-button cursor-pointer rounded-full px-8 py-4 text-base font-medium"
+          href="/news"
+        >
+          View All
+          <ArrowRight className="ml-2 inline h-4 w-4" />
+        </Link>
       </div>
     </section>
-  )
+  );
 }
-
