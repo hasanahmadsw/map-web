@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Package, UserRound } from 'lucide-react';
+import { Package, Plus, UserRound } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -26,6 +26,12 @@ export function AuthorDashboardHome({ staffName }: AuthorDashboardHomeProps) {
               Profile
             </Link>
           </Button>
+          <Button asChild className="gap-2">
+            <Link href="/dashboard/articles/add">
+              <Plus className="size-4" />
+              New article
+            </Link>
+          </Button>
         </div>
       </div>
 
@@ -36,25 +42,25 @@ export function AuthorDashboardHome({ staffName }: AuthorDashboardHomeProps) {
               <div className="space-y-1">
                 <CardTitle className="flex items-center gap-2">
                   <Package className="text-muted-foreground size-5" />
-                  <span>Services</span>
+                  <span>Articles</span>
                 </CardTitle>
-                <CardDescription>Browse and manage service offerings.</CardDescription>
+                <CardDescription>Create, publish, and maintain your news articles.</CardDescription>
               </div>
-              <Badge variant="outline">Catalog</Badge>
+              <Badge variant="outline">Content</Badge>
             </div>
           </CardHeader>
           <CardContent>
             <ul className="text-muted-foreground space-y-1 text-sm">
-              <li>View service details</li>
-              <li>Keep information accurate and up to date</li>
+              <li>Draft, publish, and update posts</li>
+              <li>Manage tags, SEO, and status</li>
             </ul>
           </CardContent>
           <CardFooter className="flex flex-wrap gap-2">
             <Button asChild variant="outline" className="flex-1">
-              <Link href="/dashboard/services">View</Link>
+              <Link href="/dashboard/articles">View</Link>
             </Button>
             <Button asChild className="flex-1">
-              <Link href="/dashboard/services/add">Create</Link>
+              <Link href="/dashboard/articles/add">Create</Link>
             </Button>
           </CardFooter>
         </Card>

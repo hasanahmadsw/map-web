@@ -3,8 +3,8 @@ import { Separator } from '@/components/ui/separator';
 
 export function CTASection() {
   return (
-    <section className="glass-card container mx-auto max-w-6xl rounded-3xl py-16">
-      <div className="space-y-10 px-10 py-12 md:px-26 md:py-20">
+    <section className="container mx-auto max-w-6xl py-16">
+      <div className="glass-card space-y-10 rounded-3xl p-10 md:p-16">
         {/* Top Section */}
         <div className="space-y-6">
           <h2 className="text-3xl font-medium md:text-4xl">Get in Touch with Us</h2>

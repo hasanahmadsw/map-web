@@ -1,24 +1,14 @@
+import { Suspense } from 'react';
+
 import type { Metadata } from 'next';
-import { servicesService } from '@/services/services.service';
-import { getTranslations, type Lang } from '@/utils/dictionary-utils';
+
+import { ServicesSection } from '@/components/sections/services/services-section';
+import { ServicesSectionSkeleton } from '@/components/sections/services/services-section-skeleton';
+import { getTranslations, sanitizeLang } from '@/utils/dictionary-utils';
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
-import { ServiceCard } from '@/components/website/home/service-card';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
-import Link from 'next/link';
 
-interface ServicesPageParams {
-  params: Promise<{ lang: string }>;
-}
-
-interface ServicesPageSearchParams {
-  searchParams: Promise<{
+interface Props {
+  searchParams?: Promise<{
     search?: string;
     page?: string;
     limit?: string;
@@ -26,175 +16,40 @@ interface ServicesPageSearchParams {
   }>;
 }
 
-export const dynamic = 'force-dynamic';
-
-export async function generateMetadata({
-  params,
-  searchParams,
-}: ServicesPageParams & ServicesPageSearchParams): Promise<Metadata> {
-  const { lang } = await params;
-  const { search, page } = await searchParams;
-
-  const t = await getTranslations(lang as Lang);
-  const siteURL = process.env.NEXT_PUBLIC_SITE_URL!;
-
-  let title = t.services?.title || 'Services';
-  let description =
-    t.services?.description || 'Discover our professional media production and broadcasting services';
-
-  if (search) {
-    title = `${title} - Search: ${search}`;
-    description = `${description} - Search results for "${search}"`;
-  }
-
-  const pageNum = page ? Number(page) : 1;
-  if (pageNum > 1) {
-    title = `${title} - Page ${pageNum}`;
-  }
-
-  const metadata = createEnhancedMetadata({
-    lang: lang as Lang,
-    title: { absolute: title },
-    description,
+export function generateMetadata() {
+  return createEnhancedMetadata({
+    lang: 'en',
+    title: 'Our Services',
+    description: 'Professional media production and broadcasting services tailored to your needs',
     type: 'website',
     pathname: '/services',
-    openGraphOverrides: {
-      type: 'website',
-      title,
-      description,
-      url: `${siteURL}/${lang}/services`,
-    },
-    twitterOverrides: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
   });
-
-  return metadata;
 }
 
-export default async function ServicesPage({
-  params,
-  searchParams,
-}: ServicesPageParams & ServicesPageSearchParams) {
-  const { lang } = await params;
-  const { search, page, limit, isFeatured } = await searchParams;
+export default async function ServicesPage(props: Props) {
+  const searchParams = await props.searchParams;
 
-  const pageNum = page ? Number(page) : 1;
-  const limitNum = limit ? Number(limit) : 12;
-
-  const services = await servicesService.getAll({
-    search: search || '',
-    page: pageNum,
-    limit: limitNum,
-    isPublished: true,
-    isFeatured: isFeatured === 'true' ? true : undefined,
-  });
-
-  const t = await getTranslations(lang as Lang);
-  const servicesData = services.data || [];
-  const totalPages = services.pagination?.totalPages || 1;
-  const totalServices = services.pagination?.total || 0;
-
-  const createPageUrl = (page: number) => {
-    const params = new URLSearchParams();
-    if (search) params.set('search', search);
-    if (isFeatured === 'true') params.set('isFeatured', 'true');
-    if (page > 1) params.set('page', String(page));
-    const queryString = params.toString();
-    return queryString ? `?${queryString}` : '';
-  };
+  const page = Number(searchParams?.page) || 1;
+  const limit = Number(searchParams?.limit) || 12;
+  const search = searchParams?.search || '';
+  const isFeatured = searchParams?.isFeatured === 'true' ? true : undefined;
 
   return (
     <div className="container mx-auto max-w-7xl py-10">
       <div className="space-y-4">
-        {/* Header */}
         <div>
-          <h1 className="mb-3 max-w-2xl text-3xl font-medium">{t.services?.title || 'Our Services'}</h1>
+          <h1 className="mb-3 max-w-2xl text-3xl font-medium">Our Services</h1>
           <p className="text-muted-foreground max-w-2xl pb-6">
-            {t.services?.description ||
-              'Professional media production and broadcasting services tailored to your needs'}
+            Professional media production and broadcasting services tailored to your needs
           </p>
         </div>
 
-        {/* Services Grid */}
-        {servicesData.length === 0 ? (
-          <div className="py-16 text-center">
-            <p className="text-muted-foreground">
-              {search ? `No services found for "${search}"` : 'No services found'}
-            </p>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {servicesData.map(service => (
-                <ServiceCard key={service.id} service={service} lang={lang} />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="mt-12 flex justify-center">
-                <Pagination>
-                  <PaginationContent className="gap-2">
-                    <PaginationItem>
-                      {pageNum > 1 ? (
-                        <Link href={createPageUrl(pageNum - 1)}>
-                          <PaginationPrevious className="glass-button rounded-full px-4 py-2">
-                            Previous
-                          </PaginationPrevious>
-                        </Link>
-                      ) : (
-                        <PaginationPrevious
-                          aria-disabled
-                          className="cursor-not-allowed rounded-full px-4 py-2 opacity-50"
-                        >
-                          Previous
-                        </PaginationPrevious>
-                      )}
-                    </PaginationItem>
-                    {Array.from({ length: Math.min(totalPages, 5) }).map((_, idx) => {
-                      const pageNumber = idx + 1;
-                      return (
-                        <PaginationItem key={pageNumber}>
-                          <Link href={createPageUrl(pageNumber)}>
-                            <PaginationLink
-                              isActive={pageNumber === pageNum}
-                              className={
-                                pageNumber === pageNum
-                                  ? 'glass-button bg-primary/20 border-primary/30 rounded-full px-4 py-2'
-                                  : 'glass-button rounded-full px-4 py-2'
-                              }
-                            >
-                              {pageNumber}
-                            </PaginationLink>
-                          </Link>
-                        </PaginationItem>
-                      );
-                    })}
-                    <PaginationItem>
-                      {pageNum < totalPages ? (
-                        <Link href={createPageUrl(pageNum + 1)}>
-                          <PaginationNext className="glass-button rounded-full px-4 py-2">
-                            Next
-                          </PaginationNext>
-                        </Link>
-                      ) : (
-                        <PaginationNext
-                          aria-disabled
-                          className="cursor-not-allowed rounded-full px-4 py-2 opacity-50"
-                        >
-                          Next
-                        </PaginationNext>
-                      )}
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-              </div>
-            )}
-          </>
-        )}
+        <Suspense
+          key={`${page} | ${search} | ${isFeatured ? 'featured' : 'all'}`}
+          fallback={<ServicesSectionSkeleton />}
+        >
+          <ServicesSection page={page} limit={limit} search={search} isFeatured={isFeatured} />
+        </Suspense>
       </div>
     </div>
   );
