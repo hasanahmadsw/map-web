@@ -47,7 +47,6 @@ export function Navbar({ isAuthenticated }: NavbarProps) {
     { name: 'Home', href: '/', icon: Home },
     { name: 'Services', href: '/services', icon: Briefcase },
     { name: 'Blog', href: '/blog', icon: FileText },
-    { name: 'Projects', href: '/projects', icon: FolderKanban },
   ];
 
   return (
