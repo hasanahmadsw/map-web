@@ -15,6 +15,8 @@ import { useTranslation } from '@/providers/translations-provider';
 import { useLang } from '@/hooks/useLang';
 import type { Article } from '@/types/articles.types';
 import type { Lang } from '@/utils/dictionary-utils';
+import { useStaffMe } from '@/hooks/staff/useStaffMe';
+import { Role } from '@/enums/roles.enum';
 
 function formatDate(dateString: string, lang: Lang) {
   return new Date(dateString).toLocaleDateString(lang === 'ar' ? 'ar-SA' : 'en-US', {
@@ -31,6 +33,8 @@ export function useArticleColumns(opts: {
   const { lang, onDelete } = opts;
 
   const router = useRouter();
+
+  const { isCurrentUser, isAuthor } = useStaffMe();
 
   const handleEdit = (article: Article) => {
     router.push(`/dashboard/articles/${article.id}`);
@@ -169,6 +173,13 @@ export function useArticleColumns(opts: {
       enableSorting: false,
       cell: ({ row }) => {
         const article = row.original;
+
+        const isCurrent = isCurrentUser(article.author.id);
+        const isViewingNonAuthor = article.author.role !== Role.AUTHOR;
+
+        if (!isCurrent && isViewingNonAuthor && !isAuthor) {
+          return null;
+        }
 
         return (
           <DropdownMenu>

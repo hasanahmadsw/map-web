@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { Role, type Staff } from '@/types/staff.types';
+import { useStaffMe } from '@/hooks/staff/useStaffMe';
 
 function getRoleVariant(role: Staff['role']) {
   switch (role) {
@@ -48,6 +49,8 @@ export function useStaffColumns(opts: {
   onDelete: (staff: Staff) => void;
 }): ColumnDef<Staff>[] {
   const { onEdit, onDelete } = opts;
+
+  const { isCurrentUser, isAuthor, isAdmin } = useStaffMe();
 
   return [
     // Staff info
@@ -126,6 +129,13 @@ export function useStaffColumns(opts: {
       enableSorting: false,
       cell: ({ row }) => {
         const staff = row.original;
+
+        const isCurrent = isCurrentUser(staff.id);
+        const isViewingNonAuthor = staff.role !== Role.AUTHOR;
+
+        if (isCurrent || isAuthor || (isAdmin && isViewingNonAuthor)) {
+          return null;
+        }
 
         return (
           <DropdownMenu>
