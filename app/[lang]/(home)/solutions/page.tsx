@@ -1,24 +1,16 @@
+import { Suspense } from 'react';
+
 import type { Metadata } from 'next';
-import { solutionsService } from '@/services/solutions.service';
-import { getTranslations, sanitizeLang, type Lang } from '@/utils/dictionary-utils';
-import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
-import { SolutionCard } from '@/components/website/home/solution-card';
+
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
-import Link from 'next/link';
+  SolutionsSection,
+  SolutionsSectionSkeleton,
+} from '@/components/sections/solutions/solutions-section';
+import { getTranslations, sanitizeLang } from '@/utils/dictionary-utils';
+import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 
-interface SolutionsPageParams {
-  params: Promise<{ lang: string }>;
-}
-
-interface SolutionsPageSearchParams {
-  searchParams: Promise<{
+interface Props {
+  searchParams?: Promise<{
     search?: string;
     page?: string;
     limit?: string;
@@ -26,154 +18,39 @@ interface SolutionsPageSearchParams {
   }>;
 }
 
-export const dynamic = 'force-dynamic';
-
-export async function generateMetadata({
-  params,
-  searchParams,
-}: SolutionsPageParams & SolutionsPageSearchParams): Promise<Metadata> {
-  const { lang: rawLang } = await params;
-  const { search, page } = await searchParams;
-  const lang = sanitizeLang(rawLang);
-
-  const t = await getTranslations(lang);
-  const siteURL = process.env.NEXT_PUBLIC_SITE_URL!;
-
-  let title = t.solutions?.title || 'Solutions';
-  let description =
-    t.solutions?.description || 'Discover our professional media production and broadcasting solutions';
-
-  if (search) {
-    title = `${title} - Search: ${search}`;
-    description = `${description} - Search results for "${search}"`;
-  }
-
-  const pageNum = page ? Number(page) : 1;
-  if (pageNum > 1) {
-    title = `${title} - Page ${pageNum}`;
-  }
-
-  const metadata = createEnhancedMetadata({
-    lang,
-    title: { absolute: title },
-    description,
-    type: 'website',
+export function generateMetadata() {
+  return createEnhancedMetadata({
+    lang: 'en',
+    title: 'Solutions',
+    description: 'Discover our professional media production and broadcasting solutions',
     pathname: '/solutions',
-    openGraphOverrides: {
-      type: 'website',
-      title,
-      description,
-      url: `${siteURL}/${lang}/solutions`,
-    },
-    twitterOverrides: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
   });
-
-  return metadata;
 }
 
-export default async function SolutionsPage({
-  params,
-  searchParams,
-}: SolutionsPageParams & SolutionsPageSearchParams) {
-  const { lang: rawLang } = await params;
-  const { search, page, limit, isFeatured } = await searchParams;
-  const lang = sanitizeLang(rawLang);
+export default async function SolutionsPage(props: Props) {
+  const searchParams = await props.searchParams;
 
-  const pageNum = page ? Number(page) : 1;
-  const limitNum = limit ? Number(limit) : 12;
-
-  const solutions = await solutionsService.getAll({
-    search: search || '',
-    page: pageNum,
-    limit: limitNum,
-    isPublished: true,
-    isFeatured: isFeatured === 'true' ? true : undefined,
-  });
-
-  const t = await getTranslations(lang);
-  const solutionsData = solutions.data || [];
-  const totalPages = solutions.pagination?.totalPages || 1;
-
-  const createPageUrl = (page: number) => {
-    const params = new URLSearchParams();
-    if (search) params.set('search', search);
-    if (isFeatured === 'true') params.set('isFeatured', 'true');
-    if (page > 1) params.set('page', String(page));
-    const queryString = params.toString();
-    return queryString ? `?${queryString}` : '';
-  };
+  const page = Number(searchParams?.page) || 1;
+  const limit = Number(searchParams?.limit) || 12;
+  const search = searchParams?.search || '';
+  const isFeatured = searchParams?.isFeatured === 'true' ? true : undefined;
 
   return (
-    <div className="container mx-auto max-w-7xl py-10">
-      <div className="space-y-4">
-        {/* Header */}
-        <div>
-          <h1 className="mb-3 max-w-2xl text-3xl font-medium">{t.solutions?.title || 'Our Solutions'}</h1>
-          <p className="text-muted-foreground max-w-2xl pb-6">
-            {t.solutions?.description ||
-              'Professional media production and broadcasting solutions tailored to your needs'}
-          </p>
-        </div>
+    <section className="container mx-auto max-w-7xl space-y-4 py-10">
+      {/* Header */}
+      <header>
+        <h1 className="mb-3 max-w-2xl text-3xl font-medium">Our Solutions</h1>
+        <p className="text-muted-foreground max-w-2xl pb-6">
+          Professional media production and broadcasting solutions tailored to your needs
+        </p>
+      </header>
 
-        {/* Solutions Grid */}
-        {solutionsData.length === 0 ? (
-          <div className="py-16 text-center">
-            <p className="text-muted-foreground">
-              {search ? `No solutions found for "${search}"` : 'No solutions found'}
-            </p>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {solutionsData.map(solution => (
-                <SolutionCard key={solution.id} solution={solution} lang={lang} />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="mt-12 flex justify-center">
-                <Pagination>
-                  <PaginationContent>
-                    <PaginationItem>
-                      {pageNum > 1 ? (
-                        <Link href={createPageUrl(pageNum - 1)}>
-                          <PaginationPrevious>Previous</PaginationPrevious>
-                        </Link>
-                      ) : (
-                        <PaginationPrevious aria-disabled>Previous</PaginationPrevious>
-                      )}
-                    </PaginationItem>
-                    {Array.from({ length: Math.min(totalPages, 5) }).map((_, idx) => {
-                      const pageNumber = idx + 1;
-                      return (
-                        <PaginationItem key={pageNumber}>
-                          <Link href={createPageUrl(pageNumber)}>
-                            <PaginationLink isActive={pageNumber === pageNum}>{pageNumber}</PaginationLink>
-                          </Link>
-                        </PaginationItem>
-                      );
-                    })}
-                    <PaginationItem>
-                      {pageNum < totalPages ? (
-                        <Link href={createPageUrl(pageNum + 1)}>
-                          <PaginationNext>Next</PaginationNext>
-                        </Link>
-                      ) : (
-                        <PaginationNext aria-disabled>Next</PaginationNext>
-                      )}
-                    </PaginationItem>
-                  </PaginationContent>
-                </Pagination>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </div>
+      <Suspense
+        key={`${page} | ${search} | ${isFeatured ? 'featured' : 'all'}`}
+        fallback={<SolutionsSectionSkeleton />}
+      >
+        <SolutionsSection page={page} limit={limit} search={search} isFeatured={isFeatured} />
+      </Suspense>
+    </section>
   );
 }

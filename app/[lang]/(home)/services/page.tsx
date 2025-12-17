@@ -35,22 +35,20 @@ export default async function ServicesPage(props: Props) {
   const isFeatured = searchParams?.isFeatured === 'true' ? true : undefined;
 
   return (
-    <div className="container mx-auto max-w-7xl py-10">
-      <div className="space-y-4">
-        <div>
-          <h1 className="mb-3 max-w-2xl text-3xl font-medium">Our Services</h1>
-          <p className="text-muted-foreground max-w-2xl pb-6">
-            Professional media production and broadcasting services tailored to your needs
-          </p>
-        </div>
+    <div className="container mx-auto max-w-7xl space-y-4 py-10">
+      <header>
+        <h1 className="mb-3 max-w-2xl text-3xl font-medium">Our Services</h1>
+        <p className="text-muted-foreground max-w-2xl pb-6">
+          Professional media production and broadcasting services tailored to your needs
+        </p>
+      </header>
 
-        <Suspense
-          key={`${page} | ${search} | ${isFeatured ? 'featured' : 'all'}`}
-          fallback={<ServicesSectionSkeleton />}
-        >
-          <ServicesSection page={page} limit={limit} search={search} isFeatured={isFeatured} />
-        </Suspense>
-      </div>
+      <Suspense
+        key={`${page} | ${search} | ${isFeatured ? 'featured' : 'all'}`}
+        fallback={<ServicesSectionSkeleton />}
+      >
+        <ServicesSection page={page} limit={limit} search={search} isFeatured={isFeatured} />
+      </Suspense>
     </div>
   );
 }
