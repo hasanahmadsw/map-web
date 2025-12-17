@@ -4,7 +4,7 @@ import { ApiService } from './base.service';
 import { toQS } from '@/utils/api-utils';
 import { TCreateStaffForm } from '@/validations/staff/create-staff.schema';
 import { TEditStaffForm } from '@/validations/staff/edit-staff.schema';
-import { TUpdateMeDTO } from '@/schemas/staff.schemas';
+import type { TUpdateMeForm } from '@/validations/staff/update-me.schema';
 
 const BASE = '/staff';
 const ADMIN_BASE = '/admin/staff';
@@ -47,7 +47,7 @@ export const staffService = {
     return res.data;
   },
 
-  async updateMe(payload: TUpdateMeDTO, opts?: RequestOpts): Promise<Staff> {
+  async updateMe(payload: UpdateMePayload, opts?: RequestOpts): Promise<Staff> {
     const res = await ApiService.patch<Staff>(`${ADMIN_BASE}/me`, payload, opts);
     return res.data;
   },
@@ -69,3 +69,5 @@ export const staffService = {
     return res.data;
   },
 };
+
+type UpdateMePayload = Partial<Omit<TUpdateMeForm, 'confirmPassword'>>;

@@ -1,9 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useMemo } from "react";
-import { useRouterWithLoader } from "@/hooks/useRouterWithLoader";
-import { authService } from "@/services/auth.service";
-import type { Staff } from "@/types/staff.types";
-import { deleteCookie, myCookies, readCookieFromDocument, setCookie } from "@/utils/cookies";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useMemo } from 'react';
+import { useRouterWithLoader } from '@/hooks/useRouterWithLoader';
+import { authService } from '@/services/auth.service';
+import type { Staff } from '@/types/staff.types';
+import { deleteCookie, myCookies, readCookieFromDocument, setCookie } from '@/utils/cookies';
 
 interface UseAuthReturn {
   isLoading: boolean;
@@ -16,17 +16,12 @@ interface UseAuthReturn {
 export function useAuth(): UseAuthReturn {
   const router = useRouterWithLoader();
   const queryClient = useQueryClient();
-  const token = typeof document !== "undefined" ? readCookieFromDocument(myCookies.auth) : null;
-  const { data } = useQuery({
-    queryKey: ["auth"],
-    enabled: !!token && typeof document !== "undefined",
-    queryFn: () => authService.getMe(),
-  });
+
   const loginMutation = useMutation({
     mutationFn: async ({ email, password }: { email: string; password: string }) => {
       return authService.login({ email, password });
     },
-    onSuccess: (data) => {
+    onSuccess: data => {
       if (data?.accessToken) {
         setCookie(myCookies.auth, data.accessToken);
       }
@@ -45,9 +40,9 @@ export function useAuth(): UseAuthReturn {
     try {
       await deleteCookie(myCookies.auth);
       queryClient.clear();
-      router.replace("/login");
+      router.replace('/login');
     } catch (err) {
-      console.error("Logout error:", err);
+      console.error('Logout error:', err);
     }
   }, [queryClient, router]);
 
@@ -61,6 +56,5 @@ export function useAuth(): UseAuthReturn {
     error,
     login,
     logout,
-    data,
   };
 }

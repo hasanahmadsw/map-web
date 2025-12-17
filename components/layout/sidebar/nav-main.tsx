@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { Role } from '@/enums/roles.enum';
+import { useUserRole } from '@/components/guard/useUserRole';
 
 export function NavMain({
   items,
@@ -25,6 +27,7 @@ export function NavMain({
     url: string;
     icon?: LucideIcon;
     isActive?: boolean;
+    allowedRole: `${Role}`[];
     items?: {
       title: string;
       url: string;
@@ -34,6 +37,8 @@ export function NavMain({
   const pathname = usePathname();
 
   const [loadingPath, setLoadingPath] = useState('');
+
+  const { canAccess } = useUserRole();
 
   const handleItemClick = (url: string) => {
     setLoadingPath(url);
@@ -64,6 +69,11 @@ export function NavMain({
       <SidebarMenu>
         {items.map(item => {
           // If item has no children, render as simple link
+          const canAccessItem = canAccess(item.allowedRole);
+          if (!canAccessItem) {
+            return null;
+          }
+
           if (!item.items || item.items.length === 0) {
             const isRootDashboard = item.url === '/dashboard';
             const active = isRootDashboard ? isExactActive(item.url) : isDeepActive(item.url);
