@@ -46,12 +46,12 @@ export function Navbar({ isAuthenticated }: NavbarProps) {
   const navigation = [
     { name: 'Home', href: '/', icon: Home },
     { name: 'Services', href: '/services', icon: Briefcase },
-    { name: 'Blogs', href: '/blogs', icon: FileText },
+    { name: 'Blog', href: '/blog', icon: FileText },
     { name: 'Projects', href: '/projects', icon: FolderKanban },
   ];
 
   return (
-    <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
+    <header className="bg-background/95 supports-backdrop-filter:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
       <nav className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo */}
         <div className="flex lg:flex-1">
