@@ -1,7 +1,7 @@
 'use client';
 
 import type { ColumnDef } from '@tanstack/react-table';
-import { Edit, MoreHorizontal, Trash2, Package, Star, Calendar, Image as ImageIcon } from 'lucide-react';
+import { Edit, MoreHorizontal, Trash2, Package, Star, Calendar, Image as ImageIcon, Eye } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import type { IEquipment } from '@/types/equipments/equipment.type';
 import { EquipmentType } from '@/types/equipments/equipment.enum';
+import Link from 'next/link';
 
 function formatEquipmentType(type: string) {
   return type
@@ -59,10 +60,6 @@ export function useEquipmentColumns(opts: {
 
   const router = useRouter();
 
-  const handleEdit = (equipment: IEquipment) => {
-    router.push(`/dashboard/equipments/${equipment.id}`);
-  };
-
   return [
     // Equipment name
     {
@@ -90,22 +87,22 @@ export function useEquipmentColumns(opts: {
     },
     // Category
     {
-      id: 'categoryId',
+      id: 'category',
       header: 'Category',
       enableSorting: false,
       cell: ({ row }) => {
         const equipment = row.original;
-        return <div className="text-muted-foreground text-sm">Category ID: {equipment.categoryId}</div>;
+        return <div className="text-muted-foreground text-sm">Category ID: {equipment.category.name}</div>;
       },
     },
     // Brand
     {
-      id: 'brandId',
+      id: 'brand',
       header: 'Brand',
       enableSorting: false,
       cell: ({ row }) => {
         const equipment = row.original;
-        return <div className="text-muted-foreground text-sm">Brand ID: {equipment.brandId}</div>;
+        return <div className="text-muted-foreground text-sm">Brand ID: {equipment.brand.name}</div>;
       },
     },
     // Summary
@@ -166,9 +163,17 @@ export function useEquipmentColumns(opts: {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => handleEdit(equipment)}>
-                <Edit className="mr-2 h-4 w-4 text-green-500" />
-                Edit
+              <DropdownMenuItem asChild>
+                <Link href={`/dashboard/equipments/${equipment.id}?view=1`}>
+                  <Eye className="mr-2 h-4 w-4 text-blue-500" />
+                  View
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={`/dashboard/equipments/${equipment.id}`}>
+                  <Edit className="mr-2 h-4 w-4 text-green-500" />
+                  Edit
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => onDelete(equipment)} className="text-destructive">
                 <Trash2 className="mr-2 h-4 w-4 text-red-500" />

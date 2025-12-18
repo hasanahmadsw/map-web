@@ -27,6 +27,8 @@ export interface IEquipment {
   galleryPaths: string[];
   specs: IEquipmentSpecs;
   status: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // Camera Interface
