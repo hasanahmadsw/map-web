@@ -23,6 +23,8 @@ import {
   type TCreateEquipmentCategoryForm,
 } from '@/validations/equipments/categories/create-equipment-category.schema';
 import { LoadingButton } from '@/components/shared/buttons/loading-button';
+import { Separator } from '@/components/ui/separator';
+import ResponseError from '@/components/shared/response-error';
 
 function AddEquipmentCategory({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const { create } = useEquipmentCategoryMutations();
@@ -59,6 +61,11 @@ function AddEquipmentCategory({ isOpen, onClose }: { isOpen: boolean; onClose: (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <EquipmentCategoryFormFields />
+
+            <Separator />
+
+            {/* Response Error */}
+            {<ResponseError error={create.error as Error} />}
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={onClose} disabled={create.isPending}>

@@ -26,6 +26,8 @@ import {
 import { LoadingButton } from '@/components/shared/buttons/loading-button';
 import type { IEquipmentBrand } from '@/types/equipments/equipment-brand.type';
 import { getChangedValues } from '@/utils/format';
+import { Separator } from '@/components/ui/separator';
+import ResponseError from '@/components/shared/response-error';
 
 interface EditEquipmentBrandFormProps {
   isOpen: boolean;
@@ -49,6 +51,11 @@ function EditEquipmentBrandForm({ isOpen, onClose, brand }: EditEquipmentBrandFo
   const onSubmit = async (data: TUpdateEquipmentBrandForm) => {
     const changedValues = getChangedValues(form.formState.defaultValues as TUpdateEquipmentBrandForm, data);
 
+    if (!Object.keys(changedValues).length) {
+      toast.error('No changes to update');
+      return;
+    }
+
     try {
       await update.mutateAsync({ id: brand.id, data: changedValues });
       toast.success('Equipment brand updated successfully');
@@ -70,6 +77,11 @@ function EditEquipmentBrandForm({ isOpen, onClose, brand }: EditEquipmentBrandFo
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <EquipmentBrandFormFields />
+
+            <Separator />
+
+            {/* Response Error */}
+            {<ResponseError error={update.error as Error} />}
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={onClose} disabled={update.isPending}>

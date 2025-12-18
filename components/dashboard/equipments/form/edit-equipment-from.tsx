@@ -24,6 +24,7 @@ import { getChangedValues } from '@/utils/format';
 import { getDirection } from '@/utils/dictionary-utils';
 import { EquipmentType } from '@/types/equipments/equipment.enum';
 import ApiError from '@/components/shared/api-error';
+import { Separator } from '@/components/ui/separator';
 
 // Dynamic Imports
 const BasicInfoStep = dynamic(() => import('./steps/basic-info-step'), {
@@ -98,6 +99,11 @@ function EditEquipmentForm({ equipmentId }: EditEquipmentFormProps) {
       data,
     ) as Partial<TUpdateEquipmentForm>;
 
+    if (!Object.keys(changedValues).length) {
+      toast.error('No changes to update');
+      return;
+    }
+
     try {
       await update.mutateAsync({
         id: Number(equipmentId),
@@ -161,6 +167,8 @@ function EditEquipmentForm({ equipmentId }: EditEquipmentFormProps) {
             {equipmentType && <SpecificationsStep equipmentType={equipmentType} />}
           </TabsContent>
         </Tabs>
+
+        <Separator />
 
         {/* Response Error */}
         <ResponseError error={update.error as Error} />

@@ -25,6 +25,8 @@ import {
 import { LoadingButton } from '@/components/shared/buttons/loading-button';
 import type { IEquipmentCategory } from '@/types/equipments/equipment-category.type';
 import { getChangedValues } from '@/utils/format';
+import { Separator } from '@/components/ui/separator';
+import ResponseError from '@/components/shared/response-error';
 
 interface EditEquipmentCategoryFormProps {
   isOpen: boolean;
@@ -53,6 +55,11 @@ function EditEquipmentCategoryForm({ isOpen, onClose, category }: EditEquipmentC
       data,
     );
 
+    if (!Object.keys(changedValues).length) {
+      toast.error('No changes to update');
+      return;
+    }
+
     try {
       await update.mutateAsync({ id: category.id, data: changedValues });
       toast.success('Equipment category updated successfully');
@@ -74,6 +81,11 @@ function EditEquipmentCategoryForm({ isOpen, onClose, category }: EditEquipmentC
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <EquipmentCategoryFormFields />
+
+            <Separator />
+
+            {/* Response Error */}
+            {<ResponseError error={update.error as Error} />}
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={onClose} disabled={update.isPending}>

@@ -24,6 +24,8 @@ import {
   type TCreateEquipmentBrandForm,
 } from '@/validations/equipments/brands/create-equipment-brand.schema';
 import { LoadingButton } from '@/components/shared/buttons/loading-button';
+import { Separator } from '@/components/ui/separator';
+import ResponseError from '@/components/shared/response-error';
 
 function AddEquipmentBrand({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const { create } = useEquipmentBrandMutations();
@@ -60,6 +62,11 @@ function AddEquipmentBrand({ isOpen, onClose }: { isOpen: boolean; onClose: () =
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <EquipmentBrandFormFields />
+
+            <Separator />
+
+            {/* Response Error */}
+            {<ResponseError error={create.error as Error} />}
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={onClose} disabled={create.isPending}>

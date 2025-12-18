@@ -21,6 +21,7 @@ import { useEquipmentMutations } from '@/hooks/api/equipments/mutations';
 import { sanitizeDto } from '@/utils/format';
 import { EquipmentType } from '@/types/equipments/equipment.enum';
 import FormSkeleton from '@/components/shared/skeletons/form-skeleton';
+import { Separator } from '@/components/ui/separator';
 
 // Dynamic Imports
 const BasicInfoStep = dynamic(() => import('./steps/basic-info-step'), {
@@ -182,6 +183,8 @@ function AddEquipmentForm() {
 
           {/* Step 3: Specifications */}
           {step === 3 && <SpecificationsStep />}
+
+          <Separator />
 
           {/* Response Error */}
           {<ResponseError error={create.error as Error} />}
