@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 import { fmt, validation } from '@/constants/validation-msg';
 import { EquipmentType } from '@/types/equipments/equipment.enum';
+import { numberValidation } from '@/validations/common';
 
 function createEquipmentCategorySchema() {
   return z.object({
@@ -21,11 +22,11 @@ function createEquipmentCategorySchema() {
       .min(3, fmt(validation.string.minLength, { min: 3 }))
       .max(2048, fmt(validation.string.maxLength, { max: 2048 })),
     type: z.enum(EquipmentType, { message: validation.required }),
-    order: z.number().int().min(0).default(0),
+    order: numberValidation(1, 100).optional(),
     isActive: z.boolean().default(true),
   });
 }
 
-type TCreateEquipmentCategoryForm = z.infer<ReturnType<typeof createEquipmentCategorySchema>>;
+type TCreateEquipmentCategoryForm = z.input<ReturnType<typeof createEquipmentCategorySchema>>;
 
 export { createEquipmentCategorySchema, type TCreateEquipmentCategoryForm };
