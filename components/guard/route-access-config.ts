@@ -34,6 +34,10 @@ export const routeAccessConfig: RoutePermission[] = [
     allowedRole: [Role.SUPERADMIN, Role.ADMIN],
   },
   {
+    path: '/dashboard/equipments',
+    allowedRole: [Role.SUPERADMIN, Role.ADMIN],
+  },
+  {
     path: '/dashboard/settings',
     allowedRole: [Role.SUPERADMIN],
   },
