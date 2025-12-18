@@ -10,7 +10,7 @@ import { DataTable } from '@/components/shared/table/data-table';
 
 import { useEquipmentCategoryMutations } from '@/hooks/api/equipments/equipment-categories/mutations';
 import { useEquipmentCategoriesController } from '@/hooks/api/equipments/equipment-categories/use-equipment-categories-controller';
-import { useEquipmentCategoryColumns } from '@/components/dashboard/equipment-categories/columns';
+import { useEquipmentCategoryColumns } from '@/components/dashboard/equipments/equipment-categories/columns';
 import { TableHeader, type FilterInfo } from '@/components/shared/table/table-header';
 
 import type { IEquipmentCategory } from '@/types/equipments/equipment-category.type';
@@ -20,7 +20,7 @@ import { SelectFilter } from '@/components/shared/selects/select-filter';
 import { EquipmentType } from '@/types/equipments/equipment.enum';
 
 const AddEquipmentCategoryDynamic = dynamic(
-  () => import('@/components/dashboard/equipment-categories/form/add-equipment-category-form'),
+  () => import('@/components/dashboard/equipments/equipment-categories/form/add-equipment-category-form'),
   {
     ssr: false,
     loading: () => <DialogSkeleton />,
@@ -28,7 +28,7 @@ const AddEquipmentCategoryDynamic = dynamic(
 );
 
 const EditEquipmentCategoryDynamic = dynamic(
-  () => import('@/components/dashboard/equipment-categories/form/edit-equipment-category-form'),
+  () => import('@/components/dashboard/equipments/equipment-categories/form/edit-equipment-category-form'),
   {
     ssr: false,
     loading: () => <DialogSkeleton />,

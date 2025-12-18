@@ -19,7 +19,7 @@ import DialogSkeleton from '@/components/shared/skeletons/dialog-skeleton';
 import { SelectFilter } from '@/components/shared/selects/select-filter';
 
 const AddEquipmentBrandDynamic = dynamic(
-  () => import('@/components/dashboard/equipment-brands/form/add-equipment-brand-form'),
+  () => import('@/components/dashboard/equipments/equipment-brands/form/add-equipment-brand-form'),
   {
     ssr: false,
     loading: () => <DialogSkeleton />,
@@ -27,7 +27,7 @@ const AddEquipmentBrandDynamic = dynamic(
 );
 
 const EditEquipmentBrandDynamic = dynamic(
-  () => import('@/components/dashboard/equipment-brands/form/edit-equipment-brand-form'),
+  () => import('@/components/dashboard/equipments/equipment-brands/form/edit-equipment-brand-form'),
   {
     ssr: false,
     loading: () => <DialogSkeleton />,

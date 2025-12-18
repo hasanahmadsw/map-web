@@ -1,5 +1,5 @@
 import { type Metadata } from 'next';
-import EquipmentBrandsTable from '@/components/dashboard/equipment-brands/equipment-brands-table';
+import EquipmentBrandsTable from '@/components/dashboard/equipments/equipment-brands/equipment-brands-table';
 
 export const metadata: Metadata = {
   title: 'Equipment Brands Management',
