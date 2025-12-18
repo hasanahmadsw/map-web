@@ -10,24 +10,33 @@ import { CheckboxInput } from '@/components/shared/input/CheckboxInput';
 
 import { EquipmentType } from '@/types/equipments/equipment.enum';
 import type { TCreateEquipmentForm } from '@/validations/equipments/create-equipment.schema';
+import type { TUpdateEquipmentForm } from '@/validations/equipments/update-equipment.schema';
 import { CategorySelector } from '@/components/dashboard/common/selectors/category-selector';
 
 import { BrandSelector } from '@/components/dashboard/common/selectors/brand-selector';
 
 const equipmentTypeOptions = Object.values(EquipmentType).map(type => ({ value: type, label: type }));
 
-function BasicInfoStep() {
-  const form = useFormContext<TCreateEquipmentForm>();
+interface BasicInfoStepProps {
+  isEdit?: boolean;
+}
+
+type EquipmentFormBasicInfo = TCreateEquipmentForm | TUpdateEquipmentForm;
+
+function BasicInfoStep({ isEdit = false }: BasicInfoStepProps) {
+  const form = useFormContext<EquipmentFormBasicInfo>();
 
   return (
     <div className="space-y-6">
-      <SelectInput
-        control={form.control}
-        name="equipmentType"
-        label="Equipment Type"
-        placeholder="Select equipment type"
-        options={equipmentTypeOptions}
-      />
+      {!isEdit && (
+        <SelectInput
+          control={form.control}
+          name="equipmentType"
+          label="Equipment Type"
+          placeholder="Select equipment type"
+          options={equipmentTypeOptions}
+        />
+      )}
 
       <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-2">
         <TextInput control={form.control} name="slug" label="Slug" placeholder="equipment-slug" />

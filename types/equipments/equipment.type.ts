@@ -1,3 +1,5 @@
+import { IEquipmentBrand } from './equipment-brand.type';
+import { IEquipmentCategory } from './equipment-category.type';
 import {
   AudioCategory,
   EquipmentType,
@@ -15,8 +17,8 @@ export interface IEquipment {
   name: string;
   summary: string;
   description: string;
-  categoryId: number;
-  brandId: number;
+  category: IEquipmentCategory;
+  brand: IEquipmentBrand;
   equipmentType: `${EquipmentType}`;
   isPublished: boolean;
   isFeatured: boolean;
