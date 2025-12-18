@@ -6,10 +6,15 @@ import { equipmentBrandsService } from '@/services/equipments/equipment-brands.s
 import type { EquipmentBrandListParams } from '@/services/equipments/equipment-brands.service';
 import type { IEquipmentBrand } from '@/types/equipments/equipment-brand.type';
 import type { ApiResponse } from '@/types/common.types';
+import { useQuery } from '@tanstack/react-query';
 
 type Resp = ApiResponse<IEquipmentBrand[]>;
 
-const useGenericList = createListController<EquipmentBrandListParams, Resp, IEquipmentBrand>();
+type CompatibleBrandListParams = EquipmentBrandListParams & {
+  [key: string]: string | number | boolean | undefined;
+};
+
+const useGenericList = createListController<CompatibleBrandListParams, Resp, IEquipmentBrand>();
 
 export function useEquipmentBrandsController() {
   const controller = useGenericList({
@@ -39,4 +44,25 @@ export function useEquipmentBrandsController() {
   });
 
   return controller;
+}
+
+export function useBrandsForFilter(params?: { limit?: number; isActive?: boolean; search?: string }) {
+  const q = useQuery({
+    queryKey: [...equipmentBrandsQueryKeys.lists(), 'filter', params],
+    queryFn: ({ signal }) => equipmentBrandsService.getAll(params, { signal }),
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    select: (res: ApiResponse<IEquipmentBrand[]>) => ({
+      items: res?.data ?? [],
+      total: res?.pagination?.total ?? res?.data?.length ?? 0,
+    }),
+  });
+
+  return {
+    brands: q.data?.items ?? [],
+    total: q.data?.total ?? 0,
+    error: (q.error as Error) ?? null,
+    isPending: q.isPending,
+    refetch: q.refetch,
+  };
 }

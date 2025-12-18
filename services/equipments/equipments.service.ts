@@ -6,7 +6,7 @@ import type { TCreateEquipmentForm } from '@/validations/equipments/create-equip
 import type { TUpdateEquipmentForm } from '@/validations/equipments/update-equipment.schema';
 
 const BASE = '/equipments';
-const ADMIN_BASE = '/admin/equipments';
+const ADMIN_BASE = '/admin/equipment';
 type Id = number;
 type RequestOpts = { signal?: AbortSignal; headers?: Record<string, string> };
 

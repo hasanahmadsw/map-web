@@ -15,8 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useMediaInfinite, useMediaTree, useUploadMedia } from '@/hooks/api/media/use-media';
-import { useTranslation } from '@/providers/translations-provider';
-import { Media } from '@/types/mediaa.types';
+import { Media } from '@/types/media.types';
 import {
   CheckSquare2,
   Folder as FolderIcon,
