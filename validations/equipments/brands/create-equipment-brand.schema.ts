@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { fmt, validation } from '@/constants/validation-msg';
+import { numberValidation } from '@/validations/common';
 
 function createEquipmentBrandSchema() {
   return z.object({
@@ -14,11 +15,11 @@ function createEquipmentBrandSchema() {
       .trim()
       .min(2, fmt(validation.string.minLength, { min: 2 }))
       .max(200, fmt(validation.string.maxLength, { max: 200 })),
-    order: z.number().int().min(0).default(0),
+    order: numberValidation(1, 100).optional(),
     isActive: z.boolean().default(true),
   });
 }
 
-type TCreateEquipmentBrandForm = z.infer<ReturnType<typeof createEquipmentBrandSchema>>;
+type TCreateEquipmentBrandForm = z.input<ReturnType<typeof createEquipmentBrandSchema>>;
 
 export { createEquipmentBrandSchema, type TCreateEquipmentBrandForm };
