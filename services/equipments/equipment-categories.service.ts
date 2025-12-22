@@ -57,7 +57,13 @@ export const equipmentCategoriesService = {
     params: EquipmentCategoryListParams = {},
     opts?: RequestOpts,
   ): Promise<ApiResponse<IEquipmentCategory[]>> {
-    const res = await ApiService.get<IEquipmentCategory[]>(`${BASE}${toQS(params)}`, opts);
+    const res = await ApiService.get<IEquipmentCategory[]>(`${BASE}${toQS(params)}`, {
+      ...opts,
+      cache: 'force-cache',
+      next: {
+        revalidate: 60 * 60 * 24, // 24 hours
+      },
+    });
     return res;
   },
 };

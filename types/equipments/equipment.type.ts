@@ -86,3 +86,13 @@ export interface IAccessorySpecs {
 }
 
 export type IEquipmentSpecs = ICameraSpecs | ILensSpecs | ILightSpecs | IAudioSpecs | IAccessorySpecs;
+
+export interface EquipmentParams {
+  page?: number;
+  limit?: number;
+  q?: string;
+  type?: string;
+  category?: string;
+  brand?: string;
+  isFeatured?: string;
+}

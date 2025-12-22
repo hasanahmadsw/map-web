@@ -1,11 +1,11 @@
 import type { ApiResponse, BaseListParams } from '@/types/common.types';
-import type { IEquipment } from '@/types/equipments/equipment.type';
+import type { EquipmentParams, IEquipment } from '@/types/equipments/equipment.type';
 import { ApiService } from '../base.service';
 import { toQS } from '@/utils/api-utils';
 import type { TCreateEquipmentForm } from '@/validations/equipments/create-equipment.schema';
 import type { TUpdateEquipmentForm } from '@/validations/equipments/update-equipment.schema';
 
-const BASE = '/equipments';
+const BASE = '/equipment';
 const ADMIN_BASE = '/admin/equipment';
 type Id = number;
 type RequestOpts = { signal?: AbortSignal; headers?: Record<string, string> };
@@ -49,10 +49,7 @@ export const equipmentsService = {
   },
 
   // Public Services
-  async getAllPublic(
-    params: EquipmentListParams = {},
-    opts?: RequestOpts,
-  ): Promise<ApiResponse<IEquipment[]>> {
+  async getAllPublic(params: EquipmentParams = {}, opts?: RequestOpts): Promise<ApiResponse<IEquipment[]>> {
     const res = await ApiService.get<IEquipment[]>(`${BASE}/published${toQS(params)}`, opts);
     return res;
   },
