@@ -47,7 +47,7 @@ async function FiltersBreadcrumb({ filters, categories }: FiltersBreadcrumbProps
                   <BreadcrumbPage className="text-sm">{capitalizeFirstLetter(crumb.label)}</BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink className="text-sm" asChild>
-                    <Link href={`/equipments/${crumb.href}`}>{capitalizeFirstLetter(crumb.label)}</Link>
+                    <Link href={`/rent/${crumb.href}`}>{capitalizeFirstLetter(crumb.label)}</Link>
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>

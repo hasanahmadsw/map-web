@@ -1,85 +1,73 @@
-import seoConfig from "./seo.config";
-import { buildTwitter } from "./buildTwitter";
-import { buildOpenGraph } from "./buildOpenGraph";
+import { buildOpenGraph } from './buildOpenGraph';
+import { buildTwitter } from './buildTwitter';
+import seoConfig from './seo.config';
 
-import type { Metadata } from "next";
-import { Lang } from "@/utils/dictionary-utils";
+import type { Metadata } from 'next';
 
-export interface EnhancedMetadata {
-   lang: Lang;
-   title: string | { absolute: string };
-   description: string;
-   type?: "website" | "article";
-   image?: string;
-   keywords?: string[];
-   publishedTime?: string;
-   modifiedTime?: string;
-   authors?: { name: string; url?: string }[];
-   pathname?: string;
-   openGraphOverrides?: Partial<Metadata["openGraph"]>;
-   twitterOverrides?: Partial<Metadata["twitter"]>;
+/**
+ * Input for enhanced SEO metadata generation.
+ */
+export interface EnhancedSeoInput {
+  lang: string;
+  title: string | { absolute: string };
+  description: string;
+  type?: 'website' | 'article';
+  image?: string;
+  keywords?: string[];
+  authors?: { name: string; url?: string }[];
+  pathname?: string;
+  mainOverrides?: Partial<Metadata>;
+  openGraphOverrides?: Partial<Metadata['openGraph']>;
+  twitterOverrides?: Partial<Metadata['twitter']>;
 }
 
 /**
  * Generates enhanced SEO metadata for Next.js pages.
- * @param input EnhancedMetadata
+ * @param input EnhancedSeoInput
  * @returns Metadata object for Next.js
  */
-export function createEnhancedMetadata(input: EnhancedMetadata): Metadata {
-   const {
+export async function createEnhancedMetadata(input: EnhancedSeoInput): Promise<Metadata> {
+  const {
+    lang,
+    title,
+    description,
+    type = 'website',
+    keywords = [],
+    authors,
+    pathname = '',
+    image,
+    mainOverrides,
+    openGraphOverrides,
+    twitterOverrides,
+  } = input;
+
+  return {
+    title,
+    description,
+    keywords,
+    openGraph: buildOpenGraph({
       lang,
       title,
       description,
-      type = "website",
-      keywords = [],
-      publishedTime,
-      modifiedTime,
-      authors,
-      pathname = "",
-      openGraphOverrides,
-      twitterOverrides,
+      type,
       image,
-   } = input;
-   const siteName = seoConfig.siteName;
-   const siteURL = process.env.NEXT_PUBLIC_SITE_URL!;
-
-   return {
+      authors,
+      pathname,
+      openGraphOverrides,
+    }),
+    twitter: buildTwitter({
       title,
       description,
-      keywords,
-      openGraph: buildOpenGraph({
-         lang,
-         title,
-         description,
-         type,
-         image,
-         siteName,
-         siteURL,
-         publishedTime,
-         modifiedTime,
-         authors,
-         pathname,
-         openGraphOverrides,
-      }),
-      twitter: buildTwitter({
-         title,
-         description,
-         image,
-         siteURL,
-         twitterOverrides,
-      }),
-      robots: { index: true, follow: true },
-      alternates: {
-         canonical: `${siteURL}/${lang}${pathname}`,
-         languages: {
-            en: `${siteURL}/en${pathname}`,
-            ar: `${siteURL}/ar${pathname}`,
-         },
-      },
-      ...(type === "article" &&
-         authors && {
-            authors,
-         }),
-      applicationName: siteName,
-   };
+      image,
+      twitterOverrides,
+    }),
+
+    alternates: {
+      canonical: pathname,
+    },
+    ...(authors && { authors }),
+
+    metadataBase: new URL(seoConfig.siteURL),
+    ...mainOverrides,
+  };
 }

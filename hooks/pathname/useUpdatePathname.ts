@@ -13,7 +13,7 @@ export function useUpdatePathname(categories: string[]) {
     (url: string, searchParams: URLSearchParams = currentSearchParams) => {
       if (searchParams.has('page')) searchParams.delete('page');
 
-      router.push(`${url}?${searchParams.toString()}`, { scroll: false });
+      router.push(`/rent/${url}?${searchParams.toString()}`, { scroll: false });
     },
     300,
   );
@@ -21,19 +21,19 @@ export function useUpdatePathname(categories: string[]) {
   const handleChangeType = (newBodyType: string) => {
     const slug = buildSlug(newBodyType, category, brand);
 
-    debouncedPush(`/equipments/${slug}`);
+    debouncedPush(slug);
   };
 
   const handleChangeCategory = (newCategory: string) => {
     const slug = buildSlug(type, newCategory, brand);
 
-    debouncedPush(`/equipments/${slug}`);
+    debouncedPush(slug);
   };
 
   const handleChangeBrand = (newBrand: string) => {
     const slug = buildSlug(type, category, newBrand);
 
-    debouncedPush(`/equipments/${slug}`);
+    debouncedPush(slug);
   };
 
   const handleChangeSearchParams = (

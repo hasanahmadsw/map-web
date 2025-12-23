@@ -1,29 +1,34 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
+import seoConfig from './seo.config';
 
 /**
  * Helper to build Twitter metadata.
  */
 export function buildTwitter({
-   title,
-   description,
-   image,
-   siteURL,
-   twitterOverrides = {},
+  title,
+  description,
+  image,
+  twitterOverrides = {},
 }: {
-   title: string | { absolute: string };
-   description: string;
-   image?: string;
-   siteURL: string;
-   twitterOverrides?: Partial<Metadata["twitter"]>;
-}): Metadata["twitter"] {
-   const img = image || `${siteURL}/images/og-image.png`;
-   return {
-      title: typeof title === "string" ? title : title.absolute,
-      description,
-      images: [img],
-      card: "summary_large_image",
-      site: "@blendlabNews",
-      creator: "@blendlabNews",
-      ...twitterOverrides,
-   };
+  title: string | { absolute: string };
+  description: string;
+  image?: string;
+  twitterOverrides?: Partial<Metadata['twitter']>;
+}): Metadata['twitter'] {
+  const img = image || seoConfig.ogImage;
+
+  return {
+    title: typeof title === 'string' ? title : title.absolute,
+    description,
+    images: [
+      {
+        url: img,
+        width: 1200,
+        height: 630,
+        alt: typeof title === 'string' ? title : title.absolute,
+      },
+    ],
+    card: 'summary_large_image',
+    ...twitterOverrides,
+  };
 }
