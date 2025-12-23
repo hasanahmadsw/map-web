@@ -5,14 +5,13 @@ import { useState, useMemo } from 'react';
 import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Filter } from 'lucide-react';
+
 import { DataTable } from '@/components/shared/table/data-table';
 
 import { useRouter } from 'next/navigation';
 import { useSolutionMutations } from '@/hooks/solutions/mutations';
 import { useSolutionsController } from '@/hooks/solutions/useSolutionsController';
-import { useLang } from '@/hooks/useLang';
+
 import { useSolutionColumns } from './columns';
 import { TableHeader, type FilterInfo } from '@/components/shared/table/table-header';
 
@@ -30,7 +29,6 @@ const ConfirmationDialogDynamic = dynamic(
 );
 
 export function SolutionsTable() {
-  const lang = useLang();
   const router = useRouter();
 
   const [solutionToDelete, setSolutionToDelete] = useState<StaffSolution | null>(null);
@@ -79,12 +77,11 @@ export function SolutionsTable() {
   };
 
   const columns = useSolutionColumns({
-    lang,
     onDelete: setSolutionToDelete,
   });
 
   const handleAddSolution = () => {
-    router.push(`/${lang}/dashboard/solutions/add`);
+    router.push(`/dashboard/solutions/add`);
   };
 
   // Prepare filter information for the header
@@ -179,7 +176,6 @@ export function SolutionsTable() {
                 )}
               </div>
             }
-            lang={lang}
           />
         </CardContent>
       </Card>

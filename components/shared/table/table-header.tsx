@@ -1,10 +1,9 @@
-"use client";
+'use client';
 
-import { ReactNode } from "react";
-import { CardTitle, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Loader2, Plus } from "lucide-react";
-import { useTranslation } from "@/providers/translations-provider";
+import { ReactNode } from 'react';
+import { CardTitle, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Loader2, Plus } from 'lucide-react';
 
 export interface FilterInfo {
   key: string;
@@ -41,8 +40,6 @@ export function TableHeader({
   entityName,
   entityNamePlural,
 }: TableHeaderProps) {
-  const { t: translations } = useTranslation();
-
   const hasActiveFilters = searchTerm || filters.length > 0;
   const displayEntityName = entityNamePlural || `${entityName}s`;
 
@@ -55,7 +52,7 @@ export function TableHeader({
     if (searchTerm) {
       filterElements.push(
         <span key="search">
-          {translations.common.searchingFor}: <span className="font-medium">&quot;{searchTerm}&quot;</span>
+          Searching for: <span className="font-medium">&quot;{searchTerm}&quot;</span>
         </span>,
       );
     }
@@ -66,7 +63,7 @@ export function TableHeader({
         const hasPreviousElements = searchTerm || index > 0;
         filterElements.push(
           <span key={filter.key}>
-            {hasPreviousElements && " • "}
+            {hasPreviousElements && ' • '}
             {filter.label}: <span className="font-medium">{filter.value}</span>
           </span>,
         );
@@ -85,10 +82,10 @@ export function TableHeader({
             {filterElements}
             {total > 0 && (
               <span className="ml-2">
-                • {total} {total !== 1 ? translations.common.results : translations.common.result} {translations.common.found}
+                • {total} {total !== 1 ? 'results' : 'result'} found
                 {totalPages > 1 && (
                   <span className="ml-1">
-                    ({translations.common.page} {currentPage} {translations.common.of} {totalPages})
+                    ({currentPage} of {totalPages})
                   </span>
                 )}
               </span>
@@ -101,7 +98,7 @@ export function TableHeader({
           onClick={onClearAllFilters}
           className="text-muted-foreground hover:text-foreground ml-2 h-auto p-0 text-xs"
         >
-          {translations.action.clearAll}
+          Clear All
         </Button>
       </p>
     );
@@ -112,10 +109,10 @@ export function TableHeader({
 
     return (
       <p className="text-muted-foreground text-sm">
-        {total} {displayEntityName} {translations.common.total}
+        {total} {displayEntityName} total
         {totalPages > 1 && (
           <span className="ml-1">
-            ({translations.common.page} {currentPage} {translations.common.of} {totalPages})
+            ({currentPage} of {totalPages})
           </span>
         )}
       </p>

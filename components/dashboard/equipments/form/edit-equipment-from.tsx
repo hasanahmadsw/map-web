@@ -21,7 +21,7 @@ import {
 import { useEquipmentMutations } from '@/hooks/api/equipments/mutations';
 import { useEquipmentById } from '@/hooks/api/equipments/use-equipments';
 import { getChangedValues } from '@/utils/format';
-import { getDirection } from '@/utils/dictionary-utils';
+
 import { EquipmentType } from '@/types/equipments/equipment.enum';
 import ApiError from '@/components/shared/api-error';
 import { Separator } from '@/components/ui/separator';

@@ -3,7 +3,6 @@
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { getDirection, Lang } from '@/utils/dictionary-utils';
 
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
@@ -43,7 +42,7 @@ export function FilterSelect({
 }: FilterSelectProps) {
   const generatedId = useId();
   const selectId = id || generatedId;
-  const { lang } = useParams() as { lang: Lang };
+
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -81,13 +80,7 @@ export function FilterSelect({
           )}
         </Label>
       )}
-      <Select
-        dir={getDirection(lang)}
-        value={value}
-        onValueChange={onValueChange}
-        disabled={disabled || isLoading}
-        name={name}
-      >
+      <Select value={value} onValueChange={onValueChange} disabled={disabled || isLoading} name={name}>
         <SelectTrigger
           id={selectId}
           className={selectClassName}

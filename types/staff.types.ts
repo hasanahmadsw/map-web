@@ -1,5 +1,5 @@
-import { Role, ROLES, type RoleType } from "@/enums/roles.enum";
-import type { BaseListParams } from "@/hooks/list/useListUrlState";
+import { Role, ROLES, type RoleType } from '@/types/roles.enum';
+import type { BaseListParams } from '@/hooks/list/useListUrlState';
 
 export { Role, ROLES, type RoleType };
 
@@ -16,6 +16,6 @@ export interface Staff {
 
 export interface IStaffParams extends BaseListParams {
   role?: Role;
-  sort?: "createdAt" | "name";
-  order?: "asc" | "desc";
+  sort?: 'createdAt' | 'name';
+  order?: 'asc' | 'desc';
 }

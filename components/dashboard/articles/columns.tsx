@@ -11,26 +11,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useTranslation } from '@/providers/translations-provider';
-import { useLang } from '@/hooks/useLang';
-import type { Article } from '@/types/articles.types';
-import type { Lang } from '@/utils/dictionary-utils';
-import { useStaffMe } from '@/hooks/staff/useStaffMe';
-import { Role } from '@/enums/roles.enum';
 
-function formatDate(dateString: string, lang: Lang) {
-  return new Date(dateString).toLocaleDateString(lang === 'ar' ? 'ar-SA' : 'en-US', {
+import type { Article } from '@/types/articles.types';
+
+import { useStaffMe } from '@/hooks/staff/useStaffMe';
+import { Role } from '@/types/roles.enum';
+
+function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
   });
 }
 
-export function useArticleColumns(opts: {
-  lang: Lang;
-  onDelete: (article: Article) => void;
-}): ColumnDef<Article>[] {
-  const { lang, onDelete } = opts;
+export function useArticleColumns(opts: { onDelete: (article: Article) => void }): ColumnDef<Article>[] {
+  const { onDelete } = opts;
 
   const router = useRouter();
 
@@ -162,7 +158,7 @@ export function useArticleColumns(opts: {
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
           <Calendar className="text-muted-foreground h-4 w-4" />
-          <span className="text-sm">{formatDate(row.original.createdAt, lang)}</span>
+          <span className="text-sm">{formatDate(row.original.createdAt)}</span>
         </div>
       ),
     },

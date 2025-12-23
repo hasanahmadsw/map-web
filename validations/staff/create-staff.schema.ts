@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { fmt, validation } from '@/constants/validation-msg';
-import { Role } from '@/enums/roles.enum';
+import { Role } from '@/types/roles.enum';
 
 function createStaffSchema() {
   return z

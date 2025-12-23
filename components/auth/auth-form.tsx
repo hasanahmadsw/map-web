@@ -1,24 +1,23 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle, Eye, EyeOff, Loader2 } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import * as z from "zod";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useAuth } from "@/hooks/useAuth";
-import { useRouterWithLoader } from "@/hooks/useRouterWithLoader";
-import { cn } from "@/lib/utils";
-import { useTranslation } from "@/providers/translations-provider";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import * as z from 'zod';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouterWithLoader } from '@/hooks/useRouterWithLoader';
+import { cn } from '@/lib/utils';
 
 // Login form schema
 const loginSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
-  password: z.string().min(1, "Password is required").min(6, "Password must be at least 6 characters"),
+  email: z.string().min(1, 'Email is required').email('Please enter a valid email address'),
+  password: z.string().min(1, 'Password is required').min(6, 'Password must be at least 6 characters'),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -35,27 +34,28 @@ export function AuthForm({ className }: AuthFormProps) {
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
-  const { t } = useTranslation();
 
   const handleSubmit = async (data: LoginFormData) => {
     try {
       setFormError(null);
       await login(data.email, data.password);
-      toast.success(t.auth.loginSuccess);
-      router.replace("/dashboard");
-    } catch {
-      toast.error(t.auth.loginFailed);
-      setFormError(t.auth.loginFailed);
+      toast.success('Login successful');
+      router.replace('/dashboard');
+    } catch (err) {
+      const errMsg = (err as Error)?.message || 'Login failed';
+
+      toast.error(errMsg);
+      setFormError(errMsg);
     }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className={cn("space-y-4", className)}>
+      <form onSubmit={form.handleSubmit(handleSubmit)} className={cn('space-y-4', className)}>
         {(error || formError) && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
@@ -68,9 +68,9 @@ export function AuthForm({ className }: AuthFormProps) {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.common.email}</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input type="email" placeholder={t.common.emailPlaceholder} {...field} disabled={isLoading} />
+                <Input type="email" placeholder="Email" {...field} disabled={isLoading} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -82,12 +82,12 @@ export function AuthForm({ className }: AuthFormProps) {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t.common.password}</FormLabel>
+              <FormLabel>Password</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder={t.common.passwordPlaceholder}
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Password"
                     {...field}
                     disabled={isLoading}
                     className="pr-10"
@@ -96,7 +96,7 @@ export function AuthForm({ className }: AuthFormProps) {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
                     disabled={isLoading}
                   >
@@ -109,9 +109,9 @@ export function AuthForm({ className }: AuthFormProps) {
           )}
         />
 
-        <Button type="submit" className="w-full mt-4" disabled={isLoading}>
+        <Button type="submit" className="mt-4 w-full" disabled={isLoading}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {t.auth.signIn}
+          Sign In
         </Button>
       </form>
     </Form>

@@ -13,8 +13,7 @@ import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 
-import { useTranslation } from '@/providers/translations-provider';
-import { Media } from '@/types/mediaa.types';
+import type { Media } from '@/types/media.types';
 
 import { Folder as FolderIcon, FolderPlus, Loader2, Trash2, Upload, X } from 'lucide-react';
 import dynamic from 'next/dynamic';

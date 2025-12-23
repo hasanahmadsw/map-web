@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   type ColumnDef,
@@ -8,24 +8,22 @@ import {
   type SortingState,
   useReactTable,
   type VisibilityState,
-} from "@tanstack/react-table";
-import clsx from "clsx";
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Loader2, Search, X } from "lucide-react";
-import * as React from "react";
-import { Button } from "@/components/ui/button";
+} from '@tanstack/react-table';
+import clsx from 'clsx';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Loader2, Search, X } from 'lucide-react';
+import * as React from 'react';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import SkeletonTable from "./skeleton-table";
-import ApiError from "@/components/shared/api-error";
-import { useTranslation } from "@/providers/translations-provider";
-import { getDirection, isRTL, Lang } from "@/utils/dictionary-utils";
+} from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import SkeletonTable from './skeleton-table';
+import ApiError from '@/components/shared/api-error';
 
 type DataTableMessages = {
   searchPlaceholder?: string;
@@ -81,7 +79,6 @@ type DataTableProps<TData, TValue> = {
   stickyHeader?: boolean; // Makes the header sticky
   className?: string;
   messages?: DataTableMessages;
-  lang: Lang;
 };
 
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 20, 50, 100, 200, 500, 1000];
@@ -93,7 +90,7 @@ export function DataTable<TData, TValue>({
   isLoading,
   error,
   refetch,
-  emptyMessage = "No data.",
+  emptyMessage = 'No data.',
   emptyState,
   pageIndex,
   pageSize,
@@ -107,7 +104,7 @@ export function DataTable<TData, TValue>({
   enableClientSorting = true,
   enableGlobalFilter = false,
   onGlobalFilterChange,
-  initialGlobalFilter = "",
+  initialGlobalFilter = '',
   manualFiltering = false,
   enableRowSelection = false,
   onSelectionChange,
@@ -119,15 +116,11 @@ export function DataTable<TData, TValue>({
   stickyHeader = false,
   className,
   messages,
-  lang,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const [globalFilter, setGlobalFilter] = React.useState(initialGlobalFilter);
-
-  const isRTLDir = isRTL(lang);
-  const { t: translations } = useTranslation();
 
   // ====== LocalStorage persistence for column visibility & pageSize ======
   const storageKey = tableId ? `dt:${tableId}` : undefined;
@@ -180,23 +173,14 @@ export function DataTable<TData, TValue>({
 
   React.useEffect(() => {
     if (!onSelectionChange) return;
-    const selected = table.getSelectedRowModel().rows.map((r) => r.original);
+    const selected = table.getSelectedRowModel().rows.map(r => r.original);
     onSelectionChange(selected);
   }, [rowSelection, table, onSelectionChange]);
 
   const headers = table.getHeaderGroups()[0]?.headers ?? [];
-  const t = {
-    searchPlaceholder: translations.common.search,
-    columns: translations.common.columns,
-    page: translations.common.page,
-    of: translations.common.of,
-    total: translations.common.total,
-    noData: emptyMessage,
-    ...messages,
-  };
 
   return (
-    <div className={clsx("space-y-3", className)} dir={getDirection(lang)}>
+    <div className={clsx('space-y-3', className)}>
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-2">
         {toolbarLeft ??
@@ -206,9 +190,9 @@ export function DataTable<TData, TValue>({
                 <Search className="text-muted-foreground h-4 w-4" />
               </div>
               <Input
-                placeholder={t.searchPlaceholder}
-                value={globalFilter ?? ""}
-                onChange={(e) => {
+                placeholder="Search"
+                value={globalFilter ?? ''}
+                onChange={e => {
                   const value = e.target.value;
                   setGlobalFilter(value);
                   onGlobalFilterChange?.(value);
@@ -221,8 +205,8 @@ export function DataTable<TData, TValue>({
                   size="sm"
                   className="absolute end-2 top-1/2 h-6 w-6 -translate-y-1/2 p-0"
                   onClick={() => {
-                    setGlobalFilter("");
-                    onGlobalFilterChange?.("");
+                    setGlobalFilter('');
+                    onGlobalFilterChange?.('');
                   }}
                 >
                   <X className="h-3 w-3" />
@@ -237,16 +221,16 @@ export function DataTable<TData, TValue>({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm">
-                {t.columns}
+                Columns
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="max-h-72 w-56 overflow-auto">
-              {table.getAllLeafColumns().map((col) => (
+              {table.getAllLeafColumns().map(col => (
                 <DropdownMenuCheckboxItem
                   key={col.id}
                   className="capitalize"
                   checked={col.getIsVisible()}
-                  onCheckedChange={(v) => col.toggleVisibility(Boolean(v))}
+                  onCheckedChange={v => col.toggleVisibility(Boolean(v))}
                 >
                   {String(col.columnDef.header ?? col.id)}
                 </DropdownMenuCheckboxItem>
@@ -262,7 +246,7 @@ export function DataTable<TData, TValue>({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {pageSizeOptions.map((n) => (
+              {pageSizeOptions.map(n => (
                 <SelectItem key={n} value={n.toString()}>
                   {n}
                 </SelectItem>
@@ -273,27 +257,27 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* Table */}
-      <div className={clsx("relative max-w-full overflow-x-auto", stickyHeader && "pb-1")}>
-        <Table className={clsx(compact && "[&_td]:py-1.5 [&_th]:py-1.5")}>
+      <div className={clsx('relative max-w-full overflow-x-auto', stickyHeader && 'pb-1')}>
+        <Table className={clsx(compact && '[&_td]:py-1.5 [&_th]:py-1.5')}>
           <TableHeader
             className={clsx(
               stickyHeader &&
-                "bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-10 backdrop-blur",
+                'bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-10 backdrop-blur',
             )}
           >
             <TableRow>
-              {headers.map((h) => (
+              {headers.map(h => (
                 <TableHead
                   key={h.id}
                   className={clsx(
-                    "text-start select-none",
-                    enableClientSorting && h.column.getCanSort?.() && "cursor-pointer",
+                    'text-start select-none',
+                    enableClientSorting && h.column.getCanSort?.() && 'cursor-pointer',
                   )}
                   onClick={() => {
                     if (!enableClientSorting) return;
                     const canSort = h.column.getCanSort?.();
                     if (canSort) {
-                      h.column.toggleSorting(h.column.getIsSorted() === "asc");
+                      h.column.toggleSorting(h.column.getIsSorted() === 'asc');
                     }
                   }}
                 >
@@ -301,11 +285,11 @@ export function DataTable<TData, TValue>({
                     {flexRender(h.column.columnDef.header, h.getContext())}
                     {enableClientSorting && h.column.getCanSort?.() ? (
                       <span className="text-muted-foreground text-xs">
-                        {h.column.getIsSorted() === "asc"
-                          ? "▲"
-                          : h.column.getIsSorted() === "desc"
-                            ? "▼"
-                            : ""}
+                        {h.column.getIsSorted() === 'asc'
+                          ? '▲'
+                          : h.column.getIsSorted() === 'desc'
+                            ? '▼'
+                            : ''}
                       </span>
                     ) : null}
                   </div>
@@ -323,14 +307,14 @@ export function DataTable<TData, TValue>({
                 </TableCell>
               </TableRow>
             ) : table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className={onRowClick ? "cursor-pointer" : undefined}
+                  data-state={row.getIsSelected() && 'selected'}
+                  className={onRowClick ? 'cursor-pointer' : undefined}
                   onClick={() => onRowClick?.(row.original)}
                 >
-                  {row.getVisibleCells().map((cell) => (
+                  {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
@@ -339,8 +323,8 @@ export function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow className="hover:bg-background">
-                <TableCell colSpan={headers.length || 1} className="text-muted-foreground !py-8 text-center">
-                  {emptyState ?? t.noData}
+                <TableCell colSpan={headers.length || 1} className="text-muted-foreground py-8! text-center">
+                  {emptyState ?? 'No data'}
                 </TableCell>
               </TableRow>
             )}
@@ -353,7 +337,7 @@ export function DataTable<TData, TValue>({
         <div className="text-muted-foreground text-sm">
           {totalRows ? (
             <>
-              {t.page} <b>{pageIndex}</b> {t.of} <b>{totalPages}</b> • {t.total} <b>{totalRows}</b>
+              Page <b>{pageIndex}</b> of <b>{totalPages}</b> • Total <b>{totalRows}</b>
             </>
           ) : (
             <>&nbsp;</>
@@ -361,7 +345,7 @@ export function DataTable<TData, TValue>({
         </div>
         <div className="flex items-center gap-1">
           <Button variant="outline" size="sm" onClick={() => onPageChange(1)} disabled={!canPrevPage}>
-            <ChevronsLeft className={`h-4 w-4 ${isRTLDir ? "rotate-180" : ""}`} />
+            <ChevronsLeft className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
@@ -369,7 +353,7 @@ export function DataTable<TData, TValue>({
             onClick={() => onPageChange(pageIndex - 1)}
             disabled={!canPrevPage}
           >
-            <ChevronLeft className={`h-4 w-4 ${isRTLDir ? "rotate-180" : ""}`} />
+            <ChevronLeft className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
@@ -377,7 +361,7 @@ export function DataTable<TData, TValue>({
             onClick={() => onPageChange(pageIndex + 1)}
             disabled={!canNextPage}
           >
-            <ChevronRight className={`h-4 w-4 ${isRTLDir ? "rotate-180" : ""}`} />
+            <ChevronRight className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
@@ -385,7 +369,7 @@ export function DataTable<TData, TValue>({
             onClick={() => onPageChange(totalPages)}
             disabled={!canNextPage}
           >
-            <ChevronsRight className={`h-4 w-4 ${isRTLDir ? "rotate-180" : ""}`} />
+            <ChevronsRight className="h-4 w-4" />
           </Button>
           {isLoading && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
         </div>

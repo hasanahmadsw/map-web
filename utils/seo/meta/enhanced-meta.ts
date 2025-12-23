@@ -8,7 +8,6 @@ import type { Metadata } from 'next';
  * Input for enhanced SEO metadata generation.
  */
 export interface EnhancedSeoInput {
-  lang: string;
   title: string | { absolute: string };
   description: string;
   type?: 'website' | 'article';
@@ -28,7 +27,6 @@ export interface EnhancedSeoInput {
  */
 export async function createEnhancedMetadata(input: EnhancedSeoInput): Promise<Metadata> {
   const {
-    lang,
     title,
     description,
     type = 'website',
@@ -46,7 +44,6 @@ export async function createEnhancedMetadata(input: EnhancedSeoInput): Promise<M
     description,
     keywords,
     openGraph: buildOpenGraph({
-      lang,
       title,
       description,
       type,

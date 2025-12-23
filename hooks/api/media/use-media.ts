@@ -1,6 +1,6 @@
 import { queryClient } from '@/providers/query-provider';
 import { mediaService } from '@/services/media.service';
-import { MediaParams } from '@/types/mediaa.types';
+import { MediaParams } from '@/types/media.types';
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 export const mediaKeys = {
@@ -38,7 +38,7 @@ export function useMediaInfinite(
     queryFn: ({ pageParam = 1 }) => mediaService.getAllMedia({ ...params, page: pageParam }),
     initialPageParam: 1,
     getNextPageParam: lastPage => {
-      const currentPage = lastPage.pagination?.page || 1;
+      const currentPage = lastPage.pagination?.currentPage || 1;
       const totalPages = lastPage.pagination?.totalPages || 1;
       return currentPage < totalPages ? currentPage + 1 : undefined;
     },

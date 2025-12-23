@@ -1,37 +1,37 @@
-import Link from "next/link"
-import { Separator } from "@/components/ui/separator"
-import { Facebook, Linkedin, Instagram } from "lucide-react"
-import { Translations } from "@/utils/dictionary-utils"
-
-interface FooterProps {
-  lang: string
-  t: Translations
-}
+import Link from 'next/link';
+import { Separator } from '@/components/ui/separator';
+import { Facebook, Linkedin, Instagram } from 'lucide-react';
 
 const socialIcons = {
   Facebook: Facebook,
   LinkedIn: Linkedin,
   Instagram: Instagram,
-}
+};
 
-export function Footer({ lang, t }: FooterProps) {
+export function Footer() {
   return (
-    <footer className="max-w-7xl mx-auto bg-dark-section">
+    <footer className="bg-dark-section mx-auto max-w-7xl">
       <div className="container max-w-7xl py-10">
         <div className="space-y-8">
           {/* Main Links Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
             {/* Company Links */}
             <div className="flex flex-col space-y-3">
               <h3 className="text-sm font-medium">Company</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link href={`/${lang}/about`} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link
+                    href={`/about`}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link href={`/${lang}/contact`} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link
+                    href={`/contact`}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
                     Contact
                   </Link>
                 </li>
@@ -43,7 +43,10 @@ export function Footer({ lang, t }: FooterProps) {
               <h3 className="text-sm font-medium">Services</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link href={`/${lang}/services`} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link
+                    href={`/services`}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
                     Our Services
                   </Link>
                 </li>
@@ -55,7 +58,10 @@ export function Footer({ lang, t }: FooterProps) {
               <h3 className="text-sm font-medium">Solutions</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link href={`/${lang}/solutions`} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link
+                    href={`/solutions`}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
                     Our Solutions
                   </Link>
                 </li>
@@ -67,7 +73,10 @@ export function Footer({ lang, t }: FooterProps) {
               <h3 className="text-sm font-medium">Resources</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link href={`/${lang}/news`} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link
+                    href={`/news`}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
                     Articles
                   </Link>
                 </li>
@@ -79,12 +88,18 @@ export function Footer({ lang, t }: FooterProps) {
               <h3 className="text-sm font-medium">Legal</h3>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link href={`/${lang}/privacy`} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link
+                    href={`/privacy`}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link href={`/${lang}/terms`} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link
+                    href={`/terms`}
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
                     Terms of Service
                   </Link>
                 </li>
@@ -95,8 +110,8 @@ export function Footer({ lang, t }: FooterProps) {
           <Separator />
 
           {/* Bottom Section */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-sm text-muted-foreground">
+          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+            <div className="text-muted-foreground text-sm">
               © {new Date().getFullYear()} All rights reserved.
             </div>
             <div className="flex space-x-4">
@@ -132,6 +147,5 @@ export function Footer({ lang, t }: FooterProps) {
         </div>
       </div>
     </footer>
-  )
+  );
 }
-

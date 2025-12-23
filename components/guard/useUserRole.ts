@@ -1,4 +1,4 @@
-import { Role } from '@/enums/roles.enum';
+import { Role } from '@/types/roles.enum';
 import { useStaffMe } from '@/hooks/staff/useStaffMe';
 
 export function useUserRole() {

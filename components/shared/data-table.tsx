@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useTranslation } from '@/providers/translations-provider';
+
 import { ConfirmationDialog } from '@/components/shared/confirmation-dialog';
 
 // Types
@@ -112,7 +112,6 @@ export function DataTable<T = any>({
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<number | null>(null);
-  const { t } = useTranslation();
 
   // Ensure data is always an array
   const safeData = Array.isArray(data) ? data : [];
@@ -354,14 +353,11 @@ export function DataTable<T = any>({
       <ConfirmationDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
-        title={t.common.confirmDeleteArticle?.replace(/\{\{entity\}\}/g, entityName) || 'Confirm Delete'}
-        description={
-          t.validation.confirmDeleteArticle?.replace(/\{\{entity\}\}/g, entityName) ||
-          `Are you sure you want to delete this ${entityName}? This action cannot be undone.`
-        }
-        confirmText={t.common.delete || 'Delete'}
-        cancelText={t.common.cancel || 'Cancel'}
-        loadingText={t.common.deleting || 'Deleting...'}
+        title="Confirm Delete"
+        description={`Are you sure you want to delete this ${entityName}? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        loadingText="Deleting..."
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
         isLoading={isDeleting}

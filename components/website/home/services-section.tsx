@@ -3,7 +3,6 @@ import { ServiceCard } from './service-card';
 
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { Translations } from '@/utils/dictionary-utils';
 
 export async function ServicesSection() {
   // Fetch services directly from API
@@ -32,7 +31,7 @@ export async function ServicesSection() {
       </p>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {services.map((service, index) => (
-          <ServiceCard key={service.id} service={service} lang="en" priority={index < 3} />
+          <ServiceCard key={service.id} service={service} priority={index < 3} />
         ))}
       </div>
       <div className="mt-12 flex justify-center">

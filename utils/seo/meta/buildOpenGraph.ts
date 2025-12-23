@@ -7,7 +7,6 @@ import seoConfig from './seo.config';
  * Helper to build OpenGraph metadata.
  */
 export function buildOpenGraph({
-  lang,
   title,
   description,
   type = 'website',
@@ -34,8 +33,8 @@ export function buildOpenGraph({
       },
     ],
     siteName,
-    url: `/${lang}${pathname}`,
-    locale: lang,
+    url: pathname,
+    locale: 'en',
     type,
     ...(type === 'article' && {
       // If only one author is provided, use 'author' field
@@ -43,7 +42,7 @@ export function buildOpenGraph({
 
       // If authors are provided, map them to the required format
       ...(authors && {
-        authors: authors.map(author => (author.url ? `/${lang}${author.url}` : author.name)),
+        authors: authors.map(author => (author.url ? `/${author.url}` : author.name)),
       }),
     }),
     ...openGraphOverrides,

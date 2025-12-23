@@ -4,7 +4,6 @@ import * as React from 'react';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useLang } from '@/hooks/useLang';
 import { useSolutionsPublic } from '@/hooks/solutions/useSolutionsController';
 import { renderIcon } from '@/utils/icon-resolver';
 import DivHtml from '@/components/shared/div-html';

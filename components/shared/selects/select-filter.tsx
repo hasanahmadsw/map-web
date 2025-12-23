@@ -1,7 +1,7 @@
 'use client';
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useTranslation } from '@/providers/translations-provider';
+
 import { Filter } from 'lucide-react';
 
 export interface SelectFilterOption {

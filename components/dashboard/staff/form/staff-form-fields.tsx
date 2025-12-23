@@ -6,7 +6,7 @@ import { PasswordInput } from '@/components/shared/input/PasswordInput';
 import { SelectInput } from '@/components/shared/input/SelectInput';
 import { TextAreaInput } from '@/components/shared/input/TextAreaInput';
 import { TextInput } from '@/components/shared/input/TextInput';
-import { ROLE_OPTIONS, ROLES } from '@/enums/roles.enum';
+import { ROLE_OPTIONS, ROLES } from '@/types/roles.enum';
 import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
 // import { staffService } from '@/services/staff.service';
 

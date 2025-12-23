@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useUploadMedia } from '@/hooks/api/media/use-media';
-import { useTranslation } from '@/providers/translations-provider';
 import { Upload, X } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';

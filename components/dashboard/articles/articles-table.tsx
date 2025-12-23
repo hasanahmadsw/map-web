@@ -11,7 +11,7 @@ import { DataTable } from '@/components/shared/table/data-table';
 import { useRouter } from 'next/navigation';
 import { useArticleMutations } from '@/hooks/articles/mutations';
 import { useArticlesController } from '@/hooks/articles/useArticlesController';
-import { useLang } from '@/hooks/useLang';
+
 import { useArticleColumns } from './columns';
 import { TableHeader, type FilterInfo } from '@/components/shared/table/table-header';
 
@@ -19,7 +19,6 @@ import type { Article } from '@/types/articles.types';
 import dynamic from 'next/dynamic';
 import DialogSkeleton from '../../shared/skeletons/dialog-skeleton';
 import { SelectFilter } from '@/components/shared/selects/select-filter';
-import { useStaffMe } from '@/hooks/staff/useStaffMe';
 
 const ConfirmationDialogDynamic = dynamic(
   () => import('@/components/shared/confirmation-dialog').then(mod => mod.ConfirmationDialog),
@@ -30,7 +29,6 @@ const ConfirmationDialogDynamic = dynamic(
 );
 
 export function ArticlesTable() {
-  const lang = useLang();
   const router = useRouter();
 
   const [articleToDelete, setArticleToDelete] = useState<Article | null>(null);
@@ -79,12 +77,11 @@ export function ArticlesTable() {
   };
 
   const columns = useArticleColumns({
-    lang,
     onDelete: setArticleToDelete,
   });
 
   const handleAddArticle = () => {
-    router.push(`/${lang}/dashboard/articles/add`);
+    router.push(`/dashboard/articles/add`);
   };
 
   // Prepare filter information for the header
@@ -192,7 +189,6 @@ export function ArticlesTable() {
                 )}
               </div>
             }
-            lang={lang}
           />
         </CardContent>
       </Card>

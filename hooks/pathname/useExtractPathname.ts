@@ -1,4 +1,3 @@
-import { type Lang } from '@/utils/dictionary-utils';
 import { extractPathname } from '@/utils/filters/format-utils';
 
 import { useParams, useSearchParams } from 'next/navigation';

@@ -1,8 +1,7 @@
-"use client";
+'use client';
 
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useTranslation } from "@/providers/translations-provider";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface TableFooterProps {
   selectedCount: number;
@@ -54,34 +53,33 @@ export default function TableNavigationFooter({
       pages.push(currentPage - 1, currentPage, currentPage + 1, currentPage + 2);
     }
 
-    return pages.filter((page) => page > 0 && page <= totalPages);
+    return pages.filter(page => page > 0 && page <= totalPages);
   };
 
   const visiblePages = getVisiblePages();
   const startItem = totalCount > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0;
   const endItem = totalCount > 0 ? Math.min(currentPage * itemsPerPage, totalCount) : 0;
-  const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-3 md:flex-row items-center justify-between px-2 py-4 border-t">
+    <div className="flex flex-col items-center justify-between gap-3 border-t px-2 py-4 md:flex-row">
       {/* Left side - Selection info */}
-      <div className="flex-1 text-sm text-muted-foreground">
+      <div className="text-muted-foreground flex-1 text-sm">
         {selectedCount > 0
-          ? `${t.common.selected} ${selectedCount} ${t.common.of} ${totalCount} ${t.common.entries}`
-          : `${t.common.showing} ${startItem} ${t.common.to} ${endItem} ${t.common.of} ${totalCount} ${t.common.entries}`}
+          ? `Selected ${selectedCount} of ${totalCount} entries`
+          : `Showing ${startItem} to ${endItem} of ${totalCount} entries`}
       </div>
 
       {/* Right side - Navigation */}
-      <div className="flex items-center gap-6 flex-wrap">
+      <div className="flex flex-wrap items-center gap-6">
         {/* Items per page info */}
-        <div className="flex items-center space-x-2 w-fit mx-auto">
-          <p className="text-sm font-medium text-foreground">
-            {`${t.common.showing} ${startItem} ${t.common.to} ${endItem} ${t.common.of} ${totalCount} ${t.common.entries}`}
+        <div className="mx-auto flex w-fit items-center space-x-2">
+          <p className="text-foreground text-sm font-medium">
+            {`Showing ${startItem} to ${endItem} of ${totalCount} entries`}
           </p>
         </div>
 
         {/* Navigation buttons */}
-        <div className="flex items-center space-x-2 w-fit mx-auto">
+        <div className="mx-auto flex w-fit items-center space-x-2">
           {/* First page button */}
           <Button
             variant="outline"
@@ -89,23 +87,23 @@ export default function TableNavigationFooter({
             onClick={onFirstPage || (() => onPageChange?.(1))}
             disabled={currentPage === 1}
           >
-            <span className="sr-only">{t.common.goToFirstPage}</span>
+            <span className="sr-only">Go to first page</span>
             <ChevronsLeft className="h-4 w-4 rtl:rotate-180" />
           </Button>
 
           {/* Previous button */}
           <Button variant="outline" className="h-8 w-8 p-0" onClick={onPrevious} disabled={!canPrevious}>
-            <span className="sr-only">{t.common.goToPreviousPage}</span>
+            <span className="sr-only">Go to previous page</span>
             <ChevronLeft className="h-4 w-4 rtl:rotate-180" />
           </Button>
 
           {/* Page numbers */}
           {onPageChange && totalPages > 0 && (
             <div className="flex items-center space-x-1">
-              {visiblePages.map((page) => (
+              {visiblePages.map(page => (
                 <Button
                   key={page}
-                  variant={currentPage === page ? "default" : "outline"}
+                  variant={currentPage === page ? 'default' : 'outline'}
                   className="h-8 w-8 p-0"
                   onClick={() => onPageChange(page)}
                 >
@@ -117,7 +115,7 @@ export default function TableNavigationFooter({
 
           {/* Next button */}
           <Button variant="outline" className="h-8 w-8 p-0" onClick={onNext} disabled={!canNext}>
-            <span className="sr-only">{t.common.goToNextPage}</span>
+            <span className="sr-only">Go to next page</span>
             <ChevronRight className="h-4 w-4 rtl:rotate-180" />
           </Button>
 
@@ -128,7 +126,7 @@ export default function TableNavigationFooter({
             onClick={onLastPage || (() => onPageChange?.(totalPages))}
             disabled={currentPage === totalPages}
           >
-            <span className="sr-only">{t.common.goToLastPage}</span>
+            <span className="sr-only">Go to last page</span>
             <ChevronsRight className="h-4 w-4 rtl:rotate-180" />
           </Button>
         </div>

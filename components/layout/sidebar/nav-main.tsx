@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Role } from '@/enums/roles.enum';
+import { Role } from '@/types/roles.enum';
 import { useUserRole } from '@/components/guard/useUserRole';
 
 export function NavMain({

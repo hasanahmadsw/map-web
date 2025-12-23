@@ -1,30 +1,28 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { getTranslations } from "@/utils/dictionary-utils";
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export async function generateMetadata() {
-  const dict = await getTranslations("en");
   return {
-    title: dict.errors.pageNotFound,
-    description: dict.errors.pageNotFound,
+    title: 'Page Not Found',
+    description: 'The page you are looking for does not exist.',
   };
 }
 
 export default async function NotFoundPage() {
-  const dict = await getTranslations("en");
-
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 md:px-6 py-15 relative bottom-5">
-      <div className="max-w-md text-center space-y-8">
-        <h1 className="text-8xl md:text-9xl font-bold text-foreground select-none tracking-tight">404</h1>
+    <div className="bg-background relative bottom-5 flex min-h-screen items-center justify-center px-4 py-15 md:px-6">
+      <div className="max-w-md space-y-8 text-center">
+        <h1 className="text-foreground text-8xl font-bold tracking-tight select-none md:text-9xl">404</h1>
 
         <div className="space-y-6">
           <div className="space-y-3">
-            <h2 className="text-2xl font-semibold text-muted-foreground">{dict.errors.pageNotFound}</h2>
-            <p className="text-muted-foreground text-base leading-relaxed">{dict.errors.pageNotFound} </p>
+            <h2 className="text-muted-foreground text-2xl font-semibold">Page Not Found</h2>
+            <p className="text-muted-foreground text-base leading-relaxed">
+              The page you are looking for does not exist.{' '}
+            </p>
           </div>
-          <Button asChild className="!px-6 !py-2 rounded-full font-semibold text-base !h-fit">
-            <Link href={`/`}>{dict.common.goHome}</Link>
+          <Button asChild className="!h-fit rounded-full !px-6 !py-2 text-base font-semibold">
+            <Link href={`/`}>Go Home</Link>
           </Button>
         </div>
       </div>
