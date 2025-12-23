@@ -98,7 +98,7 @@ export function FilterSelect({
           <SelectValue placeholder={placeholder}>
             {selectedOption && getLogoSrc(selectedOption) ? (
               <div className="flex items-center gap-2">
-                <div className="relative h-5 w-5 flex-shrink-0">
+                <div className="relative h-5 w-5 shrink-0">
                   <Image
                     src={getLogoSrc(selectedOption)!}
                     alt={selectedOption.label}
@@ -120,7 +120,7 @@ export function FilterSelect({
               <SelectItem key={option.value} value={option.value} disabled={option.disabled}>
                 {logoSrc ? (
                   <div className="flex items-center gap-2">
-                    <div className="relative h-5 w-5 flex-shrink-0">
+                    <div className="relative h-5 w-5 shrink-0">
                       <Image src={logoSrc} alt={option.label} fill className="object-contain" />
                     </div>
                     <span>{option.label}</span>

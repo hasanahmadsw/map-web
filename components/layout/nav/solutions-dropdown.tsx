@@ -1,52 +1,22 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import Link from "next/link"
-import { ChevronDown } from "lucide-react"
-import { useQuery } from "@tanstack/react-query"
-import { cn } from "@/lib/utils"
-import { useLang } from "@/hooks/useLang"
-import { solutionsService } from "@/services/solutions.service"
-import { solutionsQueryKeys } from "@/hooks/keys"
-import type { SolutionResponse } from "@/types/solutions.types"
-import type { ApiResponse } from "@/types/common.types"
-import DivHtml from "@/components/shared/div-html"
-import { renderIcon } from "@/utils/icon-resolver"
+import * as React from 'react';
+import Link from 'next/link';
+import { ChevronDown, ArrowRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useLang } from '@/hooks/useLang';
+import { useSolutionsPublic } from '@/hooks/solutions/useSolutionsController';
+import { renderIcon } from '@/utils/icon-resolver';
+import DivHtml from '@/components/shared/div-html';
 
 interface SolutionsDropdownProps {
-  onLinkClick?: () => void
+  onLinkClick?: () => void;
 }
 
 export function SolutionsDropdown({ onLinkClick }: SolutionsDropdownProps) {
-  const lang = useLang()
-  const [isHovered, setIsHovered] = React.useState(false)
+  const [isHovered, setIsHovered] = React.useState(false);
 
-  const { data: solutionsResponse } = useQuery<ApiResponse<SolutionResponse[]>>({
-    queryKey: [...solutionsQueryKeys.all, "public", 10, true, "order", "asc"],
-    queryFn: () => solutionsService.getAll({
-      limit: 10,
-      isPublished: true,
-      sortBy: "order",
-      sortOrder: "asc",
-    }),
-    enabled: !!lang,
-    staleTime: 10_000,
-    gcTime: 5 * 60_000,
-    retry: 1,
-  })
-
-  const solutions = solutionsResponse?.data || []
-
-  if (solutions.length === 0) {
-    return (
-      <Link
-        href={`/${lang}/solutions`}
-        className="text-sm font-medium leading-6 text-foreground transition-colors hover:text-primary"
-      >
-        Solutions
-      </Link>
-    )
-  }
+  const { solutions } = useSolutionsPublic({ limit: 4, isPublished: true });
 
   return (
     <div
@@ -55,167 +25,142 @@ export function SolutionsDropdown({ onLinkClick }: SolutionsDropdownProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <Link
-        href={`/${lang}/solutions`}
-        className="flex items-center gap-x-1 text-sm font-medium leading-6 text-foreground transition-colors hover:text-primary"
+        href="/solutions"
+        className="text-foreground hover:text-primary flex items-center gap-x-1 text-sm leading-6 font-medium transition-colors"
       >
         Solutions
         <ChevronDown
-          className={cn(
-            "h-4 w-4 transition-transform duration-200",
-            isHovered ? "rotate-180" : ""
-          )}
+          className={cn('h-4 w-4 transition-transform duration-200', isHovered ? 'rotate-180' : '')}
         />
       </Link>
 
       {/* Bridge area to prevent gap from breaking hover */}
-      {isHovered && (
-        <div className="absolute left-1/2 -translate-x-1/2 w-full h-4 top-full" />
-      )}
+      {isHovered && <div className="absolute top-full left-1/2 h-4 w-full -translate-x-1/2" />}
 
       {/* Desktop Dropdown */}
       <div
         className={cn(
-          "absolute left-1/2 z-50 mt-4 w-screen max-w-md -translate-x-1/2 px-4 transition-all duration-200",
-          isHovered 
-            ? "opacity-100 visible translate-y-0 pointer-events-auto" 
-            : "opacity-0 invisible -translate-y-2 pointer-events-none"
+          'absolute left-1/2 z-50 mt-4 w-screen max-w-md -translate-x-1/2 px-4 transition-all duration-200',
+          isHovered
+            ? 'pointer-events-auto visible translate-y-0 opacity-100'
+            : 'pointer-events-none invisible -translate-y-2 opacity-0',
         )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="overflow-hidden rounded-2xl bg-popover/95 backdrop-blur-xl shadow-lg ring-1 ring-border">
-          <div className="relative bg-gradient-to-br from-primary/5 via-transparent to-primary/5">
+        <div className="bg-popover/95 ring-border overflow-hidden rounded-2xl shadow-lg ring-1 backdrop-blur-xl">
+          <div className="from-primary/5 to-primary/5 relative bg-linear-to-br via-transparent">
             <div className="relative grid gap-2 p-3">
-              {solutions.map((solution) => (
-                <SolutionDropdownItem
+              {solutions.map(solution => (
+                <Link
                   key={solution.id}
-                  solution={solution}
-                  lang={lang}
-                  onLinkClick={onLinkClick}
-                />
+                  href={`/solutions/${solution.slug}`}
+                  onClick={onLinkClick}
+                  className="group hover:bg-accent relative flex items-center gap-x-4 rounded-lg p-2.5 text-sm leading-6 transition-colors"
+                >
+                  <div className="bg-muted group-hover:bg-primary/10 flex h-9 w-9 flex-none items-center justify-center rounded-lg transition-colors">
+                    {renderIcon(solution.icon, { size: 18, fallback: 'Video' })}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-foreground group-hover:text-primary font-semibold transition-colors">
+                      {solution.name}
+                      <span className="absolute inset-0" />
+                    </div>
+                    {solution.shortDescription && (
+                      <p className="text-muted-foreground mt-0.5 line-clamp-2 text-xs">
+                        <DivHtml html={solution.shortDescription} />
+                      </p>
+                    )}
+                  </div>
+                </Link>
               ))}
+              <Link
+                href="/solutions"
+                onClick={onLinkClick}
+                className="group hover:bg-accent relative flex items-center gap-x-4 rounded-lg border-t p-2.5 pt-2.5 text-sm leading-6 transition-colors"
+              >
+                <div className="bg-muted group-hover:bg-primary/10 flex h-9 w-9 flex-none items-center justify-center rounded-lg transition-colors">
+                  <ArrowRight className="h-4 w-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-foreground group-hover:text-primary font-semibold transition-colors">
+                    See all
+                    <span className="absolute inset-0" />
+                  </div>
+                  <p className="text-muted-foreground mt-0.5 line-clamp-2 text-xs">Browse all solutions</p>
+                </div>
+              </Link>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
-
-function SolutionDropdownItem({
-  solution,
-  lang,
-  onLinkClick,
-}: {
-  solution: SolutionResponse
-  lang: string
-  onLinkClick?: () => void
-}) {
-  return (
-    <Link
-      href={`/${lang}/solutions/${solution.slug}`}
-      onClick={onLinkClick}
-      className="group relative flex items-center gap-x-4 rounded-lg p-2.5 text-sm leading-6 hover:bg-accent transition-colors"
-    >
-      <div className="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-muted group-hover:bg-primary/10 transition-colors">
-        {renderIcon(solution.icon, { size: 18, fallback: "Video" })}
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="font-semibold text-foreground group-hover:text-primary transition-colors">
-          {solution.name}
-          <span className="absolute inset-0" />
-        </div>
-        {solution.shortDescription && (
-          <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">
-            <DivHtml html={solution.shortDescription} />
-          </p>
-        )}
-      </div>
-    </Link>
-  )
+  );
 }
 
 interface MobileSolutionsAccordionProps {
-  onLinkClick?: () => void
+  onLinkClick?: () => void;
 }
 
 export function MobileSolutionsAccordion({ onLinkClick }: MobileSolutionsAccordionProps) {
-  const lang = useLang()
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = React.useState(false);
 
-  const { data: solutionsResponse } = useQuery<ApiResponse<SolutionResponse[]>>({
-    queryKey: [...solutionsQueryKeys.all, "public", 10, true, "order", "asc"],
-    queryFn: () => solutionsService.getAll({
-      limit: 10,
-      isPublished: true,
-      sortBy: "order",
-      sortOrder: "asc",
-    }),
-    enabled: !!lang,
-    staleTime: 10_000,
-    gcTime: 5 * 60_000,
-    retry: 1,
-  })
-
-  const solutions = solutionsResponse?.data || []
-
-  if (solutions.length === 0) {
-    return (
-      <Link
-        href={`/${lang}/solutions`}
-        onClick={onLinkClick}
-        className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors hover:text-primary"
-      >
-        <span>Solutions</span>
-      </Link>
-    )
-  }
+  const { solutions } = useSolutionsPublic({ limit: 10, isPublished: true });
 
   return (
     <div className="space-y-2">
       <button
-        className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-foreground hover:text-primary hover:bg-accent transition-colors"
+        className="text-foreground hover:text-primary hover:bg-accent flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base leading-7 font-semibold transition-colors"
         onClick={() => setIsOpen(!isOpen)}
       >
         Solutions
         <ChevronDown
-          className={cn(
-            "h-5 w-5 flex-none transition-transform duration-200",
-            isOpen ? "rotate-180" : ""
-          )}
+          className={cn('h-5 w-5 flex-none transition-transform duration-200', isOpen ? 'rotate-180' : '')}
           aria-hidden="true"
         />
       </button>
       <div
         className={cn(
-          "overflow-hidden transition-all duration-200",
-          isOpen ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+          'overflow-hidden transition-all duration-200',
+          isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0',
         )}
       >
         <div className="space-y-1 pl-6">
-          {solutions.map((solution) => (
+          {solutions.map(solution => (
             <Link
               key={solution.id}
-              href={`/${lang}/solutions/${solution.slug}`}
+              href={`/solutions/${solution.slug}`}
               onClick={onLinkClick}
-              className="group flex gap-x-2 rounded-md p-1.5 text-sm font-semibold leading-6 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+              className="group text-muted-foreground hover:text-foreground hover:bg-accent flex gap-x-2 rounded-md p-1.5 text-sm leading-6 font-semibold transition-colors"
             >
-              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-lg border border-border bg-muted">
-                {renderIcon(solution.icon, { size: 12, fallback: "Video" })}
+              <span className="border-border bg-muted flex h-5 w-5 shrink-0 items-center justify-center rounded-lg border">
+                {renderIcon(solution.icon, { size: 12, fallback: 'Video' })}
               </span>
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <div className="font-semibold">{solution.name}</div>
                 {solution.shortDescription && (
-                  <p className="mt-0.5 text-xs text-muted-foreground line-clamp-1">
+                  <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">
                     <DivHtml html={solution.shortDescription} />
                   </p>
                 )}
               </div>
             </Link>
           ))}
+          <Link
+            href="/solutions"
+            onClick={onLinkClick}
+            className="group text-muted-foreground hover:text-foreground hover:bg-accent mt-1 flex gap-x-2 rounded-md border-t p-1.5 pt-1.5 text-sm leading-6 font-semibold transition-colors"
+          >
+            <span className="border-border bg-muted flex h-5 w-5 shrink-0 items-center justify-center rounded-lg border">
+              <ArrowRight className="h-3 w-3" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="font-semibold">See all</div>
+              <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">Browse all solutions</p>
+            </div>
+          </Link>
         </div>
       </div>
     </div>
-  )
+  );
 }
-
