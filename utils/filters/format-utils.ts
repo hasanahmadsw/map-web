@@ -1,7 +1,5 @@
 import { EquipmentType } from '@/types/equipments/equipment.enum';
 
-import { Lang } from '../dictionary-utils';
-
 export function formatText(text: string) {
   return text
     .split('-')
@@ -10,7 +8,6 @@ export function formatText(text: string) {
 }
 
 export function extractPathname(
-  lang: Lang,
   filters: string[] = [],
   categories: string[] = [],
   currentSearchParams?: URLSearchParams,
@@ -22,6 +19,9 @@ export function extractPathname(
     brand = '';
   const searchParams = new URLSearchParams(currentSearchParams || '');
 
+  // console.log('categories===', categories);
+  // console.log('normalizedFilters', normalizedFilters);
+
   if (normalizedFilters.length === 3) {
     [type, category, brand] = normalizedFilters;
   } else if (normalizedFilters.length < 3) {
@@ -32,22 +32,15 @@ export function extractPathname(
     });
   }
 
-  console.log('===================');
-  console.log(type, category, brand);
-  console.log(normalizedFilters);
-  console.log('===================');
-
   // =============== Pathname without language
   const pathname = normalizedFilters.reduce((acc, curr) => (curr ? (acc += `/${curr}`) : acc), '');
 
   return {
-    lang,
     type,
     category,
     brand,
     searchParams,
-    pathname: `/${lang}${pathname}`,
-    pathnameWithoutLang: pathname,
+    pathname,
   };
 }
 

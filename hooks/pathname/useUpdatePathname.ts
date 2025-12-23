@@ -7,9 +7,7 @@ export function useUpdatePathname(categories: string[]) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { lang, type, category, brand, searchParams: currentSearchParams } = useExtractPathname(categories);
-
-  console.log(type, category, brand);
+  const { type, category, brand, searchParams: currentSearchParams } = useExtractPathname(categories);
 
   const debouncedPush = useDebouncedCallback(
     (url: string, searchParams: URLSearchParams = currentSearchParams) => {
@@ -21,21 +19,21 @@ export function useUpdatePathname(categories: string[]) {
   );
 
   const handleChangeType = (newBodyType: string) => {
-    const slug = buildSlug(type, category, newBodyType);
+    const slug = buildSlug(newBodyType, category, brand);
 
-    debouncedPush(`/${lang}/equipments/${slug}`);
+    debouncedPush(`/equipments/${slug}`);
   };
 
   const handleChangeCategory = (newCategory: string) => {
     const slug = buildSlug(type, newCategory, brand);
 
-    debouncedPush(`/${lang}/equipments/${slug}`);
+    debouncedPush(`/equipments/${slug}`);
   };
 
   const handleChangeBrand = (newBrand: string) => {
     const slug = buildSlug(type, category, newBrand);
 
-    debouncedPush(`/${lang}/equipments/${slug}`);
+    debouncedPush(`/equipments/${slug}`);
   };
 
   const handleChangeSearchParams = (
@@ -53,7 +51,6 @@ export function useUpdatePathname(categories: string[]) {
 
   return {
     params: {
-      lang,
       type,
       category,
       brand,
@@ -69,6 +66,5 @@ export function useUpdatePathname(categories: string[]) {
 function buildSlug(type?: string, category?: string, brand?: string): string {
   const parts = [type, category, brand].filter(Boolean);
 
-  console.log(parts);
   return parts.join('/');
 }

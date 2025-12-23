@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useBrandsForFilter } from '@/hooks/api/equipments/equipment-brands/use-equipment-brands-controller';
 import { useUpdatePathname } from '@/hooks/pathname/useUpdatePathname';
 
 import { EquipmentType } from '@/types/equipments/equipment.enum';
@@ -9,14 +8,18 @@ import type { IEquipmentCategory } from '@/types/equipments/equipment-category.t
 import { X } from 'lucide-react';
 import { useMemo } from 'react';
 import { FilterSelect } from './FilterSelect';
+import { useRouter } from 'next/navigation';
+import { IEquipmentBrand } from '@/types/equipments/equipment-brand.type';
 
 interface EquipmentFiltersEnhancedProps {
-  lang: string;
   categories: IEquipmentCategory[];
+  brands: IEquipmentBrand[];
 }
 
-export function EquipmentFiltersEnhanced({ lang, categories }: EquipmentFiltersEnhancedProps) {
-  const categoriesList = categories?.map(category => category.name) || [];
+export function EquipmentFiltersEnhanced({ categories, brands }: EquipmentFiltersEnhancedProps) {
+  const router = useRouter();
+
+  const categoriesList = categories?.map(category => category.slug) || [];
   const pathnameHook = useUpdatePathname(categoriesList);
 
   // Get current filter values from pathname
@@ -24,8 +27,9 @@ export function EquipmentFiltersEnhanced({ lang, categories }: EquipmentFiltersE
   const currentCategory = pathnameHook.params.category || 'all';
   const currentBrand = pathnameHook.params.brand || 'all';
 
-  // Fetch brands from API
-  const { brands, isPending: isLoadingBrands } = useBrandsForFilter({ limit: 100, isActive: true });
+  console.log('currentType', currentType);
+  console.log('currentCategory', currentCategory);
+  console.log('currentBrand', currentBrand);
 
   // Build type options from EquipmentType enum
   const typeOptions = useMemo(() => {
@@ -43,7 +47,7 @@ export function EquipmentFiltersEnhanced({ lang, categories }: EquipmentFiltersE
     return [
       { value: 'all', label: 'All Categories' },
       ...categories.map(category => ({
-        value: category.slug || category.name,
+        value: category.slug,
         label: category.name,
       })),
     ];
@@ -54,7 +58,7 @@ export function EquipmentFiltersEnhanced({ lang, categories }: EquipmentFiltersE
     return [
       { value: 'all', label: 'All Brands' },
       ...brands.map(brand => ({
-        value: brand.slug || brand.name,
+        value: brand.slug,
         label: brand.name,
       })),
     ];
@@ -70,9 +74,7 @@ export function EquipmentFiltersEnhanced({ lang, categories }: EquipmentFiltersE
   }, [currentType, currentCategory, currentBrand]);
 
   const clearAllFilters = () => {
-    pathnameHook.handleChangeType('');
-    pathnameHook.handleChangeCategory('');
-    pathnameHook.handleChangeBrand('');
+    router.push('/equipments');
   };
 
   const updateFilter = (key: string, value: string) => {
@@ -122,7 +124,6 @@ export function EquipmentFiltersEnhanced({ lang, categories }: EquipmentFiltersE
           value={currentBrand}
           onValueChange={value => updateFilter('brand', value)}
           options={brandOptions}
-          isLoading={isLoadingBrands}
           className="h-10 w-full"
         />
       </div>

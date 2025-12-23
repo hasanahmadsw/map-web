@@ -565,7 +565,7 @@ export function MediaSelectModal({
                   <label className="text-sm font-medium">Upload to folder (optional)</label>
                   <div className="flex gap-2">
                     <Input
-                      placeholder="e.g., vehicles/covers or leave empty for root"
+                      placeholder="e.g., covers or leave empty for root"
                       value={uploadFolder}
                       onChange={e => setUploadFolder(e.target.value)}
                       className="flex-1"
@@ -580,7 +580,7 @@ export function MediaSelectModal({
                     </Button>
                   </div>
                   <p className="text-muted-foreground text-xs">
-                    Enter folder path (e.g., vehicles/covers) or leave empty to upload to root
+                    Enter folder path (e.g., covers) or leave empty to upload to root
                   </p>
                 </div>
 

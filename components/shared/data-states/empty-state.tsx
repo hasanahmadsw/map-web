@@ -54,14 +54,14 @@ function EmptyState({ type, icon, title, description, className = '' }: EmptySta
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="from-primary/5 to-primary/10 absolute -top-20 -left-20 h-40 w-40 animate-pulse rounded-full bg-linear-to-r blur-3xl" />
-          <div className="from-secondary/5 to-secondary/10 animation-delay-1000 absolute -right-20 -bottom-20 h-40 w-40 animate-pulse rounded-full bg-linear-to-r blur-3xl" />
+          <div className="animation-delay-1000 from-secondary/5 to-secondary/10 absolute -right-20 -bottom-20 h-40 w-40 animate-pulse rounded-full bg-linear-to-r blur-3xl" />
 
           {/* Subtle grid pattern */}
           <div
             className="absolute inset-0 opacity-5"
             style={{
-              backgroundImage: `linear-gradient(to right, #888 1px, transparent 1px),
-                            linear-gradient(to bottom, #888 1px, transparent 1px)`,
+              backgroundImage: `linear-linear(to right, hsl(var(--muted-foreground)) 1px, transparent 1px),
+                            linear-linear(to bottom, hsl(var(--muted-foreground)) 1px, transparent 1px)`,
               backgroundSize: '50px 50px',
             }}
           />
@@ -73,15 +73,15 @@ function EmptyState({ type, icon, title, description, className = '' }: EmptySta
           <div
             className={`relative mb-8 scale-100 transition-all duration-700 ${mounted ? 'scale-100 rotate-0' : 'scale-75 -rotate-6'}`}
           >
-            <div className="relative">
+            <div className="relative flex items-center justify-center">
               {/* Outer glow effect */}
               <div className="from-primary/20 to-secondary/20 absolute inset-0 animate-pulse rounded-full bg-linear-to-r blur-xl" />
 
               {/* Icon background with floating animation */}
               <div
-                className={`hover:shadow-3xl relative flex h-32 w-32 items-center justify-center rounded-2xl bg-linear-to-br from-white to-gray-50 shadow-2xl transition-shadow duration-300 ${type === 'no-filter-results' ? 'animate-float' : ''}`}
+                className={`hover:shadow-3xl from-card to-muted relative flex h-32 w-32 items-center justify-center rounded-2xl bg-linear-to-br shadow-2xl transition-shadow duration-300 ${type === 'no-filter-results' ? 'animate-float' : ''}`}
               >
-                {/* Inner gradient ring */}
+                {/* Inner linear ring */}
                 <div className="from-primary/10 to-secondary/10 absolute inset-4 rounded-full border-4 border-transparent bg-linear-to-r bg-clip-padding" />
 
                 {/* Animated border */}
@@ -127,7 +127,7 @@ function EmptyState({ type, icon, title, description, className = '' }: EmptySta
           <div
             className={`mb-8 transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
           >
-            <h2 className="mb-3 bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-2xl font-bold text-transparent dark:from-gray-100 dark:to-gray-300">
+            <h2 className="from-foreground to-foreground/80 mb-3 bg-linear-to-r bg-clip-text text-2xl font-bold text-transparent">
               {messageTitle}
             </h2>
             <p className="text-muted-foreground mx-auto max-w-sm text-lg leading-relaxed">
@@ -143,10 +143,10 @@ function EmptyState({ type, icon, title, description, className = '' }: EmptySta
               <Button
                 onClick={action.onClick}
                 size="lg"
-                className="group from-primary to-primary/90 hover:shadow-primary/25 relative overflow-hidden rounded-xl bg-linear-to-r px-8 py-6 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95"
+                className="group from-primary to-primary/90 text-primary-foreground hover:shadow-primary/25 relative overflow-hidden rounded-xl bg-linear-to-r px-8 py-6 text-lg font-semibold shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95"
               >
                 {/* Button shine effect */}
-                <span className="animate-shimmer absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent" />
+                <span className="animate-shimmer via-primary-foreground/20 absolute inset-0 -translate-x-full bg-linear-to-r from-transparent to-transparent" />
 
                 {/* Button content */}
                 <span className="relative z-10 flex items-center gap-3">

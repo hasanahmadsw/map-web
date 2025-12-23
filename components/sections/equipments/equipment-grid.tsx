@@ -3,16 +3,15 @@ import { Wrench } from 'lucide-react';
 import EmptyState from '@/components/shared/data-states/empty-state';
 import CustomPagination from '@/components/shared/pagination/custom-pagination';
 import { equipmentsService } from '@/services/equipments/equipments.service';
-import type { EquipmentListParams } from '@/services/equipments/equipments.service';
+
 import { EquipmentCard } from './equipment-card';
 import { EquipmentParams } from '@/types/equipments/equipment.type';
 
 interface EquipmentGridProps {
-  lang: string;
   equipmentParams: EquipmentParams;
 }
 
-export async function EquipmentGrid({ lang, equipmentParams }: EquipmentGridProps) {
+export async function EquipmentGrid({ equipmentParams }: EquipmentGridProps) {
   let res;
   try {
     res = await equipmentsService.getAllPublic(equipmentParams);
@@ -35,9 +34,9 @@ export async function EquipmentGrid({ lang, equipmentParams }: EquipmentGridProp
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {equipments.map((equipment, idx) => (
-          <EquipmentCard key={equipment.id} equipment={equipment} lang={lang} priority={idx < 3} />
+          <EquipmentCard key={equipment.id} equipment={equipment} priority={idx < 3} />
         ))}
       </div>
 

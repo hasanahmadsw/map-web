@@ -91,7 +91,7 @@ export interface EquipmentParams {
   page?: number;
   limit?: number;
   q?: string;
-  type?: string;
+  equipmentType?: string;
   category?: string;
   brand?: string;
   isFeatured?: string;

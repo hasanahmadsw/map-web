@@ -3,6 +3,15 @@ export function capitalizeFirstLetter(text: string | undefined): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+export function capitalizeEachWord(text: string | undefined): string {
+  if (!text) return '';
+
+  return text
+    .toLowerCase()
+    .replace(/\b\w/g, char => char.toUpperCase())
+    .replace(/\s+/g, ' '); // Normalize multiple spaces to single space
+}
+
 export function getChangedValues<T extends Record<string, any>>(
   original: T,
   updated: Partial<T>,

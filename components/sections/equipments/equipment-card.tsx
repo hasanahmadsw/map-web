@@ -7,15 +7,15 @@ import type { IEquipment } from '@/types/equipments/equipment.type';
 
 interface EquipmentCardProps {
   equipment: IEquipment;
-  lang: string;
+
   priority?: boolean;
 }
 
 const FALLBACK_IMAGE =
   'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&q=80&auto=format&fit=crop';
 
-export function EquipmentCard({ equipment, lang, priority = false }: EquipmentCardProps) {
-  const href = `/${lang}/equipments/${equipment.slug}`;
+export function EquipmentCard({ equipment, priority = false }: EquipmentCardProps) {
+  const href = `/equipments/${equipment.slug}`;
   const coverImage = equipment.coverPath || FALLBACK_IMAGE;
 
   const isUnoptimized =
@@ -40,12 +40,12 @@ export function EquipmentCard({ equipment, lang, priority = false }: EquipmentCa
       <CardContent className="space-y-3 p-4">
         <div className="flex flex-wrap items-center gap-2">
           {equipment.category && (
-            <Badge key={equipment.category.id} variant="default" className="text-xs">
+            <Badge key={equipment.category.name} variant="default" className="text-xs">
               {equipment.category.name}
             </Badge>
           )}
           {equipment.brand && (
-            <Badge key={equipment.brand.id} variant="secondary" className="text-xs">
+            <Badge key={equipment.brand.name} variant="secondary" className="text-xs">
               {equipment.brand.name}
             </Badge>
           )}
