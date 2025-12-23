@@ -10,8 +10,8 @@ import type { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { LoadingButton } from '@/components/shared/buttons/loading-button';
-import { useSolutionById } from '@/hooks/solutions/useSolutionById';
-import { useSolutionMutations } from '@/hooks/solutions/mutations';
+import { useSolutionById } from '@/hooks/api/solutions/useSolutionById';
+import { useSolutionMutations } from '@/hooks/api/solutions/mutations';
 
 import {
   updateSolutionSchema,

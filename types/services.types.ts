@@ -1,6 +1,6 @@
-import type { BaseListParams } from "./common.types";
+import type { BaseListParams } from '@/hooks/api/list/useListUrlState';
 
-  export interface StaffService {
+export interface StaffService {
   id: number;
   slug: string;
   icon: string;
@@ -50,9 +50,10 @@ export interface SubService {
   features: string[];
 }
 
-
 export interface IServiceParams extends BaseListParams {
   search?: string;
   isPublished?: boolean;
   isFeatured?: boolean;
+  sort?: string;
+  [key: string]: string | number | boolean | undefined;
 }

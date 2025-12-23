@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/shared/table/data-table';
 
 import { useRouter } from 'next/navigation';
-import { useSolutionMutations } from '@/hooks/solutions/mutations';
-import { useSolutionsController } from '@/hooks/solutions/useSolutionsController';
+import { useSolutionMutations } from '@/hooks/api/solutions/mutations';
+import { useSolutionsController } from '@/hooks/api/solutions/useSolutionsController';
 
 import { useSolutionColumns } from './columns';
 import { TableHeader, type FilterInfo } from '@/components/shared/table/table-header';

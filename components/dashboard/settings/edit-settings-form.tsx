@@ -9,7 +9,7 @@ import { Save } from 'lucide-react';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { LoadingButton } from '@/components/shared/buttons/loading-button';
-import { useSettings } from '@/hooks/settings/useSettings';
+import { useSettings } from '@/hooks/api/settings/useSettings';
 import {
   updateSettingsSchema,
   type TUpdateSettingsForm,

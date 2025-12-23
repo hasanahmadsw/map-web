@@ -2,7 +2,7 @@
 
 import { useFormContext } from 'react-hook-form';
 import { SearchableMultiSelectInput } from '@/components/shared/input/SearchableMultiSelectInput';
-import { useSolutionsStaff } from '@/hooks/solutions/useSolutionsStaff';
+import { useSolutionsStaff } from '@/hooks/api/solutions/useSolutionsStaff';
 
 export function SolutionsSection() {
   const { control } = useFormContext();

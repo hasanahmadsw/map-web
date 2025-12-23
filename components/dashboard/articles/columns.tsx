@@ -14,7 +14,7 @@ import {
 
 import type { Article } from '@/types/articles.types';
 
-import { useStaffMe } from '@/hooks/staff/useStaffMe';
+import { useStaffMe } from '@/hooks/api/staff/useStaffMe';
 import { Role } from '@/types/roles.enum';
 
 function formatDate(dateString: string) {

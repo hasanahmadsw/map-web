@@ -2,10 +2,7 @@ import { Suspense } from 'react';
 
 import type { Metadata } from 'next';
 
-import {
-  SolutionsSection,
-  SolutionsSectionSkeleton,
-} from '@/components/sections/solutions/solutions-section';
+import { SolutionsSection, SolutionsSectionSkeleton } from '@/components/website/solutions/solutions-section';
 
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 

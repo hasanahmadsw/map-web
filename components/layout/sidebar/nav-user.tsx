@@ -13,8 +13,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
-import { useAuth } from '@/hooks/useAuth';
-import { useStaffMe } from '@/hooks/staff/useStaffMe';
+import { useAuth } from '@/hooks/api/useAuth';
+import { useStaffMe } from '@/hooks/api/staff/useStaffMe';
 import { useRouter } from 'next/navigation';
 
 export function NavUser() {

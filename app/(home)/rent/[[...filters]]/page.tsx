@@ -1,5 +1,5 @@
-import { EquipmentGrid, EquipmentGridSkeleton } from '@/components/sections/equipments/equipment-grid';
-import { EquipmentFiltersEnhanced } from '@/components/sections/equipments/equipment-filters-enhanced';
+import { EquipmentGrid, EquipmentGridSkeleton } from '@/components/website/equipments/equipment-grid';
+import { EquipmentFiltersEnhanced } from '@/components/website/equipments/equipment-filters-enhanced';
 import { equipmentCategoriesService } from '@/services/equipments/equipment-categories.service';
 
 import { EquipmentParams } from '@/types/equipments/equipment.type';
@@ -9,8 +9,8 @@ import { extractPathname } from '@/utils/filters/format-utils';
 import { Suspense } from 'react';
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 import { generateSearchResultsMetadata } from '@/utils/seo/meta/equipment-meta/build-equipment-meta';
-import FiltersBreadcrumb from '@/components/sections/equipments/filters-breadcrumb';
-import SearchResultsHeading from '@/components/sections/equipments/search-results-heading';
+import FiltersBreadcrumb from '@/components/website/equipments/filters-breadcrumb';
+import SearchResultsHeading from '@/components/website/equipments/search-results-heading';
 import { equipmentBrandsService } from '@/services/equipments/equipment-brands.service';
 
 interface Props {

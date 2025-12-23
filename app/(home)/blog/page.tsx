@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import { BlogSection, BlogSectionSkeleton } from '@/components/sections/blog/blog-section';
+import { BlogSection, BlogSectionSkeleton } from '@/components/website/blog/blog-section';
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 
 interface Props {
@@ -14,7 +14,6 @@ interface Props {
 
 export function generateMetadata() {
   return createEnhancedMetadata({
-    lang: 'en',
     title: 'Blog',
     description: 'Read our latest articles, insights, and updates.',
     type: 'website',

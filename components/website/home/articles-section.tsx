@@ -28,13 +28,7 @@ export async function ArticlesSection() {
       <p className="text-muted-foreground max-w-2xl pb-6">'Stay updated with our latest news and insights'</p>
       <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
         {articles.slice(0, 4).map((article, index) => (
-          <SimpleArticleCard
-            key={article.id}
-            article={article}
-            lang="en"
-            index={index}
-            priority={index < 2}
-          />
+          <SimpleArticleCard key={article.id} article={article} index={index} priority={index < 2} />
         ))}
       </div>
       <div className="mt-12 flex justify-center">

@@ -12,8 +12,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useAuth } from '@/hooks/useAuth';
-import { useStaffMe } from '@/hooks/staff/useStaffMe';
+import { useAuth } from '@/hooks/api/useAuth';
+import { useStaffMe } from '@/hooks/api/staff/useStaffMe';
 
 interface UserMenuProps {
   variant?: 'default' | 'ghost' | 'outline';

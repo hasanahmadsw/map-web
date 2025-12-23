@@ -1,5 +1,5 @@
 import { Role, ROLES, type RoleType } from '@/types/roles.enum';
-import type { BaseListParams } from '@/hooks/list/useListUrlState';
+import type { BaseListParams } from '@/hooks/api/list/useListUrlState';
 
 export { Role, ROLES, type RoleType };
 

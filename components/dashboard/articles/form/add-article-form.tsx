@@ -7,7 +7,7 @@ import { Resolver, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { Form } from '@/components/ui/form';
-import { useArticlesStaff } from '@/hooks/articles/useArticles';
+import { useArticlesStaff } from '@/hooks/api/articles/useArticles';
 
 import { BasicInformationSection } from './partial/basic-information-section';
 

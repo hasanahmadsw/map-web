@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar, Mail, User, Edit, Shield, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 
-import { useStaffMe } from '@/hooks/staff/useStaffMe';
+import { useStaffMe } from '@/hooks/api/staff/useStaffMe';
 import ApiError from '@/components/shared/api-error';
 
 const getRoleVariant = (role: string): 'superadmin' | 'admin' | 'author' | 'default' => {

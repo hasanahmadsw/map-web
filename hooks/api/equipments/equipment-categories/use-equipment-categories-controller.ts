@@ -1,7 +1,7 @@
 'use client';
 
-import { createListController } from '@/hooks/list/createListController';
-import { equipmentCategoriesQueryKeys } from '@/hooks/keys';
+import { createListController } from '@/hooks/api/list/createListController';
+import { equipmentCategoriesQueryKeys } from '@/hooks/api/keys';
 import { equipmentCategoriesService } from '@/services/equipments/equipment-categories.service';
 import type { EquipmentCategoryListParams } from '@/services/equipments/equipment-categories.service';
 import type { IEquipmentCategory } from '@/types/equipments/equipment-category.type';

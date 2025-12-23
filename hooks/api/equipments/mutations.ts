@@ -1,7 +1,7 @@
 'use client';
 
-import { useCrudMutations } from '@/hooks/mutations/useCrudMutations';
-import { equipmentsQueryKeys } from '@/hooks/keys';
+import { useCrudMutations } from '@/hooks/api/mutations/useCrudMutations';
+import { equipmentsQueryKeys } from '@/hooks/api/keys';
 import { equipmentsService } from '@/services/equipments/equipments.service';
 import type { IEquipment } from '@/types/equipments/equipment.type';
 import type { TCreateEquipmentForm } from '@/validations/equipments/create-equipment.schema';

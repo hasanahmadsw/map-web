@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { equipmentsQueryKeys } from '@/hooks/keys';
+import { equipmentsQueryKeys } from '@/hooks/api/keys';
 import { equipmentsService } from '@/services/equipments/equipments.service';
 import type { IEquipment } from '@/types/equipments/equipment.type';
 

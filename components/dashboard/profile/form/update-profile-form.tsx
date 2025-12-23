@@ -13,8 +13,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Form } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
-import { useStaffMe } from '@/hooks/staff/useStaffMe';
-import { useUpdateMeMutation } from '@/hooks/staff/mutations';
+import { useStaffMe } from '@/hooks/api/staff/useStaffMe';
+import { useUpdateMeMutation } from '@/hooks/api/staff/mutations';
 import { getChangedValues } from '@/utils/format';
 import { updateMeSchema, type TUpdateMeForm } from '@/validations/staff/update-me.schema';
 import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';

@@ -77,10 +77,6 @@ export const navMain = [
         title: 'General',
         url: '/dashboard/settings/general',
       },
-      {
-        title: 'Languages',
-        url: '/dashboard/settings/languages',
-      },
     ],
   },
 ];

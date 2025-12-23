@@ -7,7 +7,7 @@ import { Resolver, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { Form } from '@/components/ui/form';
-import { useServiceMutations } from '@/hooks/services/mutations';
+import { useServiceMutations } from '@/hooks/api/services/mutations';
 
 import { BasicInformationSection } from './partial/basic-information-section';
 import { SolutionsSection } from './partial/solutions-section';

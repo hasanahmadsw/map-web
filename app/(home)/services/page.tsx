@@ -2,8 +2,8 @@ import { Suspense } from 'react';
 
 import type { Metadata } from 'next';
 
-import { ServicesSection } from '@/components/sections/services/services-section';
-import { ServicesSectionSkeleton } from '@/components/sections/services/services-section-skeleton';
+import { ServicesSection } from '@/components/website/services/services-section';
+import { ServicesSectionSkeleton } from '@/components/website/services/services-section-skeleton';
 
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 

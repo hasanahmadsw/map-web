@@ -217,7 +217,6 @@ function EquipmentCategoriesTable() {
                 )}
               </div>
             }
-            lang="en"
           />
         </CardContent>
       </Card>

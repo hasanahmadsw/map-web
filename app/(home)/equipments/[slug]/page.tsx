@@ -28,18 +28,17 @@ import DivHtml from '@/components/shared/div-html';
 import { capitalizeEachWord } from '@/utils/format';
 import { EquipmentType } from '@/types/equipments/equipment.enum';
 import type { IEquipment } from '@/types/equipments/equipment.type';
-import { EquipmentGallery } from '@/components/sections/equipments/view/equipment-gallery';
-import { EquipmentSpecs } from '@/components/sections/equipments/view/equipment-specs';
+import { EquipmentGallery } from '@/components/website/equipments/view/equipment-gallery';
+import { EquipmentSpecs } from '@/components/website/equipments/view/equipment-specs';
 
 interface EquipmentPageProps {
   params: Promise<{
     slug: string;
-    lang: string;
   }>;
 }
 
 export async function generateMetadata({ params }: EquipmentPageProps): Promise<Metadata> {
-  const { slug, lang } = await params;
+  const { slug } = await params;
   let equipment: IEquipment | null = null;
 
   try {
@@ -84,7 +83,7 @@ export async function generateMetadata({ params }: EquipmentPageProps): Promise<
 }
 
 export default async function EquipmentPage({ params }: EquipmentPageProps) {
-  const { slug, lang } = await params;
+  const { slug } = await params;
   let equipment: IEquipment | null = null;
 
   try {
@@ -151,7 +150,7 @@ export default async function EquipmentPage({ params }: EquipmentPageProps) {
         <div className="relative z-10 container mx-auto flex h-full max-w-7xl flex-col justify-end px-6 py-10">
           <div className="space-y-4">
             <Link
-              href={`/${lang}/rent`}
+              href={`/rent`}
               className="glass-button flex w-fit items-center gap-2 rounded-full px-4 py-2 text-white hover:text-white"
             >
               <ArrowLeft className="h-4 w-4" />

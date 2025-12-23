@@ -1,6 +1,5 @@
-
-import { BaseListParams } from "./common.types";
-import { Staff } from "./staff.types";
+import type { BaseListParams } from '@/hooks/api/list/useListUrlState';
+import { Staff } from './staff.types';
 
 export interface Article {
   id: number;
@@ -23,12 +22,12 @@ export interface Article {
   createdAt: string;
   author: Staff;
   updatedAt: string;
-  relatedArticles?: Article[] |null;
+  relatedArticles?: Article[] | null;
 }
-
 
 export interface ArticleListParams extends BaseListParams {
   search?: string;
   isPublished?: boolean;
   isFeatured?: boolean;
+  [key: string]: string | number | boolean | undefined;
 }

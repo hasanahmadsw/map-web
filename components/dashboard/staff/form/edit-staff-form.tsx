@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 
-import { useStaffMutations } from '@/hooks/staff/mutations';
+import { useStaffMutations } from '@/hooks/api/staff/mutations';
 
 import { editStaffSchema, TEditStaffForm } from '@/validations/staff/edit-staff.schema';
 import { LoadingButton } from '@/components/shared/buttons/loading-button';

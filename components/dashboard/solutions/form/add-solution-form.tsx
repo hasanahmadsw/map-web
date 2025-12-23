@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { LoadingButton } from '@/components/shared/buttons/loading-button';
-import { useSolutionMutations } from '@/hooks/solutions/mutations';
+import { useSolutionMutations } from '@/hooks/api/solutions/mutations';
 
 import ResponseError from '@/components/shared/response-error';
 import { BasicInformationSection } from './partials/basic-information-section';

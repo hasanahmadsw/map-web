@@ -5,7 +5,6 @@ import { Footer } from './footer';
 
 export function ConditionalFooter() {
   const pathname = usePathname();
-  const { lang } = useParams();
 
   const isPrivatePage = pathname.startsWith('/dashboard');
 

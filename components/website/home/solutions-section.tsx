@@ -31,7 +31,7 @@ export async function SolutionsSection() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {solutions.map((solution, index) => (
-          <SolutionCard key={solution.id} solution={solution} lang="en" priority={index < 3} />
+          <SolutionCard key={solution.id} solution={solution} priority={index < 3} />
         ))}
       </div>
 

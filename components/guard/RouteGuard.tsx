@@ -37,7 +37,7 @@ function RouteGuard({ children }: RouteGuardProps) {
     );
   }
 
-  const pathnameWithoutLang = pathname.replace(`/en`, '') || '/dashboard';
+  const pathnameWithoutLang = pathname || '/dashboard';
 
   // Sorts routes by path length (longest first), so more specific routes are checked before general ones
   const sortedRoutes = [...routeAccessConfig].sort((a, b) => b.path.length - a.path.length);

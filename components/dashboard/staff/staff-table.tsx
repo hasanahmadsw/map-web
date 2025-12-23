@@ -8,8 +8,8 @@ import { Button } from '@/components/ui/button';
 
 import { DataTable } from '@/components/shared/table/data-table';
 
-import { useStaffMutations } from '@/hooks/staff/mutations';
-import { useStaffController } from '@/hooks/staff/useStaffController';
+import { useStaffMutations } from '@/hooks/api/staff/mutations';
+import { useStaffController } from '@/hooks/api/staff/useStaffController';
 import { useStaffColumns } from './columns';
 import { TableHeader, type FilterInfo } from '@/components/shared/table/table-header';
 
@@ -198,7 +198,6 @@ function StaffTable() {
                 )}
               </div>
             }
-            lang="en"
           />
         </CardContent>
       </Card>

@@ -1,4 +1,5 @@
-import type { ApiResponse, BaseListParams } from '@/types/common.types';
+import type { ApiResponse } from '@/types/common.types';
+import type { BaseListParams } from '@/hooks/api/list/useListUrlState';
 import type { EquipmentParams, IEquipment } from '@/types/equipments/equipment.type';
 import { ApiService } from '../base.service';
 import { toQS } from '@/utils/api-utils';
@@ -19,6 +20,7 @@ export interface EquipmentListParams extends BaseListParams {
   equipmentType?: string;
   isPublished?: boolean;
   isFeatured?: boolean;
+  [key: string]: string | number | boolean | undefined;
 }
 
 export const equipmentsService = {

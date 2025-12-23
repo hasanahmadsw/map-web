@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/shared/table/data-table';
 
 import { useRouter } from 'next/navigation';
-import { useArticleMutations } from '@/hooks/articles/mutations';
-import { useArticlesController } from '@/hooks/articles/useArticlesController';
+import { useArticleMutations } from '@/hooks/api/articles/mutations';
+import { useArticlesController } from '@/hooks/api/articles/useArticlesController';
 
 import { useArticleColumns } from './columns';
 import { TableHeader, type FilterInfo } from '@/components/shared/table/table-header';

@@ -1,5 +1,5 @@
 import { Role } from '@/types/roles.enum';
-import { useStaffMe } from '@/hooks/staff/useStaffMe';
+import { useStaffMe } from '@/hooks/api/staff/useStaffMe';
 
 export function useUserRole() {
   const { currentStaff, currentUserRole, isLoading, refetch, error, isSuperAdmin, isAdmin, isAuthor } =

@@ -193,7 +193,6 @@ function EquipmentBrandsTable() {
                 )}
               </div>
             }
-            lang="en"
           />
         </CardContent>
       </Card>

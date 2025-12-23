@@ -1,6 +1,6 @@
 'use client';
 
-import { useStaffMe } from '@/hooks/staff/useStaffMe';
+import { useStaffMe } from '@/hooks/api/staff/useStaffMe';
 
 import { DashboardHomeSkeleton } from '@/components/dashboard/home/dashboard-home-skeleton';
 import { AdminDashboardHome } from './admin-dashboard-home';

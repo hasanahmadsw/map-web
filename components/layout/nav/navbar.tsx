@@ -14,8 +14,8 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
-import { useAuth } from '@/hooks/useAuth';
-import { useStaffMe } from '@/hooks/staff/useStaffMe';
+import { useAuth } from '@/hooks/api/useAuth';
+import { useStaffMe } from '@/hooks/api/staff/useStaffMe';
 
 import { useTheme } from 'next-themes';
 

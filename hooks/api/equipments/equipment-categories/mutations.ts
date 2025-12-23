@@ -1,7 +1,7 @@
 'use client';
 
-import { useCrudMutations } from '@/hooks/mutations/useCrudMutations';
-import { equipmentCategoriesQueryKeys } from '@/hooks/keys';
+import { useCrudMutations } from '@/hooks/api/mutations/useCrudMutations';
+import { equipmentCategoriesQueryKeys } from '@/hooks/api/keys';
 import { equipmentCategoriesService } from '@/services/equipments/equipment-categories.service';
 import type { IEquipmentCategory } from '@/types/equipments/equipment-category.type';
 import type { TCreateEquipmentCategoryForm } from '@/validations/equipments/categories/create-equipment-category.schema';

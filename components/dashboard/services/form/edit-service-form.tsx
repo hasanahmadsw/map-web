@@ -9,8 +9,8 @@ import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 
 import { Form } from '@/components/ui/form';
-import { useServiceById } from '@/hooks/services/useServiceById';
-import { useServiceMutations } from '@/hooks/services/mutations';
+import { useServiceById } from '@/hooks/api/services/useServiceById';
+import { useServiceMutations } from '@/hooks/api/services/mutations';
 
 import { BasicInformationSection } from './partial/basic-information-section';
 import { SolutionsSection } from './partial/solutions-section';

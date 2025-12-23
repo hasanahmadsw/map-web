@@ -7,8 +7,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { DataTable } from '@/components/shared/table/data-table';
 
 import { useRouter } from 'next/navigation';
-import { useServiceMutations } from '@/hooks/services/mutations';
-import { useServicesController } from '@/hooks/services/useServicesController';
+import { useServiceMutations } from '@/hooks/api/services/mutations';
+import { useServicesController } from '@/hooks/api/services/useServicesController';
 
 import { useServiceColumns } from './columns';
 import { TableHeader, type FilterInfo } from '@/components/shared/table/table-header';
@@ -150,7 +150,6 @@ export function ServicesTable() {
               searchPlaceholder: 'Search...',
               noData: 'No data found',
             }}
-            lang="en"
           />
         </CardContent>
       </Card>

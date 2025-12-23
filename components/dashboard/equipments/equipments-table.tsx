@@ -177,7 +177,6 @@ export function EquipmentsTable() {
               searchPlaceholder: 'Search...',
               noData: 'No data found',
             }}
-            lang="en"
           />
         </CardContent>
       </Card>

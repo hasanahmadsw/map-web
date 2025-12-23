@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { Role, type Staff } from '@/types/staff.types';
-import { useStaffMe } from '@/hooks/staff/useStaffMe';
+import { useStaffMe } from '@/hooks/api/staff/useStaffMe';
 
 function getRoleVariant(role: Staff['role']) {
   switch (role) {

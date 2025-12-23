@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 
 import { Form } from '@/components/ui/form';
-import { useArticleStaffById, useArticlesStaff } from '@/hooks/articles/useArticles';
+import { useArticleStaffById, useArticlesStaff } from '@/hooks/api/articles/useArticles';
 
 import { BasicInformationSection } from './partial/basic-information-section';
 

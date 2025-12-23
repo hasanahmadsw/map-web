@@ -1,5 +1,5 @@
-import type { ServiceResponse } from "./services.types";
-import type { BaseListParams } from "@/hooks/list/useListUrlState";
+import type { ServiceResponse } from './services.types';
+import type { BaseListParams } from '@/hooks/api/list/useListUrlState';
 
 export interface StaffSolution {
   id: number;
@@ -45,10 +45,9 @@ export interface SolutionResponse {
   };
 }
 
-
 export interface SolutionListParams extends BaseListParams {
   search?: string;
   isPublished?: boolean;
   isFeatured?: boolean;
-  sort?: "createdAt" | "updatedAt" | "name" | "order";
+  sort?: 'createdAt' | 'updatedAt' | 'name' | 'order';
 }
