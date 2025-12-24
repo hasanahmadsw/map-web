@@ -124,7 +124,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
       </div>
 
       {/* Hero Section */}
-      <div className="relative h-[60vh] w-full overflow-hidden md:h-[70vh]">
+      <div className="pt-edge-nav-margin relative h-[60vh] w-full overflow-hidden md:h-[70vh]">
         {coverImage ? (
           <>
             <Image

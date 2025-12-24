@@ -74,7 +74,7 @@ export function EquipmentFiltersEnhanced({ categories, brands }: EquipmentFilter
   }, [currentType, currentCategory, currentBrand]);
 
   const clearAllFilters = () => {
-    router.push('/equipments');
+    router.push('/rental');
   };
 
   const updateFilter = (key: string, value: string) => {

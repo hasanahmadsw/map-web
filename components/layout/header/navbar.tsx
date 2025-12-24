@@ -18,7 +18,7 @@ function Navbar() {
     <NavigationMenu className="max-lg:hidden">
       <NavigationMenuList className="gap-2">
         {navigationLinks.map((link, index) => {
-          const isActive = link.href === '' ? pathname === `/` : pathname === `/${link.href}`;
+          const isActive = link.href === '' ? pathname === `/` : pathname === `${link.href}`;
 
           return (
             <NavigationMenuItem key={index}>
@@ -29,7 +29,7 @@ function Navbar() {
                 } hover:text-primary py-1.5 text-sm whitespace-nowrap min-[1100px]:text-[15px]`}
                 asChild
               >
-                <Link href={`/${link.href}`}>{link.label}</Link>
+                <Link href={`${link.href}`}>{link.label}</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           );

@@ -74,7 +74,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
   return (
     <div className="bg-background min-h-screen">
       {/* Hero Section with Image */}
-      <div className="relative h-[60vh] w-full overflow-hidden md:h-[70vh]">
+      <div className="pt-edge-nav-margin relative h-[60vh] w-full overflow-hidden md:h-[70vh]">
         {service.featuredImage && service.featuredImage.trim() !== '' ? (
           <>
             <Image

@@ -63,14 +63,16 @@ export default async function EquipmentsPage({ params, searchParams }: Props) {
 
   return (
     <>
+      <div className="pt-edge-nav-margin" />
+
       {/* Filters */}
-      <section className="bg-background sticky top-16 z-50 mb-8 border-b px-6 py-2 md:py-0">
+      <section className="bg-background sticky top-0 z-50 mb-8 border-b px-6 py-2 md:py-0">
         <div className="container mx-auto">
           <EquipmentFiltersEnhanced categories={categoriesList} brands={brandsList} />
         </div>
       </section>
 
-      <section className="relative z-10 container mx-auto mb-8 px-6">
+      <section className="pt-edge-nav-margin relative z-10 container mx-auto mb-8 px-6">
         {/* Breadcrumb */}
         <FiltersBreadcrumb filters={filters} categories={categories} />
 

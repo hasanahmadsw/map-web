@@ -13,7 +13,7 @@ export function useUpdatePathname(categories: string[]) {
     (url: string, searchParams: URLSearchParams = currentSearchParams) => {
       if (searchParams.has('page')) searchParams.delete('page');
 
-      router.push(`/rent/${url}?${searchParams.toString()}`, { scroll: false });
+      router.push(`/rental/${url}?${searchParams.toString()}`, { scroll: false });
     },
     300,
   );

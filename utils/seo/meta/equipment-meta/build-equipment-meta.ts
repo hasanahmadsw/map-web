@@ -15,7 +15,7 @@ export async function generateSearchResultsMetadata(filters: string[], categorie
   const crumbs =
     base.map((path, index) => ({
       label: capitalizeEachWord(path.replace(/-/g, ' ')) || 'Home',
-      href: `/rent/${base.slice(0, index + 1).join('/')}`,
+      href: `/rental/${base.slice(0, index + 1).join('/')}`,
     })) || [];
 
   return {

@@ -13,13 +13,16 @@ import { ThemeToggle } from '../nav/theme-toggle';
 import { UserMenu } from '../nav/user-menu';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { myCookies, readCookieFromCookies, readCookieFromDocument } from '@/utils/cookies';
+import { myCookies, readCookieFromDocument } from '@/utils/cookies';
+import { usePathname } from 'next/navigation';
 
 function Header() {
   const ref = useRef<HTMLDivElement>(null);
 
   const authToken = readCookieFromDocument(myCookies.auth);
   const isAuthenticated = !!authToken;
+
+  const pathname = usePathname();
 
   const { scrollY } = useScroll({
     target: ref,
@@ -60,6 +63,7 @@ function Header() {
         className={cn(
           'border-border bg-background/80 relative z-60 mx-auto flex max-w-[calc(100vw-2rem)] items-center justify-between self-start rounded-3xl border-b px-6 py-4 transition-all duration-1000 lg:max-w-7xl lg:min-w-[1000px]',
           visible && 'bg-background/80 py-2',
+          visible && pathname === '/rental' && 'hidden',
           visible ? 'w-11/12 lg:w-5/12' : 'w-full',
         )}
       >

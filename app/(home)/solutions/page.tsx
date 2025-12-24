@@ -32,7 +32,7 @@ export default async function SolutionsPage(props: Props) {
   const isFeatured = searchParams?.isFeatured === 'true' ? true : undefined;
 
   return (
-    <section className="container mx-auto max-w-7xl space-y-4 py-10">
+    <section className="pt-edge-nav-margin container mx-auto max-w-7xl space-y-4 py-10">
       {/* Header */}
       <header>
         <h1 className="mb-3 max-w-2xl text-3xl font-medium">Our Solutions</h1>

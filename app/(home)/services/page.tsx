@@ -34,7 +34,7 @@ export default async function ServicesPage(props: Props) {
   const isFeatured = searchParams?.isFeatured === 'true' ? true : undefined;
 
   return (
-    <div className="container mx-auto max-w-7xl space-y-4 py-10">
+    <div className="pt-edge-nav-margin container mx-auto max-w-7xl space-y-4 py-10">
       <header>
         <h1 className="mb-3 max-w-2xl text-3xl font-medium">Our Services</h1>
         <p className="text-muted-foreground max-w-2xl pb-6">
