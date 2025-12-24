@@ -50,6 +50,7 @@ export default async function RootLayout({ children }: Readonly<RootLayoutProps>
                 className: `antialiased`,
               }}
             />
+
             <ConditionalNavbar isAuthenticated={isAuthenticated} />
             {children}
             <ConditionalFooter />
