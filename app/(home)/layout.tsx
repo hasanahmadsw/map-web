@@ -1,4 +1,6 @@
-import { Footer } from '@/components/layout/footer';
+import TopBar from '@/components/layout/bar/top-bar';
+import Footer from '@/components/layout/footer';
+import Header from '@/components/layout/header/header';
 import { ConditionalNavbar } from '@/components/layout/nav/conditional-navbar';
 import { myCookies, readCookieFromCookies } from '@/utils/cookies';
 import type { Metadata } from 'next';
@@ -16,7 +18,9 @@ export default async function PublicPagesLayout({ children }: { children: React.
 
   return (
     <>
-      <ConditionalNavbar isAuthenticated={isAuthenticated} />
+      {/* <ConditionalNavbar isAuthenticated={isAuthenticated} /> */}
+      <TopBar />
+      <Header />
       {children}
       <Footer />
     </>

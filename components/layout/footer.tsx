@@ -1,151 +1,192 @@
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Target,
+  ArrowRight,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Instagram,
+  Globe,
+  ChevronRight,
+} from 'lucide-react';
 import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
-import { Facebook, Linkedin, Instagram } from 'lucide-react';
+import Logo from './header/logo';
+import { servicesService } from '@/services/services.service';
+import { Button } from '@/components/ui/button';
 
-const socialIcons = {
-  Facebook: Facebook,
-  LinkedIn: Linkedin,
-  Instagram: Instagram,
-};
+const currentYear = new Date().getFullYear();
+const Footer = async () => {
+  // Fetch services directly from API
+  let servicesResponse;
+  try {
+    servicesResponse = await servicesService.getAll({
+      limit: 6,
+      isPublished: true,
+      isFeatured: true,
+    });
+  } catch {
+    servicesResponse = { data: [] };
+  }
 
-export function Footer() {
+  const services = servicesResponse?.data || [];
+
   return (
-    <footer className="bg-dark-section mx-auto max-w-7xl">
-      <div className="container max-w-7xl py-10">
-        <div className="space-y-8">
-          {/* Main Links Grid */}
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
-            {/* Company Links */}
-            <div className="flex flex-col space-y-3">
-              <h3 className="text-sm font-medium">Company</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link
-                    href={`/about`}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href={`/contact`}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Contact
-                  </Link>
-                </li>
+    <footer className="text-card-foreground bg-gray-900">
+      {/* Main Footer */}
+      <div className="px-4 pt-24 pb-12">
+        <div className="mx-auto max-w-7xl">
+          {/* Top Section */}
+          <div className="mb-20 grid gap-12 md:grid-cols-4">
+            {/* Company Info */}
+            <div className="space-y-6">
+              <div className="flex items-center space-x-3">
+                <Logo width={150} height={150} />
+              </div>
+
+              <p className="text-muted-foreground leading-relaxed">
+                Discover our comprehensive range of media production and broadcasting solutions, designed to
+                meet the unique needs of businesses and organizations worldwide.
+              </p>
+
+              <div className="flex space-x-4 text-white">
+                <a
+                  href="#"
+                  className="bg-foreground/5 hover:bg-foreground/10 flex h-10 w-10 items-center justify-center rounded-full transition-colors"
+                >
+                  <Facebook className="h-5 w-5" />
+                </a>
+                <a
+                  href="#"
+                  className="bg-foreground/5 hover:bg-foreground/10 flex h-10 w-10 items-center justify-center rounded-full transition-colors"
+                >
+                  <Twitter className="h-5 w-5" />
+                </a>
+                <a
+                  href="#"
+                  className="bg-foreground/5 hover:bg-foreground/10 flex h-10 w-10 items-center justify-center rounded-full transition-colors"
+                >
+                  <Linkedin className="h-5 w-5" />
+                </a>
+                <a
+                  href="#"
+                  className="bg-foreground/5 hover:bg-foreground/10 flex h-10 w-10 items-center justify-center rounded-full transition-colors"
+                >
+                  <Instagram className="h-5 w-5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Services */}
+            <div>
+              <h3 className="mb-6 text-lg font-semibold text-white">Services</h3>
+              <ul className="space-y-4">
+                {services.slice(0, 6).map(service => (
+                  <li key={service.id}>
+                    <Link
+                      href={`/services/${service.slug}`}
+                      className="group flex items-center text-gray-400 transition-colors hover:text-white"
+                    >
+                      <ChevronRight className="mr-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
+                      {service.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* Services Links */}
-            <div className="flex flex-col space-y-3">
-              <h3 className="text-sm font-medium">Services</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link
-                    href={`/services`}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Our Services
-                  </Link>
-                </li>
+            {/* Quick Links */}
+            <div>
+              <h3 className="mb-6 text-lg font-semibold text-white">Quick Links</h3>
+              <ul className="space-y-4">
+                {['Home', 'Equipment Rental', 'Solution', 'Blog', 'About'].map(item => (
+                  <li key={item}>
+                    <Link
+                      href="#"
+                      className="group flex items-center text-gray-400 transition-colors hover:text-white"
+                    >
+                      <ChevronRight className="mr-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
+                      {item}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* Solutions Links */}
-            <div className="flex flex-col space-y-3">
-              <h3 className="text-sm font-medium">Solutions</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link
-                    href={`/solutions`}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Our Solutions
-                  </Link>
+            {/* Contact Info */}
+            <div>
+              <h3 className="mb-6 text-lg font-semibold text-white">Get in Touch</h3>
+              <ul className="space-y-6">
+                <li className="flex items-start space-x-4">
+                  <MapPin className="text-muted-foreground mt-1 h-5 w-5 shrink-0" />
+                  <div>
+                    <div className="text-muted-foreground">Location</div>
+                    <div className="text-white">BS 18, Dubai Studio City, Dubai, UAE</div>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-4">
+                  <Phone className="text-muted-foreground mt-1 h-5 w-5 shrink-0" />
+                  <div>
+                    <div className="text-muted-foreground">Phone</div>
+                    <div className="text-white">+974 XXXX XXXX</div>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-4">
+                  <Mail className="text-muted-foreground mt-1 h-5 w-5 shrink-0" />
+                  <div>
+                    <div className="text-muted-foreground">Email</div>
+                    <div className="text-white">info@maproduction.ae</div>
+                  </div>
                 </li>
               </ul>
-            </div>
-
-            {/* Resources Links */}
-            <div className="flex flex-col space-y-3">
-              <h3 className="text-sm font-medium">Resources</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link
-                    href={`/news`}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Articles
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Legal Links */}
-            <div className="flex flex-col space-y-3">
-              <h3 className="text-sm font-medium">Legal</h3>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link
-                    href={`/privacy`}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href={`/terms`}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    Terms of Service
-                  </Link>
-                </li>
-              </ul>
+              <Button asChild className="mt-6 w-full rounded-full px-2 py-4">
+                <Link href="/contact">Contact Us</Link>
+              </Button>
             </div>
           </div>
 
-          <Separator />
+          {/* Bottom Bar */}
+          <div className="border-border/10 border-t pt-8">
+            <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+              <div className="text-muted-foreground text-sm">
+                © {currentYear} MAP. All rights reserved. Powered by{' '}
+                <a
+                  href="https://www.blendlab.ae"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground font-bold transition-colors"
+                >
+                  BlendLab
+                </a>
+                .
+              </div>
 
-          {/* Bottom Section */}
-          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-            <div className="text-muted-foreground text-sm">
-              © {new Date().getFullYear()} All rights reserved.
-            </div>
-            <div className="flex space-x-4">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="h-5 w-5" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram className="h-5 w-5" />
-              </a>
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-6 text-sm">
+                  <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Privacy Policy
+                  </Link>
+                  <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Terms of Service
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Watermark */}
+      <div className="border-border/5 border-t px-4 py-6">
+        <div className="mx-auto max-w-7xl text-center">
+          <p className="text-muted-foreground text-sm">
+            Leading Production and Broadcasting Solutions since 1997
+          </p>
+        </div>
+      </div>
     </footer>
   );
-}
+};
+
+export default Footer;

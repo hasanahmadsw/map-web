@@ -54,6 +54,12 @@ html {
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* ===== SPACING ===== */
+  --spacing-top-bar-height: 2.5rem;
+  --spacing-navbar-height: 5.3rem;
+  --spacing-edge-bar-margin: calc(var(--spacing-top-bar-height) + 0.3rem);
+  --spacing-edge-nav-margin: calc(var(--spacing-navbar-height) + 0.5rem);
 }
 
 :root {
@@ -64,7 +70,8 @@ html {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  /* --primary: oklch(0.205 0 0); */
+  --primary: oklch(0.4501 0.2289 269.49); /* #2b38d1 */
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -98,7 +105,8 @@ html {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.1944 0.0337 273.32);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
+  /* --primary: oklch(0.922 0 0); */
+  --primary: oklch(0.4501 0.2289 269.49); /* #2b38d1 */
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.1944 0.0337 273.32);
   --secondary-foreground: oklch(0.985 0 0);
@@ -123,6 +131,10 @@ html {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+}
+
+html {
+  scrollbar-gutter: stable !important;
 }
 
 @layer base {

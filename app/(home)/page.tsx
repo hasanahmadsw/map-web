@@ -10,6 +10,7 @@ import { ArticlesSection } from '@/components/website/home/articles-section';
 import { FAQSection } from '@/components/website/home/faq-section';
 import { CTASection } from '@/components/website/home/cta-section';
 import SectionSkeleton from '@/components/shared/skeletons/section-skeletion';
+import AboutUs from '@/components/website/home/about-us/about-us';
 
 export async function generateMetadata(): Promise<Metadata> {
   const metaData = createEnhancedMetadata({
@@ -23,14 +24,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Page() {
   return (
-    <div className="bg-dark-section relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden">
       {/* Background Pattern */}
 
       {/* Optimized Gradient Orbs - Reduced count and added will-change for performance */}
-      <div className="orb-blue-large absolute top-0 -left-40 h-120 w-120 will-change-transform" />
+      {/* <div className="orb-blue-large absolute top-0 -left-40 h-120 w-120 will-change-transform" />
       <div className="orb-purple-large absolute top-1/4 -right-40 h-120 w-120 will-change-transform" />
       <div className="orb-blue-large absolute top-1/2 -left-40 h-120 w-120 will-change-transform" />
-      <div className="orb-purple-large absolute top-3/4 -right-40 h-120 w-120 will-change-transform" />
+      <div className="orb-purple-large absolute top-3/4 -right-40 h-120 w-120 will-change-transform" /> */}
 
       {/* <script
         id="news-home-jsonld"
@@ -39,17 +40,18 @@ export default async function Page() {
           __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
         }}
       /> */}
+      <HeroSection />
+      {/* Solutions Section */}
+      <Suspense fallback={<SectionSkeleton />}>
+        <SolutionsSection />
+      </Suspense>
+
+      <AboutUs />
       <main className="mx-auto min-h-screen max-w-7xl">
         {/* Hero Section */}
-        <HeroSection />
 
         {/* Statistics Section */}
-        <StatisticsSection />
-
-        {/* Solutions Section */}
-        <Suspense fallback={<SectionSkeleton />}>
-          <SolutionsSection />
-        </Suspense>
+        {/* <StatisticsSection /> */}
 
         {/* Services Section */}
         <Suspense fallback={<SectionSkeleton />}>
@@ -62,10 +64,10 @@ export default async function Page() {
         </Suspense>
 
         {/* FAQ Section */}
-        <FAQSection />
+        {/* <FAQSection /> */}
 
         {/* CTA Section */}
-        <CTASection />
+        {/* <CTASection /> */}
       </main>
     </div>
   );
