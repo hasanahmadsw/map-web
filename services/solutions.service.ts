@@ -1,9 +1,3 @@
-import type {
-  TBulkSolutionOperationForm,
-  TSolutionSearchForm,
-  TUpdateSolutionStatusForm,
-} from '@/schemas/solutions.schemas';
-
 import type { TCreateSolutionForm } from '@/validations/solutions/create-solution.schema';
 
 import type { ApiResponse } from '@/types/common.types';
@@ -50,18 +44,6 @@ export const solutionsService = {
     return res.data;
   },
 
-  // Bulk operations
-  async bulkOperation(payload: TBulkSolutionOperationForm, opts?: RequestOpts): Promise<void> {
-    const res = await ApiService.post<void>(`${ADMIN_BASE}/bulk`, payload, opts);
-    return res.data;
-  },
-
-  // Update solution status
-  async updateStatus(id: Id, payload: TUpdateSolutionStatusForm, opts?: RequestOpts): Promise<StaffSolution> {
-    const res = await ApiService.patch<StaffSolution>(`${ADMIN_BASE}/${enc(id)}/status`, payload, opts);
-    return res.data;
-  },
-
   // Public Solutions
   async getAll(
     params: SolutionListParams = {},
@@ -74,15 +56,6 @@ export const solutionsService = {
   async getBySlug(slug: string, opts?: RequestOpts): Promise<SolutionResponse> {
     const res = await ApiService.get<SolutionResponse>(`${BASE}/slug/${enc(slug)}`, opts);
     return res.data;
-  },
-
-  // Search solutions
-  async search(payload: TSolutionSearchForm, opts?: RequestOpts): Promise<ApiResponse<SolutionResponse[]>> {
-    const res = await ApiService.get<SolutionResponse[]>(
-      `${BASE}/search${toQS(payload as Record<string, unknown>)}`,
-      opts,
-    );
-    return res;
   },
 
   // Upload solution image

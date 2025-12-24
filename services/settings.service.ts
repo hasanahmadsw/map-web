@@ -1,7 +1,8 @@
 import { ApiResponse } from '@/types/common.types';
 import type { Settings } from '@/types/settings.types';
-import type { TUpdateSettingsDTO } from '@/schemas/settings.schemas';
+
 import { ApiService } from './base.service';
+import { TUpdateSettingsForm } from '@/validations/settings/update-settings.schema';
 
 const BASE = '/settings';
 
@@ -13,7 +14,10 @@ export const settingsService = {
     return res;
   },
 
-  async updateSettings(payload: TUpdateSettingsDTO, opts?: RequestOpts): Promise<Settings> {
+  async updateSettings(
+    payload: Partial<TUpdateSettingsForm> | FormData,
+    opts?: RequestOpts,
+  ): Promise<Settings> {
     const res = await ApiService.patch<Settings>(`/admin${BASE}`, payload, opts);
     return res.data;
   },

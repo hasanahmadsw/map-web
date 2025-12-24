@@ -1,8 +1,3 @@
-import type {
-  TBulkServiceOperationForm,
-  TServiceSearchForm,
-  TUpdateServiceStatusForm,
-} from '@/schemas/services.schemas';
 import type { ApiResponse, BaseListParams } from '@/types/common.types';
 import type { StaffService, ServiceResponse } from '@/types/services.types';
 import { ApiService } from './base.service';
@@ -53,18 +48,6 @@ export const servicesService = {
     return res.data;
   },
 
-  // Bulk operations
-  async bulkOperation(payload: TBulkServiceOperationForm, opts?: RequestOpts): Promise<void> {
-    const res = await ApiService.post<void>(`${ADMIN_BASE}/bulk`, payload, opts);
-    return res.data;
-  },
-
-  // Update service status
-  async updateStatus(id: Id, payload: TUpdateServiceStatusForm, opts?: RequestOpts): Promise<StaffService> {
-    const res = await ApiService.patch<StaffService>(`${ADMIN_BASE}/${enc(id)}/status`, payload, opts);
-    return res.data;
-  },
-
   // Public Services
   async getAll(params: ServiceListParams = {}, opts?: RequestOpts): Promise<ApiResponse<ServiceResponse[]>> {
     const res = await ApiService.get<ServiceResponse[]>(`/services/published${toQS(params)}`, opts);
@@ -74,15 +57,6 @@ export const servicesService = {
   async getBySlug(slug: string, opts?: RequestOpts): Promise<ServiceResponse> {
     const res = await ApiService.get<ServiceResponse>(`${BASE}/slug/${enc(slug)}`, opts);
     return res.data;
-  },
-
-  // Search services
-  async search(payload: TServiceSearchForm, opts?: RequestOpts): Promise<ApiResponse<ServiceResponse[]>> {
-    const res = await ApiService.get<ServiceResponse[]>(
-      `${BASE}/search${toQS(payload as Record<string, unknown>)}`,
-      opts,
-    );
-    return res;
   },
 
   // Upload service image
