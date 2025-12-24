@@ -7,6 +7,7 @@ import { ConditionalNavbar } from '@/components/layout/nav/conditional-navbar';
 import { ConditionalFooter } from '@/components/layout/conditional-footer';
 import QueryProvider from '@/providers/query-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
+import NextTopLoader from 'nextjs-toploader';
 
 import { myCookies, readCookieFromCookies } from '@/utils/cookies';
 
@@ -38,6 +39,7 @@ export default async function RootLayout({ children }: Readonly<RootLayoutProps>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <QueryProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <NextTopLoader color="var(--color-primary)" showSpinner={false} />
             <Toaster
               position="top-center"
               toastOptions={{

@@ -1,5 +1,7 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@plugin '@tailwindcss/typography';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -131,9 +133,9 @@ html {
     @apply bg-background text-foreground;
   }
 
-   /* Dark Theme Backgrounds */
-   .bg-dark-gradient {
-    @apply bg-gradient-to-b from-black via-black to-black;
+  /* Dark Theme Backgrounds */
+  .bg-dark-gradient {
+    @apply bg-linear-to-b from-black via-black to-black;
   }
 
   .bg-dark-section {
@@ -175,12 +177,12 @@ html {
   }
 
   .bg-pattern-overlay {
-    @apply bg-gradient-to-r from-black/0 via-black/90 to-black/0;
+    @apply bg-linear-to-r from-black/0 via-black/90 to-black/0;
   }
 
   /* Light mode overlay */
   :not(.dark) .bg-pattern-overlay {
-    @apply bg-gradient-to-r from-white/0 via-white/90 to-white/0;
+    @apply bg-linear-to-r from-white/0 via-white/90 to-white/0;
   }
 
   /* Gradient Orbs */
@@ -240,7 +242,6 @@ html {
     transform: translateZ(0);
     backface-visibility: hidden;
   }
-
 }
 
 /* Tiptap Editor Styles */
@@ -290,7 +291,7 @@ html {
   background-color: hsl(var(--muted));
   padding: 0.125rem 0.25rem;
   border-radius: 0.25rem;
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
   font-size: 0.875em;
 }
 
@@ -369,7 +370,7 @@ html {
   height: 0;
 }
 .ai-draft {
-  @apply bg-yellow-50 ring-2 ring-yellow-300 rounded-sm;
+  @apply rounded-sm bg-yellow-50 ring-2 ring-yellow-300;
 }
 
 /* Glassmorphism Effects */
@@ -378,7 +379,10 @@ html {
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border: 1px solid color-mix(in oklch, var(--border) 80%, transparent);
-  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease;
   contain: layout style paint;
   transform: translateZ(0);
   will-change: transform;
@@ -405,7 +409,10 @@ html {
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border: 1px solid color-mix(in oklch, var(--border) 80%, transparent);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, border-color 0.3s ease;
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s ease,
+    border-color 0.3s ease;
   position: relative;
   overflow: hidden;
   color: var(--foreground);
@@ -443,23 +450,20 @@ html {
 
 .glass-button:active {
   transform: translateY(0);
- 
 }
 
 .dark .glass-button {
   background: color-mix(in oklch, var(--card) 70%, transparent);
   border: 1px solid color-mix(in oklch, var(--border) 60%, transparent);
- 
 }
 
 .dark .glass-button:hover {
   background: color-mix(in oklch, var(--card) 80%, transparent);
   border-color: color-mix(in oklch, var(--border) 80%, transparent);
-
 }
 
 .dark .glass-button:active {
-  box-shadow: 
+  box-shadow:
     0 2px 8px 0 color-mix(in oklch, var(--foreground) 20%, transparent),
     inset 0 1px 0 0 color-mix(in oklch, var(--foreground) 8%, transparent);
 }
