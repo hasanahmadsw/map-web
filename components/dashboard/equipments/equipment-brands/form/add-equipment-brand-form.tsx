@@ -45,7 +45,7 @@ function AddEquipmentBrand({ isOpen, onClose }: { isOpen: boolean; onClose: () =
       form.reset();
       onClose();
     } catch (error) {
-      const errorMessage = (create.error as Error)?.message || 'Failed to create equipment brand';
+      const errorMessage = (error as Error)?.message || 'Failed to create equipment brand';
       toast.error(errorMessage);
     }
   };

@@ -72,8 +72,9 @@ export function EditSolutionForm({ solutionId }: EditSolutionFormProps) {
       await update.mutateAsync({ id: Number(solutionId), data: changedValues });
       toast.success('Solution updated successfully');
       router.push('/dashboard/solutions');
-    } catch {
-      toast.error((update.error as Error | undefined)?.message || 'Failed to update solution');
+    } catch (error) {
+      toast.error((error as Error)?.message || 'Failed to update solution');
+      console.error(error);
     }
   };
 

@@ -1,23 +1,21 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Mona_Sans } from 'next/font/google';
 import '@/app/globals.css';
 import { Toaster } from 'sonner';
 import QueryProvider from '@/providers/query-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 import NextTopLoader from 'nextjs-toploader';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+export const monaSans = Mona_Sans({
+  weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-en',
+  style: ['normal', 'italic'],
   subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Reporters Directory',
+  title: 'MAP',
   description: 'Discover and connect with journalists from around the world',
 };
 
@@ -27,8 +25,8 @@ interface RootLayoutProps {
 
 export default async function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="en" className={monaSans.variable} suppressHydrationWarning>
+      <body className={`${monaSans.className} antialiased`}>
         <QueryProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <NextTopLoader color="var(--color-primary)" showSpinner={false} />

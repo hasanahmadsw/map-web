@@ -37,8 +37,9 @@ export function AddSolutionForm() {
       await create.mutateAsync(santizedData);
       toast.success('Solution created successfully');
       router.push('/dashboard/solutions');
-    } catch {
-      toast.error((create.error as Error | undefined)?.message || 'Failed to create solution');
+    } catch (error) {
+      toast.error((error as Error)?.message || 'Failed to create solution');
+      console.error(error);
     }
   };
 

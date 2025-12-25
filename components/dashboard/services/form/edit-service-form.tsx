@@ -83,8 +83,9 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
       await update.mutateAsync({ id: Number(serviceId), data: changedValues });
       toast.success('Service updated successfully');
       router.push('/dashboard/services');
-    } catch {
-      toast.error((update.error as Error | undefined)?.message || 'Failed to update service');
+    } catch (error) {
+      toast.error((error as Error)?.message || 'Failed to update service');
+      console.error(error);
     }
   };
 

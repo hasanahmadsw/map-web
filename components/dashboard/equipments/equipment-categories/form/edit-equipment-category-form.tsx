@@ -66,7 +66,7 @@ function EditEquipmentCategoryForm({ isOpen, onClose, category }: EditEquipmentC
 
       onClose();
     } catch (error) {
-      const errorMessage = (update.error as Error)?.message || 'Failed to update equipment category';
+      const errorMessage = (error as Error)?.message || 'Failed to update equipment category';
       toast.error(errorMessage);
     }
   };

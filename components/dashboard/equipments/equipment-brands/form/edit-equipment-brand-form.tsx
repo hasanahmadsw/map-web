@@ -62,7 +62,7 @@ function EditEquipmentBrandForm({ isOpen, onClose, brand }: EditEquipmentBrandFo
 
       onClose();
     } catch (error) {
-      const errorMessage = (update.error as Error)?.message || 'Failed to update equipment brand';
+      const errorMessage = (error as Error)?.message || 'Failed to update equipment brand';
       toast.error(errorMessage);
     }
   };
