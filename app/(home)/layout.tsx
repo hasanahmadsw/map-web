@@ -1,10 +1,8 @@
 import TopBar from '@/components/layout/bar/top-bar';
-import Footer from '@/components/layout/footer';
+import Footer from '@/components/layout/footer/footer';
 import Header from '@/components/layout/header/header';
-import { ConditionalNavbar } from '@/components/layout/nav/conditional-navbar';
-import { myCookies, readCookieFromCookies } from '@/utils/cookies';
+
 import type { Metadata } from 'next';
-import { cookies } from 'next/headers';
 
 export const metadata: Metadata = {
   title: 'Media Production and Broadcasting Solutions',
@@ -13,12 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default async function PublicPagesLayout({ children }: { children: React.ReactNode }) {
-  const authToken = await readCookieFromCookies(myCookies.auth, await cookies());
-  const isAuthenticated = !!authToken;
-
   return (
     <>
-      {/* <ConditionalNavbar isAuthenticated={isAuthenticated} /> */}
       <TopBar />
       <Header />
       {children}

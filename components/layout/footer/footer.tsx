@@ -12,7 +12,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import Link from 'next/link';
-import Logo from './header/logo';
+import Logo from '../header/logo';
 import { servicesService } from '@/services/services.service';
 import { Button } from '@/components/ui/button';
 
@@ -38,7 +38,7 @@ const Footer = async () => {
       <div className="px-4 pt-24 pb-12">
         <div className="mx-auto max-w-7xl">
           {/* Top Section */}
-          <div className="mb-20 grid gap-12 md:grid-cols-4">
+          <div className="mb-20 grid gap-12 lg:grid-cols-4">
             {/* Company Info */}
             <div className="space-y-6">
               <div className="flex items-center space-x-3">

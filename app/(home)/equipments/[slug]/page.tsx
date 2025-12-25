@@ -298,27 +298,6 @@ export default async function EquipmentPage({ params }: EquipmentPageProps) {
                     </div>
                   </>
                 )}
-                {equipment.status && (
-                  <>
-                    <Separator />
-                    <div className="flex items-start gap-3">
-                      {equipment.status === 'available' ? (
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 text-green-500" />
-                      ) : (
-                        <Clock className="mt-0.5 h-4 w-4 text-amber-500" />
-                      )}
-                      <div className="flex-1">
-                        <p className="text-muted-foreground mb-1 text-sm font-medium">Status</p>
-                        <Badge
-                          variant={equipment.status === 'available' ? 'default' : 'secondary'}
-                          className="mt-1"
-                        >
-                          {capitalizeEachWord(equipment.status)}
-                        </Badge>
-                      </div>
-                    </div>
-                  </>
-                )}
               </CardContent>
             </Card>
           </div>

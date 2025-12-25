@@ -40,7 +40,7 @@ function AddStaffMember({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 
       onClose();
     } catch (error) {
-      const errorMessage = (create.error as Error)?.message || 'Failed to create staff';
+      const errorMessage = (error as Error)?.message || 'Failed to create staff';
       toast.error(errorMessage);
     }
   };

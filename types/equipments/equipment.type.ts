@@ -90,7 +90,7 @@ export type IEquipmentSpecs = ICameraSpecs | ILensSpecs | ILightSpecs | IAudioSp
 export interface EquipmentParams {
   page?: number;
   limit?: number;
-  q?: string;
+  search?: string;
   equipmentType?: string;
   category?: string;
   brand?: string;

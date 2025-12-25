@@ -1,5 +1,5 @@
 import { EquipmentGrid, EquipmentGridSkeleton } from '@/components/website/equipments/equipment-grid';
-import { EquipmentFiltersEnhanced } from '@/components/website/equipments/equipment-filters-enhanced';
+import { EquipmentFiltersEnhanced } from '@/components/website/equipments/filters/equipment-filters-enhanced';
 import { equipmentCategoriesService } from '@/services/equipments/equipment-categories.service';
 
 import { EquipmentParams } from '@/types/equipments/equipment.type';
@@ -12,7 +12,7 @@ import { generateSearchResultsMetadata } from '@/utils/seo/meta/equipment-meta/b
 import FiltersBreadcrumb from '@/components/website/equipments/filters-breadcrumb';
 import SearchResultsHeading from '@/components/website/equipments/search-results-heading';
 import { equipmentBrandsService } from '@/services/equipments/equipment-brands.service';
-
+import { RentalCTA } from '@/components/website/equipments/rental-cta';
 interface Props {
   params: Promise<{
     filters: string[];
@@ -72,18 +72,23 @@ export default async function EquipmentsPage({ params, searchParams }: Props) {
         </div>
       </section>
 
-      <section className="pt-edge-nav-margin relative z-10 container mx-auto mb-8 px-6">
-        {/* Breadcrumb */}
-        <FiltersBreadcrumb filters={filters} categories={categories} />
+      <section className="relative z-10 container mx-auto mb-8 px-6">
+        <div className="mb-12 space-y-4">
+          {/* Breadcrumb */}
+          <FiltersBreadcrumb filters={filters} categories={categories} />
 
-        {/* Search Results Heading */}
-        <SearchResultsHeading filters={filters} categories={categories} />
+          {/* Search Results Heading */}
+          <SearchResultsHeading filters={filters} categories={categories} />
+        </div>
 
         {/* Results */}
         <Suspense key={JSON.stringify(equipmentParams)} fallback={<EquipmentGridSkeleton />}>
           <EquipmentGrid equipmentParams={equipmentParams} />
         </Suspense>
       </section>
+
+      {/* CTA Section */}
+      <RentalCTA />
     </>
   );
 }
@@ -98,7 +103,7 @@ function extractEquipmentParams(
   return {
     page: parseInt((search?.page as string) || '1'),
     limit: parseInt((search?.limit as string) || '12'),
-    q: search.q as string,
+    search: search.search as string,
     equipmentType: type,
     category: category,
     brand,

@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+
 import { useEffect, useId, useState } from 'react';
 
 interface FilterSelectProps {

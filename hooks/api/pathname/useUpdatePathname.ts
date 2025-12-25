@@ -1,19 +1,18 @@
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 
 import useExtractPathname from './useExtractPathname';
 
 export function useUpdatePathname(categories: string[]) {
   const router = useRouter();
-  const pathname = usePathname();
 
   const { type, category, brand, searchParams: currentSearchParams } = useExtractPathname(categories);
 
   const debouncedPush = useDebouncedCallback(
-    (url: string, searchParams: URLSearchParams = currentSearchParams) => {
+    (slug: string, searchParams: URLSearchParams = currentSearchParams) => {
       if (searchParams.has('page')) searchParams.delete('page');
 
-      router.push(`/rental/${url}?${searchParams.toString()}`, { scroll: false });
+      router.push(`/rental/${slug}?${searchParams.toString()}`, { scroll: false });
     },
     300,
   );
@@ -46,7 +45,7 @@ export function useUpdatePathname(categories: string[]) {
       else currentSearchParams.set(key, value);
     });
 
-    debouncedPush(`${pathname}`, currentSearchParams);
+    debouncedPush('', currentSearchParams);
   };
 
   return {

@@ -26,15 +26,17 @@ export async function EquipmentGrid({ equipmentParams }: EquipmentGridProps) {
   const equipments = res.data || [];
   const pagination = res.pagination;
 
-  if (!equipments.length && equipmentParams.q) {
-    return <EmptyState type="no-filter-results" />;
+  if (!equipments.length && equipmentParams.search) {
+    return (
+      <EmptyState type="no-filter-results" description={`No results found for "${equipmentParams.search}"`} />
+    );
   } else if (!equipments.length) {
     return <EmptyState type="no-data" icon={<Wrench />} />;
   }
 
   return (
     <>
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {equipments.map((equipment, idx) => (
           <EquipmentCard key={equipment.id} equipment={equipment} priority={idx < 3} />
         ))}

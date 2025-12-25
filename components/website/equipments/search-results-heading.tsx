@@ -11,15 +11,16 @@ async function SearchResultsHeading({ filters, categories }: SearchResultsHeadin
   const { type, category, brand } = extractPathname(filters, categories);
 
   // =============== Generate title
-  const { title } = generateEquipmentPageTitleAndDescription({
+  const { title, description } = generateEquipmentPageTitleAndDescription({
     type,
     category,
     brand,
   });
 
   return (
-    <div className="mt-4 mb-2 flex items-center justify-between">
-      <h1 className="text-xl leading-tight font-semibold">{title}</h1>
+    <div className="space-y-2">
+      <h1 className="text-2xl leading-tight font-bold">{title}</h1>
+      <p className="text-muted-foreground text-sm">{description}</p>
     </div>
   );
 }

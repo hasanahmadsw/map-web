@@ -58,7 +58,7 @@ function EditStaffForm({ isOpen, onClose, staff }: EditStaffFormProps) {
       setOpen(false);
       onClose();
     } catch (error) {
-      const errorMessage = (update.error as Error)?.message || 'Failed to update staff';
+      const errorMessage = (error as Error)?.message || 'Failed to update staff';
       toast.error(errorMessage);
     }
   };

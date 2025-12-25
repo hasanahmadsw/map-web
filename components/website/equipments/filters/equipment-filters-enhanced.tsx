@@ -2,12 +2,13 @@
 
 import { Button } from '@/components/ui/button';
 import { useUpdatePathname } from '@/hooks/api/pathname/useUpdatePathname';
+import EquipmentsAutocomplete from '@/components/website/common/equipments-autocomplete';
 
 import { EquipmentType } from '@/types/equipments/equipment.enum';
 import type { IEquipmentCategory } from '@/types/equipments/equipment-category.type';
 import { X } from 'lucide-react';
 import { useMemo } from 'react';
-import { FilterSelect } from './FilterSelect';
+import { FilterSelect } from '../../../shared/FilterSelect';
 import { useRouter } from 'next/navigation';
 import { IEquipmentBrand } from '@/types/equipments/equipment-brand.type';
 
@@ -26,10 +27,7 @@ export function EquipmentFiltersEnhanced({ categories, brands }: EquipmentFilter
   const currentType = pathnameHook.params.type || 'all';
   const currentCategory = pathnameHook.params.category || 'all';
   const currentBrand = pathnameHook.params.brand || 'all';
-
-  console.log('currentType', currentType);
-  console.log('currentCategory', currentCategory);
-  console.log('currentBrand', currentBrand);
+  const currentSearch = pathnameHook.params.searchParams.get('search') || '';
 
   // Build type options from EquipmentType enum
   const typeOptions = useMemo(() => {
@@ -70,8 +68,9 @@ export function EquipmentFiltersEnhanced({ categories, brands }: EquipmentFilter
     if (currentType && currentType !== 'all') count++;
     if (currentCategory && currentCategory !== 'all') count++;
     if (currentBrand && currentBrand !== 'all') count++;
+    if (currentSearch.trim()) count++;
     return count;
-  }, [currentType, currentCategory, currentBrand]);
+  }, [currentType, currentCategory, currentBrand, currentSearch]);
 
   const clearAllFilters = () => {
     router.push('/rental');
@@ -85,6 +84,10 @@ export function EquipmentFiltersEnhanced({ categories, brands }: EquipmentFilter
     } else if (key === 'brand') {
       pathnameHook.handleChangeBrand(value === 'all' ? '' : value);
     }
+  };
+
+  const handleSearchChange = (value: string) => {
+    pathnameHook.handleChangeSearchParams({ key: 'search', value });
   };
 
   return (
@@ -102,30 +105,40 @@ export function EquipmentFiltersEnhanced({ categories, brands }: EquipmentFilter
           </Button>
         </div>
       )}
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-        <FilterSelect
-          placeholder="Select Category"
-          value={currentCategory}
-          onValueChange={value => updateFilter('category', value)}
-          options={categoryOptions}
-          className="h-10 w-full"
-        />
+      <div className="space-y-3">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          <EquipmentsAutocomplete
+            placeholder="Search equipment..."
+            value={currentSearch}
+            onValueChange={handleSearchChange}
+            className="w-full"
+          />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <FilterSelect
+              placeholder="Select Category"
+              value={currentCategory}
+              onValueChange={value => updateFilter('category', value)}
+              options={categoryOptions}
+              className="h-10 w-full"
+            />
 
-        <FilterSelect
-          placeholder="Select Type"
-          value={currentType}
-          onValueChange={value => updateFilter('type', value)}
-          options={typeOptions}
-          className="h-10 w-full"
-        />
+            <FilterSelect
+              placeholder="Select Type"
+              value={currentType}
+              onValueChange={value => updateFilter('type', value)}
+              options={typeOptions}
+              className="h-10 w-full"
+            />
 
-        <FilterSelect
-          placeholder="Select Brand"
-          value={currentBrand}
-          onValueChange={value => updateFilter('brand', value)}
-          options={brandOptions}
-          className="h-10 w-full"
-        />
+            <FilterSelect
+              placeholder="Select Brand"
+              value={currentBrand}
+              onValueChange={value => updateFilter('brand', value)}
+              options={brandOptions}
+              className="h-10 w-full"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
