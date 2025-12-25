@@ -27,7 +27,7 @@ function HeroSection({
       case 'bottom-to-top':
         return 'bg-gradient-to-b from-secondary/80 via-secondary/70 to-transparent';
       default: // left-to-right
-        return 'bg-gradient-to-r from-secondary/80 via-secondary/70 to-transparent';
+        return 'bg-gradient-to-r from-background/70 via-background/60 to-transparent';
     }
   };
 

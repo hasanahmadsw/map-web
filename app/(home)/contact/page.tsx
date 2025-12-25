@@ -41,7 +41,7 @@ export default async function ContactPage() {
           <h1 className="text-primary mb-4 text-center text-5xl font-extrabold drop-shadow-lg md:text-6xl">
             Contact Our Team
           </h1>
-          <p className="text-primary-foreground/80 mx-auto max-w-2xl text-center text-xl">
+          <p className="text-muted-foreground mx-auto max-w-2xl text-center text-xl">
             Contact us for any questions or inquiries
           </p>
         </MotionWrapper>

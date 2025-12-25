@@ -1,7 +1,11 @@
 import { Suspense } from 'react';
 
 import { BlogSection, BlogSectionSkeleton } from '@/components/website/blog/blog-section';
+import { BlogCTASection } from '@/components/website/blog/blog-cta-section';
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
+import { Newspaper } from 'lucide-react';
+import SectionHeader from '@/components/website/home/about-us/home-headers';
+import CustomSearch from '@/components/shared/search/custom-search';
 
 interface Props {
   searchParams?: Promise<{
@@ -30,13 +34,25 @@ export default async function BlogPage(props: Props) {
   const isFeatured = searchParams?.isFeatured === 'true' ? true : undefined;
 
   return (
-    <div className="pt-edge-nav-margin container mx-auto max-w-7xl space-y-4 py-10">
-      <header>
-        <h1 className="mb-3 max-w-2xl text-3xl font-medium">Blog</h1>
-        <p className="text-muted-foreground max-w-2xl pb-6">
-          Read our latest articles, insights, and updates.
-        </p>
-      </header>
+    <section className="pt-edge-nav-margin container mx-auto max-w-7xl space-y-4 py-10">
+      <SectionHeader
+        BadgeText="Articles"
+        title="Our"
+        highlightedText="Articles"
+        description="Stay updated with our latest news and insights"
+        Icon={Newspaper}
+      />
+
+      <div className="mb-16 flex w-full items-center justify-center gap-4">
+        <CustomSearch
+          query="search"
+          placeholder="Search articles..."
+          Icon={
+            <Newspaper className="text-primary absolute start-4 top-1/2 h-5 w-5 -translate-y-1/2 transform" />
+          }
+          className="w-full sm:w-2xl"
+        />
+      </div>
 
       <Suspense
         key={`${page} | ${search} | ${isFeatured ? 'featured' : 'all'}`}
@@ -44,6 +60,10 @@ export default async function BlogPage(props: Props) {
       >
         <BlogSection page={page} limit={limit} search={search} isFeatured={isFeatured} />
       </Suspense>
-    </div>
+
+      <div className="mt-16 max-w-6xl">
+        <BlogCTASection />
+      </div>
+    </section>
   );
 }
