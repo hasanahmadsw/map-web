@@ -67,7 +67,7 @@ function Header() {
           visible ? 'w-11/12 lg:w-5/12' : 'w-full',
         )}
       >
-        <Logo />
+        <Logo width={80} height={40} />
 
         {/* Desktop Navigation */}
         <Navbar />
