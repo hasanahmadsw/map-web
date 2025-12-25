@@ -6,24 +6,30 @@ import { useState, FormEvent } from 'react';
 import { ArrowRight, Search, Sparkles } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import EquipmentsAutocomplete from '../common/equipments-autocomplete';
 
 export function HeroSection() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
 
-  function handleSearch(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
-
-    // Navigate to services page with search query
-    router.push(`/services?search=${encodeURIComponent(searchQuery.trim())}`);
-  }
+  const handleSearchChange = (value: string) => {
+    if (!value.trim()) return;
+    router.push(`/rental?search=${encodeURIComponent(value.trim())}`);
+  };
 
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pb-16 md:px-0 md:py-24">
       {/* Grid Pattern Overlay */}
-      <div className="bg-pattern-grid-large pointer-events-none absolute inset-0 opacity-40" />
+
+      {/* Subtle grid pattern */}
+      <div
+        className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage: `linear-gradient(to right, #888 1px, transparent 1px),
+                            linear-gradient(to bottom, #888 1px, transparent 1px)`,
+          backgroundSize: '50px 50px',
+        }}
+      />
 
       {/* Gradient Overlay */}
       {/* <div className="bg-pattern-overlay pointer-events-none absolute inset-0" /> */}
@@ -49,47 +55,28 @@ export function HeroSection() {
           </div>
 
           {/* Search Input */}
-          <form onSubmit={handleSearch} className="mx-auto w-full max-w-2xl pt-4">
+          <div className="mx-auto w-full max-w-2xl pt-4">
             <div
               className={cn(
-                'glass-card group relative flex items-center gap-3 rounded-2xl p-1 transition-all duration-300',
-                isFocused && 'ring-primary/20 shadow-primary/5 shadow-lg ring-2',
+                'group relative z-50 gap-3 rounded-2xl px-4 py-3 transition-all duration-300',
+                'bg-background/80 border-border/50 border backdrop-blur-xl',
+                'shadow-lg shadow-black/5 dark:shadow-black/20',
+                'hover:bg-background/90 hover:border-border hover:shadow-xl hover:shadow-black/10 dark:hover:shadow-black/30',
+                'focus-within:bg-background/95 focus-within:border-primary/50 focus-within:shadow-primary/10 focus-within:shadow-2xl',
+                'dark:bg-card/70 dark:border-border/40 dark:hover:bg-card/80 dark:focus-within:bg-card/90',
               )}
             >
-              <div className="flex flex-1 items-center gap-3 px-4 py-3">
-                <Search
-                  className={cn(
-                    'h-5 w-5 shrink-0 transition-colors duration-200',
-                    isFocused ? 'text-primary' : 'text-muted-foreground',
-                  )}
-                />
-                <Input
-                  type="search"
-                  placeholder="Search solutions, services, equipment..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  onFocus={() => setIsFocused(true)}
-                  onBlur={() => setIsFocused(false)}
-                  className="h-auto border-0 bg-transparent p-0 text-base focus-visible:ring-0 focus-visible:ring-offset-0 md:text-lg"
-                />
-              </div>
-              <button
-                type="submit"
-                className={cn(
-                  'glass-button mr-1 rounded-xl px-6 py-3 text-sm font-medium transition-all duration-200 md:px-8',
-                  searchQuery.trim()
-                    ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-                    : 'bg-muted text-muted-foreground',
-                )}
-                disabled={!searchQuery.trim()}
-              >
-                Search
-              </button>
+              <EquipmentsAutocomplete
+                placeholder="Search equipment..."
+                value={searchQuery}
+                onValueChange={handleSearchChange}
+                className="w-full"
+              />
             </div>
-          </form>
+          </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col items-center justify-center gap-4 pt-6 sm:flex-row">
+          <div className="relative flex flex-col items-center justify-center gap-4 pt-6 sm:flex-row">
             <Link
               className="glass-button group flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all duration-200 hover:scale-105 md:px-8 md:text-base"
               href="/solutions"

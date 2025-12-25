@@ -7,7 +7,7 @@ import type { IEquipment } from '@/types/equipments/equipment.type';
 import { equipmentsService } from '@/services/equipments/equipments.service';
 import type { EquipmentListParams } from '@/services/equipments/equipments.service';
 
-import { Search, X } from 'lucide-react';
+import { Loader2, Search, X } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 
@@ -23,10 +23,6 @@ interface EquipmentsAutocompleteProps {
   minCharacters?: number;
   disabled?: boolean;
   required?: boolean;
-  name?: string;
-  id?: string;
-  'aria-label'?: string;
-  'aria-describedby'?: string;
 }
 
 function EquipmentsAutocomplete({
@@ -41,10 +37,6 @@ function EquipmentsAutocomplete({
   minCharacters = 2,
   disabled = false,
   required = false,
-  name,
-  id,
-  'aria-label': ariaLabel,
-  'aria-describedby': ariaDescribedBy,
 }: EquipmentsAutocompleteProps) {
   const [internalValue, setInternalValue] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
@@ -55,7 +47,7 @@ function EquipmentsAutocomplete({
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const loadingAbortControllerRef = useRef<AbortController | null>(null);
   const generatedId = useId();
-  const inputId = id || generatedId;
+  const inputId = generatedId;
   const suggestionsId = `${inputId}-suggestions`;
 
   // Helper function to format enum values
@@ -251,13 +243,11 @@ function EquipmentsAutocomplete({
       )}
       <div className="relative">
         <Search
-          className="text-muted-foreground pointer-events-none absolute start-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2"
+          className="text-primary pointer-events-none absolute start-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2"
           aria-hidden="true"
         />
         <Input
           ref={inputRef}
-          id={inputId}
-          name={name}
           type="text"
           placeholder={placeholder}
           value={internalValue}
@@ -269,8 +259,6 @@ function EquipmentsAutocomplete({
           disabled={disabled}
           required={required}
           autoFocus={false}
-          aria-label={ariaLabel || label}
-          aria-describedby={ariaDescribedBy}
           aria-autocomplete="list"
           aria-controls={suggestionsId}
           aria-expanded={isOpen}
@@ -281,16 +269,17 @@ function EquipmentsAutocomplete({
           <button
             type="button"
             onClick={handleClear}
-            className="text-muted-foreground hover:text-foreground absolute end-3 top-1/2 z-10 -translate-y-1/2 rounded p-0.5 transition-colors"
-            aria-label="Clear search"
+            disabled={isLoading}
+            className="text-primary hover:text-foreground absolute end-3 top-1/2 z-10 -translate-y-1/2 rounded p-0.5 transition-colors disabled:pointer-events-none"
+            aria-label={isLoading ? 'Loading' : 'Clear search'}
           >
-            <X className="h-4 w-4" />
+            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <X className="h-4 w-4" />}
           </button>
         )}
         {isOpen && (
           <div
             id={suggestionsId}
-            className="bg-popover absolute top-full z-50 mt-1 w-full rounded-2xl border p-0 shadow-lg backdrop-blur-2xl"
+            className="bg-popover absolute top-full mt-1 w-full rounded-2xl border p-0 shadow-lg backdrop-blur-2xl"
             style={{
               backgroundColor: 'color-mix(in oklch, var(--popover) 95%, transparent)',
             }}
