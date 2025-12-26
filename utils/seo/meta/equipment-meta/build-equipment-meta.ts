@@ -5,18 +5,10 @@ import { capitalizeEachWord } from '@/utils/format';
 // ============================== Generate Search Results Metadata
 export async function generateSearchResultsMetadata(filters: string[], categories: string[]) {
   // =============== Extract filters
-  const { type, category, brand, pathname } = extractPathname(filters, categories);
+  const { type, category, brand, pathname, crumbs } = extractPathname(filters, categories);
 
   // =============== Generate title and description
   const { title, description } = generateEquipmentPageTitleAndDescription({ type, category, brand });
-
-  // =============== Generate breadcrumb
-  const base = pathname.split('/');
-  const crumbs =
-    base.map((path, index) => ({
-      label: capitalizeEachWord(path.replace(/-/g, ' ')) || 'Home',
-      href: `/rental/${base.slice(0, index + 1).join('/')}`,
-    })) || [];
 
   return {
     title,

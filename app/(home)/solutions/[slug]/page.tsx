@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { ServiceCard } from '@/components/website/home/service-card';
 import type { ServiceResponse } from '@/types/services.types';
+import { singleSolutionSchema } from '@/utils/seo/schema/solutions/single-solution-schema';
 
 interface SolutionPageProps {
   params: Promise<{
@@ -64,8 +65,19 @@ export default async function SolutionPage({ params }: SolutionPageProps) {
     notFound();
   }
 
+  // Markup Schema
+  const jsonLd = await singleSolutionSchema(solution);
+
   return (
     <div className="bg-background min-h-screen">
+      {/* JSON-LD */}
+      <script
+        id="solution-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
       {/* Hero Section with Image */}
       <div className="pt-edge-nav-margin relative h-[60vh] w-full overflow-hidden md:h-[70vh]">
         {solution.featuredImage ? (

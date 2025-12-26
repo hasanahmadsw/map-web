@@ -8,6 +8,7 @@ import MissionVisionSection from '@/components/website/about/mission-vision-sect
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 import HeroSection from '@/components/shared/hero-section';
 import MotionWrapper from '@/components/shared/motion/motion-wrapper';
+import { generateAboutPageSchema } from '@/utils/seo/schema/about/about-schema';
 
 export async function generateMetadata() {
   const metaData = createEnhancedMetadata({
@@ -25,18 +26,18 @@ export async function generateMetadata() {
 
 export default async function About() {
   // Markup Schema
-  // const jsonLd = await aboutPageSchema(lang, aboutData);
+  const jsonLd = await generateAboutPageSchema();
 
   return (
     <>
       {/* JSON-LD */}
-      {/* <script
+      <script
         id="about-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
         }}
-      /> */}
+      />
 
       {/* Hero section with main title and background image */}
       <HeroSection imageSrc="/hero.webp" overlayDirection="left-to-right">

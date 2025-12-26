@@ -17,6 +17,7 @@ import type { Article } from '@/types/articles.types';
 import { BlogArticleCard } from '@/components/website/blog/blog-article-card';
 import { ShareCard } from '@/components/website/blog/share-card';
 import SafeHtmlContent from '@/components/shared/safe-html-content';
+import { singleArticleSchema } from '@/utils/seo/schema/articles/single-article-schema';
 
 interface BlogPageProps {
   params: Promise<{
@@ -92,8 +93,19 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
   const readingTime = calculateReadingTime(article.content || '');
 
+  // Markup Schema
+  const jsonLd = await singleArticleSchema(article);
+
   return (
     <div className="bg-background relative min-h-screen">
+      {/* JSON-LD */}
+      <script
+        id="article-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
       {/* Decorative Orbs */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="orb-blue absolute -top-32 -left-32 h-96 w-96" />

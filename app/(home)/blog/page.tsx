@@ -21,6 +21,7 @@ export function generateMetadata() {
     title: 'Media Production Insights & Creative Blog | MAP',
     description:
       'Read expert insights, trends, and tips on media production, video marketing, storytelling, and creative strategies from MAP professionals.',
+
     pathname: '/blog',
     mainOverrides: {
       category: 'Media Production Insights',

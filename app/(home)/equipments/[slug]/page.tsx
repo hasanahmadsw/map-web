@@ -30,6 +30,7 @@ import { EquipmentType } from '@/types/equipments/equipment.enum';
 import type { IEquipment } from '@/types/equipments/equipment.type';
 import { EquipmentGallery } from '@/components/website/equipments/view/equipment-gallery';
 import { EquipmentSpecs } from '@/components/website/equipments/view/equipment-specs';
+import { singleEquipmentSchema } from '@/utils/seo/schema/equipments/single-equipment-schema';
 
 interface EquipmentPageProps {
   params: Promise<{
@@ -120,8 +121,20 @@ export default async function EquipmentPage({ params }: EquipmentPageProps) {
     }
   };
 
+  // Markup Schema
+  const jsonLd = await singleEquipmentSchema(equipment);
+
   return (
     <div className="bg-background relative min-h-screen">
+      {/* JSON-LD */}
+      <script
+        id="equipment-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
+
       {/* Decorative Orbs */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="orb-blue absolute -top-32 -left-32 h-96 w-96" />

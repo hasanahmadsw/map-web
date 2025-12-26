@@ -83,7 +83,7 @@ export default async function EquipmentsPage({ params, searchParams }: Props) {
 
         {/* Results */}
         <Suspense key={JSON.stringify(equipmentParams)} fallback={<EquipmentGridSkeleton />}>
-          <EquipmentGrid equipmentParams={equipmentParams} />
+          <EquipmentGrid equipmentParams={equipmentParams} filters={filters} categories={categories} />
         </Suspense>
       </section>
 

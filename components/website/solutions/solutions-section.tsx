@@ -5,6 +5,7 @@ import { SolutionCard } from '@/components/website/home/solution-card';
 import EmptyState from '@/components/shared/data-states/empty-state';
 import CustomPagination from '@/components/shared/pagination/custom-pagination';
 import { Lightbulb } from 'lucide-react';
+import { solutionsSchema } from '@/utils/seo/schema/solutions/solutions-schema';
 
 interface SolutionsSectionProps {
   page: number;
@@ -40,8 +41,20 @@ export async function SolutionsSection({ page, limit, search, isFeatured }: Solu
     return <EmptyState type="no-data" icon={<Lightbulb />} />;
   }
 
+  // Markup Schema
+  const jsonLd = await solutionsSchema(solutions, page);
+
   return (
     <>
+      {/* JSON-LD */}
+      <script
+        id="solutions-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
+
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {solutions.map((solution, idx) => (
           <SolutionCard key={solution.id} solution={solution} priority={idx < 3} />

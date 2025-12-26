@@ -3,6 +3,7 @@ import MotionWrapper from '@/components/shared/motion/motion-wrapper';
 import ContactDetails from '@/components/website/contact/contact-details';
 import ContactForm from '@/components/website/contact/contact-form';
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
+import { generateContactPageSchema } from '@/utils/seo/schema/contact/contact-schema';
 
 export async function generateMetadata() {
   const metaData = createEnhancedMetadata({
@@ -20,18 +21,18 @@ export async function generateMetadata() {
 
 export default async function ContactPage() {
   // Markup Schema
-  // const jsonLd = await contactPageSchema(lang);
+  const jsonLd = await generateContactPageSchema();
 
   return (
     <>
       {/* JSON-LD */}
-      {/* <script
+      <script
         id="contact-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
         }}
-      /> */}
+      />
 
       <HeroSection imageSrc="/hero.webp" overlayDirection="left-to-right">
         <MotionWrapper

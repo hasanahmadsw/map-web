@@ -1,4 +1,5 @@
 import { EquipmentType } from '@/types/equipments/equipment.enum';
+import { capitalizeEachWord } from '../format';
 
 export function formatText(text: string) {
   return text
@@ -35,12 +36,20 @@ export function extractPathname(
   // =============== Pathname without language
   const pathname = normalizedFilters.reduce((acc, curr) => (curr ? (acc += `/${curr}`) : acc), '');
 
+  const base = pathname.split('/');
+  const crumbs =
+    base.map((path, index) => ({
+      name: capitalizeEachWord(path.replace(/-/g, ' ')),
+      url: `${base.slice(0, index + 1).join('/')}`,
+    })) || [];
+
   return {
     type,
     category,
     brand,
     searchParams,
     pathname,
+    crumbs,
   };
 }
 

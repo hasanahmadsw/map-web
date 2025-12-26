@@ -9,6 +9,7 @@ import { ArticlesSection } from '@/components/website/home/articles-section';
 
 import SectionSkeleton from '@/components/shared/skeletons/section-skeletion';
 import AboutUs from '@/components/website/home/about-us/about-us';
+import { homeSchema } from '@/utils/seo/schema/home/home-schema';
 
 export async function generateMetadata(): Promise<Metadata> {
   const metaData = createEnhancedMetadata({
@@ -25,6 +26,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
+  // Markup Schema
+  const jsonLd = await homeSchema();
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Background Pattern */}
@@ -35,13 +39,14 @@ export default async function Page() {
       <div className="orb-blue-large absolute top-1/2 -left-40 h-120 w-120 will-change-transform" />
       <div className="orb-purple-large absolute top-3/4 -right-40 h-120 w-120 will-change-transform" /> */}
 
-      {/* <script
-        id="news-home-jsonld"
+      {/* JSON-LD */}
+      <script
+        id="home-jsonld"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
         }}
-      /> */}
+      />
       <HeroSection />
       {/* Solutions Section */}
       <Suspense fallback={<SectionSkeleton />}>

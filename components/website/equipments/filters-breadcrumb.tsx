@@ -20,34 +20,29 @@ interface FiltersBreadcrumbProps {
 
 async function FiltersBreadcrumb({ filters, categories }: FiltersBreadcrumbProps) {
   // =============== Extract filters
-  const { pathname } = extractPathname(filters, categories);
+  const { crumbs } = extractPathname(filters, categories);
+  const crumbsWithoutHome = crumbs.slice(1);
 
-  // =============== Generate breadcrumb
-  const base = pathname.split('/').slice(1);
-  const crumbs =
-    base.map((path, index) => ({
-      label: capitalizeEachWord(path.replace(/-/g, ' ')) || 'Home',
-      href: `${base.slice(0, index + 1).join('/')}`,
-    })) || [];
-
-  if (crumbs.length <= 1) return null;
+  if (crumbsWithoutHome.length === 0) return null;
 
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        {crumbs.map((crumb, index) => {
-          const isFirst = index === 0;
-          const isLast = index === crumbs.length - 1;
+        <BreadcrumbLink className="text-sm" asChild>
+          <Link href="/rental">Rental</Link>
+        </BreadcrumbLink>
+        {crumbsWithoutHome.map((crumb, index) => {
+          const isLast = index === crumbsWithoutHome.length - 1;
 
           return (
             <Fragment key={index}>
-              {!isFirst && <BreadcrumbSeparator />}
+              <BreadcrumbSeparator />
               <BreadcrumbItem>
                 {isLast ? (
-                  <BreadcrumbPage className="text-sm">{capitalizeFirstLetter(crumb.label)}</BreadcrumbPage>
+                  <BreadcrumbPage className="text-sm">{capitalizeFirstLetter(crumb.name)}</BreadcrumbPage>
                 ) : (
                   <BreadcrumbLink className="text-sm" asChild>
-                    <Link href={`/rental/${crumb.href}`}>{capitalizeFirstLetter(crumb.label)}</Link>
+                    <Link href={`/rental${crumb.url}`}>{capitalizeFirstLetter(crumb.name)}</Link>
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>

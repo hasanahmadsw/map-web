@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Check } from 'lucide-react';
 import type { SubService } from '@/types/services.types';
+import { singleServiceSchema } from '@/utils/seo/schema/services/single-service-schema';
 
 interface ServicePageProps {
   params: Promise<{
@@ -65,8 +66,19 @@ export default async function ServicePage({ params }: ServicePageProps) {
     notFound();
   }
 
+  // Markup Schema
+  const jsonLd = await singleServiceSchema(service);
+
   return (
     <div className="bg-background min-h-screen">
+      {/* JSON-LD */}
+      <script
+        id="service-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
       {/* Hero Section with Image */}
       <div className="pt-edge-nav-margin relative h-[60vh] w-full overflow-hidden md:h-[70vh]">
         {service.featuredImage && service.featuredImage.trim() !== '' ? (
