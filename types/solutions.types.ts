@@ -36,8 +36,8 @@ export interface SolutionResponse {
   description: string;
   shortDescription: string;
   services?: ServiceResponse[];
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
   meta: {
     title: string;
     keywords: string[];

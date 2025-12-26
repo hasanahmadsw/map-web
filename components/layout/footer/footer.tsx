@@ -89,6 +89,7 @@ const Footer = async () => {
                   <li key={solution.id}>
                     <Link
                       href={`/solutions/${solution.slug}`}
+                      prefetch={false}
                       className="group flex items-center text-gray-400 transition-colors hover:text-white"
                     >
                       <ChevronRight className="mr-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -107,6 +108,7 @@ const Footer = async () => {
                   <li key={service.id}>
                     <Link
                       href={`/services/${service.slug}`}
+                      prefetch={false}
                       className="group flex items-center text-gray-400 transition-colors hover:text-white"
                     >
                       <ChevronRight className="mr-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -150,6 +152,7 @@ const Footer = async () => {
                   <li key={item.name}>
                     <Link
                       href={item.href}
+                      prefetch={false}
                       className="group flex items-center text-gray-400 transition-colors hover:text-white"
                     >
                       <ChevronRight className="mr-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
