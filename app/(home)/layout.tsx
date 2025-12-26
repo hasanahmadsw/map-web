@@ -5,9 +5,9 @@ import Header from '@/components/layout/header/header';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Media Production and Broadcasting Solutions',
+  title: 'Media Production Company in UAE | MAP Media Art Production',
   description:
-    'Latest news, breaking stories, and in-depth analysis from around the world. Stay informed with our comprehensive coverage of politics, technology, business, and more.',
+    'MAP Media Art Production is a leading media production company in the UAE, delivering creative video, film, and digital content across the Middle East.',
 };
 
 export default async function PublicPagesLayout({ children }: { children: React.ReactNode }) {

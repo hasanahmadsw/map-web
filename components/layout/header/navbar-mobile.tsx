@@ -46,13 +46,13 @@ function NavigationSheet() {
             <ul className="space-y-2">
               {navigationLinks.map(link => {
                 const Icon = link.icon;
-                const isActive = link.href === '' ? pathname === `/` : pathname === `/${link.href}`;
+                const isActive = link.href === '' ? pathname === `/` : pathname === `${link.href}`;
 
                 return (
                   <li key={link.label}>
                     <SheetClose asChild>
                       <Link
-                        href={`/${link.href}`}
+                        href={`${link.href}`}
                         className={`links-center flex gap-3 rounded-lg p-3 transition-all ${
                           isActive
                             ? 'bg-accent text-accent-foreground'

@@ -1,15 +1,12 @@
 import { Suspense } from 'react';
 
-import type { Metadata } from 'next';
-
 import { ServicesSection } from '@/components/website/services/services-section';
 import { ServicesSectionSkeleton } from '@/components/website/services/services-section-skeleton';
 import { ServicesCTASection } from '@/components/website/services/services-cta-section';
-import { ServicesHeader } from '@/components/website/services/services-header';
 
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 import SectionHeader from '@/components/website/home/about-us/home-headers';
-import { Briefcase, Settings } from 'lucide-react';
+import { Settings } from 'lucide-react';
 import CustomSearch from '@/components/shared/search/custom-search';
 
 interface Props {
@@ -23,10 +20,13 @@ interface Props {
 
 export function generateMetadata() {
   return createEnhancedMetadata({
-    title: 'Our Services',
-    description: 'Professional media production and broadcasting services tailored to your needs',
-    type: 'website',
+    title: 'Professional Media Production Services in UAE | MAP',
+    description:
+      'Explore our full range of media production services, from video filming and editing to post-production, animation, and branded content.',
     pathname: '/services',
+    mainOverrides: {
+      category: 'Media Production Services',
+    },
   });
 }
 

@@ -55,10 +55,10 @@ export async function generateMetadata({ params }: EquipmentPageProps): Promise<
     ].filter(Boolean) as string[];
 
     const metadata = createEnhancedMetadata({
-      title: { absolute: equipment.name },
+      title: { absolute: `${equipment.name} for Rent in UAE | ${equipment.equipmentType} | MAP` },
       description:
         equipment.summary || equipment.description || `${equipment.name} - Professional equipment rental`,
-      type: 'website',
+      type: 'article',
       keywords,
       pathname: `/equipments/${equipment.slug}`,
       image: equipment.coverPath || undefined,
@@ -149,14 +149,6 @@ export default async function EquipmentPage({ params }: EquipmentPageProps) {
         {/* Content Overlay */}
         <div className="relative z-10 container mx-auto flex h-full max-w-7xl flex-col justify-end px-6 py-10">
           <div className="space-y-4">
-            <Link
-              href={`/rental`}
-              className="glass-button flex w-fit items-center gap-2 rounded-full px-4 py-2 text-white hover:text-white"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Equipment
-            </Link>
-
             <div className="flex flex-wrap items-center gap-2">
               {equipment.isFeatured && (
                 <Badge variant="default" className="text-sm font-medium">

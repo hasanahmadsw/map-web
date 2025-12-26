@@ -16,7 +16,7 @@ interface BlogArticleCardProps {
 
 export function BlogArticleCard({ article, priority = false }: BlogArticleCardProps) {
   const href = `/blog/${article.slug}`;
-  const coverImage = article.featuredImage || article.image || FALLBACK_IMAGE;
+  const coverImage = article.image || FALLBACK_IMAGE;
   const topics = toLabelList(article.topics);
   const tags = toLabelList(article.tags);
 

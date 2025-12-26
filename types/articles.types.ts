@@ -4,10 +4,9 @@ import { Staff } from './staff.types';
 export interface Article {
   id: number;
   slug: string;
-  image: string | null;
   isPublished: boolean;
   isFeatured: boolean;
-  featuredImage: string | null;
+  image: string | null;
   viewCount: number;
   name: string;
   content: string;

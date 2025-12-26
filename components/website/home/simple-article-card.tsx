@@ -34,9 +34,7 @@ const blurDataURL = `data:image/svg+xml;base64,${toBase64(shimmer(800, 600))}`;
 export function SimpleArticleCard({ article, priority = false }: SimpleArticleCardProps) {
   // Pre-compute values to avoid repeated calculations
   const coverImage =
-    article.featuredImage ||
-    article.image ||
-    'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80';
+    article.image || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80';
   const isUnoptimized = coverImage.includes('unsplash.com') || coverImage.includes('supabase.co');
 
   // Calculate reading time (approximate: 200 words per minute)

@@ -8,7 +8,7 @@ import DivHtml from '@/components/shared/div-html';
 import { Badge } from '@/components/ui/badge';
 
 import Link from 'next/link';
-import { ArrowLeft, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import type { SubService } from '@/types/services.types';
 
 interface ServicePageProps {
@@ -16,8 +16,6 @@ interface ServicePageProps {
     slug: string;
   }>;
 }
-
-export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -41,21 +39,17 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
       service.shortDescription ||
       service.meta?.description ||
       `${service.name} - Professional media production service`,
-    type: 'website',
+    type: 'article',
     keywords,
     pathname: `/services/${service.slug}`,
     image: service.featuredImage || undefined,
-    openGraphOverrides: {
-      type: 'website',
-      title: service.name,
-      description: service.shortDescription || service.meta?.description || '',
-      url: `/services/${service.slug}`,
-      images: service.featuredImage ? [{ url: service.featuredImage }] : undefined,
+    mainOverrides: {
+      category: 'Media Production Service',
     },
-    twitterOverrides: {
-      card: 'summary_large_image',
-      title: service.name,
-      description: service.shortDescription || service.meta?.description || '',
+    openGraphOverrides: {
+      tags: keywords,
+      publishedTime: service.createdAt,
+      modifiedTime: service.updatedAt,
     },
   });
 
@@ -85,23 +79,15 @@ export default async function ServicePage({ params }: ServicePageProps) {
               priority
               unoptimized={service.featuredImage.includes('supabase.co')}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/50 to-transparent" />
           </>
         ) : (
           <div className="bg-muted absolute inset-0" />
         )}
 
         {/* Content Overlay */}
-        <div className="relative z-10 container mx-auto flex h-full max-w-7xl flex-col justify-end py-10">
+        <div className="relative z-10 container mx-auto flex h-full max-w-7xl flex-col justify-end px-6 py-10">
           <div className="space-y-4">
-            <Link
-              href={`/services`}
-              className="glass-button flex w-fit items-center gap-2 rounded-full px-4 py-2 text-white hover:text-white"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Services
-            </Link>
-
             {service.isFeatured && (
               <Badge variant="default" className="text-sm font-medium">
                 Featured Service
@@ -118,7 +104,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
       </div>
 
       {/* Main Content */}
-      <div className="bg-background mx-auto max-w-7xl">
+      <div className="relative z-10 container mx-auto max-w-7xl px-6 py-10">
         {/* Description Section */}
         {service.description && (
           <section className="container max-w-7xl py-10">
@@ -145,7 +131,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                   <div key={index} className="glass-card rounded-xl p-6">
                     <div className="mb-4 flex items-start gap-4">
                       {subService.icon && (
-                        <div className="text-muted-foreground flex-shrink-0 text-3xl opacity-70">
+                        <div className="text-muted-foreground shrink-0 text-3xl opacity-70">
                           {subService.icon}
                         </div>
                       )}
@@ -162,7 +148,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                       <ul className="space-y-2">
                         {subService.features.map((feature: string, featureIndex: number) => (
                           <li key={featureIndex} className="flex items-start gap-2 text-sm">
-                            <Check className="text-primary mt-0.5 h-4 w-4 flex-shrink-0" />
+                            <Check className="text-primary mt-0.5 h-4 w-4 shrink-0" />
                             <span className="text-muted-foreground">{feature}</span>
                           </li>
                         ))}

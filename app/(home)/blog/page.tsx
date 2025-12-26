@@ -18,10 +18,13 @@ interface Props {
 
 export function generateMetadata() {
   return createEnhancedMetadata({
-    title: 'Blog',
-    description: 'Read our latest articles, insights, and updates.',
-    type: 'website',
+    title: 'Media Production Insights & Creative Blog | MAP',
+    description:
+      'Read expert insights, trends, and tips on media production, video marketing, storytelling, and creative strategies from MAP professionals.',
     pathname: '/blog',
+    mainOverrides: {
+      category: 'Media Production Insights',
+    },
   });
 }
 

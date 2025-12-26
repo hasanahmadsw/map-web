@@ -3,20 +3,22 @@ import { Suspense } from 'react';
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 import type { Metadata } from 'next';
 import { HeroSection } from '@/components/website/home/hero-section';
-import { StatisticsSection } from '@/components/website/home/statistics-section';
 import { SolutionsSection } from '@/components/website/home/solutions-section';
 import { ServicesSection } from '@/components/website/home/services-section';
 import { ArticlesSection } from '@/components/website/home/articles-section';
-import { FAQSection } from '@/components/website/home/faq-section';
-import { CTASection } from '@/components/website/home/cta-section';
+
 import SectionSkeleton from '@/components/shared/skeletons/section-skeletion';
 import AboutUs from '@/components/website/home/about-us/about-us';
 
 export async function generateMetadata(): Promise<Metadata> {
   const metaData = createEnhancedMetadata({
-    title: 'Media Production and Broadcasting Solutions',
+    title: 'Media Production Company in UAE | MAP Media Art Production',
     description:
-      'Latest news, breaking stories, and in-depth analysis from around the world. Stay informed with our comprehensive coverage of politics, technology, business, and more.',
+      'MAP Media Art Production is a leading media production company in the UAE, delivering creative video, film, and digital content across the Middle East.',
+    pathname: '/',
+    mainOverrides: {
+      category: 'media production',
+    },
   });
 
   return metaData;

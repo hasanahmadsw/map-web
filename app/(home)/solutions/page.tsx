@@ -19,9 +19,13 @@ interface Props {
 
 export function generateMetadata() {
   return createEnhancedMetadata({
-    title: 'Solutions',
-    description: 'Discover our professional media production and broadcasting solutions',
+    title: 'Creative Media Solutions for Brands & Businesses | MAP',
+    description:
+      'Discover tailored media solutions including video production, storytelling, and digital content designed to elevate brands and engage audiences.',
     pathname: '/solutions',
+    mainOverrides: {
+      category: 'Media Production Solutions',
+    },
   });
 }
 

@@ -10,7 +10,7 @@ import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import DivHtml from '@/components/shared/div-html';
+
 import { capitalizeEachWord } from '@/utils/format';
 import { formatDate } from '@/lib/utils';
 import type { Article } from '@/types/articles.types';
@@ -31,22 +31,6 @@ function calculateReadingTime(content: string): number {
   return Math.ceil(wordCount / wordsPerMinute);
 }
 
-function toLabelList(value: unknown): string[] {
-  if (!Array.isArray(value)) return [];
-
-  return value
-    .map(entry => {
-      if (typeof entry === 'string') return entry;
-      if (!entry || typeof entry !== 'object') return null;
-
-      const candidate = entry as { name?: unknown; slug?: unknown };
-      if (typeof candidate.name === 'string') return candidate.name;
-      if (typeof candidate.slug === 'string') return candidate.slug;
-      return null;
-    })
-    .filter(Boolean) as string[];
-}
-
 export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
   const { slug } = await params;
   let article: Article | null = null;
@@ -56,8 +40,8 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
 
     const keywords = [
       article.name,
-      ...(article.tags || []),
-      ...(article.topics || []),
+      ...(article?.tags || []),
+      ...(article?.topics || []),
       article.author?.name,
       'blog',
       'article',
@@ -71,19 +55,15 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
       type: 'article',
       keywords,
       pathname: `/blog/${article.slug}`,
-      image: article.featuredImage || article.image || undefined,
+      image: article.image || undefined,
+      authors: article.author ? [{ name: article.author.name }] : undefined,
       mainOverrides: {
         category: 'Blog',
       },
       openGraphOverrides: {
-        type: 'article',
         publishedTime: article.createdAt,
-        authors: article.author?.name ? [article.author.name] : undefined,
-        tags: article.tags || [],
-        images:
-          article.featuredImage || article.image
-            ? [{ url: article.featuredImage || article.image || '' }]
-            : undefined,
+        modifiedTime: article.updatedAt,
+        tags: keywords,
       },
     });
 
@@ -110,9 +90,6 @@ export default async function BlogPage({ params }: BlogPageProps) {
     notFound();
   }
 
-  const coverImage = article.featuredImage || article.image;
-  const topics = toLabelList(article.topics);
-  const tags = toLabelList(article.tags);
   const readingTime = calculateReadingTime(article.content || '');
 
   return (
@@ -125,16 +102,9 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
       {/* Hero Section */}
       <div className="pt-edge-nav-margin relative h-[60vh] w-full overflow-hidden md:h-[70vh]">
-        {coverImage ? (
+        {article.image ? (
           <>
-            <Image
-              src={coverImage}
-              alt={article.name}
-              fill
-              className="object-cover"
-              priority
-              unoptimized={coverImage.includes('supabase.co') || coverImage.includes('unsplash.com')}
-            />
+            <Image src={article.image} alt={article.name} fill className="object-cover" priority />
             <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/50 to-transparent" />
           </>
         ) : (
@@ -144,14 +114,6 @@ export default async function BlogPage({ params }: BlogPageProps) {
         {/* Content Overlay */}
         <div className="relative z-10 container mx-auto flex h-full max-w-7xl flex-col justify-end px-6 py-10">
           <div className="space-y-4">
-            <Link
-              href={`/blog`}
-              className="glass-button flex w-fit items-center gap-2 rounded-full px-4 py-2 text-white hover:text-white"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Blog
-            </Link>
-
             <div className="flex flex-wrap items-center gap-2">
               {article.isFeatured && (
                 <Badge variant="default" className="text-sm font-medium">
@@ -159,7 +121,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                   Featured
                 </Badge>
               )}
-              {topics.slice(0, 3).map(topic => (
+              {article?.topics?.slice(0, 3).map(topic => (
                 <Badge key={topic} variant="secondary" className="text-sm">
                   <BookOpen className="mr-1 h-3 w-3" />
                   {capitalizeEachWord(topic)}
@@ -215,7 +177,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
             </section>
 
             {/* Tags Section */}
-            {tags.length > 0 && (
+            {article?.tags?.length > 0 && (
               <section>
                 <div className="mb-4 flex items-center gap-2">
                   <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-lg">
@@ -224,7 +186,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                   <h2 className="text-xl font-semibold">Tags</h2>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {tags.map(tag => (
+                  {article.tags.map(tag => (
                     <Badge key={tag} variant="outline" className="text-sm">
                       {capitalizeEachWord(tag)}
                     </Badge>
@@ -325,7 +287,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                   </div>
                 </div>
 
-                {topics.length > 0 && (
+                {article?.topics?.length > 0 && (
                   <>
                     <Separator />
                     <div className="flex items-start gap-3">
@@ -333,7 +295,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
                       <div className="flex-1">
                         <p className="text-muted-foreground mb-1 text-sm font-medium">Topics</p>
                         <div className="mt-2 flex flex-wrap gap-2">
-                          {topics.map(topic => (
+                          {article.topics.map(topic => (
                             <Badge key={topic} variant="secondary" className="text-xs">
                               {capitalizeEachWord(topic)}
                             </Badge>

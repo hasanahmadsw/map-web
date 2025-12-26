@@ -41,6 +41,8 @@ export interface ServiceResponse {
     keywords: string[];
     description: string;
   };
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface SubService {

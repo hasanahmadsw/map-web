@@ -7,7 +7,6 @@ import Image from 'next/image';
 import DivHtml from '@/components/shared/div-html';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
 import { ServiceCard } from '@/components/website/home/service-card';
 import type { ServiceResponse } from '@/types/services.types';
 
@@ -17,8 +16,6 @@ interface SolutionPageProps {
   }>;
 }
 
-export const dynamic = 'force-dynamic';
-
 export async function generateMetadata({ params }: SolutionPageProps): Promise<Metadata> {
   const { slug } = await params;
   const solution = await solutionsService.getBySlug(slug);
@@ -26,8 +23,6 @@ export async function generateMetadata({ params }: SolutionPageProps): Promise<M
   if (!solution) {
     notFound();
   }
-
-  const siteURL = process.env.NEXT_PUBLIC_SITE_URL!;
 
   const keywords = [
     solution.name,
@@ -43,21 +38,17 @@ export async function generateMetadata({ params }: SolutionPageProps): Promise<M
       solution.shortDescription ||
       solution.meta?.description ||
       `${solution.name} - Professional media production solution`,
-    type: 'website',
+    type: 'article',
     keywords,
     pathname: `/solutions/${solution.slug}`,
     image: solution.featuredImage || undefined,
-    openGraphOverrides: {
-      type: 'website',
-      title: solution.name,
-      description: solution.shortDescription || solution.meta?.description || '',
-      url: `/solutions/${solution.slug}`,
-      images: solution.featuredImage ? [{ url: solution.featuredImage }] : undefined,
+    mainOverrides: {
+      category: 'Media Production Solution',
     },
-    twitterOverrides: {
-      card: 'summary_large_image',
-      title: solution.name,
-      description: solution.shortDescription || solution.meta?.description || '',
+    openGraphOverrides: {
+      tags: keywords,
+      publishedTime: solution.createdAt,
+      modifiedTime: solution.updatedAt,
     },
   });
 
@@ -94,16 +85,8 @@ export default async function SolutionPage({ params }: SolutionPageProps) {
         )}
 
         {/* Content Overlay */}
-        <div className="relative z-10 container mx-auto flex h-full max-w-7xl flex-col justify-end py-10">
+        <div className="relative z-10 container mx-auto flex h-full max-w-7xl flex-col justify-end px-6 py-10">
           <div className="space-y-4">
-            <Link
-              href={`/solutions`}
-              className="glass-button flex w-fit items-center gap-2 rounded-full px-4 py-2 text-white hover:text-white"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Solutions
-            </Link>
-
             {solution.isFeatured && (
               <Badge variant="default" className="text-sm font-medium">
                 Featured Solution
@@ -120,7 +103,7 @@ export default async function SolutionPage({ params }: SolutionPageProps) {
       </div>
 
       {/* Main Content */}
-      <div className="bg-background mx-auto max-w-7xl">
+      <div className="relative z-10 container mx-auto max-w-7xl px-6 py-10">
         {/* Description Section */}
         {solution.description && (
           <section className="container max-w-7xl py-10">

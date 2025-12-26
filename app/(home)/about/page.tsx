@@ -11,11 +11,12 @@ import MotionWrapper from '@/components/shared/motion/motion-wrapper';
 
 export async function generateMetadata() {
   const metaData = createEnhancedMetadata({
-    title: 'About Us',
-    description: 'About Us',
+    title: 'About MAP Media Art Production | Creative Media Experts',
+    description:
+      'Learn about MAP Media Art Production, our story, values, and 25+ years of experience shaping creative media in the UAE and Middle East.',
     pathname: '/about',
     mainOverrides: {
-      category: 'profile',
+      category: 'Company Profile',
     },
   });
 
