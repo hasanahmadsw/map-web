@@ -48,11 +48,11 @@ export async function ArticlesSection() {
         transition={{ delay: 1.1 }}
       >
         <CATSection
-          title="Never Miss an Article"
+          title="Read Our Latest Articles"
           description="Read our latest articles that provide insights, tips, and valuable discussions to help you grow and succeed. Explore the latest conversations anytime."
-          buttonText="Explore Articles"
+          buttonText="Explore Blog"
           className="mx-auto max-w-4xl"
-          href="/articles"
+          href="/blog"
         />
       </MotionWrapper>
     </section>

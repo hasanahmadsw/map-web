@@ -60,15 +60,15 @@ export function SimpleArticleCard({ article, priority = false }: SimpleArticleCa
       />
 
       {/* Gradient Overlay */}
-      <div className="from-background via-background/60 absolute inset-0 -z-10 bg-linear-to-t to-transparent" />
+      <div className="absolute inset-0 -z-10 bg-linear-to-t from-black via-black/60 to-transparent" />
 
       {/* Date and Reading Time */}
-      <div className="text-muted-foreground mb-3 flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6">
+      <div className="mb-3 flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-white/80">
         <time dateTime={article.createdAt} className="mr-8">
           {formattedDate}
         </time>
         <div className="-ml-4 flex items-center gap-x-4">
-          <svg viewBox="0 0 2 2" className="fill-muted-foreground/50 -ml-0.5 h-0.5 w-0.5 flex-none">
+          <svg viewBox="0 0 2 2" className="-ml-0.5 h-0.5 w-0.5 flex-none fill-white/50">
             <circle cx={1} cy={1} r={1} />
           </svg>
           <div className="flex gap-x-2.5">{readingTime} min read</div>
@@ -76,7 +76,7 @@ export function SimpleArticleCard({ article, priority = false }: SimpleArticleCa
       </div>
 
       {/* Title */}
-      <h3 className="text-foreground text-lg leading-6 font-semibold">
+      <h3 className="text-lg leading-6 font-semibold text-white">
         <Link href={`/blog/${article.slug}`}>
           <span className="absolute inset-0" />
           {article.name}

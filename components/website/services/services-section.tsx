@@ -57,7 +57,7 @@ export async function ServicesSection({ page, limit, search, isFeatured }: Servi
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {services.map((service, idx) => (
-          <ServiceCard key={service.id} service={service} priority={idx < 3} />
+          <ServiceCard key={service.id} service={service} />
         ))}
       </div>
 

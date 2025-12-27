@@ -39,7 +39,7 @@ export function HeroSection() {
         <div className="space-y-8 text-center">
           {/* Main Heading */}
           <div className="space-y-4">
-            <h1 className="mx-auto max-w-5xl text-4xl leading-tight font-bold tracking-tight md:text-6xl md:leading-[1.1] lg:text-7xl">
+            <h1 className="mx-auto max-w-5xl text-4xl leading-tight font-bold tracking-tight md:text-6xl md:leading-[1.1]">
               <span className="from-foreground via-foreground to-foreground/70 bg-linear-to-r bg-clip-text text-transparent">
                 Media Production and
               </span>
@@ -48,7 +48,7 @@ export function HeroSection() {
                 Broadcasting Solutions
               </span>
             </h1>
-            <p className="text-muted-foreground mx-auto max-w-2xl text-base md:text-lg lg:text-xl">
+            <p className="mx-auto max-w-2xl text-base">
               Discover our comprehensive range of media production and broadcasting solutions, designed to
               meet the unique needs of businesses and organizations worldwide.
             </p>
@@ -78,14 +78,14 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="relative flex flex-col items-center justify-center gap-4 pt-6 sm:flex-row">
             <Link
-              className="glass-button group flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all duration-200 hover:scale-105 md:px-8 md:text-base"
+              className="glass-button group flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all duration-200 md:px-8 md:text-base"
               href="/solutions"
             >
               Explore Solutions
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
             </Link>
             <Link
-              className="glass-button rounded-full px-6 py-3 text-sm font-medium transition-all duration-200 hover:scale-105 md:px-8 md:text-base"
+              className="glass-button rounded-full px-6 py-3 text-sm font-medium transition-all duration-200 md:px-8 md:text-base"
               href="/news"
             >
               Read Articles

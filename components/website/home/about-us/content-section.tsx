@@ -12,7 +12,7 @@ const features = [
 export default function ContentSection() {
   return (
     <MotionWrapper
-      className="space-y-6"
+      className="mx-auto max-w-5xl space-y-6 text-center"
       initial={{ opacity: 0, x: 50 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}

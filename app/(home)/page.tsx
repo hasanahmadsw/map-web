@@ -31,14 +31,6 @@ export default async function Page() {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Background Pattern */}
-
-      {/* Optimized Gradient Orbs - Reduced count and added will-change for performance */}
-      {/* <div className="orb-blue-large absolute top-0 -left-40 h-120 w-120 will-change-transform" />
-      <div className="orb-purple-large absolute top-1/4 -right-40 h-120 w-120 will-change-transform" />
-      <div className="orb-blue-large absolute top-1/2 -left-40 h-120 w-120 will-change-transform" />
-      <div className="orb-purple-large absolute top-3/4 -right-40 h-120 w-120 will-change-transform" /> */}
-
       {/* JSON-LD */}
       <script
         id="home-jsonld"

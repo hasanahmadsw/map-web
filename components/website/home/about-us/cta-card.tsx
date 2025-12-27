@@ -23,7 +23,7 @@ export default function CATSection({
 }: SimpleCTAProps) {
   return (
     <MotionWrapper
-      className={`from-primary/5 to-secondary/5 border-primary/10 rounded-3xl border bg-linear-to-r p-8 text-center shadow-lg ${className}`}
+      className={`from-primary/5 to-secondary/5 border-primary/10 rounded-3xl border bg-linear-to-r p-8 text-center shadow-sm ${className}`}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -31,7 +31,7 @@ export default function CATSection({
     >
       <MotionWrapper
         as="h3"
-        className="text-foreground mb-4 text-2xl font-bold md:text-3xl"
+        className="text-foreground mb-4 text-2xl font-semibold md:text-3xl"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -53,8 +53,8 @@ export default function CATSection({
 
       <MotionWrapper className="group inline-block" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
         <Button
-          size="lg"
-          className="bg-primary hover:shadow-3xl group text-primary-foreground relative overflow-hidden px-8 py-6 text-lg font-bold shadow-2xl transition-all duration-300"
+          size="default"
+          className="bg-primary hover:shadow-3xl group text-primary-foreground relative overflow-hidden px-8 py-6 text-sm font-medium shadow-2xl transition-all duration-300"
           asChild
         >
           <Link href={href || '#'} role="button" prefetch={false}>

@@ -56,8 +56,8 @@ export async function SolutionsSection({ page, limit, search, isFeatured }: Solu
       />
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {solutions.map((solution, idx) => (
-          <SolutionCard key={solution.id} solution={solution} priority={idx < 3} />
+        {solutions.map(solution => (
+          <SolutionCard key={solution.id} solution={solution} />
         ))}
       </div>
 

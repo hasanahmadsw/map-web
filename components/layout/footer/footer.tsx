@@ -1,9 +1,8 @@
-import { MapPin, Phone, Mail, Facebook, Twitter, Linkedin, Instagram, ChevronRight } from 'lucide-react';
+import { MapPin, Phone, Mail, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '../header/logo';
 import { servicesService } from '@/services/services.service';
 import { solutionsService } from '@/services/solutions.service';
-import { Button } from '@/components/ui/button';
 
 const currentYear = new Date().getFullYear();
 const Footer = async () => {
@@ -48,7 +47,7 @@ const Footer = async () => {
                 <Logo width={150} height={150} />
               </div>
 
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="text-sm leading-relaxed text-white/80">
                 Discover our comprehensive range of media production and broadcasting solutions, designed to
                 meet the unique needs of businesses and organizations worldwide.
               </p>
@@ -90,9 +89,8 @@ const Footer = async () => {
                     <Link
                       href={`/solutions/${solution.slug}`}
                       prefetch={false}
-                      className="group flex items-center text-gray-400 transition-colors hover:text-white"
+                      className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
                     >
-                      <ChevronRight className="mr-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
                       {solution.name}
                     </Link>
                   </li>
@@ -109,9 +107,8 @@ const Footer = async () => {
                     <Link
                       href={`/services/${service.slug}`}
                       prefetch={false}
-                      className="group flex items-center text-gray-400 transition-colors hover:text-white"
+                      className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
                     >
-                      <ChevronRight className="mr-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
                       {service.name}
                     </Link>
                   </li>
@@ -153,9 +150,8 @@ const Footer = async () => {
                     <Link
                       href={item.href}
                       prefetch={false}
-                      className="group flex items-center text-gray-400 transition-colors hover:text-white"
+                      className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
                     >
-                      <ChevronRight className="mr-2 h-4 w-4 opacity-0 transition-opacity group-hover:opacity-100" />
                       {item.name}
                     </Link>
                   </li>
@@ -169,24 +165,24 @@ const Footer = async () => {
             <div className="md:col-span-3 lg:col-span-4">
               <h3 className="mb-6 text-lg font-semibold text-white">Get in Touch</h3>
               <div className="grid gap-6 md:grid-cols-3">
-                <div className="flex items-start space-x-4">
-                  <MapPin className="text-muted-foreground mt-1 h-5 w-5 shrink-0" />
+                <div className="flex items-center space-x-4">
+                  <MapPin className="mt-1 h-5 w-5 shrink-0 text-white/80" />
                   <div>
-                    <div className="text-muted-foreground">Location</div>
+                    <div className="text-sm text-white/80">Location</div>
                     <div className="text-white">BS 18, Dubai Studio City, Dubai, UAE</div>
                   </div>
                 </div>
-                <div className="flex items-start space-x-4">
-                  <Phone className="text-muted-foreground mt-1 h-5 w-5 shrink-0" />
+                <div className="flex items-center space-x-4">
+                  <Phone className="mt-1 h-5 w-5 shrink-0 text-white/80" />
                   <div>
-                    <div className="text-muted-foreground">Phone</div>
+                    <div className="text-sm text-white/80">Phone</div>
                     <div className="text-white">+974 XXXX XXXX</div>
                   </div>
                 </div>
-                <div className="flex items-start space-x-4">
-                  <Mail className="text-muted-foreground mt-1 h-5 w-5 shrink-0" />
+                <div className="flex items-center space-x-4">
+                  <Mail className="mt-1 h-5 w-5 shrink-0 text-white/80" />
                   <div>
-                    <div className="text-muted-foreground">Email</div>
+                    <div className="text-sm text-white/80">Email</div>
                     <div className="text-white">info@maproduction.ae</div>
                   </div>
                 </div>
@@ -197,13 +193,13 @@ const Footer = async () => {
           {/* Bottom Bar */}
           <div className="border-border/10 border-t pt-8">
             <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-              <div className="text-muted-foreground text-sm">
+              <div className="text-sm text-white/80">
                 © {currentYear} MAP. All rights reserved. Powered by{' '}
                 <a
-                  href="https://www.blendlab.ae"
+                  href="https://www.blendlab.net"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground font-bold transition-colors"
+                  className="font-bold text-white/80 transition-colors"
                 >
                   BlendLab
                 </a>
@@ -212,10 +208,10 @@ const Footer = async () => {
 
               <div className="flex items-center space-x-6">
                 <div className="flex items-center space-x-6 text-sm">
-                  <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link href="#" className="text-white/80 transition-colors">
                     Privacy Policy
                   </Link>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link href="#" className="text-white/80 transition-colors">
                     Terms of Service
                   </Link>
                 </div>
@@ -228,9 +224,7 @@ const Footer = async () => {
       {/* Watermark */}
       <div className="border-border/5 border-t px-4 py-6">
         <div className="mx-auto max-w-7xl text-center">
-          <p className="text-muted-foreground text-sm">
-            Leading Production and Broadcasting Solutions since 1997
-          </p>
+          <p className="text-sm text-white/80">Leading Production and Broadcasting Solutions since 2015</p>
         </div>
       </div>
     </footer>

@@ -192,6 +192,9 @@ importers:
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
+      postcss:
+        specifier: ^8.5.6
+        version: 8.5.6
       react:
         specifier: 19.2.3
         version: 19.2.3

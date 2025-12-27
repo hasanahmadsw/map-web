@@ -32,17 +32,14 @@ export default function SectionHeader({
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="bg-primary/10 rounded-full p-2">
-            <Icon className="text-primary h-6 w-6" />
-          </div>
-          <span className="text-primary text-lg font-semibold tracking-widest uppercase">{BadgeText}</span>
+          <span className="text-primary text-sm font-semibold tracking-widest uppercase">{BadgeText}</span>
         </MotionWrapper>
       )}
 
       {/* Main Heading */}
       <MotionWrapper
         as="h3"
-        className="text-foreground text-3xl leading-tight font-bold md:text-5xl"
+        className="text-foreground text-3xl leading-tight font-bold md:text-4xl"
         initial={{ y: 30, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: true }}
@@ -50,7 +47,7 @@ export default function SectionHeader({
       >
         {title}
         {highlightedText && (
-          <span className="text-primary relative mx-4 inline-block">
+          <span className="text-primary relative mx-2 inline-block">
             {' '}
             {highlightedText}
             <MotionWrapper
@@ -68,7 +65,7 @@ export default function SectionHeader({
       {description && (
         <MotionWrapper
           as="p"
-          className="text-muted-foreground mx-auto max-w-2xl pt-4 text-lg md:text-xl"
+          className="text-muted-foreground mx-auto max-w-2xl pt-1 text-base"
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}

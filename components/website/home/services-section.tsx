@@ -1,8 +1,7 @@
 import { servicesService } from '@/services/services.service';
 import { ServiceCard } from './service-card';
 
-import Link from 'next/link';
-import { ArrowRight, Settings } from 'lucide-react';
+import { Settings } from 'lucide-react';
 import SectionHeader from './about-us/home-headers';
 import MotionWrapper from '@/components/shared/motion/motion-wrapper';
 import CATSection from './about-us/cta-card';
@@ -38,7 +37,7 @@ export async function ServicesSection() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {services.map((service, index) => (
-          <ServiceCard key={service.id} service={service} priority={index < 3} />
+          <ServiceCard key={service.id} service={service} />
         ))}
       </div>
 

@@ -1,7 +1,6 @@
 import { solutionsService } from '@/services/solutions.service';
 import { SolutionCard } from './solution-card';
-import Link from 'next/link';
-import { ArrowRight, Lightbulb, Users } from 'lucide-react';
+import { Lightbulb } from 'lucide-react';
 import SectionHeader from './about-us/home-headers';
 import MotionWrapper from '@/components/shared/motion/motion-wrapper';
 import CATSection from './about-us/cta-card';
@@ -41,7 +40,7 @@ export async function SolutionsSection() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {solutions.map((solution, index) => (
-          <SolutionCard key={solution.id} solution={solution} priority={index < 3} />
+          <SolutionCard key={solution.id} solution={solution} />
         ))}
       </div>
 
@@ -60,30 +59,6 @@ export async function SolutionsSection() {
           href="/solutions"
         />
       </MotionWrapper>
-      <MotionWrapper
-        className="absolute right-10 bottom-10 h-96 w-96 rounded-full opacity-20"
-        style={{ background: 'linear-gradient(45deg, var(--primary), var(--primary))' }}
-        animate={{
-          scale: [1.2, 1, 1.2],
-          x: [0, -30, 0],
-          y: [0, 30, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
-
-      {/* <div className="mt-12 flex justify-center">
-        <Link
-          className="glass-button cursor-pointer rounded-full px-8 py-4 text-base font-medium"
-          href="/solutions"
-        >
-          View All Solutions
-          <ArrowRight className="ml-2 inline h-4 w-4" />
-        </Link>
-      </div> */}
     </section>
   );
 }

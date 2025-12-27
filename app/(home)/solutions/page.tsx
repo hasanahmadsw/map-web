@@ -61,7 +61,7 @@ export default async function SolutionsPage(props: Props) {
         <SolutionsSection page={page} limit={limit} search={search} />
       </Suspense>
 
-      <div className="mt-16 max-w-6xl">
+      <div className="mx-auto mt-16 max-w-5xl px-4">
         <SolutionsCTASection />
       </div>
     </section>

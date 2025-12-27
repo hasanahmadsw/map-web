@@ -62,7 +62,7 @@ export default async function ServicesPage(props: Props) {
         <ServicesSection page={page} limit={limit} search={search} />
       </Suspense>
 
-      <div className="mt-16 max-w-6xl">
+      <div className="mx-auto mt-16 max-w-5xl px-4">
         <ServicesCTASection />
       </div>
     </div>
