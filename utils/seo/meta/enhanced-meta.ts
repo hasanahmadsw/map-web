@@ -64,7 +64,9 @@ export async function createEnhancedMetadata(input: EnhancedSeoInput): Promise<M
     },
     ...(authors && { authors }),
 
-    metadataBase: new URL(seoConfig.siteURL),
+    ...(seoConfig.siteURL && {
+      metadataBase: new URL(seoConfig.siteURL),
+    }),
     ...mainOverrides,
   };
 }
