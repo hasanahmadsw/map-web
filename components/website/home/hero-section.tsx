@@ -18,9 +18,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pb-16 md:px-0 md:py-24">
-      {/* Grid Pattern Overlay */}
-
+    <section className="section-padding relative container flex min-h-screen items-center justify-center">
       {/* Subtle grid pattern */}
       <div
         className="absolute inset-0 opacity-5"
@@ -30,9 +28,6 @@ export function HeroSection() {
           backgroundSize: '50px 50px',
         }}
       />
-
-      {/* Gradient Overlay */}
-      {/* <div className="bg-pattern-overlay pointer-events-none absolute inset-0" /> */}
 
       {/* Content */}
       <div className="pt-edge-nav-margin relative z-10 container flex max-w-7xl flex-col items-center justify-center">

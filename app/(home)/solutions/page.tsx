@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
 
 import { SolutionsSection, SolutionsSectionSkeleton } from '@/components/website/solutions/solutions-section';
-import { SolutionsCTASection } from '@/components/website/solutions/solutions-cta-section';
+import { CTASection } from '@/components/website/common/cta-section';
 
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
-import SectionHeader from '@/components/website/home/about-us/home-headers';
+import SectionHeader from '@/components/website/common/section-header';
 import { Lightbulb } from 'lucide-react';
 import CustomSearch from '@/components/shared/search/custom-search';
 
@@ -37,7 +37,7 @@ export default async function SolutionsPage(props: Props) {
   const search = searchParams?.search || '';
 
   return (
-    <section className="pt-edge-nav-margin container mx-auto max-w-7xl space-y-4 py-10">
+    <section className="pt-edge-nav-margin container space-y-4">
       <SectionHeader
         BadgeText="Solutions"
         title="Our "
@@ -61,8 +61,15 @@ export default async function SolutionsPage(props: Props) {
         <SolutionsSection page={page} limit={limit} search={search} />
       </Suspense>
 
-      <div className="mx-auto mt-16 max-w-5xl px-4">
-        <SolutionsCTASection />
+      <div className="section-padding">
+        <CTASection
+          title="Want to Learn More?"
+          description="Explore our services and solutions to discover how we can help transform your media production and broadcasting needs. Get in touch with our team for personalized guidance."
+          buttons={[
+            { text: 'Contact Us', href: '/contact' },
+            { text: 'View Services', href: '/services' },
+          ]}
+        />
       </div>
     </section>
   );

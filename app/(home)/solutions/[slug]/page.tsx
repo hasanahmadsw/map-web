@@ -7,7 +7,7 @@ import Image from 'next/image';
 import DivHtml from '@/components/shared/div-html';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { ServiceCard } from '@/components/website/home/service-card';
+import { ServiceCard } from '@/components/website/home/services/service-card';
 import type { ServiceResponse } from '@/types/services.types';
 import { singleSolutionSchema } from '@/utils/seo/schema/solutions/single-solution-schema';
 

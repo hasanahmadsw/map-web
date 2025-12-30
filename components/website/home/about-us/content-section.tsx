@@ -16,14 +16,14 @@ export default function ContentSection() {
       initial={{ opacity: 0, x: 50 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.8, delay: 0.4 }}
+      transition={{ duration: 0.8, delay: 0.3 }}
     >
       <MotionWrapper
         className="p-6"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: 0.6 }}
+        transition={{ delay: 0.4 }}
       >
         <p className="text-muted-foreground text-lg leading-relaxed">
           <span className="text-primary text-lg font-bold md:text-2xl">
@@ -42,7 +42,7 @@ export default function ContentSection() {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ delay: 0.8 }}
+        transition={{ delay: 0.5 }}
       >
         {features.map((feature, index) => (
           <MotionWrapper
@@ -56,7 +56,7 @@ export default function ContentSection() {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.9 + index * 0.1 }}
+            transition={{ delay: 0.5 + index * 0.1 }}
           >
             <div className="bg-primary/10 rounded-lg p-2">
               <feature.icon className="text-primary h-4 w-4" />

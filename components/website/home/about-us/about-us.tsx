@@ -1,5 +1,5 @@
 import { Info } from 'lucide-react';
-import SectionHeader from './home-headers';
+import SectionHeader from '../../common/section-header';
 import StatsCard from './stats-card';
 import ContentSection from './content-section';
 

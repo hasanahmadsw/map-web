@@ -6,7 +6,7 @@ import CoreValuesSection from '@/components/website/about/core-values-section';
 import MissionVisionSection from '@/components/website/about/mission-vision-section';
 
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
-import HeroSection from '@/components/shared/hero-section';
+import HeroSection from '@/components/website/common/hero-section';
 import MotionWrapper from '@/components/shared/motion/motion-wrapper';
 import { generateAboutPageSchema } from '@/utils/seo/schema/about/about-schema';
 
@@ -49,7 +49,7 @@ export default async function About() {
           <h1 className="text-primary mb-4 text-center text-5xl font-extrabold drop-shadow-lg md:text-6xl">
             About Us
           </h1>
-          <p className="text-primary-foreground/80 mx-auto max-w-2xl text-center text-xl">
+          <p className="text-foreground/80 mx-auto max-w-2xl text-center text-xl">
             Learn more about our company and our mission
           </p>
         </MotionWrapper>

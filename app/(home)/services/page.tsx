@@ -2,10 +2,10 @@ import { Suspense } from 'react';
 
 import { ServicesSection } from '@/components/website/services/services-section';
 import { ServicesSectionSkeleton } from '@/components/website/services/services-section-skeleton';
-import { ServicesCTASection } from '@/components/website/services/services-cta-section';
+import { CTASection } from '@/components/website/common/cta-section';
 
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
-import SectionHeader from '@/components/website/home/about-us/home-headers';
+import SectionHeader from '@/components/website/common/section-header';
 import { Settings } from 'lucide-react';
 import CustomSearch from '@/components/shared/search/custom-search';
 
@@ -38,7 +38,7 @@ export default async function ServicesPage(props: Props) {
   const search = searchParams?.search || '';
 
   return (
-    <div className="pt-edge-nav-margin container mx-auto max-w-7xl space-y-4 py-10">
+    <div className="pt-edge-nav-margin container space-y-4">
       <SectionHeader
         BadgeText="Services"
         title="Our"
@@ -62,8 +62,15 @@ export default async function ServicesPage(props: Props) {
         <ServicesSection page={page} limit={limit} search={search} />
       </Suspense>
 
-      <div className="mx-auto mt-16 max-w-5xl px-4">
-        <ServicesCTASection />
+      <div className="section-padding">
+        <CTASection
+          title="Want to Learn More?"
+          description="Explore our services and solutions to discover how we can help transform your media production and broadcasting needs. Get in touch with our team for personalized guidance."
+          buttons={[
+            { text: 'Contact Us', href: '/contact' },
+            { text: 'View Services', href: '/services' },
+          ]}
+        />
       </div>
     </div>
   );

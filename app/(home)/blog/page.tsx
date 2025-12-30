@@ -1,11 +1,12 @@
 import { Suspense } from 'react';
 
 import { BlogSection, BlogSectionSkeleton } from '@/components/website/blog/blog-section';
-import { BlogCTASection } from '@/components/website/blog/blog-cta-section';
+
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 import { Newspaper } from 'lucide-react';
-import SectionHeader from '@/components/website/home/about-us/home-headers';
+import SectionHeader from '@/components/website/common/section-header';
 import CustomSearch from '@/components/shared/search/custom-search';
+import { CTASection } from '@/components/website/common/cta-section';
 
 interface Props {
   searchParams?: Promise<{
@@ -38,7 +39,7 @@ export default async function BlogPage(props: Props) {
   const isFeatured = searchParams?.isFeatured === 'true' ? true : undefined;
 
   return (
-    <section className="pt-edge-nav-margin container mx-auto max-w-7xl space-y-4 py-10">
+    <section className="pt-edge-nav-margin container space-y-4">
       <SectionHeader
         BadgeText="Articles"
         title="Our"
@@ -65,8 +66,15 @@ export default async function BlogPage(props: Props) {
         <BlogSection page={page} limit={limit} search={search} isFeatured={isFeatured} />
       </Suspense>
 
-      <div className="mt-16 max-w-6xl">
-        <BlogCTASection />
+      <div className="section-padding">
+        <CTASection
+          title="Want to Learn More?"
+          description="Explore our services and solutions to discover how we can help transform your media production and broadcasting needs. Get in touch with our team for personalized guidance."
+          buttons={[
+            { text: 'Contact Us', href: '/contact' },
+            { text: 'View Services', href: '/services' },
+          ]}
+        />
       </div>
     </section>
   );

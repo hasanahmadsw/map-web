@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { ReactNode } from 'react';
-import MotionWrapper from './motion/motion-wrapper';
+import MotionWrapper from '../../shared/motion/motion-wrapper';
 
 interface ContactHeroProps {
   imageSrc: string;
@@ -27,7 +27,7 @@ function HeroSection({
       case 'bottom-to-top':
         return 'bg-gradient-to-b from-secondary/80 via-secondary/70 to-transparent';
       default: // left-to-right
-        return 'bg-gradient-to-r from-background/70 via-background/60 to-transparent';
+        return 'bg-gradient-to-r from-background/40 via-background/30 to-transparent';
     }
   };
 

@@ -27,7 +27,7 @@ export default function CATSection({
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.8, delay: 1 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
     >
       <MotionWrapper
         as="h3"
@@ -35,7 +35,7 @@ export default function CATSection({
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 1.1 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
       >
         {title}
       </MotionWrapper>
@@ -46,7 +46,7 @@ export default function CATSection({
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 1.2 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
       >
         {description}
       </MotionWrapper>

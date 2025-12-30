@@ -15,7 +15,7 @@ function TopBar() {
   const email = 'info@maproduction.ae';
 
   return (
-    <section className="h-top-bar-height border-border/50 bg-card/95 absolute inset-x-0 z-50 border-b py-2.5 backdrop-blur-sm">
+    <section className="h-top-bar-height border-border/50 bg-card/95 absolute inset-x-0 z-50 hidden border-b py-2.5 backdrop-blur-sm sm:block">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
           <MotionWrapper

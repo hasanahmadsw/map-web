@@ -1,6 +1,6 @@
 import { servicesService } from '@/services/services.service';
 
-import { ServiceCard } from '@/components/website/home/service-card';
+import { ServiceCard } from '@/components/website/home/services/service-card';
 
 import EmptyState from '@/components/shared/data-states/empty-state';
 import { Package } from 'lucide-react';

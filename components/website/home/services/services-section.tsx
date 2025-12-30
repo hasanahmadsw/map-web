@@ -2,9 +2,9 @@ import { servicesService } from '@/services/services.service';
 import { ServiceCard } from './service-card';
 
 import { Settings } from 'lucide-react';
-import SectionHeader from './about-us/home-headers';
+import SectionHeader from '../../common/section-header';
 import MotionWrapper from '@/components/shared/motion/motion-wrapper';
-import CATSection from './about-us/cta-card';
+import CATSection from '../../common/cta-card';
 
 export async function ServicesSection() {
   // Fetch services directly from API
@@ -26,7 +26,7 @@ export async function ServicesSection() {
   }
 
   return (
-    <section className="relative container w-full max-w-7xl space-y-4 overflow-hidden px-6 py-16 md:px-0">
+    <section className="section-padding container space-y-4">
       <SectionHeader
         BadgeText="Services"
         title="Our Media"
@@ -46,7 +46,7 @@ export async function ServicesSection() {
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: 1.1 }}
+        transition={{ delay: 0.5 }}
       >
         <CATSection
           title="Ready to Get Started with Us?"

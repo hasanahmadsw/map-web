@@ -1,6 +1,6 @@
 import { solutionsService } from '@/services/solutions.service';
 
-import { SolutionCard } from '@/components/website/home/solution-card';
+import { SolutionCard } from '@/components/website/home/solutions/solution-card';
 
 import EmptyState from '@/components/shared/data-states/empty-state';
 import CustomPagination from '@/components/shared/pagination/custom-pagination';

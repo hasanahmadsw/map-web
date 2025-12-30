@@ -1,9 +1,9 @@
 import { solutionsService } from '@/services/solutions.service';
 import { SolutionCard } from './solution-card';
 import { Lightbulb } from 'lucide-react';
-import SectionHeader from './about-us/home-headers';
+import SectionHeader from '../../common/section-header';
 import MotionWrapper from '@/components/shared/motion/motion-wrapper';
-import CATSection from './about-us/cta-card';
+import CATSection from '../../common/cta-card';
 
 export async function SolutionsSection() {
   let solutionsResponse;
@@ -25,11 +25,7 @@ export async function SolutionsSection() {
   }
 
   return (
-    <section className="relative container mx-auto w-full max-w-7xl space-y-4 overflow-hidden px-6 py-16 md:px-0">
-      {/* <h2 className="max-w-2xl text-3xl font-medium">Solutions</h2>
-      <p className="text-muted-foreground max-w-2xl pb-6">
-        We offer a wide range of solutions to meet your media production and broadcasting needs.
-      </p> */}
+    <section className="section-padding container space-y-4">
       <SectionHeader
         BadgeText="Solutions"
         title="Our Media"
@@ -49,7 +45,7 @@ export async function SolutionsSection() {
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: 1.1 }}
+        transition={{ delay: 0.3 }}
       >
         <CATSection
           title="Ready to Get Started?"

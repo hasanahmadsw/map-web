@@ -8,7 +8,7 @@ export default function TrustIndicator({ label = 'Rated 5/5 by 200+ Clients' }: 
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: 1.0 }}
+      transition={{ delay: 0.4 }}
     >
       <div className="flex items-center gap-1">
         {[1, 2, 3, 4, 5].map(star => (

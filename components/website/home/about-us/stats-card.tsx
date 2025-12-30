@@ -32,7 +32,7 @@ export default function StatsCard() {
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.8, delay: 0.3 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
     >
       <div className="bg-background divide-border/50 border-border/50 relative flex flex-col divide-y rounded-lg border md:flex-row md:divide-x md:divide-y-0">
         {statistics.map((stat, index) => (
@@ -42,7 +42,7 @@ export default function StatsCard() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.4 + index * 0.1 }}
+            transition={{ delay: 0.3 + index * 0.1 }}
           >
             <div className="text-foreground mb-2 text-3xl font-semibold md:text-4xl">{stat.value}</div>
             <h3 className="text-foreground mb-3 text-base font-semibold md:text-lg">{stat.title}</h3>

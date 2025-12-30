@@ -30,7 +30,7 @@ export default function SectionHeader({
           initial={{ scale: 0.8, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
         >
           <span className="text-primary text-sm font-semibold tracking-widest uppercase">{BadgeText}</span>
         </MotionWrapper>
@@ -43,7 +43,7 @@ export default function SectionHeader({
         initial={{ y: 30, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.3 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
       >
         {title}
         {highlightedText && (
@@ -55,7 +55,7 @@ export default function SectionHeader({
               initial={{ scaleX: 0 }}
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.5 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
             />
           </span>
         )}
@@ -69,7 +69,7 @@ export default function SectionHeader({
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
         >
           {description}
         </MotionWrapper>

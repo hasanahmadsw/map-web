@@ -4,9 +4,9 @@ import { SimpleArticleCard } from './simple-article-card';
 import Link from 'next/link';
 
 import { ArrowRight, Newspaper } from 'lucide-react';
-import SectionHeader from './about-us/home-headers';
+import SectionHeader from '../../common/section-header';
 import MotionWrapper from '@/components/shared/motion/motion-wrapper';
-import CATSection from './about-us/cta-card';
+import CATSection from '../../common/cta-card';
 
 export async function ArticlesSection() {
   let articlesResponse;
@@ -26,7 +26,7 @@ export async function ArticlesSection() {
   }
 
   return (
-    <section className="relative container w-full max-w-7xl space-y-4 overflow-hidden py-16">
+    <section className="section-padding container space-y-4">
       <SectionHeader
         BadgeText="Articles"
         title="Latest"
@@ -45,7 +45,7 @@ export async function ArticlesSection() {
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: 1.1 }}
+        transition={{ delay: 0.7 }}
       >
         <CATSection
           title="Read Our Latest Articles"
