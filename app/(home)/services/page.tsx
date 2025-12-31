@@ -3,11 +3,14 @@ import { Suspense } from 'react';
 import { ServicesSection } from '@/components/website/services/services-section';
 import { ServicesSectionSkeleton } from '@/components/website/services/services-section-skeleton';
 import { CTASection } from '@/components/website/common/cta-section';
+import { SolutionFilters } from '@/components/website/services/solution-filters';
 
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 import SectionHeader from '@/components/website/common/section-header';
 import { Settings } from 'lucide-react';
 import CustomSearch from '@/components/shared/search/custom-search';
+import { solutionsService } from '@/services/solutions.service';
+import type { SolutionResponse } from '@/types/solutions.types';
 
 interface Props {
   searchParams?: Promise<{
@@ -15,6 +18,7 @@ interface Props {
     page?: string;
     limit?: string;
     isFeatured?: string;
+    solutionId?: string;
   }>;
 }
 
@@ -36,6 +40,20 @@ export default async function ServicesPage(props: Props) {
   const page = Number(searchParams?.page) || 1;
   const limit = Number(searchParams?.limit) || 12;
   const search = searchParams?.search || '';
+  const solutionId = searchParams?.solutionId ? Number(searchParams.solutionId) : undefined;
+
+  // Fetch solutions for filter badges
+  let solutions: SolutionResponse[] = [];
+  try {
+    const solutionsResponse = await solutionsService.getAll({
+      isPublished: true,
+      limit: 100, // Get all solutions for filters
+    });
+    solutions = solutionsResponse.data || [];
+  } catch {
+    // If solutions fail to load, continue without filters
+    solutions = [];
+  }
 
   return (
     <div className="pt-edge-nav-margin container space-y-4">
@@ -58,8 +76,14 @@ export default async function ServicesPage(props: Props) {
         />
       </div>
 
-      <Suspense key={`${page} | ${search}`} fallback={<ServicesSectionSkeleton />}>
-        <ServicesSection page={page} limit={limit} search={search} />
+      {solutions.length > 0 && (
+        <div className="mb-8">
+          <SolutionFilters solutions={solutions} />
+        </div>
+      )}
+
+      <Suspense key={`${page} | ${search} | ${solutionId}`} fallback={<ServicesSectionSkeleton />}>
+        <ServicesSection page={page} limit={limit} search={search} solutionId={solutionId} />
       </Suspense>
 
       <div className="section-padding">

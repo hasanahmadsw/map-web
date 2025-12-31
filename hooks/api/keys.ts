@@ -9,3 +9,5 @@ export const adminQueryKeys = keysFactory('admin');
 export const equipmentsQueryKeys = keysFactory('equipments');
 export const equipmentBrandsQueryKeys = keysFactory('equipment-brands');
 export const equipmentCategoriesQueryKeys = keysFactory('equipment-categories');
+export const facilitiesQueryKeys = keysFactory('facilities');
+export const facilityUnitsQueryKeys = keysFactory('facility-units');

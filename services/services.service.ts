@@ -16,6 +16,7 @@ export interface ServiceListParams extends BaseListParams {
   search?: string;
   isPublished?: boolean;
   isFeatured?: boolean;
+  solutionId?: number;
 }
 
 export const servicesService = {
@@ -50,12 +51,16 @@ export const servicesService = {
 
   // Public Services
   async getAll(params: ServiceListParams = {}, opts?: RequestOpts): Promise<ApiResponse<ServiceResponse[]>> {
-    const res = await ApiService.get<ServiceResponse[]>(`/services/published${toQS(params)}`, opts);
+    const res = await ApiService.get<ServiceResponse[]>(
+      `/services/published${toQS(params)}`,
+      opts,
+      true, // withoutAuthHeader - public endpoint
+    );
     return res;
   },
 
   async getBySlug(slug: string, opts?: RequestOpts): Promise<ServiceResponse> {
-    const res = await ApiService.get<ServiceResponse>(`${BASE}/slug/${enc(slug)}`, opts);
+    const res = await ApiService.get<ServiceResponse>(`${BASE}/slug/${enc(slug)}`, opts, true); // withoutAuthHeader - public endpoint
     return res.data;
   },
 

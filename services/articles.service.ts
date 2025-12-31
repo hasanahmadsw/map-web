@@ -53,12 +53,16 @@ export const articlesService = {
 
   // Public Services
   async getAll(params: ArticleListParams = {}, opts?: RequestOpts): Promise<ApiResponse<Article[]>> {
-    const res = await ApiService.get<Article[]>(`/articles/published${toQS(params)}`, opts);
+    const res = await ApiService.get<Article[]>(
+      `/articles/published${toQS(params)}`,
+      opts,
+      true, // withoutAuthHeader - public endpoint
+    );
     return res;
   },
 
   async getBySlug(slug: string, opts?: RequestOpts): Promise<Article> {
-    const res = await ApiService.get<Article>(`${BASE}/slug/${enc(slug)}`, opts);
+    const res = await ApiService.get<Article>(`${BASE}/slug/${enc(slug)}`, opts, true); // withoutAuthHeader - public endpoint
     return res.data;
   },
 };

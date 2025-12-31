@@ -12,9 +12,10 @@ interface ServicesSectionProps {
   limit: number;
   search: string;
   isFeatured?: boolean;
+  solutionId?: number;
 }
 
-export async function ServicesSection({ page, limit, search, isFeatured }: ServicesSectionProps) {
+export async function ServicesSection({ page, limit, search, isFeatured, solutionId }: ServicesSectionProps) {
   let res;
   try {
     res = await servicesService.getAll({
@@ -23,6 +24,7 @@ export async function ServicesSection({ page, limit, search, isFeatured }: Servi
       limit,
       isPublished: true,
       isFeatured,
+      solutionId,
     });
   } catch {
     return (
@@ -35,7 +37,7 @@ export async function ServicesSection({ page, limit, search, isFeatured }: Servi
   const services = res.data || [];
   const pagination = res.pagination;
 
-  if (!services.length && search) {
+  if (!services.length && (search || solutionId)) {
     return <EmptyState type="no-filter-results" />;
   } else if (!services.length) {
     return <EmptyState type="no-data" icon={<Package />} />;

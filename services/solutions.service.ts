@@ -49,12 +49,16 @@ export const solutionsService = {
     params: SolutionListParams = {},
     opts?: RequestOpts,
   ): Promise<ApiResponse<SolutionResponse[]>> {
-    const res = await ApiService.get<SolutionResponse[]>(`/solutions/published${toQS(params)}`, opts);
+    const res = await ApiService.get<SolutionResponse[]>(
+      `/solutions/published${toQS(params)}`,
+      opts,
+      true, // withoutAuthHeader - public endpoint
+    );
     return res;
   },
 
   async getBySlug(slug: string, opts?: RequestOpts): Promise<SolutionResponse> {
-    const res = await ApiService.get<SolutionResponse>(`${BASE}/slug/${enc(slug)}`, opts);
+    const res = await ApiService.get<SolutionResponse>(`${BASE}/slug/${enc(slug)}`, opts, true); // withoutAuthHeader - public endpoint
     return res.data;
   },
 
