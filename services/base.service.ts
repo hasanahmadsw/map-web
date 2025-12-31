@@ -74,7 +74,7 @@ const hasEnvelope = (data: unknown): boolean => {
   return !!(data && typeof data === 'object' && data !== null && 'data' in data && 'message' in data);
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://map-server-kpyg.onrender.com/api/v1';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1';
 
 const authEndpoints = ['/auth/user/login'];
 
