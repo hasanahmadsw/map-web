@@ -13,3 +13,10 @@ export function numberValidation(min: number, max: number) {
       message: fmt(validation.number.range, { min, max }),
     });
 }
+
+export const galleryItemSchema = z.object({
+  path: z.string().min(1, validation.required),
+  order: z.number().int().min(1),
+});
+
+export const gallerySchema = z.array(galleryItemSchema).optional().default([]);

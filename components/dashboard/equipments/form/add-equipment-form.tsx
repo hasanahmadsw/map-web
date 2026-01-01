@@ -53,7 +53,7 @@ function AddEquipmentForm() {
       equipmentType: EquipmentType.CAMERA,
       isPublished: false,
       isFeatured: false,
-      galleryPaths: [],
+      gallery: [],
     },
   });
 
@@ -122,7 +122,7 @@ function AddEquipmentForm() {
         ]);
         break;
       case 2: // Media
-        isValid = await trigger(['coverPath', 'galleryPaths']);
+        isValid = await trigger(['coverPath', 'gallery']);
         break;
       case 3: // Specifications
         isValid = await trigger(['specs']);

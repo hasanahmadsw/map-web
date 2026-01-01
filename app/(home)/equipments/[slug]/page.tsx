@@ -68,9 +68,10 @@ export async function generateMetadata({ params }: EquipmentPageProps): Promise<
       },
       openGraphOverrides: {
         section: equipment.equipmentType,
-        images: equipment.galleryPaths
-          ? equipment.galleryPaths.map(path => ({ url: path }))
-          : equipment.coverPath,
+        images:
+          equipment.gallery && equipment.gallery.length > 0
+            ? equipment.gallery.sort((a, b) => a.order - b.order).map(item => ({ url: item.path }))
+            : equipment.coverPath,
       },
     });
 
@@ -98,8 +99,8 @@ export default async function EquipmentPage({ params }: EquipmentPageProps) {
   }
 
   const images =
-    equipment.galleryPaths && equipment.galleryPaths.length > 0
-      ? equipment.galleryPaths
+    equipment.gallery && equipment.gallery.length > 0
+      ? equipment.gallery.sort((a, b) => a.order - b.order).map(item => item.path)
       : equipment.coverPath
         ? [equipment.coverPath]
         : [];

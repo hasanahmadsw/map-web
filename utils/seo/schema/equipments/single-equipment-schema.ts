@@ -36,8 +36,11 @@ export async function singleEquipmentSchema(equipment: IEquipment): Promise<{
     name: equipment.name,
     description: equipment.description || equipment.summary,
     image:
-      equipment.galleryPaths && equipment.galleryPaths.length > 0
-        ? [equipment.coverPath, ...equipment.galleryPaths]
+      equipment.gallery && equipment.gallery.length > 0
+        ? [
+            equipment.coverPath,
+            ...equipment.gallery.sort((a, b) => a.order - b.order).map(item => item.path),
+          ]
         : equipment.coverPath,
     brand: {
       '@type': 'Brand',

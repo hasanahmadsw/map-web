@@ -19,7 +19,7 @@ function MediaStep() {
       {/* Gallery Images */}
       <MediaMultiSelectInput
         control={form.control}
-        name="galleryPaths"
+        name="gallery"
         label="Gallery Images"
         typeFilter="image"
       />

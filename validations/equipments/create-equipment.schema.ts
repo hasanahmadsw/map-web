@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { fmt, validation } from '@/constants/validation-msg';
 import { EquipmentType } from '@/types/equipments/equipment.enum';
-import { numberValidation } from '../common';
+import { gallerySchema, numberValidation } from '../common';
 import { equipmentSpecsSchema } from './equipment-specs.schema';
 
 function createEquipmentSchema() {
@@ -36,7 +36,7 @@ function createEquipmentSchema() {
       isPublished: z.boolean().default(false),
       isFeatured: z.boolean().default(false),
       coverPath: z.string(validation.required).min(1, validation.required),
-      galleryPaths: z.array(z.string().min(1, validation.required)).optional().default([]),
+      gallery: gallerySchema,
       specs: equipmentSpecsSchema,
     })
     .refine(

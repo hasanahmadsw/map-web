@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import * as React from 'react'
-import Link from 'next/link'
-import { ChevronDown, Radio, ArrowRight } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { BroadcastType } from '@/types/broadcasts/broadcast.enums'
-import { SheetClose } from '@/components/ui/sheet'
+import * as React from 'react';
+import Link from 'next/link';
+import { ChevronDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { BroadcastType } from '@/types/broadcasts/broadcast.enums';
+import { SheetClose } from '@/components/ui/sheet';
 
 interface MobileBroadcastAccordionProps {
-  onLinkClick?: () => void
+  onLinkClick?: () => void;
 }
 
 const broadcastTypes = [
@@ -25,23 +25,23 @@ const broadcastTypes = [
     description: 'Online streaming and broadcasting solutions',
   },
   { type: BroadcastType.OTHER, label: 'Other', description: 'Additional broadcast solutions' },
-]
+];
 
 export function MobileBroadcastAccordion({ onLinkClick }: MobileBroadcastAccordionProps) {
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const handleLinkClick = () => {
-    onLinkClick?.()
-    setIsOpen(false)
-  }
+    onLinkClick?.();
+    setIsOpen(false);
+  };
 
   return (
     <div className="space-y-2">
       <button
-        className="hover:text-primary hover:bg-accent flex w-full items-center justify-between rounded-lg p-3 transition-all"
+        className="hover:text-primary hover:bg-accent flex w-full cursor-pointer items-center justify-between rounded-lg p-3 transition-all"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="font-semibold">Broadcast</span>
+        <span className="font-medium">Broadcast</span>
         <ChevronDown
           className={cn('h-4 w-4 flex-none transition-transform duration-200', isOpen ? 'rotate-180' : '')}
           aria-hidden="true"
@@ -59,14 +59,11 @@ export function MobileBroadcastAccordion({ onLinkClick }: MobileBroadcastAccordi
               <Link
                 href={`/broadcasts?type=${broadcast.type}`}
                 onClick={handleLinkClick}
-                className="group text-muted-foreground hover:text-foreground hover:bg-accent flex gap-x-2 rounded-md p-1.5 text-sm leading-6 font-semibold transition-colors"
+                className="group hover:text-primary hover:bg-accent flex rounded-md p-1.5 text-sm leading-6 font-medium transition-colors"
               >
-                <span className="border-border bg-muted flex h-5 w-5 shrink-0 items-center justify-center rounded-lg border">
-                  <Radio className="h-3 w-3" />
-                </span>
                 <div className="min-w-0 flex-1">
-                  <div className="font-semibold">{broadcast.label}</div>
-                  <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">{broadcast.description}</p>
+                  <div className="font-medium">{broadcast.label}</div>
+                  {/* <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">{broadcast.description}</p> */}
                 </div>
               </Link>
             </SheetClose>
@@ -75,13 +72,10 @@ export function MobileBroadcastAccordion({ onLinkClick }: MobileBroadcastAccordi
             <Link
               href="/broadcasts"
               onClick={handleLinkClick}
-              className="group text-muted-foreground hover:text-foreground hover:bg-accent mt-1 flex gap-x-2 rounded-md border-t p-1.5 pt-1.5 text-sm leading-6 font-semibold transition-colors"
+              className="group hover:text-primary hover:bg-accent mt-1 flex rounded-md border-t p-1.5 pt-1.5 text-sm leading-6 font-medium transition-colors"
             >
-              <span className="border-border bg-muted flex h-5 w-5 shrink-0 items-center justify-center rounded-lg border">
-                <ArrowRight className="h-3 w-3" />
-              </span>
               <div className="min-w-0 flex-1">
-                <div className="font-semibold">See all</div>
+                <div className="font-medium">See all</div>
                 <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">Browse all broadcasts</p>
               </div>
             </Link>
@@ -89,6 +83,5 @@ export function MobileBroadcastAccordion({ onLinkClick }: MobileBroadcastAccordi
         </div>
       </div>
     </div>
-  )
+  );
 }
-

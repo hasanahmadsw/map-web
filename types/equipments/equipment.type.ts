@@ -1,3 +1,4 @@
+import { GalleryItem } from '../common.types';
 import { IEquipmentBrand } from './equipment-brand.type';
 import { IEquipmentCategory } from './equipment-category.type';
 import {
@@ -23,7 +24,7 @@ export interface IEquipment {
   isPublished: boolean;
   isFeatured: boolean;
   coverPath: string;
-  galleryPaths: string[];
+  gallery: GalleryItem[];
   specs: IEquipmentSpecs;
   status: string;
   createdAt: string;

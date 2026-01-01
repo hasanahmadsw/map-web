@@ -21,6 +21,7 @@ import ResponseError from '@/components/shared/response-error';
 import { sanitizeDto } from '@/utils/format';
 import { SubServicesInput } from '@/components/shared/input/SubServicesInput';
 import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
+import { MediaMultiSelectInput } from '@/components/shared/input/MediaMultiSelectInput';
 
 function AddServiceForm() {
   const router = useRouter();
@@ -32,6 +33,7 @@ function AddServiceForm() {
       isPublished: false,
       isFeatured: false,
       order: 0,
+      gallery: [],
     },
   });
 
@@ -58,6 +60,14 @@ function AddServiceForm() {
           control={form.control}
           name="featuredImage"
           label="Featured Image"
+          typeFilter="image"
+        />
+
+        {/* Gallery Images */}
+        <MediaMultiSelectInput
+          control={form.control}
+          name="gallery"
+          label="Gallery Images"
           typeFilter="image"
         />
 

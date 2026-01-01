@@ -20,6 +20,7 @@ import ResponseError from '@/components/shared/response-error';
 import { BasicInformationSection } from './partials/basic-information-section';
 import { StatusOptionsSection } from './partials/status-options-section';
 import { ItemsSection } from './partials/items-section';
+import { SpecsSection } from './partials/specs-section';
 import { getChangedValues } from '@/utils/format';
 import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
 import { MediaMultiSelectInput } from '@/components/shared/input/MediaMultiSelectInput';
@@ -46,6 +47,16 @@ export function EditBroadcastUnitForm({ broadcastUnitId }: EditBroadcastUnitForm
   // Reset form when broadcast unit data is loaded
   useEffect(() => {
     if (broadcastUnit) {
+      // Normalize gallery to GalleryItem[] format
+      const normalizedGallery = Array.isArray(broadcastUnit.gallery)
+        ? broadcastUnit.gallery.map((item, index) => {
+            if (typeof item === 'string') {
+              return { path: item, order: index + 1 };
+            }
+            return { path: item.path, order: item.order || index + 1 };
+          })
+        : [];
+
       form.reset({
         type: broadcastUnit.type as any,
         slug: broadcastUnit.slug,
@@ -53,7 +64,8 @@ export function EditBroadcastUnitForm({ broadcastUnitId }: EditBroadcastUnitForm
         summary: broadcastUnit.summary,
         description: broadcastUnit.description,
         coverImage: broadcastUnit.coverImage,
-        gallery: Array.isArray(broadcastUnit.gallery) ? broadcastUnit.gallery : [],
+        gallery: normalizedGallery,
+        specs: broadcastUnit.specs || undefined,
         isPublished: broadcastUnit.isPublished,
         order: broadcastUnit.order,
         items: Array.isArray(broadcastUnit.items)
@@ -116,6 +128,9 @@ export function EditBroadcastUnitForm({ broadcastUnitId }: EditBroadcastUnitForm
 
         {/* Gallery */}
         <MediaMultiSelectInput control={form.control} name="gallery" label="Gallery" typeFilter="image" />
+
+        {/* Specifications */}
+        <SpecsSection />
 
         {/* Items */}
         <ItemsSection />

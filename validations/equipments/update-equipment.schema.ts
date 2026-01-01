@@ -12,7 +12,7 @@ import {
   SensorType,
 } from '@/types/equipments/equipment.enum';
 import { equipmentSpecsSchema } from './equipment-specs.schema';
-import { numberValidation } from '../common';
+import { gallerySchema, numberValidation } from '../common';
 
 function updateEquipmentSchema() {
   return z.object({
@@ -43,7 +43,7 @@ function updateEquipmentSchema() {
     isPublished: z.boolean().default(false),
     isFeatured: z.boolean().default(false),
     coverPath: z.string(validation.required).min(1, validation.required),
-    galleryPaths: z.array(z.string().min(1, validation.required)).optional().default([]),
+    gallery: gallerySchema,
     specs: equipmentSpecsSchema,
     status: z
       .string()

@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -27,13 +28,51 @@ function Navbar() {
             return null;
           }
 
+          // Render Home first, then dropdowns, then rest of links
+          if (link.href === '/') {
+            return (
+              <NavigationMenuItem key={index}>
+                <NavigationMenuLink
+                  active={isActive}
+                  className={` ${
+                    isActive ? 'text-primary! font-bold' : ''
+                  } hover:text-primary py-1.5 text-sm font-medium whitespace-nowrap min-[1100px]:text-[15px]`}
+                  asChild
+                >
+                  <Link href={`${link.href}`}>{link.label}</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            );
+          }
+
+          // Render dropdowns after Home
+          if (index === 1) {
+            return (
+              <React.Fragment key={`dropdowns-${index}`}>
+                <MediaProductionDropdown />
+                <BroadcastDropdown />
+                <NavigationMenuItem key={index}>
+                  <NavigationMenuLink
+                    active={isActive}
+                    className={` ${
+                      isActive ? 'text-primary! font-bold' : ''
+                    } hover:text-primary py-1.5 text-sm font-medium whitespace-nowrap min-[1100px]:text-[15px]`}
+                    asChild
+                  >
+                    <Link href={`${link.href}`}>{link.label}</Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              </React.Fragment>
+            );
+          }
+
           return (
             <NavigationMenuItem key={index}>
               <NavigationMenuLink
                 active={isActive}
                 className={` ${
                   isActive ? 'text-primary! font-bold' : ''
-                } hover:text-primary py-1.5 text-sm whitespace-nowrap min-[1100px]:text-[15px]`}
+                } hover:text-primary py-1.5 text-sm font-medium whitespace-nowrap min-[1100px]:text-[15px]`}
                 asChild
               >
                 <Link href={`${link.href}`}>{link.label}</Link>
@@ -41,8 +80,6 @@ function Navbar() {
             </NavigationMenuItem>
           );
         })}
-        <MediaProductionDropdown />
-        <BroadcastDropdown />
         {/* <NavigationMenuItem>
           <NavigationMenuLink
             active={pathname === '/solutions/photography'}

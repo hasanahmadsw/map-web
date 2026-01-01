@@ -68,7 +68,7 @@ function EditEquipmentForm({ equipmentId }: EditEquipmentFormProps) {
       isPublished: equipment.isPublished ?? false,
       isFeatured: equipment.isFeatured ?? false,
       coverPath: equipment.coverPath || '',
-      galleryPaths: equipment.galleryPaths || [],
+      gallery: equipment.gallery || [],
       specs: equipment.specs as any,
       status: equipment.status || undefined,
     };

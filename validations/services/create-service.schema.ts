@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { fmt, validation } from '@/constants/validation-msg';
 import { subServiceSchema } from './subservice.schema';
-import { numberValidation } from '../common';
+import { gallerySchema, numberValidation } from '../common';
 import { SolutionKey } from '@/types/solution-key.enum';
 
 function createServiceSchema() {
@@ -54,6 +54,7 @@ function createServiceSchema() {
         keywords: z.array(z.string().max(50, fmt(validation.string.maxLength, { max: 50 }))).optional(),
       })
       .optional(),
+    gallery: gallerySchema,
   });
 }
 

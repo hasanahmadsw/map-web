@@ -25,6 +25,7 @@ import ResponseError from '@/components/shared/response-error';
 import { getChangedValues } from '@/utils/format';
 import { SubServicesInput } from '@/components/shared/input/SubServicesInput';
 import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
+import { MediaMultiSelectInput } from '@/components/shared/input/MediaMultiSelectInput';
 
 interface EditServiceFormProps {
   serviceId: string;
@@ -64,6 +65,7 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
           keywords: service.meta?.keywords || [],
         },
         subServices: service.subServices || [],
+        gallery: service.gallery || [],
       });
     }
   }, [service, form]);
@@ -115,6 +117,14 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
           control={form.control}
           name="featuredImage"
           label="Featured Image"
+          typeFilter="image"
+        />
+
+        {/* Gallery Images */}
+        <MediaMultiSelectInput
+          control={form.control}
+          name="gallery"
+          label="Gallery Images"
           typeFilter="image"
         />
 

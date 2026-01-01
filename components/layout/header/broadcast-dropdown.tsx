@@ -1,8 +1,6 @@
 'use client';
 
-import * as React from 'react';
 import Link from 'next/link';
-import { Radio, ArrowRight } from 'lucide-react';
 import {
   NavigationMenuContent,
   NavigationMenuItem,
@@ -30,47 +28,49 @@ const broadcastTypes = [
 export function BroadcastDropdown() {
   return (
     <NavigationMenuItem>
-      <NavigationMenuTrigger>Broadcast</NavigationMenuTrigger>
+      <NavigationMenuTrigger className="hover:text-primary cursor-pointer bg-transparent py-1.5 text-sm whitespace-nowrap min-[1100px]:text-[15px]">
+        Broadcast
+      </NavigationMenuTrigger>
       <NavigationMenuContent>
-        <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-1">
+        <ul className="w-80 p-3">
           {broadcastTypes.map(broadcast => {
             const typeSlug = broadcast.type.toLowerCase().replace(/_/g, '-');
             return (
-              <NavigationMenuLink key={broadcast.type} asChild>
-                <Link
-                  href={`/broadcasts/${typeSlug}`}
-                  className="group hover:bg-accent flex items-start gap-3 rounded-lg p-3 transition-colors"
-                >
-                  <div className="bg-muted group-hover:bg-primary/10 flex h-9 w-9 flex-none items-center justify-center rounded-lg transition-colors">
-                    <Radio className="h-4 w-4" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-foreground group-hover:text-primary font-semibold transition-colors">
-                      {broadcast.label}
+              <li key={broadcast.type}>
+                <NavigationMenuLink asChild>
+                  <Link
+                    className="hover:bg-muted hover:text-accent-foreground flex rounded-md p-3 leading-none no-underline transition-colors outline-none select-none"
+                    href={`/broadcasts/${typeSlug}`}
+                  >
+                    <div>
+                      <div className="text-sm font-semibold">{broadcast.label}</div>
+                      {broadcast.description && (
+                        <p className="text-muted-foreground line-clamp-2 text-xs leading-snug">
+                          {broadcast.description}
+                        </p>
+                      )}
                     </div>
-                    <p className="text-muted-foreground mt-1 line-clamp-2 text-xs">{broadcast.description}</p>
-                  </div>
-                </Link>
-              </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuLink>
+              </li>
             );
           })}
-          <NavigationMenuLink asChild>
-            <Link
-              href="/broadcasts"
-              className="group hover:bg-accent flex items-start gap-3 rounded-lg border-t p-3 pt-3 transition-colors"
-            >
-              <div className="bg-muted group-hover:bg-primary/10 flex h-9 w-9 flex-none items-center justify-center rounded-lg transition-colors">
-                <ArrowRight className="h-4 w-4" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <div className="text-foreground group-hover:text-primary font-semibold transition-colors">
-                  See all
+          <li>
+            <NavigationMenuLink asChild>
+              <Link
+                className="hover:bg-muted hover:text-accent-foreground flex rounded-md p-3 leading-none no-underline transition-colors outline-none select-none"
+                href="/broadcasts"
+              >
+                <div>
+                  <div className="text-sm font-semibold">See all</div>
+                  <p className="text-muted-foreground line-clamp-2 text-xs leading-snug">
+                    Browse all broadcasts
+                  </p>
                 </div>
-                <p className="text-muted-foreground mt-1 line-clamp-2 text-xs">Browse all broadcasts</p>
-              </div>
-            </Link>
-          </NavigationMenuLink>
-        </div>
+              </Link>
+            </NavigationMenuLink>
+          </li>
+        </ul>
       </NavigationMenuContent>
     </NavigationMenuItem>
   );

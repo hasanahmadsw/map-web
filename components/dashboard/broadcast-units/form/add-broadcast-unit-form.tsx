@@ -14,6 +14,7 @@ import ResponseError from '@/components/shared/response-error';
 import { BasicInformationSection } from './partials/basic-information-section';
 import { StatusOptionsSection } from './partials/status-options-section';
 import { ItemsSection } from './partials/items-section';
+import { SpecsSection } from './partials/specs-section';
 import {
   createBroadcastUnitSchema,
   type TCreateBroadcastUnitForm,
@@ -59,6 +60,9 @@ export function AddBroadcastUnitForm() {
 
         {/* Gallery */}
         <MediaMultiSelectInput control={form.control} name="gallery" label="Gallery" typeFilter="image" />
+
+        {/* Specifications */}
+        <SpecsSection />
 
         {/* Items */}
         <ItemsSection />

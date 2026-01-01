@@ -8,6 +8,12 @@ import DivHtml from '@/components/shared/div-html';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { BroadcastUnitItemGroup, BroadcastType } from '@/types/broadcasts/broadcast.enums';
+import type {
+  BroadcastUnit,
+  BroadcastUnitItem,
+  BroadCastUnitSpecs,
+} from '@/types/broadcasts/broadcasts.types';
+import type { GalleryItem } from '@/types/common.types';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Package, CheckCircle2, Info, ArrowLeft, Calendar, Users, Settings, Radio } from 'lucide-react';
 import { CTASection } from '@/components/website/common/cta-section';
@@ -23,8 +29,10 @@ function formatGroup(group: BroadcastUnitItemGroup): string {
   return group.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 }
 
-function formatBroadcastType(type: BroadcastType): string {
-  return type.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+function formatBroadcastType(type: BroadcastType | `${BroadcastType}`): string {
+  return String(type)
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, char => char.toUpperCase());
 }
 
 function getTypeFromSlug(slug: string): BroadcastType | null {
@@ -40,7 +48,7 @@ function getTypeFromSlug(slug: string): BroadcastType | null {
 
 export async function generateMetadata({ params }: BroadcastUnitPageProps): Promise<Metadata> {
   const { unitSlug } = await params;
-  const unit = await broadcastsService.getUnitBySlug(unitSlug);
+  const unit: BroadcastUnit = await broadcastsService.getUnitBySlug(unitSlug);
 
   if (!unit) {
     notFound();
@@ -52,7 +60,7 @@ export async function generateMetadata({ params }: BroadcastUnitPageProps): Prom
     'media production',
     'broadcasting',
     'equipment',
-    formatBroadcastType(unit.type as BroadcastType),
+    formatBroadcastType(unit.type),
   ].filter(Boolean);
 
   const typeSlug = unit.type.toLowerCase().replace(/_/g, '-');
@@ -83,7 +91,7 @@ export async function generateMetadata({ params }: BroadcastUnitPageProps): Prom
 export default async function BroadcastUnitPage({ params }: BroadcastUnitPageProps) {
   const { type, unitSlug } = await params;
 
-  const unit = await broadcastsService.getUnitBySlug(unitSlug);
+  const unit: BroadcastUnit = await broadcastsService.getUnitBySlug(unitSlug);
 
   if (!unit) {
     notFound();
@@ -98,18 +106,17 @@ export default async function BroadcastUnitPage({ params }: BroadcastUnitPagePro
   const typeSlug = unit.type.toLowerCase().replace(/_/g, '-');
 
   // Group items by group if they have one
-  const groupedItems =
-    unit.items?.reduce(
-      (acc, item) => {
-        const group = item.group || 'OTHER';
-        if (!acc[group]) {
-          acc[group] = [];
-        }
-        acc[group].push(item);
-        return acc;
-      },
-      {} as Record<string, typeof unit.items>,
-    ) || {};
+  const groupedItems: Record<string, BroadcastUnitItem[]> = unit.items.reduce(
+    (acc, item) => {
+      const group = item.group || 'OTHER';
+      if (!acc[group]) {
+        acc[group] = [];
+      }
+      acc[group].push(item);
+      return acc;
+    },
+    {} as Record<string, BroadcastUnitItem[]>,
+  );
 
   return (
     <div className="bg-background min-h-screen">
@@ -139,14 +146,14 @@ export default async function BroadcastUnitPage({ params }: BroadcastUnitPagePro
                 href={`/broadcasts/${typeSlug}`}
                 className="text-sm text-white/80 transition-colors hover:text-white"
               >
-                {formatBroadcastType(unit.type as BroadcastType)}
+                {formatBroadcastType(unit.type)}
               </Link>
               <span className="text-white/60">/</span>
               <span className="text-sm text-white">{unit.title || unit.slug}</span>
             </div>
 
             <Badge variant="default" className="text-sm font-medium">
-              {formatBroadcastType(unit.type as BroadcastType)}
+              {formatBroadcastType(unit.type)}
             </Badge>
 
             <h1 className="max-w-3xl text-4xl font-semibold text-white md:text-5xl">
@@ -187,7 +194,7 @@ export default async function BroadcastUnitPage({ params }: BroadcastUnitPagePro
                 </div>
               </div>
             )}
-            {unit.gallery && Array.isArray(unit.gallery) && unit.gallery.length > 0 && (
+            {unit.gallery && unit.gallery.length > 0 && (
               <div className="text-center">
                 <div className="bg-primary/10 mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full">
                   <Info className="text-primary h-6 w-6" />
@@ -202,9 +209,7 @@ export default async function BroadcastUnitPage({ params }: BroadcastUnitPagePro
               <div className="bg-primary/10 mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full">
                 <Radio className="text-primary h-6 w-6" />
               </div>
-              <div className="text-foreground mb-1 text-2xl font-bold">
-                {formatBroadcastType(unit.type as BroadcastType)}
-              </div>
+              <div className="text-foreground mb-1 text-2xl font-bold">{formatBroadcastType(unit.type)}</div>
               <div className="text-muted-foreground text-xs font-medium">Broadcast Type</div>
             </div>
           </div>
@@ -230,7 +235,7 @@ export default async function BroadcastUnitPage({ params }: BroadcastUnitPagePro
         )}
 
         {/* Gallery Section */}
-        {unit.gallery && Array.isArray(unit.gallery) && unit.gallery.length > 0 && (
+        {unit.gallery && unit.gallery.length > 0 && (
           <section className="mb-16">
             <div className="space-y-6">
               <div>
@@ -240,21 +245,23 @@ export default async function BroadcastUnitPage({ params }: BroadcastUnitPagePro
                 </p>
               </div>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {unit.gallery.map((image: string, index: number) => (
-                  <div
-                    key={index}
-                    className="group relative aspect-video overflow-hidden rounded-xl border transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
-                  >
-                    <Image
-                      src={image}
-                      alt={`${unit.title || unit.slug} - Image ${index + 1}`}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-110"
-                      unoptimized={image.includes('supabase.co')}
-                    />
-                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                  </div>
-                ))}
+                {unit.gallery
+                  .sort((a, b) => a.order - b.order)
+                  .map((item: GalleryItem, index) => (
+                    <div
+                      key={`${item.path}-${item.order}`}
+                      className="group relative aspect-video overflow-hidden rounded-xl border transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+                    >
+                      <Image
+                        src={item.path}
+                        alt={`${unit.title || unit.slug} - Image ${index + 1}`}
+                        fill
+                        className="object-cover transition-transform duration-300 group-hover:scale-110"
+                        unoptimized={item.path.includes('supabase.co')}
+                      />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                    </div>
+                  ))}
               </div>
             </div>
           </section>
@@ -337,42 +344,61 @@ export default async function BroadcastUnitPage({ params }: BroadcastUnitPagePro
               </div>
               <div className="glass-card overflow-hidden rounded-xl border">
                 <div className="divide-y">
-                  {Object.entries(unit.specs).map(([key, value], index) => {
-                    const formattedKey = key
-                      .replace(/([A-Z])/g, ' $1')
-                      .replace(/^./, str => str.toUpperCase())
-                      .trim();
-                    const displayValue =
-                      typeof value === 'object' && value !== null
-                        ? JSON.stringify(value, null, 2)
-                        : String(value);
+                  {(Object.entries(unit.specs) as [keyof BroadCastUnitSpecs, unknown][]).map(
+                    ([key, value]) => {
+                      const formattedKey = key
+                        .replace(/([A-Z])/g, ' $1')
+                        .replace(/^./, str => str.toUpperCase())
+                        .trim();
 
-                    return (
-                      <div key={key} className="hover:bg-muted/30 p-6 transition-colors md:p-8">
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                          <div className="md:col-span-1">
-                            <div className="flex items-center gap-2">
-                              <div className="bg-primary/10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
-                                <Info className="text-primary h-4 w-4" />
+                      const formatSpecValue = (val: unknown): string => {
+                        if (Array.isArray(val)) {
+                          return val.join(', ');
+                        }
+                        if (typeof val === 'object' && val !== null) {
+                          return JSON.stringify(val, null, 2);
+                        }
+                        return String(val);
+                      };
+
+                      const displayValue = formatSpecValue(value);
+                      const isArrayValue = Array.isArray(value);
+
+                      return (
+                        <div key={key} className="hover:bg-muted/30 p-6 transition-colors md:p-8">
+                          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                            <div className="md:col-span-1">
+                              <div className="flex items-center gap-2">
+                                <div className="bg-primary/10 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
+                                  <Info className="text-primary h-4 w-4" />
+                                </div>
+                                <p className="text-foreground font-semibold">{formattedKey}</p>
                               </div>
-                              <p className="text-foreground font-semibold">{formattedKey}</p>
+                            </div>
+                            <div className="md:col-span-2">
+                              {isArrayValue && value.length > 0 ? (
+                                <div className="flex flex-wrap gap-2">
+                                  {(value as string[]).map((item, idx) => (
+                                    <Badge key={idx} variant="secondary" className="font-normal">
+                                      {item}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              ) : typeof value === 'object' && value !== null && !isArrayValue ? (
+                                <pre className="text-muted-foreground bg-muted/50 rounded-lg p-4 font-mono text-sm leading-relaxed whitespace-pre-wrap">
+                                  {displayValue}
+                                </pre>
+                              ) : (
+                                <p className="text-foreground text-sm leading-relaxed md:text-base">
+                                  {displayValue}
+                                </p>
+                              )}
                             </div>
                           </div>
-                          <div className="md:col-span-2">
-                            {typeof value === 'object' && value !== null ? (
-                              <pre className="text-muted-foreground bg-muted/50 rounded-lg p-4 font-mono text-sm leading-relaxed whitespace-pre-wrap">
-                                {displayValue}
-                              </pre>
-                            ) : (
-                              <p className="text-foreground text-sm leading-relaxed md:text-base">
-                                {displayValue}
-                              </p>
-                            )}
-                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    },
+                  )}
                 </div>
               </div>
             </div>
@@ -386,7 +412,7 @@ export default async function BroadcastUnitPage({ params }: BroadcastUnitPagePro
             className="group text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm font-medium transition-colors"
           >
             <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
-            Back to {formatBroadcastType(unit.type as BroadcastType)} Units
+            Back to {formatBroadcastType(unit.type)} Units
           </Link>
         </section>
 
@@ -398,7 +424,7 @@ export default async function BroadcastUnitPage({ params }: BroadcastUnitPagePro
             buttons={[
               { text: 'Contact Us', href: '/contact' },
               {
-                text: `View More ${formatBroadcastType(unit.type as BroadcastType)} Units`,
+                text: `View More ${formatBroadcastType(unit.type)} Units`,
                 href: `/broadcasts/${typeSlug}`,
               },
             ]}

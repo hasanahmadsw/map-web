@@ -37,5 +37,10 @@ export interface PaginatedResponse<T> extends ApiResponse<T> {
 export interface BaseListParams {
   page?: number;
   limit?: number;
-  orderDirection?: "ASC" | "DESC";
+  orderDirection?: 'ASC' | 'DESC';
+}
+
+export interface GalleryItem {
+  path: string;
+  order: number;
 }

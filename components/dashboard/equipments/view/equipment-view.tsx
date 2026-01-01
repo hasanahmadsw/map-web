@@ -33,8 +33,8 @@ function EquipmentView({ equipmentId }: EquipmentViewProps) {
         <div className="space-y-6 lg:col-span-2">
           <EquipmentDescription description={equipment.description} />
           <EquipmentSpecs specs={equipment.specs} equipmentType={equipment.equipmentType} />
-          {equipment.galleryPaths && equipment.galleryPaths.length > 0 && (
-            <EquipmentGallery galleryPaths={equipment.galleryPaths} equipmentName={equipment.name} />
+          {equipment.gallery && equipment.gallery.length > 0 && (
+            <EquipmentGallery gallery={equipment.gallery} equipmentName={equipment.name} />
           )}
         </div>
 
