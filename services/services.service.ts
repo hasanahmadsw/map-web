@@ -16,7 +16,7 @@ export interface ServiceListParams extends BaseListParams {
   search?: string;
   isPublished?: boolean;
   isFeatured?: boolean;
-  solutionId?: number;
+  solutionKey?: string;
 }
 
 export const servicesService = {

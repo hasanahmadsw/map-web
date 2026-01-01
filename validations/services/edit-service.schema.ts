@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { fmt, validation } from '@/constants/validation-msg';
 import { subServiceSchema } from './create-service.schema';
 import { numberValidation } from '../common';
+import { SolutionKey } from '@/types/solution-key.enum';
 
 function editServiceSchema() {
   return z.object({
@@ -20,7 +21,7 @@ function editServiceSchema() {
     isFeatured: z.boolean().optional(),
     order: numberValidation(1, 100).optional(),
     subServices: z.array(subServiceSchema()).optional(),
-    solutionIds: z.array(z.number().int().positive()).optional(),
+    solutionKey: z.nativeEnum(SolutionKey).optional(),
     name: z
       .string()
       .trim()

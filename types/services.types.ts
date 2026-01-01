@@ -1,4 +1,5 @@
 import type { BaseListParams } from '@/hooks/api/list/useListUrlState';
+import type { SolutionKey } from './solution-key.enum';
 
 export interface StaffService {
   id: number;
@@ -18,7 +19,7 @@ export interface StaffService {
     description: string;
   };
   subServices: SubService[];
-  solutions?: Array<{ id: number } | number>;
+  solutionKey: SolutionKey;
   createdAt: string;
   updatedAt: string;
 }
@@ -33,6 +34,7 @@ export interface ServiceResponse {
   viewCount: number;
   order: number;
   subServices: SubService[];
+  solutionKey: SolutionKey;
   name: string;
   description: string;
   shortDescription: string;

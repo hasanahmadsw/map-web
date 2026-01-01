@@ -22,7 +22,6 @@ export interface IEquipment {
   equipmentType: `${EquipmentType}`;
   isPublished: boolean;
   isFeatured: boolean;
-  order: number;
   coverPath: string;
   galleryPaths: string[];
   specs: IEquipmentSpecs;

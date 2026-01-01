@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default async function PublicPagesLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <TopBar />
+      {/* <TopBar /> */}
       <Header />
       <main className="min-h-screen">{children}</main>
       <Footer />

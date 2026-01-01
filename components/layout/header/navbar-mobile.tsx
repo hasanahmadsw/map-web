@@ -1,20 +1,26 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react'
+import Link from 'next/link'
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle } from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
 
-import { X, Menu } from 'lucide-react';
+import { X, Menu, Camera } from 'lucide-react'
 
-import { navigationLinks } from './data';
+import { navigationLinks } from './data'
+import { MobileMediaProductionAccordion } from './media-production-accordion'
+import { MobileBroadcastAccordion } from './broadcast-accordion'
 
-import { usePathname } from 'next/navigation';
-import { VisuallyHidden } from '@/components/ui/visually-hidden';
+import { usePathname } from 'next/navigation'
+import { VisuallyHidden } from '@/components/ui/visually-hidden'
 
 function NavigationSheet() {
-  const [open, setOpen] = useState(false);
-  const pathname = usePathname();
+  const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+
+  const handleLinkClick = () => {
+    setOpen(false)
+  }
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -42,17 +48,23 @@ function NavigationSheet() {
           </div>
 
           {/* Navigation Items */}
-          <nav className="flex-1 p-4">
+          <nav className="flex-1 overflow-y-auto p-4">
             <ul className="space-y-2">
               {navigationLinks.map(link => {
-                const Icon = link.icon;
-                const isActive = link.href === '' ? pathname === `/` : pathname === `${link.href}`;
+                const Icon = link.icon
+                const isActive = link.href === '' ? pathname === `/` : pathname === `${link.href}`
+
+                // Skip Photography from regular links as it's handled separately
+                if (link.href === '/solutions/photography') {
+                  return null
+                }
 
                 return (
                   <li key={link.label}>
                     <SheetClose asChild>
                       <Link
                         href={`${link.href}`}
+                        onClick={handleLinkClick}
                         className={`links-center flex gap-3 rounded-lg p-3 transition-all ${
                           isActive
                             ? 'bg-accent text-accent-foreground'
@@ -64,14 +76,38 @@ function NavigationSheet() {
                       </Link>
                     </SheetClose>
                   </li>
-                );
+                )
               })}
+              <li>
+                <MobileMediaProductionAccordion onLinkClick={handleLinkClick} />
+              </li>
+              <li>
+                <MobileBroadcastAccordion onLinkClick={handleLinkClick} />
+              </li>
+              <li>
+                <SheetClose asChild>
+                  <Link
+                    href="/solutions/photography"
+                    onClick={handleLinkClick}
+                    className={`links-center flex gap-3 rounded-lg p-3 transition-all ${
+                      pathname === '/solutions/photography'
+                        ? 'bg-accent text-accent-foreground'
+                        : 'hover:bg-accent hover:text-accent-foreground'
+                    }`}
+                  >
+                    <Camera className="h-5 w-5" />
+                    <span className={pathname === '/solutions/photography' ? 'text-primary font-bold' : ''}>
+                      Photography
+                    </span>
+                  </Link>
+                </SheetClose>
+              </li>
             </ul>
           </nav>
         </div>
       </SheetContent>
     </Sheet>
-  );
+  )
 }
 
-export default NavigationSheet;
+export default NavigationSheet

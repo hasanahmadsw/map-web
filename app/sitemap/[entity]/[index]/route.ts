@@ -1,6 +1,6 @@
 import { articlesService } from '@/services/articles.service';
 import { servicesService } from '@/services/services.service';
-import { solutionsService } from '@/services/solutions.service';
+import { allSolutionKeys } from '@/utils/solution-key-mapping';
 import { generateEquipmentUrls, generateSitemapXml } from '@/utils/seo/sitemap/sitemap-utils';
 import { MetadataRoute } from 'next';
 import { NextResponse } from 'next/server';
@@ -42,15 +42,11 @@ async function generateEntityUrls(entity: string, page: number): Promise<Metadat
       }));
     }
     case 'solutions': {
-      const { data: solutions } = await solutionsService.getAll({
-        page,
-        limit: maxLocsPerSitemap,
-      });
-
-      return solutions.map(solution => ({
+      // Return static solution pages
+      return allSolutionKeys.map(solution => ({
         url: `/solutions/${solution.slug}`,
-        lastModified: new Date(solution.updatedAt || solution.createdAt),
-        changeFrequency: 'daily' as const,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
         priority: 0.9,
       }));
     }

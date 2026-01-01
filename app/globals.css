@@ -56,7 +56,7 @@ html {
   --radius-xl: calc(var(--radius) + 4px);
 
   /* ===== SPACING ===== */
-  --spacing-top-bar-height: 2.5rem;
+  --spacing-top-bar-height: 0.5rem;
   --spacing-navbar-height: 5.3rem;
   --spacing-edge-bar-margin: calc(var(--spacing-top-bar-height) + 0.3rem);
   --spacing-edge-nav-margin: calc(var(--spacing-top-bar-height) + var(--spacing-navbar-height) + 0.5rem);

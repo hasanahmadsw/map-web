@@ -117,7 +117,6 @@ function AddEquipmentForm() {
           'description',
           'categoryId',
           'brandId',
-          'order',
           'isPublished',
           'isFeatured',
         ]);

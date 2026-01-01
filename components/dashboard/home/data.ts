@@ -1,8 +1,8 @@
-import { BriefcaseBusiness, FileText, Package } from 'lucide-react';
+import { FileText, Package } from 'lucide-react';
 
 export const content = {
   title: 'Welcome back',
-  subtitle: 'Manage Articles, Solutions, and Services from one place.',
+  subtitle: 'Manage Articles and Services from one place.',
 };
 
 export const adminCards = [
@@ -16,21 +16,12 @@ export const adminCards = [
     bullets: ['Draft, publish, and update posts', 'Manage tags, SEO, and status'],
   },
   {
-    title: 'Solutions',
-    badge: 'Business',
-    description: 'Organize solutions and keep information up to date.',
-    listHref: '/dashboard/solutions',
-    createHref: '/dashboard/solutions/add',
-    icon: BriefcaseBusiness,
-    bullets: ['Add new solutions and edit details', 'Control visibility and metadata'],
-  },
-  {
     title: 'Services',
     badge: 'Catalog',
-    description: 'Maintain service offerings and connect them to solutions.',
+    description: 'Maintain service offerings and organize them by solution key.',
     listHref: '/dashboard/services',
     createHref: '/dashboard/services/add',
     icon: Package,
-    bullets: ['Create & update services', 'Link services to solutions'],
+    bullets: ['Create & update services', 'Organize services by solution key'],
   },
 ] as const;

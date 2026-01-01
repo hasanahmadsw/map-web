@@ -35,15 +35,6 @@ function EquipmentInfoSidebar({ equipment }: EquipmentInfoSidebarProps) {
             </div>
           )}
 
-          {equipment.order !== undefined && (
-            <div className="space-y-2">
-              <div className="text-muted-foreground flex items-center gap-2 text-sm">
-                <span>Order</span>
-              </div>
-              <p className="font-medium">{equipment.order}</p>
-            </div>
-          )}
-
           <div className="space-y-2">
             <div className="text-muted-foreground flex items-center gap-2 text-sm">
               <Calendar className="h-4 w-4" />

@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/navigation-menu';
 
 import { navigationLinks } from './data';
+import { MediaProductionDropdown } from './media-production-dropdown';
+import { BroadcastDropdown } from './broadcast-dropdown';
 
 function Navbar() {
   const pathname = usePathname();
@@ -19,6 +21,11 @@ function Navbar() {
       <NavigationMenuList className="gap-2">
         {navigationLinks.map((link, index) => {
           const isActive = link.href === '' ? pathname === `/` : pathname === `${link.href}`;
+
+          // Skip Photography from regular links as it's handled separately
+          if (link.href === '/solutions/photography') {
+            return null;
+          }
 
           return (
             <NavigationMenuItem key={index}>
@@ -34,6 +41,19 @@ function Navbar() {
             </NavigationMenuItem>
           );
         })}
+        <MediaProductionDropdown />
+        <BroadcastDropdown />
+        {/* <NavigationMenuItem>
+          <NavigationMenuLink
+            active={pathname === '/solutions/photography'}
+            className={` ${
+              pathname === '/solutions/photography' ? 'text-primary! font-bold' : ''
+            } hover:text-primary py-1.5 text-sm whitespace-nowrap min-[1100px]:text-[15px]`}
+            asChild
+          >
+            <Link href="/solutions/photography">Photography</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem> */}
       </NavigationMenuList>
     </NavigationMenu>
   );

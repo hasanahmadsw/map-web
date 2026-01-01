@@ -13,7 +13,7 @@ import { useServiceById } from '@/hooks/api/services/useServiceById';
 import { useServiceMutations } from '@/hooks/api/services/mutations';
 
 import { BasicInformationSection } from './partial/basic-information-section';
-import { SolutionsSection } from './partial/solutions-section';
+import { SolutionKeySection } from './partial/solution-key-section';
 import { MetaInformationSection } from './partial/meta-information-section';
 
 import { StatusOptionsSection } from './partial/status-options-section';
@@ -47,14 +47,6 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
   // Reset form when service data is loaded
   useEffect(() => {
     if (service) {
-      // Extract solution IDs from the solutions array
-      const serviceSolutions = service.solutions || [];
-      const solutionIds = Array.isArray(serviceSolutions)
-        ? serviceSolutions
-            .map(sol => (typeof sol === 'object' && sol !== null ? sol.id : sol))
-            .filter((id): id is number => typeof id === 'number')
-        : [];
-
       form.reset({
         slug: service.slug,
         icon: service.icon,
@@ -62,7 +54,7 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
         isPublished: service.isPublished,
         isFeatured: service.isFeatured,
         order: service.order,
-        solutionIds: solutionIds,
+        solutionKey: service.solutionKey,
         name: service.name,
         description: service.description,
         shortDescription: service.shortDescription,
@@ -134,8 +126,8 @@ export function EditServiceForm({ serviceId }: EditServiceFormProps) {
           description="Add sub-services for this service."
         />
 
-        {/* Related solutions */}
-        <SolutionsSection />
+        {/* Solution Key */}
+        <SolutionKeySection />
 
         {/* SEO and metadata */}
         <MetaInformationSection />

@@ -42,7 +42,6 @@ function updateEquipmentSchema() {
     brandLabel: z.string().optional(), // Just for display purposes
     isPublished: z.boolean().default(false),
     isFeatured: z.boolean().default(false),
-    order: numberValidation(1, 100).optional().or(z.literal('')),
     coverPath: z.string(validation.required).min(1, validation.required),
     galleryPaths: z.array(z.string().min(1, validation.required)).optional().default([]),
     specs: equipmentSpecsSchema,

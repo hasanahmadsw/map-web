@@ -1,29 +1,11 @@
-import { solutionsService } from '@/services/solutions.service';
-import { SolutionCard } from './solution-card';
+import { StaticSolutionCard } from '@/components/website/solutions/static-solution-card';
+import { allSolutionKeys } from '@/utils/solution-key-mapping';
 import { Lightbulb } from 'lucide-react';
 import SectionHeader from '../../common/section-header';
 import MotionWrapper from '@/components/shared/motion/motion-wrapper';
 import CATSection from '../../common/cta-card';
 
 export async function SolutionsSection() {
-  let solutionsResponse;
-
-  try {
-    solutionsResponse = await solutionsService.getAll({
-      limit: 6,
-      isPublished: true,
-      isFeatured: true,
-    });
-  } catch {
-    solutionsResponse = { data: [] };
-  }
-
-  const solutions = solutionsResponse?.data || [];
-
-  if (solutions.length === 0) {
-    return null;
-  }
-
   return (
     <section className="section-padding container space-y-4">
       <SectionHeader
@@ -35,8 +17,8 @@ export async function SolutionsSection() {
       />
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {solutions.map((solution, index) => (
-          <SolutionCard key={solution.id} solution={solution} />
+        {allSolutionKeys.map(solutionKey => (
+          <StaticSolutionCard key={solutionKey.key} solutionKey={solutionKey} />
         ))}
       </div>
 

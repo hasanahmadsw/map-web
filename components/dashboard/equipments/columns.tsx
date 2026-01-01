@@ -117,14 +117,6 @@ export function useEquipmentColumns(opts: {
         );
       },
     },
-    // Order
-    {
-      id: 'order',
-      header: 'Order',
-      enableSorting: true,
-      accessorKey: 'order',
-      cell: ({ row }) => <div className="font-mono text-sm">{row.original.order || 0}</div>,
-    },
     // Status
     {
       id: 'status',

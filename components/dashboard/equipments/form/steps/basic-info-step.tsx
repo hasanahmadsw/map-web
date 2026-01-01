@@ -97,8 +97,6 @@ function BasicInfoStep({ isEdit = false }: BasicInfoStepProps) {
         </div>
       </div>
 
-      <NumericInput control={form.control} name="order" label="Order" placeholder="0" allowFloat={false} />
-
       <div className="flex flex-col gap-4 md:col-span-2">
         <CheckboxInput
           control={form.control}

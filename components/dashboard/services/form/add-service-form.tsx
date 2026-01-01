@@ -10,7 +10,7 @@ import { Form } from '@/components/ui/form';
 import { useServiceMutations } from '@/hooks/api/services/mutations';
 
 import { BasicInformationSection } from './partial/basic-information-section';
-import { SolutionsSection } from './partial/solutions-section';
+import { SolutionKeySection } from './partial/solution-key-section';
 import { MetaInformationSection } from './partial/meta-information-section';
 import { StatusOptionsSection } from './partial/status-options-section';
 
@@ -69,8 +69,8 @@ function AddServiceForm() {
           description="Add sub-services for this service."
         />
 
-        {/* Related solutions */}
-        <SolutionsSection />
+        {/* Solution Key */}
+        <SolutionKeySection />
 
         {/* SEO and metadata */}
         <MetaInformationSection />

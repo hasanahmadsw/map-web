@@ -1,6 +1,5 @@
 import { Role } from '@/types/roles.enum';
 import {
-  BriefcaseBusiness,
   Building,
   Camera,
   FileText,
@@ -37,12 +36,6 @@ export const navMain = [
     allowedRole: [Role.SUPERADMIN],
   },
   {
-    title: 'Solutions',
-    url: '/dashboard/solutions',
-    icon: BriefcaseBusiness,
-    allowedRole: [Role.SUPERADMIN, Role.ADMIN],
-  },
-  {
     title: 'Equipments',
     url: '#',
     icon: Camera,
@@ -63,14 +56,8 @@ export const navMain = [
     ],
   },
   {
-    title: 'Facilities',
-    url: '/dashboard/facilities',
-    icon: Building,
-    allowedRole: [Role.SUPERADMIN, Role.ADMIN],
-  },
-  {
-    title: 'Facility Units',
-    url: '/dashboard/facility-units',
+    title: 'Broadcast Units',
+    url: '/dashboard/broadcast-units',
     icon: Package,
     allowedRole: [Role.SUPERADMIN, Role.ADMIN],
   },

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useMotionValueEvent, useScroll } from 'framer-motion';
 
 import Logo from './logo';
@@ -18,11 +18,19 @@ import { usePathname } from 'next/navigation';
 
 function Header() {
   const ref = useRef<HTMLDivElement>(null);
-
-  const authToken = readCookieFromDocument(myCookies.auth);
-  const isAuthenticated = !!authToken;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   const pathname = usePathname();
+
+  // Check authentication on client side only to prevent hydration mismatch
+  useEffect(() => {
+    setTimeout(() => {
+      const authToken = readCookieFromDocument(myCookies.auth);
+      setIsAuthenticated(!!authToken);
+      setIsMounted(true);
+    }, 100);
+  }, []);
 
   const { scrollY } = useScroll({
     target: ref,
@@ -74,7 +82,7 @@ function Header() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          {isAuthenticated ? (
+          {isMounted && isAuthenticated ? (
             <UserMenu />
           ) : (
             <Button asChild>

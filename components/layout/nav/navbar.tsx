@@ -1,6 +1,6 @@
 'use client';
 
-import { Menu, Home, Briefcase, FileText, X, LogOut, Settings, User, Moon, Sun, Monitor } from 'lucide-react';
+import { Menu, Home, Briefcase, FileText, X, LogOut, Settings, User, Moon, Sun, Monitor, Camera } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import * as React from 'react';
@@ -8,6 +8,8 @@ import * as React from 'react';
 import { ThemeToggle } from '@/components/layout/nav/theme-toggle';
 import { UserMenu } from '@/components/layout/nav/user-menu';
 import { SolutionsDropdown, MobileSolutionsAccordion } from '@/components/layout/nav/solutions-dropdown';
+import { MediaProductionDropdown, MobileMediaProductionAccordion } from '@/components/layout/nav/media-production-dropdown';
+import { BroadcastDropdown, MobileBroadcastAccordion } from '@/components/layout/nav/broadcast-dropdown';
 
 import { Button } from '@/components/ui/button';
 
@@ -54,6 +56,14 @@ export function Navbar({ isAuthenticated }: NavbarProps) {
               {item.name}
             </Link>
           ))}
+          <MediaProductionDropdown />
+          <BroadcastDropdown />
+          <Link
+            href="/solutions/photography"
+            className="text-foreground hover:text-primary text-sm leading-6 font-medium transition-colors"
+          >
+            Photography
+          </Link>
           <SolutionsDropdown />
         </div>
 
@@ -106,6 +116,16 @@ export function Navbar({ isAuthenticated }: NavbarProps) {
                     </Link>
                   );
                 })}
+                <MobileMediaProductionAccordion onLinkClick={() => setOpen(false)} />
+                <MobileBroadcastAccordion onLinkClick={() => setOpen(false)} />
+                <Link
+                  href="/solutions/photography"
+                  className="hover:text-primary flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors"
+                  onClick={() => setOpen(false)}
+                >
+                  <Camera className="text-muted-foreground h-4 w-4" />
+                  <span>Photography</span>
+                </Link>
                 <MobileSolutionsAccordion onLinkClick={() => setOpen(false)} />
               </div>
 

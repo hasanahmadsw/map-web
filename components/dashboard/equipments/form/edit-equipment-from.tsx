@@ -67,7 +67,6 @@ function EditEquipmentForm({ equipmentId }: EditEquipmentFormProps) {
       brandLabel: equipment.brand.name,
       isPublished: equipment.isPublished ?? false,
       isFeatured: equipment.isFeatured ?? false,
-      order: equipment.order || undefined,
       coverPath: equipment.coverPath || '',
       galleryPaths: equipment.galleryPaths || [],
       specs: equipment.specs as any,

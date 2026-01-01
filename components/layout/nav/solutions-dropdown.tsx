@@ -4,9 +4,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useSolutionsPublic } from '@/hooks/api/solutions/useSolutionsController';
-import { renderIcon } from '@/utils/icon-resolver';
-import DivHtml from '@/components/shared/div-html';
+import { allSolutionKeys } from '@/utils/solution-key-mapping';
 
 interface SolutionsDropdownProps {
   onLinkClick?: () => void;
@@ -15,7 +13,8 @@ interface SolutionsDropdownProps {
 export function SolutionsDropdown({ onLinkClick }: SolutionsDropdownProps) {
   const [isHovered, setIsHovered] = React.useState(false);
 
-  const { solutions } = useSolutionsPublic({ limit: 4, isPublished: true });
+  // Show first 3 solutions in dropdown
+  const solutions = allSolutionKeys.slice(0, 3);
 
   return (
     <div
@@ -52,24 +51,22 @@ export function SolutionsDropdown({ onLinkClick }: SolutionsDropdownProps) {
             <div className="relative grid gap-2 p-3">
               {solutions.map(solution => (
                 <Link
-                  key={solution.id}
+                  key={solution.key}
                   href={`/solutions/${solution.slug}`}
                   onClick={onLinkClick}
                   className="group hover:bg-accent relative flex items-center gap-x-4 rounded-lg p-2.5 text-sm leading-6 transition-colors"
                 >
                   <div className="bg-muted group-hover:bg-primary/10 flex h-9 w-9 flex-none items-center justify-center rounded-lg transition-colors">
-                    {renderIcon(solution.icon, { size: 18, fallback: 'Video' })}
+                    <solution.icon className="h-[18px] w-[18px]" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="text-foreground group-hover:text-primary font-semibold transition-colors">
-                      {solution.name}
+                      {solution.title}
                       <span className="absolute inset-0" />
                     </div>
-                    {solution.shortDescription && (
-                      <p className="text-muted-foreground mt-0.5 line-clamp-2 text-xs">
-                        <DivHtml html={solution.shortDescription} />
-                      </p>
-                    )}
+                    <p className="text-muted-foreground mt-0.5 line-clamp-2 text-xs">
+                      {solution.description}
+                    </p>
                   </div>
                 </Link>
               ))}
@@ -104,7 +101,7 @@ interface MobileSolutionsAccordionProps {
 export function MobileSolutionsAccordion({ onLinkClick }: MobileSolutionsAccordionProps) {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const { solutions } = useSolutionsPublic({ limit: 10, isPublished: true });
+  const solutions = allSolutionKeys;
 
   return (
     <div className="space-y-2">
@@ -127,21 +124,17 @@ export function MobileSolutionsAccordion({ onLinkClick }: MobileSolutionsAccordi
         <div className="space-y-1 pl-6">
           {solutions.map(solution => (
             <Link
-              key={solution.id}
+              key={solution.key}
               href={`/solutions/${solution.slug}`}
               onClick={onLinkClick}
               className="group text-muted-foreground hover:text-foreground hover:bg-accent flex gap-x-2 rounded-md p-1.5 text-sm leading-6 font-semibold transition-colors"
             >
               <span className="border-border bg-muted flex h-5 w-5 shrink-0 items-center justify-center rounded-lg border">
-                {renderIcon(solution.icon, { size: 12, fallback: 'Video' })}
+                <solution.icon className="h-3 w-3" />
               </span>
               <div className="min-w-0 flex-1">
-                <div className="font-semibold">{solution.name}</div>
-                {solution.shortDescription && (
-                  <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">
-                    <DivHtml html={solution.shortDescription} />
-                  </p>
-                )}
+                <div className="font-semibold">{solution.title}</div>
+                <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">{solution.description}</p>
               </div>
             </Link>
           ))}

@@ -2,7 +2,7 @@ import { MapPin, Phone, Mail, Facebook, Twitter, Linkedin, Instagram } from 'luc
 import Link from 'next/link';
 import Logo from '../header/logo';
 import { servicesService } from '@/services/services.service';
-import { solutionsService } from '@/services/solutions.service';
+import { allSolutionKeys } from '@/utils/solution-key-mapping';
 
 const currentYear = new Date().getFullYear();
 const Footer = async () => {
@@ -20,19 +20,8 @@ const Footer = async () => {
 
   const services = servicesResponse?.data || [];
 
-  // Fetch solutions directly from API
-  let solutionsResponse;
-  try {
-    solutionsResponse = await solutionsService.getAll({
-      limit: 6,
-      isPublished: true,
-      isFeatured: true,
-    });
-  } catch {
-    solutionsResponse = { data: [] };
-  }
-
-  const solutions = solutionsResponse?.data || [];
+  // Use static solution keys
+  const solutions = allSolutionKeys;
 
   return (
     <footer className="text-card-foreground bg-gray-900">
@@ -84,14 +73,14 @@ const Footer = async () => {
             <div>
               <h3 className="mb-6 text-lg font-semibold text-white">Solutions</h3>
               <ul className="space-y-4">
-                {solutions.slice(0, 6).map(solution => (
-                  <li key={solution.id}>
+                {solutions.map(solution => (
+                  <li key={solution.key}>
                     <Link
                       href={`/solutions/${solution.slug}`}
                       prefetch={false}
                       className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
                     >
-                      {solution.name}
+                      {solution.title}
                     </Link>
                   </li>
                 ))}
