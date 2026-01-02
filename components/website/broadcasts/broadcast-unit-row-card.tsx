@@ -30,7 +30,7 @@ export function BroadcastUnitRowCard({ unit, className }: BroadcastUnitRowCardPr
       href={href}
       className={cn(
         'group glass-card relative block overflow-hidden rounded-xl',
-        'flex flex-col transition-all duration-300 md:flex-row',
+        'flex flex-col transition-all duration-500 md:flex-row',
         'hover:scale-[1.01] hover:shadow-lg',
         className,
       )}
