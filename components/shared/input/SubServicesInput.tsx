@@ -7,13 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { StandaloneIconSelectInput } from '@/components/shared/input/StandaloneIconSelectInput';
-
 interface SubService {
-  icon: string;
   title: string;
   description: string;
-  features: string[];
 }
 
 interface SubServicesInputProps<T extends FieldValues> {
@@ -42,10 +38,8 @@ export function SubServicesInput<T extends FieldValues>({
 
         const addSubService = () => {
           const newSubService: SubService = {
-            icon: '',
             title: '',
             description: '',
-            features: [],
           };
           field.onChange([...(subServices as SubService[]), newSubService]);
         };
@@ -54,32 +48,9 @@ export function SubServicesInput<T extends FieldValues>({
           field.onChange((subServices as SubService[]).filter((_: SubService, i: number) => i !== index));
         };
 
-        const updateSubService = (index: number, fieldName: keyof SubService, value: string | string[]) => {
+        const updateSubService = (index: number, fieldName: keyof SubService, value: string) => {
           const updated = [...(subServices as SubService[])];
           updated[index] = { ...updated[index], [fieldName]: value };
-          field.onChange(updated);
-        };
-
-        const addFeature = (subServiceIndex: number) => {
-          const updated = [...(subServices as SubService[])];
-          updated[subServiceIndex] = {
-            ...updated[subServiceIndex],
-            features: [...(updated[subServiceIndex].features || []), ''],
-          };
-          field.onChange(updated);
-        };
-
-        const removeFeature = (subServiceIndex: number, featureIndex: number) => {
-          const updated = [...(subServices as SubService[])];
-          updated[subServiceIndex].features = updated[subServiceIndex].features.filter(
-            (_: string, i: number) => i !== featureIndex,
-          );
-          field.onChange(updated);
-        };
-
-        const updateFeature = (subServiceIndex: number, featureIndex: number, value: string) => {
-          const updated = [...(subServices as SubService[])];
-          updated[subServiceIndex].features[featureIndex] = value;
           field.onChange(updated);
         };
 
@@ -123,23 +94,14 @@ export function SubServicesInput<T extends FieldValues>({
                         </div>
                       </CardHeader>
                       <CardContent className="space-y-4">
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                          <StandaloneIconSelectInput
-                            value={subService.icon || ''}
-                            onChange={value => updateSubService(index, 'icon', value)}
-                            label="Icon"
-                            placeholder="Select an icon"
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Title</label>
+                          <Input
+                            placeholder="Enter title"
+                            value={subService.title || ''}
+                            onChange={e => updateSubService(index, 'title', e.target.value)}
                             disabled={disabled}
                           />
-                          <div className="space-y-2">
-                            <label className="text-sm font-medium">Title</label>
-                            <Input
-                              placeholder="Enter title"
-                              value={subService.title || ''}
-                              onChange={e => updateSubService(index, 'title', e.target.value)}
-                              disabled={disabled}
-                            />
-                          </div>
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-medium">Description</label>
@@ -150,41 +112,6 @@ export function SubServicesInput<T extends FieldValues>({
                             className="min-h-[80px]"
                             disabled={disabled}
                           />
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex items-center justify-between">
-                            <label className="text-sm font-medium">Features</label>
-                            <Button
-                              type="button"
-                              onClick={() => addFeature(index)}
-                              variant="outline"
-                              size="sm"
-                              disabled={disabled}
-                            >
-                              <Plus className="h-4 w-4" />
-                            </Button>
-                          </div>
-                          <div className="space-y-2">
-                            {(subService.features || []).map((feature: string, featureIndex: number) => (
-                              <div key={featureIndex} className="flex gap-2">
-                                <Input
-                                  placeholder="Enter feature"
-                                  value={feature}
-                                  onChange={e => updateFeature(index, featureIndex, e.target.value)}
-                                  disabled={disabled}
-                                />
-                                <Button
-                                  type="button"
-                                  onClick={() => removeFeature(index, featureIndex)}
-                                  variant="destructive"
-                                  size="sm"
-                                  disabled={disabled}
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            ))}
-                          </div>
                         </div>
                       </CardContent>
                     </Card>

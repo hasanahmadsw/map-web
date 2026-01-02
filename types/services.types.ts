@@ -51,10 +51,8 @@ export interface ServiceResponse {
 }
 
 export interface SubService {
-  icon: string;
   title: string;
   description: string;
-  features: string[];
 }
 
 export interface IServiceParams extends BaseListParams {

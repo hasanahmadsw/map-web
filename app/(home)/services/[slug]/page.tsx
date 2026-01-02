@@ -8,7 +8,6 @@ import DivHtml from '@/components/shared/div-html';
 import { Badge } from '@/components/ui/badge';
 
 import Link from 'next/link';
-import { Check } from 'lucide-react';
 import type { SubService } from '@/types/services.types';
 import { singleServiceSchema } from '@/utils/seo/schema/services/single-service-schema';
 
@@ -141,30 +140,14 @@ export default async function ServicePage({ params }: ServicePageProps) {
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {service.subServices.map((subService: SubService, index: number) => (
                   <div key={index} className="glass-card rounded-xl p-6">
-                    <div className="mb-4 flex items-start gap-4">
-                      {subService.icon && (
-                        <div className="text-muted-foreground shrink-0 text-3xl opacity-70">
-                          {subService.icon}
-                        </div>
-                      )}
+                    <div className="mb-4">
                       <h3 className="text-xl font-semibold">{subService.title}</h3>
                     </div>
 
                     {subService.description && (
-                      <p className="text-muted-foreground mb-4 text-sm leading-relaxed">
+                      <p className="text-muted-foreground text-sm leading-relaxed">
                         {subService.description}
                       </p>
-                    )}
-
-                    {subService.features && subService.features.length > 0 && (
-                      <ul className="space-y-2">
-                        {subService.features.map((feature: string, featureIndex: number) => (
-                          <li key={featureIndex} className="flex items-start gap-2 text-sm">
-                            <Check className="text-primary mt-0.5 h-4 w-4 shrink-0" />
-                            <span className="text-muted-foreground">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
                     )}
                   </div>
                 ))}
