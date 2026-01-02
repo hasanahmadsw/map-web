@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Film } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { servicesService } from '@/services/services.service';
 import { SolutionKey } from '@/types/solution-key.enum';
@@ -43,26 +43,45 @@ export function MobileMediaProductionAccordion({ onLinkClick }: MobileMediaProdu
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-1.5">
       <button
-        className="hover:text-primary hover:bg-accent flex w-full cursor-pointer items-center justify-between rounded-lg p-3 transition-all"
+        className={cn(
+          'group flex w-full cursor-pointer items-center justify-between rounded-lg px-4 py-3.5',
+          'bg-accent/30 hover:bg-accent hover:text-primary',
+          'border border-transparent hover:border-accent-foreground/10',
+          'text-sm font-semibold transition-all duration-200',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20',
+          isOpen && 'bg-accent text-primary border-accent-foreground/10',
+        )}
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls="media-production-accordion-content"
       >
-        <span className="font-medium">Media Production</span>
+        <div className="flex items-center gap-2.5">
+          <Film className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+          <span>Media Production</span>
+        </div>
         <ChevronDown
-          className={cn('h-4 w-4 flex-none transition-transform duration-200', isOpen ? 'rotate-180' : '')}
+          className={cn(
+            'h-4 w-4 flex-none text-muted-foreground transition-all duration-300 ease-in-out',
+            isOpen ? 'rotate-180 text-primary' : 'group-hover:text-primary',
+          )}
           aria-hidden="true"
         />
       </button>
       <div
+        id="media-production-accordion-content"
         className={cn(
-          'overflow-hidden transition-all duration-200',
+          'overflow-hidden transition-all duration-300 ease-in-out',
           isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0',
         )}
       >
-        <div className="space-y-1 pl-6">
+        <div className="space-y-0.5 pl-4 pr-2 pt-1">
           {isLoading ? (
-            <div className="text-muted-foreground p-2 text-sm">Loading...</div>
+            <div className="text-muted-foreground px-3 py-3 text-sm flex items-center gap-2">
+              <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40 animate-pulse" />
+              <span>Loading...</span>
+            </div>
           ) : services.length > 0 ? (
             <>
               {services.map(service => (
@@ -70,34 +89,52 @@ export function MobileMediaProductionAccordion({ onLinkClick }: MobileMediaProdu
                   <Link
                     href={`/services/${service.slug}`}
                     onClick={handleLinkClick}
-                    className="group hover:text-primary hover:bg-accent flex rounded-md p-1.5 text-sm leading-6 font-medium transition-colors"
+                    className={cn(
+                      'group flex items-center gap-3 rounded-md px-3 py-2.5',
+                      'text-sm font-medium leading-6',
+                      'hover:bg-accent hover:text-primary',
+                      'border border-transparent hover:border-accent-foreground/10',
+                      'transition-all duration-150',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20',
+                    )}
                   >
+                    <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40 group-hover:bg-primary transition-colors" />
                     <div className="min-w-0 flex-1">
                       <div className="font-medium">{service.name}</div>
-                      {/* <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">
-                        {service.shortDescription || service.description}
-                      </p> */}
                     </div>
                   </Link>
                 </SheetClose>
               ))}
-              <SheetClose asChild>
-                <Link
-                  href="/solutions/media-production"
-                  onClick={handleLinkClick}
-                  className="group hover:text-primary hover:bg-accent mt-1 flex rounded-md border-t p-1.5 pt-1.5 text-sm leading-6 font-medium transition-colors"
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="font-medium">See all</div>
-                    <p className="text-muted-foreground line-clamp-2 text-xs leading-snug">
-                      Browse all production services
-                    </p>
-                  </div>
-                </Link>
-              </SheetClose>
+              <div className="pt-1.5 mt-1.5 border-t border-border/50">
+                <SheetClose asChild>
+                  <Link
+                    href="/solutions/media-production"
+                    onClick={handleLinkClick}
+                    className={cn(
+                      'group flex items-center gap-3 rounded-md px-3 py-2.5',
+                      'text-sm font-semibold leading-6',
+                      'hover:bg-accent hover:text-primary',
+                      'border border-transparent hover:border-accent-foreground/10',
+                      'transition-all duration-150',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20',
+                    )}
+                  >
+                    <div className="h-1.5 w-1.5 rounded-full bg-primary/60 group-hover:bg-primary transition-colors" />
+                    <div className="min-w-0 flex-1">
+                      <div className="font-semibold">See all</div>
+                      <p className="text-muted-foreground line-clamp-2 mt-0.5 text-xs leading-snug font-normal">
+                        Browse all production services
+                      </p>
+                    </div>
+                  </Link>
+                </SheetClose>
+              </div>
             </>
           ) : (
-            <div className="text-muted-foreground p-2 text-sm">No services available</div>
+            <div className="text-muted-foreground px-3 py-3 text-sm flex items-center gap-2">
+              <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" />
+              <span>No services available</span>
+            </div>
           )}
         </div>
       </div>

@@ -13,12 +13,14 @@ import {
 import { navigationLinks } from './data';
 import { MediaProductionDropdown } from './media-production-dropdown';
 import { BroadcastDropdown } from './broadcast-dropdown';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 function Navbar() {
   const pathname = usePathname();
+  const isMobile = useIsMobile();
 
   return (
-    <NavigationMenu className="max-lg:hidden">
+    <NavigationMenu viewport={isMobile} className="max-lg:hidden">
       <NavigationMenuList className="gap-2">
         {navigationLinks.map((link, index) => {
           const isActive = link.href === '' ? pathname === `/` : pathname === `${link.href}`;
@@ -35,7 +37,7 @@ function Navbar() {
                 <NavigationMenuLink
                   active={isActive}
                   className={` ${
-                    isActive ? 'text-primary! font-bold' : ''
+                    isActive ? 'text-primary bg-accent font-bold' : ''
                   } hover:text-primary py-1.5 text-sm font-medium whitespace-nowrap min-[1100px]:text-[15px]`}
                   asChild
                 >
@@ -55,7 +57,7 @@ function Navbar() {
                   <NavigationMenuLink
                     active={isActive}
                     className={` ${
-                      isActive ? 'text-primary! font-bold' : ''
+                      isActive ? 'text-primary bg-accent font-bold' : ''
                     } hover:text-primary py-1.5 text-sm font-medium whitespace-nowrap min-[1100px]:text-[15px]`}
                     asChild
                   >
@@ -71,7 +73,7 @@ function Navbar() {
               <NavigationMenuLink
                 active={isActive}
                 className={` ${
-                  isActive ? 'text-primary! font-bold' : ''
+                  isActive ? 'text-primary bg-accent font-bold' : ''
                 } hover:text-primary py-1.5 text-sm font-medium whitespace-nowrap min-[1100px]:text-[15px]`}
                 asChild
               >

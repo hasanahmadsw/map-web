@@ -86,7 +86,9 @@ function Header() {
             <UserMenu />
           ) : (
             <Button asChild>
-              <Link href="/login">Sign In</Link>
+              <Link href="/login" className="text-white">
+                Sign In
+              </Link>
             </Button>
           )}
           {/* Desktop Navigation */}
