@@ -16,6 +16,7 @@ import {
   updateBroadcastUnitSchema,
   type TUpdateBroadcastUnitForm,
 } from '@/validations/broadcasts/update-broadcast-unit.schema';
+import type { BroadcastUnit } from '@/types/broadcasts/broadcasts.types';
 import ResponseError from '@/components/shared/response-error';
 import { BasicInformationSection } from './partials/basic-information-section';
 import { StatusOptionsSection } from './partials/status-options-section';
@@ -39,45 +40,51 @@ export function EditBroadcastUnitForm({ broadcastUnitId }: EditBroadcastUnitForm
     refetch: refetchBroadcastUnit,
   } = useBroadcastUnitById(broadcastUnitId);
 
+  // Prepare form data from broadcast unit
+  const getFormData = (broadcastUnit: BroadcastUnit): TUpdateBroadcastUnitForm => {
+    // Normalize gallery to GalleryItem[] format
+    const normalizedGallery = Array.isArray(broadcastUnit.gallery)
+      ? broadcastUnit.gallery.map((item, index) => {
+          if (typeof item === 'string') {
+            return { path: item, order: index + 1 };
+          }
+          return { path: item.path, order: item.order || index + 1 };
+        })
+      : [];
+
+    return {
+      type: broadcastUnit.type as any,
+      slug: broadcastUnit.slug || '',
+      title: broadcastUnit.title || '',
+      summary: broadcastUnit.summary || '',
+      description: broadcastUnit.description || '',
+      coverImage: broadcastUnit.coverImage || '',
+      gallery: normalizedGallery,
+      specs: broadcastUnit.specs || undefined,
+      isPublished: broadcastUnit.isPublished ?? false,
+      order: broadcastUnit.order || undefined,
+      items: Array.isArray(broadcastUnit.items)
+        ? (broadcastUnit.items.map(item => ({
+            group: item.group,
+            title: item.title,
+            qty: item.qty,
+            notes: item.notes,
+            order: item.order,
+          })) as TUpdateBroadcastUnitForm['items'])
+        : [],
+    };
+  };
+
+  // Form
   const form = useForm<TUpdateBroadcastUnitForm>({
     resolver: zodResolver(updateBroadcastUnitSchema()) as Resolver<TUpdateBroadcastUnitForm>,
-    defaultValues: {},
+    defaultValues: broadcastUnit ? getFormData(broadcastUnit) : undefined,
   });
 
   // Reset form when broadcast unit data is loaded
   useEffect(() => {
     if (broadcastUnit) {
-      // Normalize gallery to GalleryItem[] format
-      const normalizedGallery = Array.isArray(broadcastUnit.gallery)
-        ? broadcastUnit.gallery.map((item, index) => {
-            if (typeof item === 'string') {
-              return { path: item, order: index + 1 };
-            }
-            return { path: item.path, order: item.order || index + 1 };
-          })
-        : [];
-
-      form.reset({
-        type: broadcastUnit.type as any,
-        slug: broadcastUnit.slug,
-        title: broadcastUnit.title,
-        summary: broadcastUnit.summary,
-        description: broadcastUnit.description,
-        coverImage: broadcastUnit.coverImage,
-        gallery: normalizedGallery,
-        specs: broadcastUnit.specs || undefined,
-        isPublished: broadcastUnit.isPublished,
-        order: broadcastUnit.order,
-        items: Array.isArray(broadcastUnit.items)
-          ? (broadcastUnit.items.map(item => ({
-              group: item.group,
-              title: item.title,
-              qty: item.qty,
-              notes: item.notes,
-              order: item.order,
-            })) as TUpdateBroadcastUnitForm['items'])
-          : [],
-      });
+      form.reset(getFormData(broadcastUnit));
     }
   }, [broadcastUnit, form]);
 

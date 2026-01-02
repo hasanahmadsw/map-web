@@ -36,7 +36,12 @@ export function SelectInput<T extends FieldValues>({
       render={({ field }) => (
         <FormItem>
           <FormLabel>{label}</FormLabel>
-          <Select onValueChange={field.onChange} value={field.value || undefined} disabled={disabled}>
+          <Select
+            onValueChange={field.onChange}
+            value={field.value}
+            disabled={disabled}
+            key={field.value || 'empty'}
+          >
             <FormControl>
               <SelectTrigger className={className}>
                 <SelectValue placeholder={placeholder} />
