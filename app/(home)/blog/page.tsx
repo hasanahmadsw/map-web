@@ -19,7 +19,7 @@ interface Props {
 
 export function generateMetadata() {
   return createEnhancedMetadata({
-    title: 'Media Production Insights & Creative Blog | MAP',
+    title: 'Media Production Insights & Creative Blog | MAP Media Art Production',
     description:
       'Read expert insights, trends, and tips on media production, video marketing, storytelling, and creative strategies from MAP professionals.',
 

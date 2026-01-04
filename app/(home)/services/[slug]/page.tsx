@@ -34,17 +34,15 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
   ].filter(Boolean);
 
   const metadata = createEnhancedMetadata({
-    title: { absolute: service.name },
+    title: { absolute: `${service.name} | MAP Media Art Production` },
     description:
-      service.shortDescription ||
-      service.meta?.description ||
-      `${service.name} - Professional media production service`,
+      service.shortDescription || service.meta?.description || `${service.name} - Media Production Services`,
     type: 'article',
     keywords,
     pathname: `/services/${service.slug}`,
     image: service.featuredImage || undefined,
     mainOverrides: {
-      category: 'Media Production Service',
+      category: 'Media Production Services',
     },
     openGraphOverrides: {
       tags: keywords,

@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: EquipmentPageProps): Promise<
     ].filter(Boolean) as string[];
 
     const metadata = createEnhancedMetadata({
-      title: { absolute: `${equipment.name} for Rent in UAE | ${equipment.equipmentType} | MAP` },
+      title: { absolute: `${equipment.name} for Rent in UAE` },
       description:
         equipment.summary || equipment.description || `${equipment.name} - Professional equipment rental`,
       type: 'article',

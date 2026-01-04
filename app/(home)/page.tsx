@@ -13,7 +13,7 @@ import { homeSchema } from '@/utils/seo/schema/home/home-schema';
 
 export async function generateMetadata(): Promise<Metadata> {
   const metaData = createEnhancedMetadata({
-    title: 'Media Production Company in UAE | MAP Media Art Production',
+    title: 'MAP Media Art Production | Best Media Solutions in Middle East',
     description:
       'MAP Media Art Production is a leading media production company in the UAE, delivering creative video, film, and digital content across the Middle East.',
     pathname: '/',

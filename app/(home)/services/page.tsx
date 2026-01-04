@@ -25,7 +25,7 @@ interface Props {
 
 export function generateMetadata() {
   return createEnhancedMetadata({
-    title: 'Professional Media Production Services in UAE | MAP',
+    title: 'Production Services | MAP Media Art Production',
     description:
       'Explore our full range of media production services, from video filming and editing to post-production, animation, and branded content.',
     pathname: '/services',

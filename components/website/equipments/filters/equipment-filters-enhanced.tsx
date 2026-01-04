@@ -111,7 +111,7 @@ export function EquipmentFiltersEnhanced({ categories, brands }: EquipmentFilter
             placeholder="Search equipment..."
             value={currentSearch}
             onValueChange={handleSearchChange}
-            className="w-full"
+            className="h-10 w-full rounded-xl"
           />
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <FilterSelect

@@ -37,7 +37,7 @@ export function generateEquipmentPageTitleAndDescription({
   const brandText = brand ? capitalizeEachWord(brand.replace(/-/g, ' ')) : '';
 
   return {
-    title: strategy.title(typeText, categoryText, brandText, 'MAP'),
+    title: strategy.title(typeText, categoryText, brandText),
     description: strategy.description(typeText, categoryText, brandText),
   };
 }

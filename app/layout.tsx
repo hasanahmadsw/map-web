@@ -15,8 +15,9 @@ export const monaSans = Mona_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'MAP',
-  description: 'Discover and connect with journalists from around the world',
+  title: 'MAP Media Art Production',
+  description:
+    'MAP Media Art Production is a leading media production company in the UAE, delivering creative video, film, and digital content across the Middle East.',
 };
 
 interface RootLayoutProps {

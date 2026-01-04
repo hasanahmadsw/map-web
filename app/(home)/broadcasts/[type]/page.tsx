@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props) {
 
   if (!broadcastType) {
     return createEnhancedMetadata({
-      title: 'Broadcast Units | MAP',
+      title: 'Broadcast Units | MAP Media Art Production',
       description: 'Explore our professional broadcast units.',
       pathname: `/broadcasts/${type}`,
     });

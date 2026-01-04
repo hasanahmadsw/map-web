@@ -81,7 +81,7 @@ export function HeroSection() {
             </Link>
             <Link
               className="glass-button rounded-full px-6 py-3 text-sm font-medium transition-all duration-200 md:px-8 md:text-base"
-              href="/news"
+              href="/blog"
             >
               Read Articles
             </Link>

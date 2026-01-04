@@ -61,29 +61,29 @@ const broadcastTypes = [
       'Satellite News Gathering units equipped with advanced transmission technology for reliable satellite communication and remote broadcasting from anywhere in the world.',
     features: ['Satellite Transmission', 'Global Coverage', 'Reliable Connectivity', 'Remote Broadcasting'],
   },
-  {
-    type: BroadcastType.INTERNET_BROADCAST,
-    slug: 'internet-broadcast',
-    label: 'Internet Broadcast',
-    icon: Wifi,
-    description:
-      'Professional solutions for online streaming and digital broadcasting. Perfect for webinars, live streaming, and digital content creation with high-quality output.',
-    features: ['Online Streaming', 'Digital Broadcasting', 'Webinar Support', 'High-Quality Output'],
-  },
-  {
-    type: BroadcastType.OTHER,
-    slug: 'other',
-    label: 'Other Solutions',
-    icon: MoreHorizontal,
-    description:
-      'Specialized broadcast solutions tailored to unique production requirements. Custom configurations and specialized equipment for specific broadcasting needs.',
-    features: ['Custom Solutions', 'Specialized Equipment', 'Tailored Configurations', 'Flexible Options'],
-  },
+  // {
+  //   type: BroadcastType.INTERNET_BROADCAST,
+  //   slug: 'internet-broadcast',
+  //   label: 'Internet Broadcast',
+  //   icon: Wifi,
+  //   description:
+  //     'Professional solutions for online streaming and digital broadcasting. Perfect for webinars, live streaming, and digital content creation with high-quality output.',
+  //   features: ['Online Streaming', 'Digital Broadcasting', 'Webinar Support', 'High-Quality Output'],
+  // },
+  // {
+  //   type: BroadcastType.OTHER,
+  //   slug: 'other',
+  //   label: 'Other Solutions',
+  //   icon: MoreHorizontal,
+  //   description:
+  //     'Specialized broadcast solutions tailored to unique production requirements. Custom configurations and specialized equipment for specific broadcasting needs.',
+  //   features: ['Custom Solutions', 'Specialized Equipment', 'Tailored Configurations', 'Flexible Options'],
+  // },
 ];
 
 export function generateMetadata() {
   return createEnhancedMetadata({
-    title: 'Professional Media Broadcasts | MAP',
+    title: 'Broadcast Solutions | MAP Media Art Production',
     description:
       'Explore our comprehensive range of professional broadcast solutions including OBVAN units, Flight Cases, SNG systems, and Internet Broadcasting solutions designed for modern media production.',
     pathname: '/broadcasts',

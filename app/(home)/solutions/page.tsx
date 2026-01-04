@@ -22,7 +22,7 @@ import { cn } from '@/lib/utils';
 
 export function generateMetadata() {
   return createEnhancedMetadata({
-    title: 'Creative Media Solutions for Brands & Businesses | MAP',
+    title: 'Media Solutions | MAP Media Art Production',
     description:
       'Discover tailored media solutions including video production, photography, and events management designed to elevate brands and engage audiences.',
     pathname: '/solutions',

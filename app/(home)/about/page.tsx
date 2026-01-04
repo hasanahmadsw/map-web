@@ -12,7 +12,7 @@ import { generateAboutPageSchema } from '@/utils/seo/schema/about/about-schema';
 
 export async function generateMetadata() {
   const metaData = createEnhancedMetadata({
-    title: 'About MAP Media Art Production | Creative Media Experts',
+    title: 'About Us | MAP Media Art Production',
     description:
       'Learn about MAP Media Art Production, our story, values, and 25+ years of experience shaping creative media in the UAE and Middle East.',
     pathname: '/about',

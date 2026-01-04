@@ -31,13 +31,13 @@ const broadcastTypes = [
     description: 'Satellite News Gathering units',
     icon: 'RadioTower',
   },
-  {
-    type: BroadcastType.INTERNET_BROADCAST,
-    label: 'Internet Broadcast',
-    description: 'Online streaming and broadcasting solutions',
-    icon: 'TvMinimal',
-  },
-  { type: BroadcastType.OTHER, label: 'Other', description: 'Additional broadcast solutions', icon: 'Video' },
+  // {
+  //   type: BroadcastType.INTERNET_BROADCAST,
+  //   label: 'Internet Broadcast',
+  //   description: 'Online streaming and broadcasting solutions',
+  //   icon: 'TvMinimal',
+  // },
+  // { type: BroadcastType.OTHER, label: 'Other', description: 'Additional broadcast solutions', icon: 'Video' },
 ];
 
 export function BroadcastDropdown() {

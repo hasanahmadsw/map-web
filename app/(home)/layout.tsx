@@ -5,7 +5,7 @@ import Header from '@/components/layout/header/header';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Media Production Company in UAE | MAP Media Art Production',
+  title: 'MAP Media Art Production',
   description:
     'MAP Media Art Production is a leading media production company in the UAE, delivering creative video, film, and digital content across the Middle East.',
 };

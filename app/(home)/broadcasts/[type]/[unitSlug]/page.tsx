@@ -66,7 +66,7 @@ export async function generateMetadata({ params }: BroadcastUnitPageProps): Prom
   const typeSlug = unit.type.toLowerCase().replace(/_/g, '-');
 
   const metadata = createEnhancedMetadata({
-    title: { absolute: unit.title || unit.slug },
+    title: { absolute: `${unit.title || unit.slug} | MAP Media Art Production` },
     description:
       unit.summary ||
       unit.description ||

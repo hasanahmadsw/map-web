@@ -165,14 +165,23 @@ const Footer = async () => {
                   <Phone className="mt-1 h-5 w-5 shrink-0 text-white/80" />
                   <div>
                     <div className="text-sm text-white/80">Phone</div>
-                    <div className="text-white">+974 XXXX XXXX</div>
+                    <div className="text-white">
+                      <a href="tel:+971545444499" className="text-white hover:underline">
+                        +971 545444499
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
                   <Mail className="mt-1 h-5 w-5 shrink-0 text-white/80" />
                   <div>
                     <div className="text-sm text-white/80">Email</div>
-                    <div className="text-white">info@maproduction.ae</div>
+                    <div className="text-white">
+                      {' '}
+                      <a href="mailto:info@maproduction.ae" className="text-white hover:underline">
+                        info@maproduction.ae
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>

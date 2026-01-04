@@ -27,7 +27,7 @@ export function getTypeMetadata(type: BroadcastType) {
     }
   > = {
     [BroadcastType.OBVAN]: {
-      title: 'OBVAN Broadcast Units | MAP',
+      title: 'OBVAN Broadcast Units | MAP Media Art Production',
       description:
         'Explore our Outside Broadcast Vans (OBVAN) - state-of-the-art mobile broadcast units designed for live events and professional broadcasting.',
       badgeText: 'OBVAN',
@@ -70,7 +70,7 @@ export function getTypeMetadata(type: BroadcastType) {
       ],
     },
     [BroadcastType.FLIGHT_CASE]: {
-      title: 'Flight Case Broadcast Units | MAP',
+      title: 'Flight Case Broadcast Units | MAP Media Art Production',
       description:
         'Explore our portable Flight Case broadcast units - compact and mobile solutions for professional broadcasting and media production.',
       badgeText: 'Flight Cases',
@@ -113,7 +113,7 @@ export function getTypeMetadata(type: BroadcastType) {
       ],
     },
     [BroadcastType.SNG]: {
-      title: 'SNG Broadcast Units | MAP',
+      title: 'SNG Broadcast Units | MAP Media Art Production',
       description:
         'Explore our Satellite News Gathering (SNG) units - professional broadcast solutions for satellite transmission and remote broadcasting.',
       badgeText: 'SNG',
@@ -156,7 +156,7 @@ export function getTypeMetadata(type: BroadcastType) {
       ],
     },
     [BroadcastType.INTERNET_BROADCAST]: {
-      title: 'Internet Broadcast Units | MAP',
+      title: 'Internet Broadcast Units | MAP Media Art Production',
       description:
         'Explore our Internet Broadcast units - professional solutions for online streaming and digital broadcasting.',
       badgeText: 'Internet Broadcast',
@@ -199,7 +199,7 @@ export function getTypeMetadata(type: BroadcastType) {
       ],
     },
     [BroadcastType.OTHER]: {
-      title: 'Other Broadcast Units | MAP',
+      title: 'Other Broadcast Units | MAP Media Art Production',
       description:
         'Explore our additional broadcast units - specialized solutions for various broadcasting and media production needs.',
       badgeText: 'Other',

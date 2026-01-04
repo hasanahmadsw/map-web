@@ -10,8 +10,8 @@ export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | MAP',
-    default: 'MAP',
+    template: '%s | MAP Media Art Production',
+    default: 'MAP Media Art Production',
   },
 };
 

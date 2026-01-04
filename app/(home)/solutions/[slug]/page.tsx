@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: SolutionPageProps): Promise<M
     );
 
     return createEnhancedMetadata({
-      title: { absolute: solutionInfo.title },
+      title: { absolute: `${solutionInfo.title} Solution in UAE` },
       description: solutionInfo.description,
       type: 'article',
       keywords,

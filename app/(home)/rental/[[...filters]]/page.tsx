@@ -66,7 +66,7 @@ export default async function EquipmentsPage({ params, searchParams }: Props) {
       <div className="pt-edge-nav-margin" />
 
       {/* Filters */}
-      <section className="bg-background sticky top-0 z-50 mb-8 border-b py-2 md:py-0">
+      <section className="bg-background sticky top-0 z-40 mb-8 border-b py-2 md:py-0">
         <div className="container">
           <EquipmentFiltersEnhanced categories={categoriesList} brands={brandsList} />
         </div>
