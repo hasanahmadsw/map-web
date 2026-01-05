@@ -10,7 +10,12 @@ type RequestOpts = { signal?: AbortSignal; headers?: Record<string, string> };
 
 export const settingsService = {
   async getSettings(opts?: RequestOpts): Promise<ApiResponse<Settings>> {
-    const res = await ApiService.get<Settings>(`${BASE}`, opts);
+    const res = await ApiService.get<Settings>(`${BASE}`, {
+      ...opts,
+      next: {
+        revalidate: 60 * 60 * 24, // 24 hours
+      },
+    });
     return res;
   },
 

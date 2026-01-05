@@ -19,6 +19,7 @@ export interface Settings {
   contact: {
     email: string;
     phone: string;
+    address: string;
   };
   customScripts: {
     footer: string[];
@@ -47,4 +48,3 @@ export interface SettingsResponse {
     requestId: string;
   };
 }
-

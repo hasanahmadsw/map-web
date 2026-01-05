@@ -1,24 +1,40 @@
-import { MapPin, Phone, Mail, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
+import { MapPin, Phone, Mail, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '../header/logo';
 import { servicesService } from '@/services/services.service';
+import { settingsService } from '@/services/settings.service';
 import { allSolutionKeys } from '@/utils/solution-key-mapping';
+import { SocialIcons } from '@/components/shared/social-icons';
 
 const currentYear = new Date().getFullYear();
+
+const socialsComponents = {
+  facebook: <SocialIcons.facebook className="h-5 w-5" />,
+  twitter: <SocialIcons.twitter className="h-5 w-5" />,
+  tiktok: <SocialIcons.tiktok className="h-5 w-5" />,
+  youtube: <SocialIcons.youtube className="h-5 w-5" />,
+  instagram: <SocialIcons.instagram className="h-5 w-5" />,
+  telegram: <SocialIcons.telegram className="h-5 w-5" />,
+  linkedin: <SocialIcons.linkedin className="h-5 w-5" />,
+  whatsapp: <SocialIcons.whatsapp className="h-5 w-5" />,
+  snapchat: <SocialIcons.snapchat className="h-5 w-5" />,
+};
+
 const Footer = async () => {
-  // Fetch services directly from API
-  let servicesResponse;
-  try {
-    servicesResponse = await servicesService.getAll({
-      limit: 6,
-      isPublished: true,
-      isFeatured: true,
-    });
-  } catch {
-    servicesResponse = { data: [] };
-  }
+  // Fetch services and settings in parallel
+  const [servicesResponse, settingsResponse] = await Promise.all([
+    servicesService
+      .getAll({
+        limit: 6,
+        isPublished: true,
+        isFeatured: true,
+      })
+      .catch(() => ({ data: [] })),
+    settingsService.getSettings().catch(() => ({ data: null })),
+  ]);
 
   const services = servicesResponse?.data || [];
+  const settings = settingsResponse?.data || null;
 
   // Use static solution keys
   const solutions = allSolutionKeys;
@@ -36,36 +52,22 @@ const Footer = async () => {
                 <Logo width={150} height={150} />
               </div>
 
-              <p className="text-sm leading-relaxed text-white/80">
-                Discover our comprehensive range of media production and broadcasting solutions, designed to
-                meet the unique needs of businesses and organizations worldwide.
-              </p>
+              <p className="text-sm leading-relaxed text-white/80">{settings?.siteDescription}</p>
 
-              <div className="flex space-x-4 text-white">
-                <a
-                  href="#"
-                  className="bg-foreground/5 hover:bg-foreground/10 flex h-10 w-10 items-center justify-center rounded-full transition-colors"
-                >
-                  <Facebook className="h-5 w-5" />
-                </a>
-                <a
-                  href="#"
-                  className="bg-foreground/5 hover:bg-foreground/10 flex h-10 w-10 items-center justify-center rounded-full transition-colors"
-                >
-                  <Twitter className="h-5 w-5" />
-                </a>
-                <a
-                  href="#"
-                  className="bg-foreground/5 hover:bg-foreground/10 flex h-10 w-10 items-center justify-center rounded-full transition-colors"
-                >
-                  <Linkedin className="h-5 w-5" />
-                </a>
-                <a
-                  href="#"
-                  className="bg-foreground/5 hover:bg-foreground/10 flex h-10 w-10 items-center justify-center rounded-full transition-colors"
-                >
-                  <Instagram className="h-5 w-5" />
-                </a>
+              <div className="grid w-44 grid-cols-4 gap-3 text-white">
+                {settings?.social?.map(social => (
+                  <a
+                    key={social.url}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-foreground/5 hover:bg-foreground/10 flex h-10 w-10 items-center justify-center rounded-full fill-white transition-colors"
+                  >
+                    {socialsComponents[social.platform as keyof typeof socialsComponents] || (
+                      <Share2 className="h-5 w-5" />
+                    )}
+                  </a>
+                ))}
               </div>
             </div>
 
@@ -158,7 +160,7 @@ const Footer = async () => {
                   <MapPin className="mt-1 h-5 w-5 shrink-0 text-white/80" />
                   <div>
                     <div className="text-sm text-white/80">Location</div>
-                    <div className="text-white">BS 18, Dubai Studio City, Dubai, UAE</div>
+                    <div className="text-white">{settings?.contact?.address}</div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -167,7 +169,7 @@ const Footer = async () => {
                     <div className="text-sm text-white/80">Phone</div>
                     <div className="text-white">
                       <a href="tel:+971545444499" className="text-white hover:underline">
-                        +971 545444499
+                        {settings?.contact?.phone}
                       </a>
                     </div>
                   </div>
@@ -177,9 +179,8 @@ const Footer = async () => {
                   <div>
                     <div className="text-sm text-white/80">Email</div>
                     <div className="text-white">
-                      {' '}
-                      <a href="mailto:info@maproduction.ae" className="text-white hover:underline">
-                        info@maproduction.ae
+                      <a href={`mailto:${settings?.contact?.email}`} className="text-white hover:underline">
+                        {settings?.contact?.email}
                       </a>
                     </div>
                   </div>
