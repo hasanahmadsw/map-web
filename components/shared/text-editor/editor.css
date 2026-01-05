@@ -1,0 +1,189 @@
+/* Minimal SunEditor Dark Mode - Colors Only */
+
+.dark {
+   /* Dark theme color variables */
+   --se-bg-primary: #141414;
+   --se-bg-secondary: #141414;
+   --se-text-primary: #f1f5f9;
+   --se-text-secondary: #cbd5e1;
+   --se-border-color: var(--color-border);
+   --se-active-bg: #444;
+   --se-active-text: #ffffff;
+   --se-hover-bg: #334155;
+}
+
+/* Main editor container */
+.dark .sun-editor {
+   background-color: var(--se-bg-primary) !important;
+   border: 0px !important;
+   color: var(--se-text-primary) !important;
+}
+
+/* Toolbar */
+.dark .se-toolbar {
+   background-color: var(--se-bg-secondary) !important;
+   outline: none !important;
+   border-bottom: 1px solid var(--se-border-color) !important;
+}
+
+.dark .se-btn-module-border {
+   border-color: var(--se-border-color) !important;
+   outline: none !important;
+}
+
+/* Editor content area */
+.dark .se-submenu,
+.dark .sun-editor-editable,
+.dark .se-btn-list,
+.dark .sun-editor .se-list-layer {
+   background-color: var(--se-bg-primary) !important;
+   color: var(--se-text-primary) !important;
+}
+
+.dark .sun-editor .se-list-layer.se-list-format ul * {
+   color: var(--se-text-primary) !important;
+}
+
+.dark .sun-editor .se-btn-list:focus,
+.dark .sun-editor .se-btn-list:hover,
+.dark .sun-editor .se-btn-list.default_value {
+   background-color: var(--se-hover-bg) !important;
+   outline: 0 none !important;
+   border-top: 1px dotted var(--se-border-color) !important;
+   border-bottom: 1px dotted var(--se-border-color) !important;
+}
+
+/* Toolbar buttons */
+.dark .se-btn {
+   color: var(--se-text-primary) !important;
+   background-color: transparent !important;
+   border-color: transparent !important;
+}
+
+.dark .se-btn:hover {
+   background-color: var(--se-hover-bg) !important;
+   color: var(--se-text-primary) !important;
+}
+
+.dark .se-btn-select,
+.dark .se-btn.se-btn-select {
+   background-color: var(--se-active-bg) !important;
+   color: var(--se-active-text) !important;
+}
+
+/* Dropdowns */
+.dark .se-dropdown {
+   background-color: var(--se-bg-primary) !important;
+   border-color: var(--se-border-color) !important;
+}
+
+.dark .se-dropdown .se-btn {
+   color: var(--se-text-primary) !important;
+}
+
+.dark .se-dropdown .se-btn:hover {
+   background-color: var(--se-hover-bg) !important;
+}
+
+/* Input fields */
+.dark .se-dropdown input,
+.dark .se-dialog input,
+.dark .se-dialog textarea,
+.dark .se-dialog select {
+   background-color: var(--se-bg-secondary) !important;
+   border-color: var(--se-border-color) !important;
+   color: var(--se-text-primary) !important;
+}
+
+/* Dialogs */
+.dark .se-dialog {
+   background-color: var(--se-bg-primary) !important;
+   border-color: var(--se-border-color) !important;
+}
+
+.dark .se-dialog-header {
+   background-color: var(--se-bg-secondary) !important;
+   border-color: var(--se-border-color) !important;
+   color: var(--se-text-primary) !important;
+}
+
+.dark .se-dialog-content {
+   background-color: var(--se-bg-primary) !important;
+   color: var(--se-text-primary) !important;
+}
+
+.dark .se-dialog-footer {
+   background-color: var(--se-bg-secondary) !important;
+   border-color: var(--se-border-color) !important;
+}
+
+/* Color picker */
+.dark .se-submenu-color {
+   background-color: var(--se-bg-primary) !important;
+   border-color: var(--se-border-color) !important;
+}
+
+/* Resizing bar */
+.dark .se-resizing-bar {
+   background-color: var(--se-bg-primary) !important;
+   border-color: var(--se-border-color) !important;
+}
+
+/* Typography colors */
+.dark .sun-editor-editable h1,
+.dark .sun-editor-editable h2,
+.dark .sun-editor-editable h3,
+.dark .sun-editor-editable h4,
+.dark .sun-editor-editable h5,
+.dark .sun-editor-editable h6 {
+   color: var(--se-text-primary) !important;
+}
+
+.dark .sun-editor-editable blockquote {
+   border-left-color: var(--se-active-bg) !important;
+   color: var(--se-text-secondary) !important;
+}
+
+.dark .sun-editor-editable code {
+   background-color: var(--se-bg-secondary) !important;
+   color: var(--se-text-primary) !important;
+}
+
+.dark .sun-editor-editable pre {
+   background-color: var(--se-bg-secondary) !important;
+   border-color: var(--se-border-color) !important;
+}
+
+/* Table colors */
+.dark .sun-editor-editable table th,
+.dark .sun-editor-editable table td {
+   border-color: var(--se-border-color) !important;
+}
+
+.dark .sun-editor-editable table th {
+   background-color: var(--se-bg-secondary) !important;
+}
+
+.se-wrapper {
+   max-height: 400px !important;
+   max-width: 100% !important;
+   overflow: hidden !important;
+}
+.se-wrapper-inner {
+   max-height: 400px !important;
+   overflow-y: auto !important;
+   overflow-x: hidden !important;
+   word-break: break-word !important;
+}
+
+.se-wrapper-inner * {
+   word-break: break-word !important;
+}
+
+.se-resizing-bar {
+   display: none !important;
+}
+
+.dark .se-btn-list pre {
+   -webkit-text-fill-color: black;
+}

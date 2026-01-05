@@ -2,17 +2,12 @@
 
 import { useFormContext } from 'react-hook-form';
 import { TextInput } from '@/components/shared/input/TextInput';
-import { AiProvider } from '@/providers/ai-provider';
-import ArticleEditor from '@/components/shared/editor';
+
 import { TextAreaInput } from '@/components/shared/input/TextAreaInput';
+import { EditorInput } from '@/components/shared/text-editor/EditorInput';
 
 export function BasicInformationSection() {
-  const {
-    control,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useFormContext();
+  const { control } = useFormContext();
 
   return (
     <>
@@ -21,13 +16,13 @@ export function BasicInformationSection() {
         <TextInput control={control} name="slug" label="Slug" placeholder="Enter article slug" />
       </div>
 
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Content</label>
-        <AiProvider>
-          <ArticleEditor initialHTML={watch('content')} onChange={html => setValue('content', html)} />
-        </AiProvider>
-        {errors.content && <p className="text-red-500">{errors.content.message as string}</p>}
-      </div>
+      <EditorInput
+        control={control}
+        name="content"
+        label="Content"
+        placeholder="Enter article content"
+        language="en"
+      />
 
       <TextAreaInput
         control={control}
