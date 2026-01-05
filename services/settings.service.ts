@@ -12,6 +12,7 @@ export const settingsService = {
   async getSettings(opts?: RequestOpts): Promise<ApiResponse<Settings>> {
     const res = await ApiService.get<Settings>(`${BASE}`, {
       ...opts,
+      cache: 'force-cache',
       next: {
         revalidate: 60 * 60 * 24, // 24 hours
       },
