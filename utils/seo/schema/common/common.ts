@@ -1,4 +1,4 @@
-import { BreadcrumbList, Organization, WebPage } from 'schema-dts';
+import { BreadcrumbList, Organization, SiteNavigationElement, WebPage, WebSite } from 'schema-dts';
 import seoConfig from '../../meta/seo.config';
 
 interface BreadcrumbItem {
@@ -61,11 +61,57 @@ export async function generateOrganizationSchema(): Promise<Organization> {
       },
     ],
 
+    areaServed: [
+      { '@type': 'Country', name: 'AE' },
+      { '@type': 'Country', name: 'SA' },
+    ],
+
+    knowsAbout: [
+      'Media Production',
+      'Broadcast Journalism',
+      'Video Production in Dubai',
+      'Professional Cinematography',
+    ],
+
     // sameAs: [
     //   'https://www.instagram.com/maproduction.ae',
     //   'https://www.linkedin.com/company/maproduction'
     // ],
   };
+}
+
+export function generateWebsiteSchema(): WebSite {
+  const { siteURL, siteName, websiteId, organizationId } = seoConfig;
+
+  return {
+    '@type': 'WebSite',
+    '@id': websiteId,
+    url: siteURL,
+    name: siteName,
+    publisher: { '@id': organizationId },
+    inLanguage: 'en',
+    // potentialAction: [
+    //   {
+    //     '@type': 'SearchAction',
+    //     target: {
+    //       '@type': 'EntryPoint',
+    //       urlTemplate: `${siteURL}/rental?q={search_term_string}`,
+    //     },
+    //     'query-input': 'required name=search_term_string',
+    //   } as any,
+    // ],
+  };
+}
+
+export function generateNavigationSchema(items: { name: string; url: string }[]): SiteNavigationElement[] {
+  const { siteURL } = seoConfig;
+
+  return items.map(item => ({
+    '@type': 'SiteNavigationElement',
+    '@id': `${siteURL}${item.url}`,
+    name: item.name,
+    url: `${siteURL}${item.url}`,
+  }));
 }
 
 export function withBaseSchema<T extends WebPage>(pageSchema: T, currentURL?: string): T {

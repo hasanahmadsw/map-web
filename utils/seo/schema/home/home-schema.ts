@@ -1,37 +1,31 @@
 import seoConfig from '../../meta/seo.config';
-import { generateBreadcrumbSchema, generateOrganizationSchema, withBaseSchema } from '../common/common';
+import {
+  generateBreadcrumbSchema,
+  generateNavigationSchema,
+  generateOrganizationSchema,
+  generateWebsiteSchema,
+  withBaseSchema,
+} from '../common/common';
 
-import type { BreadcrumbList, Organization, WebPage, WebSite } from 'schema-dts';
+import type { BreadcrumbList, Organization, SiteNavigationElement, WebPage, WebSite } from 'schema-dts';
 
 export async function homeSchema(): Promise<{
   '@context': 'https://schema.org';
-  '@graph': (WebSite | WebPage | Organization | BreadcrumbList)[];
+  '@graph': (WebSite | WebPage | Organization | BreadcrumbList | SiteNavigationElement)[];
 }> {
-  const { siteURL, siteName, websiteId, organizationId } = seoConfig;
+  const { siteURL, websiteId, organizationId } = seoConfig;
 
   const homepageId = `${siteURL}#homepage`;
 
   /* ----------------------------------
+   * Organization
+   * ---------------------------------- */
+  const organization = await generateOrganizationSchema();
+
+  /* ----------------------------------
    * WebSite
    * ---------------------------------- */
-  const website: WebSite = {
-    '@type': 'WebSite',
-    '@id': websiteId,
-    url: siteURL,
-    name: siteName,
-    inLanguage: 'en',
-    publisher: {
-      '@id': organizationId,
-    },
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${siteURL}/rental?search={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    } as any,
-  };
+  const website = generateWebsiteSchema();
 
   /* ----------------------------------
    * HomePage
@@ -56,9 +50,14 @@ export async function homeSchema(): Promise<{
   );
 
   /* ----------------------------------
-   * Organization
+   * Navigation
    * ---------------------------------- */
-  const organizationSchema = await generateOrganizationSchema();
+  const navigation = generateNavigationSchema([
+    { name: 'Broadcasts', url: `/broadcasts` },
+    { name: 'Services', url: `/services` },
+    { name: 'Solutions', url: `/solutions` },
+    { name: 'About Us', url: `/about` },
+  ]);
 
   /* ----------------------------------
    * BreadcrumbList
@@ -66,12 +65,12 @@ export async function homeSchema(): Promise<{
   const breadcrumbSchema = generateBreadcrumbSchema([
     {
       name: 'Home',
-      url: siteURL,
+      url: '',
     },
   ]);
 
   return {
     '@context': 'https://schema.org',
-    '@graph': [website, homePage, organizationSchema, breadcrumbSchema],
+    '@graph': [website, homePage, organization, ...navigation, breadcrumbSchema],
   };
 }

@@ -1,7 +1,12 @@
-import { SearchResultsPage, ItemList, Product } from 'schema-dts';
+import { SearchResultsPage, ItemList, Product, BreadcrumbList, Organization, WebSite } from 'schema-dts';
 
 import seoConfig from '../../meta/seo.config';
-import { generateBreadcrumbSchema, withBaseSchema } from '../common/common';
+import {
+  generateBreadcrumbSchema,
+  generateOrganizationSchema,
+  generateWebsiteSchema,
+  withBaseSchema,
+} from '../common/common';
 import { IEquipment } from '@/types/equipments/equipment.type';
 
 import { generateSearchResultsMetadata } from '../../meta/equipment-meta/build-equipment-meta';
@@ -10,7 +15,10 @@ export async function generateEquipmentSearchSchema(
   equipments: IEquipment[],
   filters: string[],
   categories: string[],
-): Promise<any> {
+): Promise<{
+  '@context': 'https://schema.org';
+  '@graph': (WebSite | Organization | SearchResultsPage | ItemList | BreadcrumbList)[];
+}> {
   const { siteURL, organizationId } = seoConfig;
 
   // =============== Extract filters
@@ -18,6 +26,16 @@ export async function generateEquipmentSearchSchema(
     filters,
     categories,
   );
+
+  /* ----------------------------------
+   * Organization
+   * ---------------------------------- */
+  const organization = await generateOrganizationSchema();
+
+  /* ----------------------------------
+   * WebSite
+   * ---------------------------------- */
+  const website = generateWebsiteSchema();
 
   /* ----------------------------------
    * SearchResultsPage
@@ -84,6 +102,6 @@ export async function generateEquipmentSearchSchema(
 
   return {
     '@context': 'https://schema.org',
-    '@graph': [searchPage, equipmentList, breadcrumbSchema],
+    '@graph': [website, organization, searchPage, equipmentList, breadcrumbSchema],
   };
 }

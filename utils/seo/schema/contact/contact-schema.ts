@@ -1,14 +1,28 @@
-import { BreadcrumbList, ContactPage } from 'schema-dts';
-import { generateBreadcrumbSchema } from '../common/common';
+import { BreadcrumbList, ContactPage, WebSite, Organization, SiteNavigationElement } from 'schema-dts';
+import {
+  generateBreadcrumbSchema,
+  generateOrganizationSchema,
+  generateWebsiteSchema,
+} from '../common/common';
 import seoConfig from '@/utils/seo/meta/seo.config';
 import { withBaseSchema } from '../common/common';
 
 export async function generateContactPageSchema(): Promise<{
   '@context': 'https://schema.org';
-  '@graph': (ContactPage | BreadcrumbList)[];
+  '@graph': (WebSite | Organization | ContactPage | BreadcrumbList)[];
 }> {
   const { siteURL, organizationId, siteName } = seoConfig;
   const currentURL = `${siteURL}/contact`;
+
+  /* ----------------------------------
+   * Organization
+   * ---------------------------------- */
+  const organization = await generateOrganizationSchema();
+
+  /* ----------------------------------
+   * WebSite
+   * ---------------------------------- */
+  const website = generateWebsiteSchema();
 
   /* ----------------------------------
    * ContactPage
@@ -36,6 +50,6 @@ export async function generateContactPageSchema(): Promise<{
 
   return {
     '@context': 'https://schema.org',
-    '@graph': [contactPage, breadcrumbSchema],
+    '@graph': [website, organization, contactPage, breadcrumbSchema],
   };
 }

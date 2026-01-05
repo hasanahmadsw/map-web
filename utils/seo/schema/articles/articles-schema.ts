@@ -1,6 +1,20 @@
-import { Article, Blog, BlogPosting, BreadcrumbList, CollectionPage, ItemList } from 'schema-dts';
+import {
+  Blog,
+  BlogPosting,
+  BreadcrumbList,
+  CollectionPage,
+  ItemList,
+  WebSite,
+  Organization,
+  SiteNavigationElement,
+} from 'schema-dts';
 import seoConfig from '../../meta/seo.config';
-import { generateBreadcrumbSchema, withBaseSchema } from '../common/common';
+import {
+  generateBreadcrumbSchema,
+  generateOrganizationSchema,
+  generateWebsiteSchema,
+  withBaseSchema,
+} from '../common/common';
 import { Article as ArticleType } from '@/types/articles.types';
 
 export async function articlesSchema(
@@ -8,10 +22,20 @@ export async function articlesSchema(
   currentPage: number,
 ): Promise<{
   '@context': 'https://schema.org';
-  '@graph': (CollectionPage | Blog | BreadcrumbList)[];
+  '@graph': (WebSite | Organization | CollectionPage | Blog | BreadcrumbList)[];
 }> {
   const { siteURL, organizationId } = seoConfig;
   const currentURL = `${siteURL}/blog${currentPage > 1 ? `?page=${currentPage}` : ''}`;
+
+  /* ----------------------------------
+   * Organization
+   * ---------------------------------- */
+  const organization = await generateOrganizationSchema();
+
+  /* ----------------------------------
+   * WebSite
+   * ---------------------------------- */
+  const website = generateWebsiteSchema();
 
   /* ----------------------------------
    * Articles Page
@@ -71,6 +95,6 @@ export async function articlesSchema(
 
   return {
     '@context': 'https://schema.org',
-    '@graph': [articlesPage, blog, breadcrumbSchema],
+    '@graph': [website, organization, articlesPage, blog, breadcrumbSchema],
   };
 }

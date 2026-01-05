@@ -1,16 +1,31 @@
 import { ServiceResponse } from '@/types/services.types';
 import seoConfig from '../../meta/seo.config';
-import { BreadcrumbList, ItemPage, Service } from 'schema-dts';
-import { generateBreadcrumbSchema, withBaseSchema } from '../common/common';
+import { BreadcrumbList, ItemPage, Service, WebSite, Organization, SiteNavigationElement } from 'schema-dts';
+import {
+  generateBreadcrumbSchema,
+  generateOrganizationSchema,
+  generateWebsiteSchema,
+  withBaseSchema,
+} from '../common/common';
 
 export async function singleServiceSchema(service: ServiceResponse): Promise<{
   '@context': 'https://schema.org';
-  '@graph': (ItemPage | Service | BreadcrumbList)[];
+  '@graph': (WebSite | Organization | ItemPage | Service | BreadcrumbList)[];
 }> {
   const { siteURL, organizationId } = seoConfig;
   const currentURL = `${siteURL}/services/${service.slug}`;
 
   const mainServiceId = `${currentURL}#service`;
+
+  /* ----------------------------------
+   * Organization
+   * ---------------------------------- */
+  const organization = await generateOrganizationSchema();
+
+  /* ----------------------------------
+   * WebSite
+   * ---------------------------------- */
+  const website = generateWebsiteSchema();
 
   /* ----------------------------------
    * ItemPage
@@ -63,6 +78,6 @@ export async function singleServiceSchema(service: ServiceResponse): Promise<{
 
   return {
     '@context': 'https://schema.org',
-    '@graph': [itemPage, mainService, breadcrumbSchema],
+    '@graph': [website, organization, itemPage, mainService, breadcrumbSchema],
   };
 }

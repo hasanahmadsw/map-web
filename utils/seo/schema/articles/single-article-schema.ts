@@ -1,16 +1,31 @@
 import { Article as ArticleType } from '@/types/articles.types';
 import seoConfig from '../../meta/seo.config';
-import { Article, BreadcrumbList, ItemPage } from 'schema-dts';
-import { generateBreadcrumbSchema, withBaseSchema } from '../common/common';
+import { Article, BreadcrumbList, ItemPage, WebSite, Organization, SiteNavigationElement } from 'schema-dts';
+import {
+  generateBreadcrumbSchema,
+  generateOrganizationSchema,
+  generateWebsiteSchema,
+  withBaseSchema,
+} from '../common/common';
 
 export async function singleArticleSchema(article: ArticleType): Promise<{
   '@context': 'https://schema.org';
-  '@graph': (ItemPage | Article | BreadcrumbList)[];
+  '@graph': (WebSite | Organization | ItemPage | Article | BreadcrumbList)[];
 }> {
   const { siteURL, organizationId } = seoConfig;
   const currentURL = `${siteURL}/blog/${article.slug}`;
 
   const mainArticleId = `${currentURL}#article`;
+
+  /* ----------------------------------
+   * Organization
+   * ---------------------------------- */
+  const organization = await generateOrganizationSchema();
+
+  /* ----------------------------------
+   * WebSite
+   * ---------------------------------- */
+  const website = generateWebsiteSchema();
 
   /* ----------------------------------
    * ItemPage
@@ -63,6 +78,6 @@ export async function singleArticleSchema(article: ArticleType): Promise<{
 
   return {
     '@context': 'https://schema.org',
-    '@graph': [itemPage, mainArticle, breadcrumbSchema],
+    '@graph': [website, organization, itemPage, mainArticle, breadcrumbSchema],
   };
 }

@@ -1,6 +1,6 @@
-import { IEquipment } from '@/types/equipments/equipment.type';
+import { BroadcastUnit } from '@/types/broadcasts/broadcasts.types';
 import seoConfig from '../../meta/seo.config';
-import { BreadcrumbList, ItemPage, Product, WebSite, Organization, SiteNavigationElement } from 'schema-dts';
+import { BreadcrumbList, ItemPage, Product, WebSite, Organization } from 'schema-dts';
 import {
   generateBreadcrumbSchema,
   generateOrganizationSchema,
@@ -8,12 +8,13 @@ import {
   withBaseSchema,
 } from '../common/common';
 
-export async function singleEquipmentSchema(equipment: IEquipment): Promise<{
+export async function singleBroadcastSchema(unit: BroadcastUnit): Promise<{
   '@context': 'https://schema.org';
   '@graph': (WebSite | Organization | ItemPage | Product | BreadcrumbList)[];
 }> {
   const { siteURL, organizationId } = seoConfig;
-  const currentURL = `${siteURL}/equipments/${equipment.slug}`;
+  const typeSlug = unit.type.toLowerCase().replace(/_/g, '-');
+  const currentURL = `${siteURL}/broadcasts/${typeSlug}/${unit.slug}`;
 
   const mainProductId = `${currentURL}#product`;
 
@@ -35,8 +36,8 @@ export async function singleEquipmentSchema(equipment: IEquipment): Promise<{
       '@type': 'ItemPage',
       '@id': `${currentURL}#itempage`,
       url: currentURL,
-      name: equipment.name,
-      description: equipment.summary || equipment.description,
+      name: unit.title || unit.slug,
+      description: unit.summary || unit.description || `${unit.title || unit.slug} - Professional broadcast unit`,
       mainEntity: { '@id': mainProductId },
     },
     currentURL,
@@ -45,24 +46,28 @@ export async function singleEquipmentSchema(equipment: IEquipment): Promise<{
   /* ----------------------------------
    * Main Product
    * ---------------------------------- */
+  const images = unit.coverImage
+    ? [
+        unit.coverImage,
+        ...(unit.gallery && unit.gallery.length > 0
+          ? unit.gallery.sort((a, b) => a.order - b.order).map(item => item.path)
+          : []),
+      ]
+    : unit.gallery && unit.gallery.length > 0
+      ? unit.gallery.sort((a, b) => a.order - b.order).map(item => item.path)
+      : undefined;
+
   const mainProduct: Product = {
     '@type': 'Product',
     '@id': mainProductId,
-    name: equipment.name,
-    description: equipment.description || equipment.summary,
-    image:
-      equipment.gallery && equipment.gallery.length > 0
-        ? [equipment.coverPath, ...equipment.gallery.sort((a, b) => a.order - b.order).map(item => item.path)]
-        : equipment.coverPath,
-    brand: {
-      '@type': 'Brand',
-      name: equipment.brand.name,
-    },
-    category: equipment.category.name,
-    sku: `EQ-${equipment.id}`,
+    name: unit.title || unit.slug,
+    description: unit.description || unit.summary || `${unit.title || unit.slug} - Professional broadcast unit`,
+    ...(images && images.length > 0 && { image: images }),
+    category: `Broadcast ${unit.type.replace(/_/g, ' ')}`,
+    sku: `BC-${unit.id}`,
     offers: {
       '@type': 'Offer',
-      availability: 'https://schema.org/InStock',
+      availability: unit.isPublished ? 'https://schema.org/InStock' : 'https://schema.org/PreOrder',
       seller: { '@id': organizationId },
     },
   };
@@ -72,8 +77,9 @@ export async function singleEquipmentSchema(equipment: IEquipment): Promise<{
    * ---------------------------------- */
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '' },
-    { name: 'Rent', url: '/rental' },
-    { name: equipment.name, url: `/rental${equipment.slug}` },
+    { name: 'Broadcasts', url: '/broadcasts' },
+    { name: unit.type.replace(/_/g, ' '), url: `/broadcasts/${typeSlug}` },
+    { name: unit.title || unit.slug, url: `/broadcasts/${typeSlug}/${unit.slug}` },
   ]);
 
   return {
@@ -81,3 +87,4 @@ export async function singleEquipmentSchema(equipment: IEquipment): Promise<{
     '@graph': [website, organization, itemPage, mainProduct, breadcrumbSchema],
   };
 }
+

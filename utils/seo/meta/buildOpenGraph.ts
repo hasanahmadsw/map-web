@@ -42,7 +42,7 @@ export function buildOpenGraph({
 
       // If authors are provided, map them to the required format
       ...(authors && {
-        authors: authors.map(author => (author.url ? `/${author.url}` : author.name)),
+        authors: authors.map(author => author.name),
       }),
     }),
     ...openGraphOverrides,

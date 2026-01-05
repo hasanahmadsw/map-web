@@ -6,6 +6,7 @@ import EmptyState from '@/components/shared/data-states/empty-state';
 import CustomPagination from '@/components/shared/pagination/custom-pagination';
 import { Building2 } from 'lucide-react';
 import { BroadcastType } from '@/types/broadcasts/broadcast.enums';
+import { broadcastTypeSchema } from '@/utils/seo/schema/broadcasts/broadcast-type-schema';
 
 interface BroadcastsSectionProps {
   page: number;
@@ -47,8 +48,19 @@ export async function BroadcastsSection({
     return <EmptyState type="no-data" icon={<Building2 />} />;
   }
 
+  const jsonLd = await broadcastTypeSchema(units, type as BroadcastType, page);
+
   return (
     <>
+      {/* JSON-LD */}
+      <script
+        id="broadcast-type-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
+
       <div
         className={layout === 'row' ? 'space-y-6' : 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'}
       >

@@ -1,15 +1,37 @@
-import { AboutPage, BreadcrumbList, FAQPage, Question } from 'schema-dts';
-import { generateBreadcrumbSchema } from '../common/common';
+import {
+  AboutPage,
+  BreadcrumbList,
+  FAQPage,
+  Question,
+  WebSite,
+  Organization,
+  SiteNavigationElement,
+} from 'schema-dts';
+import {
+  generateBreadcrumbSchema,
+  generateOrganizationSchema,
+  generateWebsiteSchema,
+} from '../common/common';
 import seoConfig from '@/utils/seo/meta/seo.config';
 import { withBaseSchema } from '../common/common';
 import { faqs } from '@/components/website/home/data';
 
 export async function generateAboutPageSchema(): Promise<{
   '@context': 'https://schema.org';
-  '@graph': (AboutPage | FAQPage | BreadcrumbList)[];
+  '@graph': (WebSite | Organization | AboutPage | FAQPage | BreadcrumbList)[];
 }> {
   const { siteURL, organizationId, siteName } = seoConfig;
   const currentURL = `${siteURL}/about`;
+
+  /* ----------------------------------
+   * Organization
+   * ---------------------------------- */
+  const organization = await generateOrganizationSchema();
+
+  /* ----------------------------------
+   * WebSite
+   * ---------------------------------- */
+  const website = generateWebsiteSchema();
 
   /* ----------------------------------
    * AboutPage
@@ -55,6 +77,6 @@ export async function generateAboutPageSchema(): Promise<{
 
   return {
     '@context': 'https://schema.org',
-    '@graph': [aboutPage, faqEntity, breadcrumbSchema],
+    '@graph': [website, organization, aboutPage, faqEntity, breadcrumbSchema],
   };
 }
