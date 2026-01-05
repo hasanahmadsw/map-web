@@ -1,3 +1,6 @@
+import { broadcastTypes } from '@/components/website/broadcasts/data-utils';
+import { broadcastsService } from '@/services/broadcasts.service';
+
 import { EquipmentType } from '@/types/equipments/equipment.enum';
 import { MetadataRoute } from 'next';
 
@@ -74,6 +77,35 @@ export function generateEquipmentUrls(page: number = 1) {
       for (const brand of EQUIPMENT_BRAND_TYPES) {
         urls.push(`/${type}/${category}/${brand}`);
       }
+    }
+  }
+
+  const start = (page - 1) * maxLocsPerSitemap;
+  const end = start + maxLocsPerSitemap;
+
+  const currentUrls = urls.slice(start, end);
+
+  return { urls: currentUrls, count: urls.length };
+}
+
+export async function generateBroadcastUrls(page: number = 1) {
+  const urls: string[] = [];
+
+  for (const broadcastType of broadcastTypes) {
+    urls.push(`/${broadcastType.slug}`);
+    try {
+      const res = await broadcastsService.getAllUnitsPublic({
+        page,
+        limit: 100,
+        type: broadcastType.type,
+      });
+
+      const units = res.data || [];
+      for (const unit of units) {
+        urls.push(`/${broadcastType.slug}/${unit.slug}`);
+      }
+    } catch {
+      continue;
     }
   }
 

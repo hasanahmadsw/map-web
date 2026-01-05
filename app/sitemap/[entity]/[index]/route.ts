@@ -1,7 +1,11 @@
 import { articlesService } from '@/services/articles.service';
 import { servicesService } from '@/services/services.service';
 import { allSolutionKeys } from '@/utils/solution-key-mapping';
-import { generateEquipmentUrls, generateSitemapXml } from '@/utils/seo/sitemap/sitemap-utils';
+import {
+  generateBroadcastUrls,
+  generateEquipmentUrls,
+  generateSitemapXml,
+} from '@/utils/seo/sitemap/sitemap-utils';
 import { MetadataRoute } from 'next';
 import { NextResponse } from 'next/server';
 
@@ -42,7 +46,6 @@ async function generateEntityUrls(entity: string, page: number): Promise<Metadat
       }));
     }
     case 'solutions': {
-      // Return static solution pages
       return allSolutionKeys.map(solution => ({
         url: `/solutions/${solution.slug}`,
         lastModified: new Date(),
@@ -76,6 +79,16 @@ async function generateEntityUrls(entity: string, page: number): Promise<Metadat
         priority: 0.8,
       }));
     }
+    case 'broadcasts': {
+      const { urls: broadcastUrls } = await generateBroadcastUrls(page);
+
+      return broadcastUrls.map(url => ({
+        url: `/broadcasts${url}`,
+        lastModified: new Date(),
+        changeFrequency: 'daily' as const,
+        priority: 0.8,
+      }));
+    }
 
     default:
       return [
@@ -99,6 +112,12 @@ async function generateEntityUrls(entity: string, page: number): Promise<Metadat
         },
         {
           url: `/solutions`,
+          lastModified: new Date(),
+          changeFrequency: 'daily' as const,
+          priority: 0.8,
+        },
+        {
+          url: `/broadcasts`,
           lastModified: new Date(),
           changeFrequency: 'daily' as const,
           priority: 0.8,
