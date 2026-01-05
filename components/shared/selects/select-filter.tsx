@@ -47,7 +47,8 @@ export function SelectFilter<T = string>({
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="all">{allOptionLabel || 'All'}</SelectItem>
+        <SelectItem value="all">{allOptionLabel ?? 'All'}</SelectItem>
+
         {options.map(option => (
           <SelectItem key={option.value} value={option.value}>
             {option.label}

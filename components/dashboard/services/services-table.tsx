@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 
 import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { DataTable } from '@/components/shared/table/data-table';
 
 import { useRouter } from 'next/navigation';
@@ -16,6 +17,7 @@ import { TableHeader, type FilterInfo } from '@/components/shared/table/table-he
 import type { StaffService } from '@/types/services.types';
 import DialogSkeleton from '@/components/shared/skeletons/dialog-skeleton';
 import dynamic from 'next/dynamic';
+import { SelectFilter } from '@/components/shared/selects/select-filter';
 
 const ConfirmationDialogDynamic = dynamic(
   () => import('@/components/shared/confirmation-dialog').then(mod => mod.ConfirmationDialog),
@@ -150,6 +152,46 @@ export function ServicesTable() {
               searchPlaceholder: 'Search...',
               noData: 'No data found',
             }}
+            toolbarRight={
+              <div className="flex flex-wrap items-center gap-2">
+                <SelectFilter
+                  value={
+                    publishedFilter === undefined
+                      ? 'all'
+                      : (publishedFilter as unknown as string) === 'true'
+                        ? 'true'
+                        : 'false'
+                  }
+                  onValueChange={val =>
+                    setFilter('isPublished', val === undefined ? undefined : val === 'true' ? true : false)
+                  }
+                  options={[
+                    { value: 'true', label: 'Published' },
+                    { value: 'false', label: 'Draft' },
+                  ]}
+                  allOptionLabel="All Status"
+                  className="w-32"
+                />
+                <SelectFilter
+                  value={featuredFilter === undefined ? 'all' : featuredFilter ? 'yes' : 'no'}
+                  onValueChange={val =>
+                    setFilter('isFeatured', val === undefined ? undefined : val === 'yes' ? true : false)
+                  }
+                  options={[
+                    { value: 'yes', label: 'Yes' },
+                    { value: 'no', label: 'No' },
+                  ]}
+                  allOptionLabel="All Featured"
+                  className="w-32"
+                />
+
+                {hasActiveFilters && (
+                  <Button variant="ghost" size="sm" onClick={clearAll} className="gap-1">
+                    Clear All
+                  </Button>
+                )}
+              </div>
+            }
           />
         </CardContent>
       </Card>

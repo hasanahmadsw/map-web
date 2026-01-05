@@ -178,11 +178,8 @@ function StaffTable() {
               <div className="flex flex-wrap items-center gap-2">
                 <SelectFilter
                   value={roleFilter || 'all'}
-                  onValueChange={val =>
-                    setFilter('role', (val as string) === 'all' ? undefined : (val as Role))
-                  }
+                  onValueChange={val => setFilter('role', val)}
                   options={[
-                    { value: 'all', label: 'All' },
                     { value: 'superadmin', label: 'Super Admin' },
                     { value: 'admin', label: 'Admin' },
                     { value: 'author', label: 'Author' },

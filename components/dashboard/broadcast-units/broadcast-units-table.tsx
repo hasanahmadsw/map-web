@@ -162,23 +162,27 @@ export function BroadcastUnitsTable() {
             toolbarRight={
               <div className="flex flex-wrap items-center gap-2">
                 <SelectFilter
-                  value={publishedFilter === undefined ? 'all' : publishedFilter ? 'published' : 'draft'}
+                  value={
+                    publishedFilter === undefined
+                      ? 'all'
+                      : (publishedFilter as unknown as string) === 'true'
+                        ? 'true'
+                        : 'false'
+                  }
                   onValueChange={val =>
-                    setFilter('isPublished', val === 'all' ? undefined : val === 'published' ? true : false)
+                    setFilter('isPublished', val === undefined ? undefined : val === 'true' ? true : false)
                   }
                   options={[
-                    { value: 'all', label: 'All' },
-                    { value: 'published', label: 'Published' },
-                    { value: 'draft', label: 'Draft' },
+                    { value: 'true', label: 'Published' },
+                    { value: 'false', label: 'Draft' },
                   ]}
                   allOptionLabel="All Status"
                   className="w-32"
                 />
-
                 <SelectFilter
                   value={typeFilter}
                   onValueChange={val => setFilter('type', val)}
-                  options={[{ value: 'all' as const, label: 'All Types' }, ...broadcastTypeOptions]}
+                  options={broadcastTypeOptions}
                   allOptionLabel="All Types"
                   className="w-40"
                 />
@@ -210,4 +214,3 @@ export function BroadcastUnitsTable() {
     </>
   );
 }
-

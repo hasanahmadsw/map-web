@@ -107,6 +107,8 @@ export function ArticlesTable() {
     return filters;
   }, [publishedFilter, featuredFilter]);
 
+  console.log('publishedFilter', publishedFilter);
+
   return (
     <>
       <Card>
@@ -156,14 +158,19 @@ export function ArticlesTable() {
             toolbarRight={
               <div className="flex flex-wrap items-center gap-2">
                 <SelectFilter
-                  value={publishedFilter === undefined ? 'all' : publishedFilter ? 'published' : 'draft'}
+                  value={
+                    publishedFilter === undefined
+                      ? 'all'
+                      : (publishedFilter as unknown as string) === 'true'
+                        ? 'true'
+                        : 'false'
+                  }
                   onValueChange={val =>
-                    setFilter('isPublished', val === 'all' ? undefined : val === 'published' ? true : false)
+                    setFilter('isPublished', val === undefined ? undefined : val === 'true' ? true : false)
                   }
                   options={[
-                    { value: 'all', label: 'All' },
-                    { value: 'published', label: 'Published' },
-                    { value: 'draft', label: 'Draft' },
+                    { value: 'true', label: 'Published' },
+                    { value: 'false', label: 'Draft' },
                   ]}
                   allOptionLabel="All Status"
                   className="w-32"
@@ -171,10 +178,9 @@ export function ArticlesTable() {
                 <SelectFilter
                   value={featuredFilter === undefined ? 'all' : featuredFilter ? 'yes' : 'no'}
                   onValueChange={val =>
-                    setFilter('isFeatured', val === 'all' ? undefined : val === 'yes' ? true : false)
+                    setFilter('isFeatured', val === undefined ? undefined : val === 'yes' ? true : false)
                   }
                   options={[
-                    { value: 'all', label: 'All' },
                     { value: 'yes', label: 'Yes' },
                     { value: 'no', label: 'No' },
                   ]}

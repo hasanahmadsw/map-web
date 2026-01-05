@@ -174,9 +174,15 @@ function EquipmentBrandsTable() {
             toolbarRight={
               <div className="flex flex-wrap items-center gap-2">
                 <SelectFilter
-                  value={isActiveFilter === undefined ? 'all' : isActiveFilter ? 'true' : 'false'}
+                  value={
+                    isActiveFilter === undefined
+                      ? 'all'
+                      : (isActiveFilter as unknown as string) === 'true'
+                        ? 'true'
+                        : 'false'
+                  }
                   onValueChange={val =>
-                    setFilter('isActive', val === 'all' ? undefined : val === 'true' ? true : false)
+                    setFilter('isActive', val === undefined ? undefined : val === 'true' ? true : false)
                   }
                   options={[
                     { value: 'true', label: 'Active' },
