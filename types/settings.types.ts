@@ -20,6 +20,7 @@ export interface Settings {
     email: string;
     phone: string;
     address: string;
+    workingHours: string;
   };
   customScripts: {
     footer: string[];
