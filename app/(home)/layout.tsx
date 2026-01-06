@@ -15,7 +15,7 @@ export default async function PublicPagesLayout({ children }: { children: React.
     <>
       {/* <TopBar /> */}
       <Header />
-      <main className="min-h-screen">{children}</main>
+      <main className="bg-background min-h-screen">{children}</main>
       <Footer />
     </>
   );

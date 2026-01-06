@@ -14,6 +14,7 @@ interface BroadcastsSectionProps {
   search: string;
   type?: `${BroadcastType}`;
   layout?: 'grid' | 'row';
+  badgeText: string;
 }
 
 export async function BroadcastsSection({
@@ -22,6 +23,7 @@ export async function BroadcastsSection({
   search,
   type,
   layout = 'row',
+  badgeText,
 }: BroadcastsSectionProps) {
   let res;
   try {
@@ -60,21 +62,27 @@ export async function BroadcastsSection({
           __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c'),
         }}
       />
+      <div className="space-y-8">
+        <div className="text-center">
+          <h2 className="text-3xl font-semibold md:text-4xl">{`Available ${badgeText} Units`}</h2>
+          <p className="text-muted-foreground mt-2 text-base md:text-lg">{`Browse our collection of professional ${badgeText.toLowerCase()} broadcast units`}</p>
+        </div>
 
-      <div
-        className={layout === 'row' ? 'space-y-6' : 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'}
-      >
-        {units.map(unit => (
-          <BroadcastUnitRowCard key={unit.id} unit={unit} />
-        ))}
+        <div
+          className={layout === 'row' ? 'space-y-6' : 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'}
+        >
+          {units.map(unit => (
+            <BroadcastUnitRowCard key={unit.id} unit={unit} />
+          ))}
+        </div>
+
+        <CustomPagination
+          currentPage={pagination.currentPage}
+          totalCount={pagination.total}
+          pageSize={pagination.limit}
+          className="mt-8"
+        />
       </div>
-
-      <CustomPagination
-        currentPage={pagination.currentPage}
-        totalCount={pagination.total}
-        pageSize={pagination.limit}
-        className="mt-8"
-      />
     </>
   );
 }

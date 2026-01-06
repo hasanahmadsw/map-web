@@ -20,9 +20,6 @@ export async function generateMetadata(): Promise<Metadata> {
     mainOverrides: {
       category: 'media production',
     },
-    openGraphOverrides: {
-      section: 'media production',
-    },
   });
 
   return metaData;

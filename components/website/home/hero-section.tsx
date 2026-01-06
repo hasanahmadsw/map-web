@@ -2,15 +2,15 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState, FormEvent } from 'react';
-import { ArrowRight, Search, Sparkles } from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { useState } from 'react';
+import { ArrowRight } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 import EquipmentsAutocomplete from '../common/equipments-autocomplete';
 
 export function HeroSection() {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery] = useState('');
 
   const handleSearchChange = (value: string) => {
     if (!value.trim()) return;
