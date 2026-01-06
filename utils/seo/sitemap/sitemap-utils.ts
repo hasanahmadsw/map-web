@@ -1,4 +1,4 @@
-import { broadcastTypes } from '@/components/website/broadcasts/main/data';
+import { broadcastTypes } from '@/components/website/broadcasts/data';
 import { broadcastsService } from '@/services/broadcasts.service';
 
 import { EquipmentType } from '@/types/equipments/equipment.enum';

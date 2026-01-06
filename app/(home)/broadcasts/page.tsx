@@ -5,10 +5,17 @@ import { broadcastsSchema } from '@/utils/seo/schema/broadcasts/broadcasts-schem
 import { PageHeroSection } from '@/components/website/common/page-hero-section';
 import { FeaturesGridSection } from '@/components/website/common/features-grid-section';
 import { UseCasesSection } from '@/components/website/common/use-cases-section';
-import { BroadcastsTypesGrid } from '@/components/website/broadcasts/main/broadcasts-types-grid';
-import { BroadcastsStatsSection } from '@/components/website/broadcasts/main/broadcasts-stats-section';
-import { BroadcastsProcessSection } from '@/components/website/broadcasts/main/broadcasts-process-section';
-import { benefits, broadcastTypes, useCases } from '@/components/website/broadcasts/main/data';
+import { StatsSection } from '@/components/website/common/stats-section';
+import { ProcessSection } from '@/components/website/common/process-section';
+
+import {
+  benefits,
+  broadcastTypes,
+  useCases,
+  stats,
+  processSteps,
+} from '@/components/website/broadcasts/data';
+import { ItemsGridSection } from '@/components/website/common/items-grid-section';
 
 export function generateMetadata() {
   return createEnhancedMetadata({
@@ -43,12 +50,24 @@ export default async function BroadcastsPage() {
         title="Professional Media"
         highlightedText="Broadcast Systems"
         description="Comprehensive broadcast solutions designed for modern media production. From mobile OBVAN units to portable flight cases, we provide cutting-edge technology for every broadcasting need."
-        secondaryDescription="At MAP, we specialize in providing state-of-the-art broadcast equipment and solutions for professional media production. Our diverse range of broadcast systems ensures you have the right tools for any production scenario."
+        secondaryDescription="At MAP, we specialize in providing state-of-the-art broadcast equipment and solutions for professional media production."
       />
 
       {/* Main Content */}
       <section className="section-padding container space-y-16">
-        <BroadcastsTypesGrid />
+        <ItemsGridSection
+          title="Our Broadcast Solutions"
+          description="Choose the perfect broadcast system for your production needs"
+          items={broadcastTypes.map(broadcast => ({
+            icon: broadcast.icon,
+            title: broadcast.label,
+            description: broadcast.description,
+            features: broadcast.features,
+            slug: broadcast.slug,
+            id: broadcast.type,
+          }))}
+          basePath="/broadcasts"
+        />
         <FeaturesGridSection
           title="Why Choose Our Broadcast Solutions?"
           description="Professional-grade equipment and expertise for every production"
@@ -57,8 +76,16 @@ export default async function BroadcastsPage() {
           hoverScale="1.02"
           iconColor="custom"
         />
-        <BroadcastsStatsSection />
-        <BroadcastsProcessSection />
+        <StatsSection
+          title="Our Track Record"
+          description="Trusted by broadcast professionals across the region"
+          stats={stats}
+        />
+        <ProcessSection
+          title="How It Works"
+          description="Simple steps to get your broadcast production started"
+          steps={processSteps}
+        />
         <UseCasesSection
           title="Perfect For"
           description="Our broadcast solutions excel in various production scenarios"

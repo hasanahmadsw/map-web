@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { allSolutionKeys } from '@/utils/solution-key-mapping';
+import { allSolutionKeys } from '@/components/website/solutions/data-utils';
 import { ArrowRight } from 'lucide-react';
 
 interface StaticSolutionCardProps {
@@ -47,4 +47,3 @@ export function StaticSolutionCard({ solutionKey, className }: StaticSolutionCar
     </Link>
   );
 }
-

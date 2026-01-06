@@ -1,14 +1,24 @@
-import { stats } from './data';
+import type { LucideIcon } from 'lucide-react';
 
-export function BroadcastsStatsSection() {
+interface StatItem {
+  value: string;
+  label: string;
+  icon: LucideIcon;
+}
+
+interface StatsSectionProps {
+  title: string;
+  description: string;
+  stats: StatItem[];
+}
+
+export function StatsSection({ title, description, stats }: StatsSectionProps) {
   return (
     <div className="glass-card rounded-3xl p-8 md:p-12">
       <div className="space-y-8">
         <div className="text-center">
-          <h2 className="text-3xl font-semibold md:text-4xl">Our Track Record</h2>
-          <p className="text-muted-foreground mt-2 text-base md:text-lg">
-            Trusted by broadcast professionals across the region
-          </p>
+          <h2 className="text-3xl font-semibold md:text-4xl">{title}</h2>
+          <p className="text-muted-foreground mt-2 text-base md:text-lg">{description}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">

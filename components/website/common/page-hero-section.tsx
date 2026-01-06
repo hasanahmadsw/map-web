@@ -22,7 +22,7 @@ export function PageHeroSection({
   highlightedText,
   description,
   secondaryDescription,
-  height = 'h-[70vh] md:h-[80vh]',
+  height = 'h-[75vh] md:h-[85vh]',
 }: PageHeroSectionProps) {
   return (
     <div className={`pt-edge-nav-margin relative ${height} w-full overflow-hidden`}>
@@ -50,12 +50,12 @@ export function PageHeroSection({
               )}
             </h1>
 
-            <p className="mx-auto max-w-3xl text-lg leading-relaxed text-white/90 md:text-xl">
+            <p className="mx-auto max-w-3xl text-base leading-relaxed text-white/90 md:text-lg">
               {description}
             </p>
 
             {secondaryDescription && (
-              <p className="mx-auto max-w-2xl text-base leading-relaxed text-white/80">
+              <p className="mx-auto hidden max-w-2xl text-sm leading-relaxed text-white/80 sm:block sm:text-base">
                 {secondaryDescription}
               </p>
             )}

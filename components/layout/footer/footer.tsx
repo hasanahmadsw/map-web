@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Logo from '../header/logo';
 import { servicesService } from '@/services/services.service';
 import { settingsService } from '@/services/settings.service';
-import { allSolutionKeys } from '@/utils/solution-key-mapping';
+import { allSolutionKeys } from '@/components/website/solutions/data-utils';
 import { SocialIcons } from '@/components/shared/social-icons';
 
 const currentYear = new Date().getFullYear();
@@ -122,7 +122,7 @@ const Footer = async () => {
                   },
                   {
                     href: '/solutions',
-                    name: 'Solution',
+                    name: 'Solutions',
                   },
                   {
                     href: '/services',

@@ -1,5 +1,5 @@
 import { StaticSolutionCard } from '@/components/website/solutions/static-solution-card';
-import { allSolutionKeys } from '@/utils/solution-key-mapping';
+import { allSolutionKeys } from '@/components/website/solutions/data-utils';
 import { Lightbulb } from 'lucide-react';
 import SectionHeader from '../../common/section-header';
 import MotionWrapper from '@/components/shared/motion/motion-wrapper';

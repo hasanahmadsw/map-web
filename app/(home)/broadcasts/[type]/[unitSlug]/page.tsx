@@ -7,7 +7,7 @@ import { BroadcastType } from '@/types/broadcasts/broadcast.enums';
 import type { BroadcastUnit, BroadcastUnitItem } from '@/types/broadcasts/broadcasts.types';
 import { CTASection } from '@/components/website/common/cta-section';
 import { singleBroadcastSchema } from '@/utils/seo/schema/broadcasts/single-broadcast-schema';
-import { getTypeFromSlug } from '@/components/website/broadcasts/main/data-utils';
+import { getTypeFromSlug } from '@/components/website/broadcasts/data-utils';
 import { formatBroadcastType, getTypeSlug } from '@/components/website/broadcasts/unit/unit-utils';
 import { UnitHero } from '@/components/website/broadcasts/unit/unit-hero';
 import { UnitQuickStats } from '@/components/website/broadcasts/unit/unit-quick-stats';

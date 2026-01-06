@@ -4,11 +4,11 @@ import { PageHeroSection } from '@/components/website/common/page-hero-section';
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 import { Building2 } from 'lucide-react';
 import { BroadcastType } from '@/types/broadcasts/broadcast.enums';
-import { getTypeFromSlug, getTypeMetadata } from '@/components/website/broadcasts/main/data-utils';
+import { getTypeFromSlug, getTypeMetadata } from '@/components/website/broadcasts/data-utils';
 import { FeaturesGridSection } from '@/components/website/common/features-grid-section';
 import { UseCasesSection } from '@/components/website/common/use-cases-section';
 
-import { BroadcastTypeFeaturesSection } from '@/components/website/broadcasts/type/broadcast-type-features-section';
+import { FeaturesListSection } from '@/components/website/common/features-list-section';
 import {
   BroadcastsSection,
   BroadcastsSectionSkeleton,
@@ -85,7 +85,12 @@ export default async function BroadcastTypePage(props: Props) {
 
       {/* Main Content */}
       <section className="section-padding container space-y-16">
-        <BroadcastTypeFeaturesSection badgeText={metadata.badgeText} features={metadata.features} />
+        <FeaturesListSection
+          title="Key Features"
+          description={`What makes our ${metadata.badgeText} units exceptional`}
+          features={metadata.features}
+          gridCols="3"
+        />
         <FeaturesGridSection
           title={`Why Choose ${metadata.badgeText}?`}
           description={`Key advantages of our ${metadata.badgeText.toLowerCase()} broadcast solutions`}

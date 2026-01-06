@@ -1,6 +1,6 @@
 import { articlesService } from '@/services/articles.service';
 import { servicesService } from '@/services/services.service';
-import { allSolutionKeys } from '@/utils/solution-key-mapping';
+import { allSolutionKeys } from '@/components/website/solutions/data-utils';
 import {
   generateBroadcastUrls,
   generateEquipmentUrls,
