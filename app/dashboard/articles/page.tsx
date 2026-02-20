@@ -1,7 +1,4 @@
-import { Plus } from 'lucide-react';
-import Link from 'next/link';
 import { ArticlesTable } from '@/components/dashboard/articles/articles-table';
-import { Button } from '@/components/ui/button';
 import { type Metadata } from 'next';
 
 export const metadata: Metadata = {

@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
-import { DataTable } from '@/components/shared/table/data-table';
+// import { DataTable } from '@/components/shared/table/data-table';
 
 import { useRouter } from 'next/navigation';
 import { useArticleMutations } from '@/hooks/api/articles/mutations';
@@ -19,6 +19,7 @@ import type { Article } from '@/types/articles.types';
 import dynamic from 'next/dynamic';
 import DialogSkeleton from '../../shared/skeletons/dialog-skeleton';
 import { SelectFilter } from '@/components/shared/selects/select-filter';
+import { DataTable } from '@/components/shared/table/data-table/data-table';
 
 const ConfirmationDialogDynamic = dynamic(
   () => import('@/components/shared/confirmation-dialog').then(mod => mod.ConfirmationDialog),
@@ -131,31 +132,21 @@ export function ArticlesTable() {
         {/* ========================== Table ========================== */}
         <CardContent>
           <DataTable
-            tableId="articles-table"
-            columns={columns}
+            tableId="articles-v1"
             data={articlesList}
-            isLoading={isPending}
-            error={error}
-            refetch={refetch}
-            emptyMessage="No data found"
-            pageIndex={currentPage}
+            columns={columns}
             pageSize={pageSize}
-            totalRows={total}
-            totalPages={totalPages}
-            canNextPage={currentPage < totalPages}
-            canPrevPage={currentPage > 1}
-            onPageChange={setPage}
             onPageSizeChange={setPageSize}
-            enableClientSorting={true}
-            enableGlobalFilter={true}
-            onGlobalFilterChange={setSearch}
             initialGlobalFilter={searchTerm}
+            onGlobalFilterChange={setSearch}
             manualFiltering={true}
             messages={{
               searchPlaceholder: 'Search...',
               noData: 'No data found',
             }}
-            toolbarRight={
+          >
+            <DataTable.Toolbar>
+              <DataTable.Search />
               <div className="flex flex-wrap items-center gap-2">
                 <SelectFilter
                   value={
@@ -187,15 +178,20 @@ export function ArticlesTable() {
                   allOptionLabel="All Featured"
                   className="w-32"
                 />
-
-                {hasActiveFilters && (
-                  <Button variant="ghost" size="sm" onClick={clearAll} className="gap-1">
-                    Clear All
-                  </Button>
-                )}
+                <DataTable.ColumnToggle />
+                <DataTable.PageSize />
               </div>
-            }
-          />
+            </DataTable.Toolbar>
+
+            <DataTable.Content stickyHeader />
+
+            <DataTable.Pagination
+              onPageChange={setPage}
+              pageIndex={currentPage}
+              totalRows={total}
+              isLoading={isPending}
+            />
+          </DataTable>
         </CardContent>
       </Card>
 

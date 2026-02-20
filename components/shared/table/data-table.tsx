@@ -83,6 +83,8 @@ type DataTableProps<TData, TValue> = {
 
 const DEFAULT_PAGE_SIZE_OPTIONS = [10, 20, 50, 100, 200, 500, 1000];
 
+const INITIAL_COLUMN_VISIBILITY = {};
+
 export function DataTable<TData, TValue>({
   tableId,
   columns,
@@ -118,7 +120,7 @@ export function DataTable<TData, TValue>({
   messages,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>(INITIAL_COLUMN_VISIBILITY);
   const [rowSelection, setRowSelection] = React.useState({});
   const [globalFilter, setGlobalFilter] = React.useState(initialGlobalFilter);
 
@@ -143,6 +145,7 @@ export function DataTable<TData, TValue>({
 
   React.useEffect(() => {
     if (!storageKey) return;
+    if (columnVisibility === INITIAL_COLUMN_VISIBILITY) return;
     try {
       localStorage.setItem(storageKey, JSON.stringify({ columnVisibility, pageSize }));
     } catch {
