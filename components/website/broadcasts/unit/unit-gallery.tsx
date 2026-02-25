@@ -12,8 +12,8 @@ export function UnitGallery({ gallery, unitTitle, unitSlug }: UnitGalleryProps) 
     <section className="mb-16">
       <div className="space-y-6">
         <div>
-          <h2 className="mb-2 text-3xl font-semibold md:text-4xl">Gallery</h2>
-          <p className="text-muted-foreground text-base md:text-lg">
+          <h2 className="mb-2 text-xl font-semibold md:text-2xl tracking-tight">Gallery</h2>
+          <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
             Visual showcase of this broadcast unit
           </p>
         </div>

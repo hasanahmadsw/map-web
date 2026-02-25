@@ -91,7 +91,7 @@ export function UnitItems({ groupedItems }: UnitItemsProps) {
     <section>
       <div className="space-y-10">
         <div>
-          <h2 className="mb-2 text-xl font-semibold md:text-2xl">Equipment & Items</h2>
+          <h2 className="mb-2 text-xl font-semibold md:text-2xl tracking-tight">Equipment & Items</h2>
           <p className="text-muted-foreground text-sm md:text-base">
             Equipment and items included in this unit
           </p>

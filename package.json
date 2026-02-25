@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack --port 3009",
     "build": "next build --turbopack",
+    "build:analyze": "cross-env ANALYZE=true next build --webpack",
     "start": "next start",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
@@ -91,12 +92,14 @@
     "zod": "^4.1.8"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.1.6",
     "@tailwindcss/postcss": "^4.1.13",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^20.19.13",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "@types/sanitize-html": "^2.16.0",
+    "cross-env": "^10.1.0",
     "eslint": "^9.35.0",
     "eslint-config-next": "16.0.1",
     "next": "16.0.10",

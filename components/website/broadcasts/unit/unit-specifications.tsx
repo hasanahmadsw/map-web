@@ -17,7 +17,7 @@ export function UnitSpecifications({ specs }: UnitSpecificationsProps) {
     <section>
       <div className="space-y-6">
         <div>
-          <h2 className="mb-2 text-xl font-semibold md:text-2xl">Specifications</h2>
+          <h2 className="mb-2 text-xl font-semibold md:text-2xl tracking-tight">Specifications</h2>
           <p className="text-muted-foreground text-sm md:text-base">
             Technical specifications and details of this broadcast unit
           </p>
