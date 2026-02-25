@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { BriefcaseBusiness, FileText, Package, Plus, UserRound, Users } from 'lucide-react';
+import { FileText, Plus, UserRound, Users } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -47,8 +47,6 @@ export function AdminDashboardHome({ staffName }: AdminDashboardHomeProps) {
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard title="Articles" href="/dashboard/articles" icon={FileText} value={5} />
-        <StatCard title="Solutions" href="/dashboard/solutions" icon={BriefcaseBusiness} value={5} />
-        <StatCard title="Services" href="/dashboard/services" icon={Package} value={5} />
         <StatCard title="Staff" href="/dashboard/staff" icon={Users} value={5} />
       </div>
 

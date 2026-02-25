@@ -46,13 +46,29 @@ export function BasicInformationSection() {
         className="min-h-[80px]"
       />
 
-      <TextAreaInput
-        control={control}
-        name="description"
-        label="Description"
-        placeholder="Enter broadcast unit description"
-        className="min-h-[100px]"
-      />
+      <div className="space-y-4 rounded-lg border border-border/60 p-4">
+        <p className="text-muted-foreground text-sm font-medium">SEO Meta</p>
+        <TextInput
+          control={control}
+          name="metaTitle"
+          label="Meta Title"
+          placeholder="SEO title (optional)"
+        />
+        <TextAreaInput
+          control={control}
+          name="metaDescription"
+          label="Meta Description"
+          placeholder="SEO description (optional)"
+          className="min-h-[60px]"
+        />
+        <TextAreaInput
+          control={control}
+          name="metaKeywords"
+          label="Meta Keywords"
+          placeholder="Comma-separated keywords (optional)"
+          className="min-h-[60px]"
+        />
+      </div>
     </>
   );
 }

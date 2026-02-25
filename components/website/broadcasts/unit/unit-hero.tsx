@@ -2,26 +2,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import type { BroadcastUnit } from '@/types/broadcasts/broadcasts.types';
-import { formatBroadcastType, getTypeSlug } from './unit-utils';
+import { formatBroadcastType, getTypeBroadcastingUrl } from './unit-utils';
 
 interface UnitHeroProps {
   unit: BroadcastUnit;
 }
 
 export function UnitHero({ unit }: UnitHeroProps) {
-  const typeSlug = getTypeSlug(unit.type);
+  const typeUrl = getTypeBroadcastingUrl(unit.type);
 
   return (
     <div className="pt-edge-nav-margin relative h-[60vh] w-full overflow-hidden md:h-[70vh]">
-      {unit.coverImage ? (
+      {unit.gallery?.[0]?.path ? (
         <>
           <Image
-            src={unit.coverImage}
+            src={unit.gallery[0].path}
             alt={unit.title || unit.slug}
             fill
             className="object-cover"
             priority
-            unoptimized={unit.coverImage.includes('supabase.co')}
+            unoptimized={unit.gallery[0].path.includes('supabase.co')}
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/50 to-transparent" />
         </>
@@ -37,7 +37,7 @@ export function UnitHero({ unit }: UnitHeroProps) {
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <Link
-              href={`/broadcasts/${typeSlug}`}
+              href={typeUrl}
               className="text-sm text-white/80 transition-colors hover:text-white"
             >
               {formatBroadcastType(unit.type)}

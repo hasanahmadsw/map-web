@@ -1,5 +1,9 @@
 import { BroadcastUnit } from '@/types/broadcasts/broadcasts.types';
 import seoConfig from '../../meta/seo.config';
+import {
+  getTypeBroadcastingUrl,
+  getTypeParentLabel,
+} from '@/components/website/broadcasts/unit/unit-utils';
 import { BreadcrumbList, ItemPage, Product, WebSite, Organization } from 'schema-dts';
 import {
   generateBreadcrumbSchema,
@@ -13,8 +17,7 @@ export async function singleBroadcastSchema(unit: BroadcastUnit): Promise<{
   '@graph': (WebSite | Organization | ItemPage | Product | BreadcrumbList)[];
 }> {
   const { siteURL, organizationId } = seoConfig;
-  const typeSlug = unit.type.toLowerCase().replace(/_/g, '-');
-  const currentURL = `${siteURL}/broadcasts/${typeSlug}/${unit.slug}`;
+  const currentURL = `${siteURL}/broadcasting/units/${unit.slug}`;
 
   const mainProductId = `${currentURL}#product`;
 
@@ -37,7 +40,7 @@ export async function singleBroadcastSchema(unit: BroadcastUnit): Promise<{
       '@id': `${currentURL}#itempage`,
       url: currentURL,
       name: unit.title || unit.slug,
-      description: unit.summary || unit.description || `${unit.title || unit.slug} - Professional broadcast unit`,
+      description: unit.metaDescription || unit.summary || `${unit.title || unit.slug} - Professional broadcast unit`,
       mainEntity: { '@id': mainProductId },
     },
     currentURL,
@@ -46,14 +49,8 @@ export async function singleBroadcastSchema(unit: BroadcastUnit): Promise<{
   /* ----------------------------------
    * Main Product
    * ---------------------------------- */
-  const images = unit.coverImage
-    ? [
-        unit.coverImage,
-        ...(unit.gallery && unit.gallery.length > 0
-          ? unit.gallery.sort((a, b) => a.order - b.order).map(item => item.path)
-          : []),
-      ]
-    : unit.gallery && unit.gallery.length > 0
+  const images =
+    unit.gallery && unit.gallery.length > 0
       ? unit.gallery.sort((a, b) => a.order - b.order).map(item => item.path)
       : undefined;
 
@@ -61,7 +58,7 @@ export async function singleBroadcastSchema(unit: BroadcastUnit): Promise<{
     '@type': 'Product',
     '@id': mainProductId,
     name: unit.title || unit.slug,
-    description: unit.description || unit.summary || `${unit.title || unit.slug} - Professional broadcast unit`,
+    description: unit.metaDescription || unit.summary || `${unit.title || unit.slug} - Professional broadcast unit`,
     ...(images && images.length > 0 && { image: images }),
     category: `Broadcast ${unit.type.replace(/_/g, ' ')}`,
     sku: `BC-${unit.id}`,
@@ -75,11 +72,13 @@ export async function singleBroadcastSchema(unit: BroadcastUnit): Promise<{
   /* ----------------------------------
    * BreadcrumbList
    * ---------------------------------- */
+  const typeUrl = getTypeBroadcastingUrl(unit.type);
+  const typeParentLabel = getTypeParentLabel(unit.type);
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '' },
-    { name: 'Broadcasts', url: '/broadcasts' },
-    { name: unit.type.replace(/_/g, ' '), url: `/broadcasts/${typeSlug}` },
-    { name: unit.title || unit.slug, url: `/broadcasts/${typeSlug}/${unit.slug}` },
+    { name: 'Broadcasting', url: '/broadcasting' },
+    { name: typeParentLabel, url: typeUrl },
+    { name: unit.title || unit.slug, url: `/broadcasting/units/${unit.slug}` },
   ]);
 
   return {

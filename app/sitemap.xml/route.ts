@@ -1,4 +1,4 @@
-import { generateBroadcastUrls, generateEquipmentUrls } from '@/utils/seo/sitemap/sitemap-utils';
+import { generateBroadcastUrls, generateIntentUrls } from '@/utils/seo/sitemap/sitemap-utils';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
@@ -40,24 +40,17 @@ async function generateSitemapIndex(): Promise<string> {
 }
 
 async function generateSitemapEntities() {
-  const { count: searchResultUrlsCount } = generateEquipmentUrls();
   const { count: broadcastUrlsCount } = await generateBroadcastUrls();
-
-  // TODO: Get the count of the entities
-  // const { data: stats } = await statisticService.getStatistics();
+  const { count: intentUrlsCount } = await generateIntentUrls();
 
   return [
-    {
-      entity: 'rental',
-      count: Math.ceil(searchResultUrlsCount / maxLocsPerSitemap),
-    },
     {
       entity: 'broadcasts',
       count: Math.ceil(broadcastUrlsCount / maxLocsPerSitemap),
     },
     {
-      entity: 'solutions',
-      count: Math.ceil(1 / maxLocsPerSitemap),
+      entity: 'intents',
+      count: Math.ceil(intentUrlsCount / maxLocsPerSitemap),
     },
     {
       entity: 'services',

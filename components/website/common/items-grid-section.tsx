@@ -9,6 +9,8 @@ interface GridItem {
   features: string[];
   slug: string;
   id: string | number;
+  /** Optional full href; if provided, overrides basePath/slug */
+  href?: string;
 }
 
 interface ItemsGridSectionProps {
@@ -45,10 +47,11 @@ export function ItemsGridSection({
           const Icon = item.icon;
           const features = item.features.slice(0, maxFeatures);
 
+          const itemHref = item.href ?? `${basePath}/${item.slug}`;
           return (
             <Link
               key={item.id}
-              href={`${basePath}/${item.slug}`}
+              href={itemHref}
               className={cn(
                 'group glass-card relative block overflow-hidden rounded-xl p-6',
                 'flex min-h-[320px] flex-col transition-all duration-300',

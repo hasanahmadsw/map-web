@@ -24,8 +24,8 @@ export function EquipmentCard({ equipment, priority = false }: EquipmentCardProp
     coverImage.startsWith('http');
 
   return (
-    <Card className="group overflow-hidden p-0 transition-all duration-200 hover:shadow-md">
-      <Link href={href} className="relative block h-48 w-full overflow-hidden md:h-56">
+    <Card className="group overflow-hidden p-0 transition-all duration-200 ">
+      <Link href={href} className="relative block h-48 aspect-video w-full overflow-hidden md:h-56">
         <Image
           src={coverImage}
           alt={`${equipment.name || 'Equipment'} thumbnail`}
@@ -40,30 +40,30 @@ export function EquipmentCard({ equipment, priority = false }: EquipmentCardProp
       <CardContent className="space-y-3 p-4">
         <div className="flex flex-wrap items-center gap-2">
           {equipment.category && (
-            <Badge key={equipment.category.name} variant="default" className="text-xs">
+            <Badge key={equipment.category.name} variant="default" className="text-xs rounded-full">
               {equipment.category.name}
             </Badge>
           )}
           {equipment.brand && (
-            <Badge key={equipment.brand.name} variant="secondary" className="text-xs">
+            <Badge key={equipment.brand.name} variant="secondary" className="text-xs rounded-full">
               {equipment.brand.name}
             </Badge>
           )}
           {equipment.equipmentType && (
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs rounded-full">
               {equipment.equipmentType}
             </Badge>
           )}
         </div>
 
-        <h3 className="group-hover:text-primary line-clamp-2 text-lg font-semibold transition-colors">
+        <h3 className="group-hover:text-primary line-clamp-2 text-sm md:text-base font-semibold transition-colors tracking-tight">
           <Link href={href} className="hover:underline">
             {equipment.name}
           </Link>
         </h3>
 
         {!!equipment.summary && (
-          <div className="text-muted-foreground line-clamp-3 text-sm">{equipment.summary}</div>
+          <div className="text-muted-foreground line-clamp-3 text-xs md:text-sm tracking-tight">{equipment.summary}</div>
         )}
       </CardContent>
     </Card>

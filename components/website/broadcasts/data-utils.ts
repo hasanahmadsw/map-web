@@ -1,5 +1,5 @@
 import { BroadcastType } from '@/types/broadcasts/broadcast.enums';
-import { Building2, Radio, Zap, Shield, Settings, Users, Clock } from 'lucide-react';
+import { Building2, Radio, Zap, Shield, Clock } from 'lucide-react';
 
 export function getTypeMetadata(type: BroadcastType) {
   const metadataMap: Record<
@@ -102,134 +102,6 @@ export function getTypeMetadata(type: BroadcastType) {
         'Small Events',
       ],
     },
-    [BroadcastType.SNG]: {
-      title: 'SNG Broadcast Units | MAP Media Art Production',
-      description:
-        'Explore our Satellite News Gathering (SNG) units - professional broadcast solutions for satellite transmission and remote broadcasting.',
-      badgeText: 'SNG',
-      headerTitle: 'Satellite News ',
-      highlightedText: 'Gathering',
-      headerDescription:
-        'Professional broadcast units designed for satellite transmission and remote broadcasting.',
-      features: [
-        'Satellite transmission',
-        'Global coverage capability',
-        'Reliable connectivity',
-        'Remote broadcasting',
-        'High-quality transmission',
-        'Real-time satellite uplink',
-      ],
-      benefits: [
-        {
-          title: 'Global Reach',
-          description: 'Satellite transmission enabling broadcasting from anywhere in the world',
-          icon: Radio,
-        },
-        {
-          title: 'Reliable Connection',
-          description: 'Consistent and stable satellite connectivity for critical broadcasts',
-          icon: Shield,
-        },
-        {
-          title: 'Remote Access',
-          description: 'Broadcast from remote locations without traditional infrastructure',
-          icon: Settings,
-        },
-      ],
-      useCases: [
-        'Breaking News',
-        'International Events',
-        'Remote Locations',
-        'Disaster Coverage',
-        'War Zones',
-        'Rural Areas',
-      ],
-    },
-    [BroadcastType.INTERNET_BROADCAST]: {
-      title: 'Internet Broadcast Units | MAP Media Art Production',
-      description:
-        'Explore our Internet Broadcast units - professional solutions for online streaming and digital broadcasting.',
-      badgeText: 'Internet Broadcast',
-      headerTitle: 'Online Streaming & ',
-      highlightedText: 'Digital Broadcasting',
-      headerDescription:
-        'Professional broadcast units designed for online streaming and digital broadcasting.',
-      features: [
-        'Online streaming capability',
-        'Digital broadcasting',
-        'Webinar support',
-        'High-quality output',
-        'Multi-platform streaming',
-        'Interactive features',
-      ],
-      benefits: [
-        {
-          title: 'Digital Reach',
-          description: 'Broadcast to global audiences through online platforms and streaming services',
-          icon: Radio,
-        },
-        {
-          title: 'Cost Effective',
-          description: 'Affordable solution for reaching large audiences without satellite costs',
-          icon: Zap,
-        },
-        {
-          title: 'Interactive',
-          description: 'Engage with audiences through live chat, polls, and interactive features',
-          icon: Users,
-        },
-      ],
-      useCases: [
-        'Webinars',
-        'Online Conferences',
-        'Live Streaming',
-        'Educational Content',
-        'Product Launches',
-        'Virtual Events',
-      ],
-    },
-    [BroadcastType.OTHER]: {
-      title: 'Other Broadcast Units | MAP Media Art Production',
-      description:
-        'Explore our additional broadcast units - specialized solutions for various broadcasting and media production needs.',
-      badgeText: 'Other',
-      headerTitle: 'Additional Broadcast ',
-      highlightedText: 'Solutions',
-      headerDescription: 'Specialized broadcast units for various broadcasting and media production needs.',
-      features: [
-        'Custom configurations',
-        'Specialized equipment',
-        'Tailored solutions',
-        'Flexible options',
-        'Unique requirements',
-        'Bespoke setups',
-      ],
-      benefits: [
-        {
-          title: 'Customization',
-          description: 'Tailored solutions designed to meet your specific production requirements',
-          icon: Settings,
-        },
-        {
-          title: 'Flexibility',
-          description: 'Adaptable configurations for unique broadcasting scenarios',
-          icon: Zap,
-        },
-        {
-          title: 'Expert Consultation',
-          description: 'Professional guidance to design the perfect broadcast solution',
-          icon: Users,
-        },
-      ],
-      useCases: [
-        'Special Events',
-        'Unique Productions',
-        'Custom Requirements',
-        'Experimental Broadcasting',
-        'Niche Markets',
-        'Specialized Content',
-      ],
-    },
   };
   return metadataMap[type];
 }
@@ -238,9 +110,6 @@ export function getTypeFromSlug(slug: string): BroadcastType | null {
   const typeMap: Record<string, BroadcastType> = {
     obvan: BroadcastType.OBVAN,
     'flight-case': BroadcastType.FLIGHT_CASE,
-    sng: BroadcastType.SNG,
-    'internet-broadcast': BroadcastType.INTERNET_BROADCAST,
-    other: BroadcastType.OTHER,
   };
   return typeMap[slug.toLowerCase()] || null;
 }

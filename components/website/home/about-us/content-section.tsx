@@ -1,4 +1,3 @@
-import MotionWrapper from '@/components/shared/motion/motion-wrapper';
 import { Radio, Video, Mic, Monitor } from 'lucide-react';
 import TrustIndicator from './trust-indicator';
 
@@ -11,20 +10,8 @@ const features = [
 
 export default function ContentSection() {
   return (
-    <MotionWrapper
-      className="mx-auto max-w-5xl space-y-6 text-center"
-      initial={{ opacity: 0, x: 50 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, delay: 0.3 }}
-    >
-      <MotionWrapper
-        className="p-6"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.4 }}
-      >
+    <div className="mx-auto max-w-5xl space-y-6 text-center">
+      <div className="p-6">
         <p className="text-muted-foreground text-lg leading-relaxed">
           <span className="text-primary text-lg font-bold md:text-2xl">
             Professional Media Services in UAE, Saudi Arabia, and the Middle East
@@ -35,38 +22,23 @@ export default function ContentSection() {
           and live event coverage to equipment rentals and satellite broadcasting, our services ensure
           high-quality results every time.
         </p>
-      </MotionWrapper>
+      </div>
 
-      <MotionWrapper
-        className="grid grid-cols-2 gap-4"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.5 }}
-      >
-        {features.map((feature, index) => (
-          <MotionWrapper
+      <div className="grid grid-cols-2 gap-4">
+        {features.map((feature) => (
+          <div
             key={feature.text}
             className="glass-card flex items-center gap-3 rounded-xl p-4"
-            whileHover={{
-              scale: 1.02,
-              y: -2,
-              transition: { type: 'spring', stiffness: 300 },
-            }}
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 + index * 0.1 }}
           >
             <div className="bg-primary/10 rounded-lg p-2">
               <feature.icon className="text-primary h-4 w-4" />
             </div>
             <span className="text-foreground text-xs font-medium md:text-sm">{feature.text}</span>
-          </MotionWrapper>
+          </div>
         ))}
-      </MotionWrapper>
+      </div>
 
       <TrustIndicator label="Rated 5/5 by 200+ Clients" />
-    </MotionWrapper>
+    </div>
   );
 }

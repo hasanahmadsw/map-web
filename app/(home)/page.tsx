@@ -2,20 +2,36 @@ import { Suspense } from 'react';
 
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 import type { Metadata } from 'next';
-import { HeroSection } from '@/components/website/home/hero-section';
-import { SolutionsSection } from '@/components/website/home/solutions/solutions-section';
-import { ServicesSection } from '@/components/website/home/services/services-section';
+import {
+  PageHero,
+  PageSection,
+  PageIntro,
+  PageUseCasesGrid,
+  PageInternalLinks,
+} from '@/components/website/common/page-components';
+import { CTASection } from '@/components/website/common/cta-section';
+
+import { WhatWeDoSection } from '@/components/website/home/what-we-do-section';
+import { BroadcastingInfrastructureSection } from '@/components/website/home/broadcasting-infrastructure-section';
+import { WorkflowSection } from '@/components/website/home/workflow-section';
 import { ArticlesSection } from '@/components/website/home/articles/articles-section';
 
+import {
+  equipmentCategoryLinks,
+  equipmentBrandLinks,
+  productionServiceLinks,
+  industriesServed,
+  workflowSteps,
+} from '@/components/website/home/home-page.data';
+
 import SectionSkeleton from '@/components/shared/skeletons/section-skeletion';
-import AboutUs from '@/components/website/home/about-us/about-us';
 import { homeSchema } from '@/utils/seo/schema/home/home-schema';
 
 export async function generateMetadata(): Promise<Metadata> {
   const metaData = createEnhancedMetadata({
-    title: 'MAP Media Art Production | Best Media Solutions in Middle East',
+    title: 'MAP Media Art Production | Production Infrastructure Partner',
     description:
-      'MAP Media Art Production is a leading media production company in the UAE, delivering creative video, film, and digital content across the Middle East.',
+      'MAP is your production infrastructure partner in Dubai. Film, broadcast & production solutions—equipment rental, broadcasting, and full-service video production across the UAE and Gulf.',
     pathname: '/',
     mainOverrides: {
       category: 'media production',
@@ -26,12 +42,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  // Markup Schema
   const jsonLd = await homeSchema();
 
   return (
-    <>
-      {/* JSON-LD */}
+    <div className="bg-background min-h-screen">
       <script
         id="home-jsonld"
         type="application/ld+json"
@@ -40,26 +54,86 @@ export default async function Page() {
         }}
       />
 
-      {/* Hero Section */}
-      <HeroSection />
+      {/* 1. Hero */}
+      <PageHero
+        title="Film, Broadcast & Production Solutions"
+        description="MAP is your production infrastructure partner. Equipment rental, broadcasting solutions, and full-service video production for agencies, broadcasters, and production companies across the UAE and Gulf."
+        buttons={[
+          { text: 'Rent Equipment', href: '/equipment-rental' },
+          { text: 'Request Production Support', href: '/contact?subject=production-support', variant: 'outline' },
+          { text: 'Broadcasting Support', href: '/broadcasting', variant: 'outline' },
+        ]}
+        minHeight="60vh"
+      />
 
-      {/* Solutions Section */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <SolutionsSection />
-      </Suspense>
+      {/* 2. What We Do - Core Business Units */}
+      <PageSection>
+        <PageIntro
+          title="What We Do – Core Business Units"
+          paragraphs={[
+            'MAP is your production infrastructure partner. We provide equipment rental, broadcasting solutions, and full-service production across Dubai and the Gulf.',
+          ]}
+        />
+      </PageSection>
 
-      {/* About Us Section */}
-      <AboutUs />
+      <PageSection>
+        <WhatWeDoSection />
+      </PageSection>
 
-      {/* Services Section */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <ServicesSection />
-      </Suspense>
+      {/* 3. Equipment Highlights */}
+      <PageSection>
+        <PageInternalLinks
+          title="Equipment Highlights"
+          description="Professional camera, lens, and lighting rental. Browse equipment from top brands including ARRI, Sony, Canon, and Zeiss."
+          links={[...equipmentCategoryLinks, ...equipmentBrandLinks]}
+        />
+      </PageSection>
 
-      {/* Articles Section */}
-      <Suspense fallback={<SectionSkeleton />}>
-        <ArticlesSection />
-      </Suspense>
-    </>
+      {/* 4. Broadcasting Infrastructure */}
+      <PageSection>
+        <BroadcastingInfrastructureSection />
+      </PageSection>
+
+      {/* 5. Production Services */}
+      <PageSection>
+        <PageInternalLinks
+          title="Production Services"
+          description="Full-service video production from commercial and corporate filming to event coverage and studio production."
+          links={productionServiceLinks}
+        />
+      </PageSection>
+
+      {/* 6. Industries Served */}
+      <PageSection>
+        <PageUseCasesGrid
+          title="Industries Served"
+          description="We serve advertising agencies, film production companies, corporate clients, government entities, event organizers, and broadcasters."
+          items={industriesServed}
+          cols={3}
+        />
+      </PageSection>
+
+      {/* 7. Workflow / Process */}
+      <PageSection>
+        <WorkflowSection steps={workflowSteps} />
+      </PageSection>
+
+      {/* 8. Articles */}
+      <PageSection>
+        <Suspense fallback={<SectionSkeleton />}>
+          <ArticlesSection />
+        </Suspense>
+      </PageSection>
+
+      {/* CTA */}
+      <PageSection>
+        <CTASection
+          title="Ready to Get Started?"
+          description="Request a quote, rent equipment, or speak with our team about your production needs in Dubai and the UAE."
+          buttons={[{ text: 'Request Quote', href: '/contact?subject=rfq' }]}
+          offices={[]}
+        />
+      </PageSection>
+    </div>
   );
 }

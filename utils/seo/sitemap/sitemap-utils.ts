@@ -1,98 +1,17 @@
 import { broadcastTypes } from '@/components/website/broadcasts/data';
 import { broadcastsService } from '@/services/broadcasts.service';
+import { intentsService } from '@/services/intents/intents.service';
 
-import { EquipmentType } from '@/types/equipments/equipment.enum';
 import { MetadataRoute } from 'next';
 
-const EQUIPMENT_BRAND_TYPES = [
-  'arri',
-  'sony',
-  'canon',
-  'zeiss',
-  'cooke-optics',
-  'angenieux',
-  'leica',
-  'fujinon',
-] as const;
-
-const EQUIPMENT_CATEGORY_TYPES = [
-  'cinema-cameras',
-  'broadcast-cameras',
-  'prime-lenses',
-  'zoom-lenses',
-  'led-lights',
-  'microphones',
-  'tripods-heads',
-  'wireless-audio',
-  'audio-recorders',
-  'power',
-] as const;
-
-const EQUIPMENT_TYPES = Object.values(EquipmentType);
-
 const maxLocsPerSitemap = Number.parseInt(process.env.MAX_LOCS_PER_SITEMAP || '1000');
-
-export function generateEquipmentUrls(page: number = 1) {
-  const urls: string[] = [];
-
-  // Type - only
-  for (const type of EQUIPMENT_TYPES) {
-    urls.push(`/${type}`);
-  }
-
-  // Category - only
-  for (const category of EQUIPMENT_CATEGORY_TYPES) {
-    urls.push(`/${category}`);
-  }
-
-  // Brand - only
-  for (const brand of EQUIPMENT_BRAND_TYPES) {
-    urls.push(`/${brand}`);
-  }
-
-  // Type + category
-  for (const type of EQUIPMENT_TYPES) {
-    for (const category of EQUIPMENT_CATEGORY_TYPES) {
-      urls.push(`/${type}/${category}`);
-    }
-  }
-
-  // Type + brand
-  for (const type of EQUIPMENT_TYPES) {
-    for (const brand of EQUIPMENT_BRAND_TYPES) {
-      urls.push(`/${type}/${brand}`);
-    }
-  }
-
-  // Category + brand
-  for (const category of EQUIPMENT_CATEGORY_TYPES) {
-    for (const brand of EQUIPMENT_BRAND_TYPES) {
-      urls.push(`/${category}/${brand}`);
-    }
-  }
-
-  // Type + Category + brand
-  for (const type of EQUIPMENT_TYPES) {
-    for (const category of EQUIPMENT_CATEGORY_TYPES) {
-      for (const brand of EQUIPMENT_BRAND_TYPES) {
-        urls.push(`/${type}/${category}/${brand}`);
-      }
-    }
-  }
-
-  const start = (page - 1) * maxLocsPerSitemap;
-  const end = start + maxLocsPerSitemap;
-
-  const currentUrls = urls.slice(start, end);
-
-  return { urls: currentUrls, count: urls.length };
-}
 
 export async function generateBroadcastUrls(page: number = 1) {
   const urls: string[] = [];
 
   for (const broadcastType of broadcastTypes) {
-    urls.push(`/${broadcastType.slug}`);
+    const typeUrl = broadcastType.href ?? `/broadcasting`;
+    urls.push(typeUrl);
     try {
       const res = await broadcastsService.getAllUnitsPublic({
         page,
@@ -102,7 +21,7 @@ export async function generateBroadcastUrls(page: number = 1) {
 
       const units = res.data || [];
       for (const unit of units) {
-        urls.push(`/${broadcastType.slug}/${unit.slug}`);
+        urls.push(`/broadcasting/units/${unit.slug}`);
       }
     } catch {
       continue;
@@ -115,6 +34,26 @@ export async function generateBroadcastUrls(page: number = 1) {
   const currentUrls = urls.slice(start, end);
 
   return { urls: currentUrls, count: urls.length };
+}
+
+export async function generateIntentUrls(page: number = 1) {
+  const items: { url: string; updatedAt: string }[] = [{ url: '/equipment-rental', updatedAt: new Date().toISOString() }];
+
+  try {
+    const slugs = await intentsService.getAllSlugsForSitemap();
+    for (const item of slugs) {
+      if (item.type === 'HUB') continue;
+      items.push({ url: `/equipment-rental/${item.slug}`, updatedAt: item.updatedAt });
+    }
+  } catch {
+    // Fallback: hub only
+  }
+
+  const start = (page - 1) * maxLocsPerSitemap;
+  const end = start + maxLocsPerSitemap;
+  const currentItems = items.slice(start, end);
+
+  return { items: currentItems, count: items.length };
 }
 
 const siteURL = process.env.NEXT_PUBLIC_SITE_URL!;

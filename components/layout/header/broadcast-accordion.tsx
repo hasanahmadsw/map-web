@@ -17,14 +17,7 @@ const broadcastTypes = [
     type: BroadcastType.FLIGHT_CASE,
     label: 'Flight Cases',
     description: 'Portable broadcast equipment cases',
-  },
-  { type: BroadcastType.SNG, label: 'SNG', description: 'Satellite News Gathering units' },
-  {
-    type: BroadcastType.INTERNET_BROADCAST,
-    label: 'Internet Broadcast',
-    description: 'Online streaming and broadcasting solutions',
-  },
-  { type: BroadcastType.OTHER, label: 'Other', description: 'Additional broadcast solutions' },
+  }
 ];
 
 export function MobileBroadcastAccordion({ onLinkClick }: MobileBroadcastAccordionProps) {

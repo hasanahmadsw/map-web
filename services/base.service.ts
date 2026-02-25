@@ -74,7 +74,14 @@ const hasEnvelope = (data: unknown): boolean => {
   return !!(data && typeof data === 'object' && data !== null && 'data' in data && 'message' in data);
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://map-server-kpyg.onrender.com/api/v1';
+const LOG_API = process.env.NEXT_PUBLIC_LOG_API === 'true';
+
+const getApiUrl = () => {
+  const url = process.env.NEXT_PUBLIC_API_URL?.trim() || 'http://localhost:8000/api/v1';
+  return url;
+};
+
+const API_URL = getApiUrl();
 
 const authEndpoints = ['/auth/user/login'];
 
@@ -88,8 +95,17 @@ export class ApiService {
     const lang = resolveLang();
     const isFormData = options.body instanceof FormData;
 
+    const fullUrl = `${API_URL}${endpoint}`;
+    if (LOG_API) {
+      console.log('[ApiService] Request:', {
+        fullUrl,
+        method: options.method || 'GET',
+        isBrowser,
+      });
+    }
+
     try {
-      const response = await fetch(`${API_URL}${endpoint}`, {
+      const response = await fetch(fullUrl, {
         signal: options.signal,
         headers: {
           ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
@@ -149,10 +165,15 @@ export class ApiService {
         // Let React Query handle it without toast
         throw error;
       }
-      console.error(`Network/API Error:`, {
+      const errMsg = error instanceof Error ? error.message : String(error);
+      const errCause = error instanceof Error && error.cause ? error.cause : undefined;
+      console.error(`[ApiService] Network/API Error:`, {
+        fullUrl,
         endpoint,
         method: options.method || 'GET',
-        error: error instanceof Error ? error.message : error,
+        error: errMsg,
+        cause: errCause,
+        API_URL,
         t: new Date().toISOString(),
       });
       if (typeof error === 'object' && error !== null) throw error;

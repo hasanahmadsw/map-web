@@ -1,81 +1,62 @@
-import MotionWrapper from '@/components/shared/motion/motion-wrapper';
-import { SocialIcons } from '@/components/shared/social-icons';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { settingsService } from '@/services/settings.service';
-
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 
 async function ContactDetails() {
   const { data: settings } = await settingsService.getSettings();
 
+  const items = [
+    {
+      icon: Mail,
+      label: 'Email',
+      value: settings?.contact?.email || 'N/A',
+    },
+    {
+      icon: Phone,
+      label: 'Phone',
+      value: settings?.contact?.phone || 'N/A',
+    },
+    {
+      icon: MapPin,
+      label: 'Address',
+      value: settings?.contact?.address || 'N/A',
+    },
+    {
+      icon: Clock,
+      label: 'Working Hours',
+      value: settings?.contact?.workingHours || 'N/A',
+    },
+  ];
+
   return (
-    <MotionWrapper
-      initial={{ opacity: 0, x: -40 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.7, ease: 'easeOut' }}
-      viewport={{ once: true }}
-      className="lg:col-span-1"
-    >
-      <Card className="bg-primary border-none shadow-2xl backdrop-blur-lg">
-        <CardHeader>
-          <CardTitle className="text-3xl font-extrabold tracking-tight text-white">Get In Touch</CardTitle>
-          <CardDescription className="text-muted/80">
-            Contact us for any questions or inquiries
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-8">
-          <MotionWrapper whileHover={{ scale: 1.04 }} className="flex items-start space-x-4">
-            <div className="rounded-full bg-white/20 p-3 shadow-md">
-              <Mail className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-white">Email</h3>
-              <p className="text-muted/80">{settings?.contact?.email || 'N/A'}</p>
-            </div>
-          </MotionWrapper>
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-xl font-semibold md:text-2xl">Get in Touch</h2>
+        <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+          Reach out to discuss your project, request a quote, or learn more about our services. We respond
+          within 24–48 hours.
+        </p>
+      </div>
 
-          <MotionWrapper whileHover={{ scale: 1.04 }} className="flex items-start space-x-4">
-            <div className="rounded-full bg-white/20 p-3 shadow-md">
-              <Phone className="h-6 w-6 text-white" />
+      <div className="space-y-4">
+        {items.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div
+              key={item.label}
+              className="flex items-start gap-4 rounded-xl border border-border/60 bg-muted/20 p-4 transition-colors hover:bg-muted/30"
+            >
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                <Icon className="text-primary size-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h3 className="font-medium">{item.label}</h3>
+                <p className="text-muted-foreground mt-0.5 text-sm">{item.value}</p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-lg font-semibold text-white">Phone</h3>
-              <p className="text-muted/80">{settings?.contact?.phone || 'N/A'}</p>
-            </div>
-          </MotionWrapper>
-
-          {/* <MotionWrapper whileHover={{ scale: 1.04 }} className="flex items-start space-x-4">
-            <div className="rounded-full bg-white/20 p-3 shadow-md">
-              <SocialIcons.whatsapp className="h-6 w-6 fill-white" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-white">Whatsapp</h3>
-              <p className="text-muted/80">{settings?.contact?.whatsapp || "N/A"}</p>
-            </div>
-          </MotionWrapper> */}
-
-          <MotionWrapper whileHover={{ scale: 1.04 }} className="flex items-start space-x-4">
-            <div className="rounded-full bg-white/20 p-3 shadow-md">
-              <MapPin className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-white">Address</h3>
-              <p className="text-muted/80">{settings?.contact?.address || 'N/A'}</p>
-            </div>
-          </MotionWrapper>
-
-          <MotionWrapper whileHover={{ scale: 1.04 }} className="flex items-start space-x-4">
-            <div className="rounded-full bg-white/20 p-3 shadow-md">
-              <Clock className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-white">Hours</h3>
-              <p className="text-muted/80">{settings?.contact?.workingHours || 'N/A'}</p>
-            </div>
-          </MotionWrapper>
-        </CardContent>
-      </Card>
-    </MotionWrapper>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

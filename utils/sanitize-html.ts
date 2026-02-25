@@ -33,7 +33,7 @@ const allowedTags = [
 const allowedAttributes = {
   a: ['href', 'name', 'target', 'rel'],
   img: ['src', 'alt', 'title', 'width', 'height'],
-  span: ['dir', 'style', 'class'],
+  span: ['dir', 'class'],
   '*': ['class'],
 };
 
@@ -50,7 +50,7 @@ const tagClasses: Record<string, string> = {
   blockquote: 'mt-6 border-l-2 pl-6 italic',
   pre: 'mb-4 mt-6 overflow-x-auto rounded-lg border bg-black py-4',
   code: 'relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold',
-  a: 'font-medium underline underline-offset-4 hover:text-primary',
+  a: 'text-primary font-medium underline underline-offset-4 hover:opacity-90',
   img: 'rounded-lg border',
   table: 'w-full overflow-y-auto',
   thead: '[&_tr]:border-b',

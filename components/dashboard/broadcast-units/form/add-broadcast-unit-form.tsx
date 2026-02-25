@@ -20,7 +20,6 @@ import {
   type TCreateBroadcastUnitForm,
 } from '@/validations/broadcasts/create-broadcast-unit.schema';
 import { sanitizeDto } from '@/utils/format';
-import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
 import { MediaMultiSelectInput } from '@/components/shared/input/MediaMultiSelectInput';
 
 export function AddBroadcastUnitForm() {
@@ -54,9 +53,6 @@ export function AddBroadcastUnitForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {/* Main broadcast unit information */}
         <BasicInformationSection />
-
-        {/* Cover image */}
-        <MediaSelectInput control={form.control} name="coverImage" label="Cover Image" typeFilter="image" />
 
         {/* Gallery */}
         <MediaMultiSelectInput control={form.control} name="gallery" label="Gallery" typeFilter="image" />

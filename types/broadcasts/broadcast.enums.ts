@@ -1,9 +1,6 @@
 export enum BroadcastType {
   OBVAN = 'OBVAN',
   FLIGHT_CASE = 'FLIGHT_CASE',
-  SNG = 'SNG',
-  INTERNET_BROADCAST = 'INTERNET_BROADCAST',
-  OTHER = 'OTHER',
 }
 
 export enum BroadcastUnitItemGroup {

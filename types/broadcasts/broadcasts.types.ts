@@ -25,9 +25,10 @@ export interface BroadcastUnit {
   slug: string;
   title?: string;
   summary?: string;
-  description?: string;
   specs?: BroadCastUnitSpecs;
-  coverImage?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
   gallery?: GalleryItem[];
   isPublished: boolean;
   order: number;

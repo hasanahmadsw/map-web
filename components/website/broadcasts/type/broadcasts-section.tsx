@@ -63,9 +63,11 @@ export async function BroadcastsSection({
         }}
       />
       <div className="space-y-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-semibold md:text-4xl">{`Available ${badgeText} Units`}</h2>
-          <p className="text-muted-foreground mt-2 text-base md:text-lg">{`Browse our collection of professional ${badgeText.toLowerCase()} broadcast units`}</p>
+        <div>
+          <h2 className="text-xl font-semibold md:text-2xl">{`Available ${badgeText} Units`}</h2>
+          <p className="text-muted-foreground mt-2 text-sm md:text-base leading-relaxed max-w-2xl">
+            Browse our collection of professional {badgeText.toLowerCase()} broadcast units
+          </p>
         </div>
 
         <div

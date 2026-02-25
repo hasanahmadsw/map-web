@@ -1,9 +1,7 @@
 import { articlesService } from '@/services/articles.service';
-import { servicesService } from '@/services/services.service';
-import { allSolutionKeys } from '@/components/website/solutions/data-utils';
 import {
   generateBroadcastUrls,
-  generateEquipmentUrls,
+  generateIntentUrls,
   generateSitemapXml,
 } from '@/utils/seo/sitemap/sitemap-utils';
 import { MetadataRoute } from 'next';
@@ -35,36 +33,15 @@ export async function GET(_request: Request, props: { params: Promise<{ entity: 
 
 async function generateEntityUrls(entity: string, page: number): Promise<MetadataRoute.Sitemap> {
   switch (entity) {
-    case 'rental': {
-      const { urls: toRentUrls } = generateEquipmentUrls(page);
-
-      return toRentUrls.map(url => ({
-        url: `/rental${url}`,
-        lastModified: new Date().toISOString(),
-        changeFrequency: 'daily' as const,
-        priority: 0.9,
-      }));
-    }
-    case 'solutions': {
-      return allSolutionKeys.map(solution => ({
-        url: `/solutions/${solution.slug}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly' as const,
-        priority: 0.9,
-      }));
-    }
     case 'services': {
-      const { data: services } = await servicesService.getAll({
-        page,
-        limit: maxLocsPerSitemap,
-      });
-
-      return services.map(service => ({
-        url: `/services/${service.slug}`,
-        lastModified: new Date(service.updatedAt || service.createdAt),
-        changeFrequency: 'daily' as const,
-        priority: 0.8,
-      }));
+      return [
+        {
+          url: '/services',
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.9,
+        },
+      ];
     }
     case 'blog': {
       const { data: posts } = await articlesService.getAll({
@@ -83,8 +60,18 @@ async function generateEntityUrls(entity: string, page: number): Promise<Metadat
       const { urls: broadcastUrls } = await generateBroadcastUrls(page);
 
       return broadcastUrls.map(url => ({
-        url: `/broadcasts${url}`,
+        url: url.startsWith('/') ? url : `/${url}`,
         lastModified: new Date(),
+        changeFrequency: 'daily' as const,
+        priority: 0.8,
+      }));
+    }
+    case 'intents': {
+      const { items } = await generateIntentUrls(page);
+
+      return items.map(item => ({
+        url: item.url,
+        lastModified: new Date(item.updatedAt),
         changeFrequency: 'daily' as const,
         priority: 0.8,
       }));
@@ -111,21 +98,63 @@ async function generateEntityUrls(entity: string, page: number): Promise<Metadat
           priority: 0.7,
         },
         {
-          url: `/solutions`,
-          lastModified: new Date(),
-          changeFrequency: 'daily' as const,
-          priority: 0.8,
-        },
-        {
           url: `/broadcasts`,
           lastModified: new Date(),
           changeFrequency: 'daily' as const,
           priority: 0.8,
         },
         {
+          url: `/broadcasting`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.9,
+        },
+        {
+          url: `/broadcasting/outside-broadcast`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        },
+        {
+          url: `/broadcasting/portable-broadcast-systems`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        },
+        {
           url: `/services`,
           lastModified: new Date(),
           changeFrequency: 'daily' as const,
+          priority: 0.8,
+        },
+        {
+          url: `/commercial-video-production`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        },
+        {
+          url: `/corporate-video-production`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        },
+        {
+          url: `/event-video-production`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        },
+        {
+          url: `/live-event-production`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        },
+        {
+          url: `/studio-video-production`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly' as const,
           priority: 0.8,
         },
         {

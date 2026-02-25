@@ -1,11 +1,4 @@
-import MotionWrapper from '@/components/shared/motion/motion-wrapper';
 import { Phone, Mail } from 'lucide-react';
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 },
-};
 
 function TopBar() {
   const phoneNumbers = [
@@ -18,13 +11,7 @@ function TopBar() {
     <section className="h-top-bar-height border-border/50 bg-card/95 absolute inset-x-0 z-50 hidden border-b py-2.5 backdrop-blur-sm sm:block">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
-          <MotionWrapper
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="flex items-center gap-4"
-          >
+          <div className="flex items-center gap-4">
             {/* Phone Numbers */}
             <div className="flex items-center gap-3">
               <Phone className="text-muted-foreground h-4 w-4" />
@@ -54,7 +41,7 @@ function TopBar() {
                 {email}
               </a>
             </div>
-          </MotionWrapper>
+          </div>
         </div>
       </div>
     </section>

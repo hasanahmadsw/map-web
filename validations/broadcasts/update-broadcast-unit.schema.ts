@@ -59,14 +59,22 @@ function updateBroadcastUnitSchema() {
       .min(3, fmt(validation.string.minLength, { min: 3 }))
       .max(500, fmt(validation.string.maxLength, { max: 500 }))
       .optional(),
-    description: z
+    specs: broadcastUnitSpecsSchema.optional(),
+    metaTitle: z
       .string()
       .trim()
-      .min(3, fmt(validation.string.minLength, { min: 3 }))
-      .max(5000, fmt(validation.string.maxLength, { max: 5000 }))
+      .max(70, fmt(validation.string.maxLength, { max: 70 }))
       .optional(),
-    specs: broadcastUnitSpecsSchema.optional(),
-    coverImage: z.string().min(1, validation.required).optional(),
+    metaDescription: z
+      .string()
+      .trim()
+      .max(180, fmt(validation.string.maxLength, { max: 180 }))
+      .optional(),
+    metaKeywords: z
+      .string()
+      .trim()
+      .max(500, fmt(validation.string.maxLength, { max: 500 }))
+      .optional(),
     gallery: gallerySchema.optional(),
     isPublished: z.boolean().optional(),
     order: numberValidation(1, 100).optional().or(z.literal('')),

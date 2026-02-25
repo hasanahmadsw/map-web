@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { ReactNode } from 'react';
-import MotionWrapper from '../../shared/motion/motion-wrapper';
 
 interface ContactHeroProps {
   imageSrc: string;
@@ -44,14 +43,9 @@ function HeroSection({
       <div className={`absolute inset-0 ${getGradientDirection()}`} />
 
       <div className="top-edge-nav-margin absolute inset-0 flex items-center justify-center">
-        <MotionWrapper
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8"
-        >
+        <div className="container mx-auto max-w-6xl px-4 md:px-6 lg:px-8">
           {children}
-        </MotionWrapper>
+        </div>
       </div>
     </div>
   );

@@ -53,9 +53,8 @@ export async function homeSchema(): Promise<{
    * Navigation
    * ---------------------------------- */
   const navigation = generateNavigationSchema([
-    { name: 'Broadcasts', url: `/broadcasts` },
+    { name: 'Broadcasting', url: `/broadcasting` },
     { name: 'Services', url: `/services` },
-    { name: 'Solutions', url: `/solutions` },
     { name: 'About Us', url: `/about` },
   ]);
 

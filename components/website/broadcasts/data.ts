@@ -12,7 +12,6 @@ import {
   Zap,
   CheckCircle2,
   Settings,
-  Satellite,
 } from 'lucide-react';
 
 export const useCases = [
@@ -60,6 +59,7 @@ export const broadcastTypes = [
     description:
       'State-of-the-art mobile broadcast vans designed for live events, sports coverage, and on-location production. Fully equipped with professional-grade equipment for seamless remote broadcasting.',
     features: ['Mobile Production', 'Live Event Coverage', 'Multi-Camera Setup', 'Real-time Broadcasting'],
+    href: '/broadcasting/outside-broadcast',
   },
   {
     type: BroadcastType.FLIGHT_CASE,
@@ -69,34 +69,8 @@ export const broadcastTypes = [
     description:
       'Portable and compact broadcast equipment cases perfect for travel and remote productions. Engineered for durability and quick deployment in any location.',
     features: ['Portable Design', 'Quick Setup', 'Durable Construction', 'Travel-Friendly'],
+    href: '/broadcasting/portable-broadcast-systems',
   },
-  {
-    type: BroadcastType.SNG,
-    slug: 'sng',
-    label: 'SNG',
-    icon: Satellite,
-    description:
-      'Satellite News Gathering units equipped with advanced transmission technology for reliable satellite communication and remote broadcasting from anywhere in the world.',
-    features: ['Satellite Transmission', 'Global Coverage', 'Reliable Connectivity', 'Remote Broadcasting'],
-  },
-  // {
-  //   type: BroadcastType.INTERNET_BROADCAST,
-  //   slug: 'internet-broadcast',
-  //   label: 'Internet Broadcast',
-  //   icon: Wifi,
-  //   description:
-  //     'Professional solutions for online streaming and digital broadcasting. Perfect for webinars, live streaming, and digital content creation with high-quality output.',
-  //   features: ['Online Streaming', 'Digital Broadcasting', 'Webinar Support', 'High-Quality Output'],
-  // },
-  // {
-  //   type: BroadcastType.OTHER,
-  //   slug: 'other',
-  //   label: 'Other Solutions',
-  //   icon: MoreHorizontal,
-  //   description:
-  //     'Specialized broadcast solutions tailored to unique production requirements. Custom configurations and specialized equipment for specific broadcasting needs.',
-  //   features: ['Custom Solutions', 'Specialized Equipment', 'Tailored Configurations', 'Flexible Options'],
-  // },
 ];
 
 export const benefits = [

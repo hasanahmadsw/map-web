@@ -1,22 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
-import EquipmentsAutocomplete from '../common/equipments-autocomplete';
-
 export function HeroSection() {
-  const router = useRouter();
-  const [searchQuery] = useState('');
-
-  const handleSearchChange = (value: string) => {
-    if (!value.trim()) return;
-    router.push(`/rental?search=${encodeURIComponent(value.trim())}`);
-  };
-
   return (
     <section className="section-padding relative container flex min-h-screen items-center justify-center">
       {/* Subtle grid pattern */}
@@ -32,62 +19,54 @@ export function HeroSection() {
       {/* Content */}
       <div className="pt-edge-nav-margin relative z-10 container flex max-w-7xl flex-col items-center justify-center">
         <div className="space-y-8 text-center">
+          {/* Badge / Positioning */}
+          <p className="text-primary text-sm font-semibold uppercase tracking-widest">
+            Production Infrastructure Partner
+          </p>
+
           {/* Main Heading */}
           <div className="space-y-4">
             <h1 className="mx-auto max-w-5xl text-4xl leading-tight font-bold tracking-tight md:text-6xl md:leading-[1.1]">
               <span className="from-foreground via-foreground to-foreground/70 bg-linear-to-r bg-clip-text text-transparent">
-                Media Production and
+                Film, Broadcast & Production
               </span>
               <br />
               <span className="from-primary via-primary/90 to-primary/70 bg-linear-to-r bg-clip-text text-transparent">
-                Broadcasting Solutions
+                Solutions in Dubai
               </span>
             </h1>
-            <p className="mx-auto max-w-2xl text-base">
-              Discover our comprehensive range of media production and broadcasting solutions, designed to
-              meet the unique needs of businesses and organizations worldwide.
+            <p className="mx-auto max-w-2xl text-base text-muted-foreground">
+              MAP provides production infrastructure, equipment rental, and full-service broadcasting
+              solutions for agencies, broadcasters, and production companies across the UAE and Gulf.
             </p>
           </div>
 
-          {/* Search Input */}
-          <div className="mx-auto w-full max-w-2xl pt-4">
-            <div
-              className={cn(
-                'group relative z-50 gap-3 rounded-2xl px-4 py-3 transition-all duration-300',
-                'bg-background/80 border-border/50 border backdrop-blur-xl',
-                'shadow-lg shadow-black/5 dark:shadow-black/20',
-                'hover:bg-background/90 hover:border-border hover:shadow-xl hover:shadow-black/10 dark:hover:shadow-black/30',
-                'focus-within:bg-background/95 focus-within:border-primary/50 focus-within:shadow-primary/10 focus-within:shadow-2xl',
-                'dark:bg-card/70 dark:border-border/40 dark:hover:bg-card/80 dark:focus-within:bg-card/90',
-              )}
-            >
-              <EquipmentsAutocomplete
-                placeholder="Search equipment..."
-                value={searchQuery}
-                onValueChange={handleSearchChange}
-                className="w-full"
-              />
-            </div>
-          </div>
-
           {/* CTA Buttons */}
-          <div className="relative flex flex-col items-center justify-center gap-4 pt-6 sm:flex-row">
+          <div className="relative flex flex-col items-center justify-center gap-4 pt-6 sm:flex-row sm:flex-wrap">
             <Link
               className="glass-button group flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all duration-200 md:px-8 md:text-base"
-              href="/solutions"
+              href="/equipment-rental"
             >
-              Explore Solutions
+              Rent Equipment
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
             </Link>
             <Link
-              className="glass-button rounded-full px-6 py-3 text-sm font-medium transition-all duration-200 md:px-8 md:text-base"
-              href="/blog"
+              className="glass-button group flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all duration-200 md:px-8 md:text-base"
+              href="/contact?subject=production-support"
             >
-              Read Articles
+              Request Production Support
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+            </Link>
+            <Link
+              className="glass-button group flex items-center justify-center gap-2 rounded-full border border-primary/30 px-6 py-3 text-sm font-medium transition-all duration-200 md:px-8 md:text-base"
+              href="/broadcasting"
+            >
+              Broadcasting Support
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
             </Link>
           </div>
 
-          {/* Quick Stats or Features */}
+          {/* Quick Stats */}
           <div className="text-muted-foreground flex flex-wrap items-center justify-center gap-8 pt-12 text-sm">
             <div className="flex items-center gap-2">
               <div className="bg-primary h-2 w-2 rounded-full" />
@@ -99,7 +78,7 @@ export function HeroSection() {
             </div>
             <div className="flex items-center gap-2">
               <div className="bg-primary h-2 w-2 rounded-full" />
-              <span>Expert Consultation</span>
+              <span>Full-Service Production</span>
             </div>
           </div>
         </div>

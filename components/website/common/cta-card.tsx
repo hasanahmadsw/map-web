@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import MotionWrapper from '@/components/shared/motion/motion-wrapper';
 
 interface SimpleCTAProps {
   title: string;
@@ -22,36 +21,18 @@ export default function CATSection({
   href,
 }: SimpleCTAProps) {
   return (
-    <MotionWrapper
+    <div
       className={`from-primary/5 to-secondary/5 border-primary/10 rounded-3xl border bg-linear-to-r p-8 text-center shadow-sm ${className}`}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, delay: 0.2 }}
     >
-      <MotionWrapper
-        as="h3"
-        className="text-foreground mb-4 text-2xl font-semibold md:text-3xl"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.3 }}
-      >
+      <h3 className="text-foreground mb-4 text-2xl font-semibold md:text-3xl">
         {title}
-      </MotionWrapper>
+      </h3>
 
-      <MotionWrapper
-        as="p"
-        className="text-muted-foreground mx-auto mb-8 max-w-md"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-      >
+      <p className="text-muted-foreground mx-auto mb-8 max-w-md">
         {description}
-      </MotionWrapper>
+      </p>
 
-      <MotionWrapper className="group inline-block" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <div className="group inline-block">
         <Button
           size="default"
           className="bg-primary hover:shadow-3xl group text-primary-foreground relative overflow-hidden px-8 py-6 text-sm font-medium shadow-2xl transition-all duration-300"
@@ -63,23 +44,9 @@ export default function CATSection({
 
             {/* Shine effect */}
             <span className="bg-primary-foreground/20 absolute inset-0 -translate-x-8 rotate-12 transform opacity-0 transition-all duration-500 group-hover:opacity-100" />
-
-            {/* Pulse effect */}
-            <MotionWrapper
-              className="border-primary-foreground/30 absolute inset-0 border-2"
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.5, 0, 0.5],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            />
           </Link>
         </Button>
-      </MotionWrapper>
-    </MotionWrapper>
+      </div>
+    </div>
   );
 }

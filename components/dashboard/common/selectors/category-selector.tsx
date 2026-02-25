@@ -116,12 +116,13 @@ export function CategorySelector({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0" align="start">
-        <Command>
-          <CommandInput
-            placeholder={placeholder || 'Search categories...'}
-            value={searchTerm}
-            onValueChange={handleSearchChange}
-          />
+        <Command
+          value={searchTerm}
+          onValueChange={handleSearchChange}
+          shouldFilter={false}
+          filter={() => 1}
+        >
+          <CommandInput placeholder={placeholder || 'Search categories...'} />
           <CommandList>
             <CommandEmpty>{isPending ? 'Loading...' : 'No categories found.'}</CommandEmpty>
             <CommandGroup>

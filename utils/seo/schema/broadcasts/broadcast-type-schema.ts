@@ -8,6 +8,7 @@ import {
 } from '../common/common';
 import { BroadcastUnit } from '@/types/broadcasts/broadcasts.types';
 import { BroadcastType } from '@/types/broadcasts/broadcast.enums';
+import { getTypeBroadcastingUrl } from '@/components/website/broadcasts/unit/unit-utils';
 
 function formatBroadcastType(type: BroadcastType | `${BroadcastType}`): string {
   return String(type)
@@ -24,8 +25,8 @@ export async function broadcastTypeSchema(
   '@graph': (WebSite | Organization | CollectionPage | ItemList | BreadcrumbList)[];
 }> {
   const { siteURL, organizationId } = seoConfig;
-  const typeSlug = String(type).toLowerCase().replace(/_/g, '-');
-  const currentURL = `${siteURL}/broadcasts/${typeSlug}${currentPage > 1 ? `?page=${currentPage}` : ''}`;
+  const typePagePath = getTypeBroadcastingUrl(type);
+  const currentURL = `${siteURL}${typePagePath}${currentPage > 1 ? `?page=${currentPage}` : ''}`;
   const typeName = formatBroadcastType(type);
 
   /* ----------------------------------
@@ -63,12 +64,13 @@ export async function broadcastTypeSchema(
     '@id': `${currentURL}#itemlist`,
     name: `${typeName} Broadcast Units List`,
     itemListElement: units.map((unit, index) => {
+      const firstImage = unit.gallery?.[0]?.path;
       const product: Product = {
         '@type': 'Product',
         name: unit.title || unit.slug,
-        url: `${siteURL}/broadcasts/${typeSlug}/${unit.slug}`,
-        image: unit.coverImage,
-        description: unit.summary || unit.description,
+        url: `${siteURL}/broadcasting/units/${unit.slug}`,
+        ...(firstImage && { image: firstImage }),
+        description: unit.metaDescription || unit.summary,
         category: `Broadcast ${typeName}`,
         sku: `BC-${unit.id}`,
         offers: {
@@ -91,8 +93,8 @@ export async function broadcastTypeSchema(
    * ---------------------------------- */
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '' },
-    { name: 'Broadcasts', url: '/broadcasts' },
-    { name: typeName, url: `/broadcasts/${typeSlug}` },
+    { name: 'Broadcasting', url: '/broadcasting' },
+    { name: typeName, url: typePagePath },
   ]);
 
   return {

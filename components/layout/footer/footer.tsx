@@ -1,9 +1,7 @@
 import { MapPin, Phone, Mail, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '../header/logo';
-import { servicesService } from '@/services/services.service';
 import { settingsService } from '@/services/settings.service';
-import { allSolutionKeys } from '@/components/website/solutions/data-utils';
 import { SocialIcons } from '@/components/shared/social-icons';
 
 const currentYear = new Date().getFullYear();
@@ -21,23 +19,8 @@ const socialsComponents = {
 };
 
 const Footer = async () => {
-  // Fetch services and settings in parallel
-  const [servicesResponse, settingsResponse] = await Promise.all([
-    servicesService
-      .getAll({
-        limit: 6,
-        isPublished: true,
-        isFeatured: true,
-      })
-      .catch(() => ({ data: [] })),
-    settingsService.getSettings().catch(() => ({ data: null })),
-  ]);
-
-  const services = servicesResponse?.data || [];
-  const settings = settingsResponse?.data || null;
-
-  // Use static solution keys
-  const solutions = allSolutionKeys;
+  const settings = await settingsService.getSettings().catch(() => null);
+  const settingsData = settings?.data || null;
 
   return (
     <footer className="text-card-foreground bg-gray-900">
@@ -45,17 +28,17 @@ const Footer = async () => {
       <div className="px-4 pt-24 pb-8">
         <div className="mx-auto max-w-7xl">
           {/* Top Section */}
-          <div className="grid gap-12 lg:grid-cols-4">
+          <div className="grid gap-12 lg:grid-cols-3">
             {/* Company Info */}
             <div className="space-y-6">
               <div className="flex items-center space-x-3">
                 <Logo width={150} height={150} />
               </div>
 
-              <p className="text-sm leading-relaxed text-white/80">{settings?.siteDescription}</p>
+              <p className="text-sm leading-relaxed text-white/80">{settingsData?.siteDescription}</p>
 
               <div className="grid w-44 grid-cols-4 gap-3 text-white">
-                {settings?.social?.map(social => (
+                {settingsData?.social?.map(social => (
                   <a
                     key={social.url}
                     href={social.url}
@@ -71,39 +54,82 @@ const Footer = async () => {
               </div>
             </div>
 
-            {/* Solutions */}
-            <div>
-              <h3 className="mb-6 text-lg font-semibold text-white">Solutions</h3>
-              <ul className="space-y-4">
-                {solutions.map(solution => (
-                  <li key={solution.key}>
-                    <Link
-                      href={`/solutions/${solution.slug}`}
-                      prefetch={false}
-                      className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
-                    >
-                      {solution.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
             {/* Services */}
             <div>
               <h3 className="mb-6 text-lg font-semibold text-white">Services</h3>
               <ul className="space-y-4">
-                {services.slice(0, 6).map(service => (
-                  <li key={service.id}>
-                    <Link
-                      href={`/services/${service.slug}`}
-                      prefetch={false}
-                      className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
-                    >
-                      {service.name}
-                    </Link>
-                  </li>
-                ))}
+                <li>
+                  <Link
+                    href="/services"
+                    prefetch={false}
+                    className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
+                  >
+                    Video Production Dubai
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/services"
+                    prefetch={false}
+                    className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
+                  >
+                    Filming Services
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/services"
+                    prefetch={false}
+                    className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
+                  >
+                    Production Company
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/commercial-video-production"
+                    prefetch={false}
+                    className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
+                  >
+                    Commercial Video Production
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/corporate-video-production"
+                    prefetch={false}
+                    className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
+                  >
+                    Corporate Video Production
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/event-video-production"
+                    prefetch={false}
+                    className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
+                  >
+                    Event Video Production
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/live-event-production"
+                    prefetch={false}
+                    className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
+                  >
+                    Live Event Production
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/studio-video-production"
+                    prefetch={false}
+                    className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
+                  >
+                    Studio Video Production
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -117,12 +143,8 @@ const Footer = async () => {
                     name: 'Home',
                   },
                   {
-                    href: '/rental',
+                    href: '/equipment-rental',
                     name: 'Equipment Rental',
-                  },
-                  {
-                    href: '/solutions',
-                    name: 'Solutions',
                   },
                   {
                     href: '/services',
@@ -160,7 +182,7 @@ const Footer = async () => {
                   <MapPin className="mt-1 h-5 w-5 shrink-0 text-white/80" />
                   <div>
                     <div className="text-sm text-white/80">Location</div>
-                    <div className="text-white">{settings?.contact?.address}</div>
+                    <div className="text-white">{settingsData?.contact?.address}</div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -169,7 +191,7 @@ const Footer = async () => {
                     <div className="text-sm text-white/80">Phone</div>
                     <div className="text-white">
                       <a href="tel:+971545444499" className="text-white hover:underline">
-                        {settings?.contact?.phone}
+                        {settingsData?.contact?.phone}
                       </a>
                     </div>
                   </div>
@@ -179,8 +201,8 @@ const Footer = async () => {
                   <div>
                     <div className="text-sm text-white/80">Email</div>
                     <div className="text-white">
-                      <a href={`mailto:${settings?.contact?.email}`} className="text-white hover:underline">
-                        {settings?.contact?.email}
+                      <a href={`mailto:${settingsData?.contact?.email}`} className="text-white hover:underline">
+                        {settingsData?.contact?.email}
                       </a>
                     </div>
                   </div>

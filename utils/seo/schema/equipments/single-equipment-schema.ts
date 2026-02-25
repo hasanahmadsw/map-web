@@ -72,8 +72,8 @@ export async function singleEquipmentSchema(equipment: IEquipment): Promise<{
    * ---------------------------------- */
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: '' },
-    { name: 'Rent', url: '/rental' },
-    { name: equipment.name, url: `/rental${equipment.slug}` },
+    { name: 'Rent', url: '/equipment-rental' },
+    { name: equipment.name, url: `/equipments/${equipment.slug}` },
   ]);
 
   return {

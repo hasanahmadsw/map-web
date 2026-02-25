@@ -14,7 +14,7 @@ import {
 } from '../common/common';
 import seoConfig from '@/utils/seo/meta/seo.config';
 import { withBaseSchema } from '../common/common';
-import { faqs } from '@/components/website/home/data';
+import { faqItems } from '@/components/website/about/data';
 
 export async function generateAboutPageSchema(): Promise<{
   '@context': 'https://schema.org';
@@ -55,13 +55,13 @@ export async function generateAboutPageSchema(): Promise<{
   const faqEntity: FAQPage = {
     '@type': 'FAQPage',
     '@id': `${currentURL}#faq`,
-    mainEntity: faqs.map(
+    mainEntity: faqItems.map(
       (item): Question => ({
         '@type': 'Question',
-        name: item.question,
+        name: item.q,
         acceptedAnswer: {
           '@type': 'Answer',
-          text: item.answer,
+          text: item.a,
         },
       }),
     ),

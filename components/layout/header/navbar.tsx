@@ -36,9 +36,8 @@ function Navbar() {
               <NavigationMenuItem key={index}>
                 <NavigationMenuLink
                   active={isActive}
-                  className={` ${
-                    isActive ? 'text-primary bg-accent font-bold' : ''
-                  } hover:text-primary py-1.5 text-sm font-medium whitespace-nowrap min-[1100px]:text-[15px]`}
+                  className={` ${isActive ? 'text-primary bg-accent font-bold' : ''
+                    } hover:text-primary py-1.5 text-xs font-medium whitespace-nowrap min-[1100px]:text-sm`}
                   asChild
                 >
                   <Link href={`${link.href}`}>{link.label}</Link>
@@ -56,9 +55,8 @@ function Navbar() {
                 <NavigationMenuItem key={index}>
                   <NavigationMenuLink
                     active={isActive}
-                    className={` ${
-                      isActive ? 'text-primary bg-accent font-bold' : ''
-                    } hover:text-primary py-1.5 text-sm font-medium whitespace-nowrap min-[1100px]:text-[15px]`}
+                    className={` ${isActive ? 'text-primary bg-accent font-bold' : ''
+                      } hover:text-primary py-1.5 text-xs font-medium whitespace-nowrap min-[1100px]:text-sm`}
                     asChild
                   >
                     <Link href={`${link.href}`}>{link.label}</Link>
@@ -72,9 +70,8 @@ function Navbar() {
             <NavigationMenuItem key={index}>
               <NavigationMenuLink
                 active={isActive}
-                className={` ${
-                  isActive ? 'text-primary bg-accent font-bold' : ''
-                } hover:text-primary py-1.5 text-sm font-medium whitespace-nowrap min-[1100px]:text-[15px]`}
+                className={` ${isActive ? 'text-primary bg-accent font-bold' : ''
+                  } hover:text-primary py-1.5 text-xs font-medium whitespace-nowrap min-[1100px]:text-sm`}
                 asChild
               >
                 <Link href={`${link.href}`}>{link.label}</Link>

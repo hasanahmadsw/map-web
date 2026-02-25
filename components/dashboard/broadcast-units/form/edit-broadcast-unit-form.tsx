@@ -23,7 +23,6 @@ import { StatusOptionsSection } from './partials/status-options-section';
 import { ItemsSection } from './partials/items-section';
 import { SpecsSection } from './partials/specs-section';
 import { getChangedValues } from '@/utils/format';
-import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
 import { MediaMultiSelectInput } from '@/components/shared/input/MediaMultiSelectInput';
 
 interface EditBroadcastUnitFormProps {
@@ -57,8 +56,9 @@ export function EditBroadcastUnitForm({ broadcastUnitId }: EditBroadcastUnitForm
       slug: broadcastUnit.slug || '',
       title: broadcastUnit.title || '',
       summary: broadcastUnit.summary || '',
-      description: broadcastUnit.description || '',
-      coverImage: broadcastUnit.coverImage || '',
+      metaTitle: broadcastUnit.metaTitle || '',
+      metaDescription: broadcastUnit.metaDescription || '',
+      metaKeywords: broadcastUnit.metaKeywords || '',
       gallery: normalizedGallery,
       specs: broadcastUnit.specs || undefined,
       isPublished: broadcastUnit.isPublished ?? false,
@@ -129,9 +129,6 @@ export function EditBroadcastUnitForm({ broadcastUnitId }: EditBroadcastUnitForm
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {/* Main broadcast unit information */}
         <BasicInformationSection />
-
-        {/* Cover image */}
-        <MediaSelectInput control={form.control} name="coverImage" label="Cover Image" typeFilter="image" />
 
         {/* Gallery */}
         <MediaMultiSelectInput control={form.control} name="gallery" label="Gallery" typeFilter="image" />

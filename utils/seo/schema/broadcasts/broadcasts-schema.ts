@@ -13,6 +13,8 @@ interface BroadcastTypeItem {
   label: string;
   description: string;
   features?: string[];
+  /** Full URL for type page; defaults to /broadcasts/{slug} when not provided */
+  href?: string;
 }
 
 export async function broadcastsSchema(broadcastTypes: BroadcastTypeItem[]): Promise<{
@@ -58,10 +60,13 @@ export async function broadcastsSchema(broadcastTypes: BroadcastTypeItem[]): Pro
     '@id': `${currentURL}#itemlist`,
     name: 'Broadcast Solutions List',
     itemListElement: broadcastTypes.map((broadcastType, index) => {
+      const typeUrl = broadcastType.href
+        ? `${siteURL}${broadcastType.href}`
+        : `${siteURL}/broadcasts/${broadcastType.slug}`;
       const serviceSchema: Service = {
         '@type': 'Service',
         name: broadcastType.label,
-        url: `${siteURL}/broadcasts/${broadcastType.slug}`,
+        url: typeUrl,
         description: broadcastType.description,
         serviceType: broadcastType.type,
         provider: { '@id': organizationId },

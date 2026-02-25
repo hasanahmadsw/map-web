@@ -100,7 +100,7 @@ export function useBroadcastUnitColumns(opts: {
         const broadcastUnit = row.original;
         return (
           <div className="text-muted-foreground max-w-xs truncate text-sm">
-            {broadcastUnit.summary || broadcastUnit.description || ''}
+            {broadcastUnit.summary || ''}
           </div>
         );
       },

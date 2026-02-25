@@ -15,8 +15,7 @@ interface BroadcastUnitRowCardProps {
 }
 
 export function BroadcastUnitRowCard({ unit, className }: BroadcastUnitRowCardProps) {
-  const unitType = unit.type.toLowerCase().replace(/_/g, '-');
-  const href = `/broadcasts/${unitType}/${unit.slug}`;
+  const href = `/broadcasting/units/${unit.slug}`;
 
   // Get first few items to display
   const previewItems = unit.items?.slice(0, 3) || [];
@@ -29,21 +28,21 @@ export function BroadcastUnitRowCard({ unit, className }: BroadcastUnitRowCardPr
     <Link
       href={href}
       className={cn(
-        'group glass-card relative block overflow-hidden rounded-xl',
-        'flex flex-col transition-all duration-500 md:flex-row',
-        'hover:scale-[1.01] hover:shadow-lg',
+        'group relative block overflow-hidden rounded-xl border border-border/60 bg-muted/20',
+        'flex flex-col transition-colors md:flex-row',
+        'hover:bg-muted/30 hover:border-primary/30',
         className,
       )}
     >
       {/* Cover Image - Left Side */}
-      {unit.coverImage && (
-        <div className="relative h-64 w-full overflow-hidden md:h-auto md:w-80 md:shrink-0">
+      {unit.gallery?.[0]?.path && (
+        <div className="relative h-56 w-full shrink-0 overflow-hidden md:h-auto md:w-72 md:shrink-0">
           <Image
-            src={unit.coverImage}
+            src={unit.gallery[0].path}
             alt={unit.title || unit.slug}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            unoptimized={unit.coverImage.includes('supabase.co')}
+            className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            unoptimized={unit.gallery[0].path.includes('supabase.co')}
           />
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent md:hidden" />
         </div>
@@ -55,7 +54,7 @@ export function BroadcastUnitRowCard({ unit, className }: BroadcastUnitRowCardPr
         <div className="mb-4 flex items-start justify-between gap-4">
           <div className="flex-1">
             <div className="mb-2 flex items-center gap-2">
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className="text-xs font-medium">
                 {formatBroadcastType(unit.type)}
               </Badge>
               {unit.isPublished && (
@@ -64,18 +63,18 @@ export function BroadcastUnitRowCard({ unit, className }: BroadcastUnitRowCardPr
                 </Badge>
               )}
             </div>
-            <h3 className="text-foreground group-hover:text-primary mb-2 text-2xl font-semibold transition-colors md:text-3xl">
+            <h3 className="text-foreground group-hover:text-primary mb-2 text-lg font-semibold transition-colors md:text-xl">
               {unit.title || unit.slug}
             </h3>
           </div>
-          <div className="bg-primary/10 group-hover:bg-primary/20 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors">
-            <Package className="text-primary h-6 w-6" />
+          <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors group-hover:bg-primary/15">
+            <Package className="text-primary h-5 w-5" />
           </div>
         </div>
 
         {/* Summary */}
         {unit.summary && (
-          <div className="text-muted-foreground mb-4 line-clamp-2 text-sm leading-relaxed md:text-base">
+          <div className="text-muted-foreground mb-4 line-clamp-2 text-sm leading-relaxed">
             <DivHtml html={unit.summary} />
           </div>
         )}
@@ -85,14 +84,14 @@ export function BroadcastUnitRowCard({ unit, className }: BroadcastUnitRowCardPr
           {/* Items Preview */}
           {unit.items && unit.items.length > 0 && (
             <div className="space-y-2">
-              <div className="text-muted-foreground flex items-center gap-2 text-xs font-semibold tracking-wide uppercase">
-                <CheckCircle2 className="h-3 w-3" />
+              <div className="text-muted-foreground flex items-center gap-2 text-xs font-medium">
+                <CheckCircle2 className="h-3 w-3 text-primary" />
                 <span>Equipment Included</span>
               </div>
               <div className="space-y-1">
                 {previewItems.map((item, index) => (
                   <div key={index} className="flex items-center gap-2 text-sm">
-                    <div className="bg-primary/10 h-1.5 w-1.5 shrink-0 rounded-full" />
+                    <div className="bg-primary/60 h-1.5 w-1.5 shrink-0 rounded-full" />
                     <span className="text-muted-foreground">
                       {item.title}
                       {item.qty && <span className="ml-1 text-xs">({item.qty}x)</span>}
@@ -111,8 +110,8 @@ export function BroadcastUnitRowCard({ unit, className }: BroadcastUnitRowCardPr
           {/* Specs Preview */}
           {specsEntries.length > 0 && (
             <div className="space-y-2">
-              <div className="text-muted-foreground flex items-center gap-2 text-xs font-semibold tracking-wide uppercase">
-                <Info className="h-3 w-3" />
+              <div className="text-muted-foreground flex items-center gap-2 text-xs font-medium">
+                <Info className="h-3 w-3 text-primary" />
                 <span>Key Specifications</span>
               </div>
               <div className="space-y-1">
@@ -139,7 +138,7 @@ export function BroadcastUnitRowCard({ unit, className }: BroadcastUnitRowCardPr
         </div>
 
         {/* Footer */}
-        <div className="text-primary border-border/50 mt-auto flex items-center justify-between border-t pt-4">
+        <div className="text-primary mt-auto flex items-center justify-between border-t border-border/60 pt-4">
           <div className="flex items-center gap-4 text-sm">
             {unit.items && unit.items.length > 0 && (
               <span className="text-muted-foreground">
@@ -153,9 +152,9 @@ export function BroadcastUnitRowCard({ unit, className }: BroadcastUnitRowCardPr
               </span>
             )}
           </div>
-          <div className="flex items-center gap-2 font-medium">
-            <span>View Full Details</span>
-            <ArrowRight className="h-4 w-4 transition-transform duration-200 will-change-transform group-hover:translate-x-1" />
+          <div className="flex items-center gap-2 text-sm font-medium">
+            <span>View Details</span>
+            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
           </div>
         </div>
       </div>

@@ -95,7 +95,7 @@ export function generateWebsiteSchema(): WebSite {
     //     '@type': 'SearchAction',
     //     target: {
     //       '@type': 'EntryPoint',
-    //       urlTemplate: `${siteURL}/rental?q={search_term_string}`,
+    //       urlTemplate: `${siteURL}/equipment-rental?q={search_term_string}`,
     //     },
     //     'query-input': 'required name=search_term_string',
     //   } as any,

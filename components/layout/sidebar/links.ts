@@ -24,12 +24,6 @@ export const navMain = [
     allowedRole: [Role.SUPERADMIN, Role.ADMIN, Role.AUTHOR],
   },
   {
-    title: 'Services',
-    url: '/dashboard/services',
-    icon: Package,
-    allowedRole: [Role.SUPERADMIN, Role.ADMIN],
-  },
-  {
     title: 'Staff',
     url: '/dashboard/staff',
     icon: Users,
@@ -54,6 +48,12 @@ export const navMain = [
         url: '/dashboard/equipments/brands',
       },
     ],
+  },
+  {
+    title: 'Intents',
+    url: '/dashboard/intents',
+    icon: Package,
+    allowedRole: [Role.SUPERADMIN, Role.ADMIN],
   },
   {
     title: 'Broadcast Units',
