@@ -4,10 +4,9 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
-import { useTheme } from 'next-themes';
 import Image from 'next/image';
 
-import { useEffect, useId, useState } from 'react';
+import { useId } from 'react';
 
 interface FilterSelectProps {
   label?: string;
@@ -43,15 +42,6 @@ export function FilterSelect({
   const generatedId = useId();
   const selectId = id || generatedId;
 
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setMounted(true);
-    }, 100);
-  }, []);
-
   const selectClassName = cn(
     'min-h-10 rounded-xl cursor-pointer border border-border',
     disabled && 'opacity-50 cursor-not-allowed',
@@ -62,11 +52,7 @@ export function FilterSelect({
 
   const selectedOption = options.find(opt => opt.value === value);
 
-  // Helper function to get the correct logo based on theme
-  const getLogoSrc = (option: { logo?: string; logoDark?: string }) => {
-    if (!option.logo) return undefined;
-    return mounted && resolvedTheme === 'dark' && option.logoDark ? option.logoDark : option.logo;
-  };
+  const getLogoSrc = (option: { logo?: string; logoDark?: string }) => option.logo;
 
   return (
     <div className="space-y-2">

@@ -7,7 +7,6 @@ import Navbar from './navbar';
 import NavbarMobile from './navbar-mobile';
 
 import { cn } from '@/lib/utils';
-import { ThemeToggle } from '../nav/theme-toggle';
 import { UserMenu } from '../nav/user-menu';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -39,7 +38,6 @@ function Header() {
         <Navbar />
 
         <div className="flex items-center gap-2">
-          <ThemeToggle />
           {isMounted && isAuthenticated ? (
             <UserMenu />
           ) : (

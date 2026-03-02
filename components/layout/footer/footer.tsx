@@ -1,8 +1,8 @@
 import { MapPin, Phone, Mail, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '../header/logo';
-import { settingsService } from '@/services/settings.service';
 import { SocialIcons } from '@/components/shared/social-icons';
+import { footerData } from './footer.data';
 
 const currentYear = new Date().getFullYear();
 
@@ -18,9 +18,7 @@ const socialsComponents = {
   snapchat: <SocialIcons.snapchat className="h-5 w-5" />,
 };
 
-const Footer = async () => {
-  const settings = await settingsService.getSettings().catch(() => null);
-  const settingsData = settings?.data || null;
+const Footer = () => {
 
   return (
     <footer className="text-card-foreground bg-gray-900">
@@ -35,10 +33,10 @@ const Footer = async () => {
                 <Logo width={150} height={150} />
               </div>
 
-              <p className="text-sm leading-relaxed text-white/80">{settingsData?.siteDescription}</p>
+              <p className="text-sm leading-relaxed text-white/80">{footerData.siteDescription}</p>
 
               <div className="grid w-44 grid-cols-4 gap-3 text-white">
-                {settingsData?.social?.map(social => (
+                {footerData.social.map(social => (
                   <a
                     key={social.url}
                     href={social.url}
@@ -87,7 +85,7 @@ const Footer = async () => {
                 </li>
                 <li>
                   <Link
-                    href="/commercial-video-production"
+                    href="/services/commercial-video-production"
                     prefetch={false}
                     className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
                   >
@@ -96,7 +94,7 @@ const Footer = async () => {
                 </li>
                 <li>
                   <Link
-                    href="/corporate-video-production"
+                    href="/services/corporate-video-production"
                     prefetch={false}
                     className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
                   >
@@ -105,7 +103,7 @@ const Footer = async () => {
                 </li>
                 <li>
                   <Link
-                    href="/event-video-production"
+                    href="/services/event-video-production"
                     prefetch={false}
                     className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
                   >
@@ -114,7 +112,7 @@ const Footer = async () => {
                 </li>
                 <li>
                   <Link
-                    href="/live-event-production"
+                    href="/services/live-event-production"
                     prefetch={false}
                     className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
                   >
@@ -123,7 +121,7 @@ const Footer = async () => {
                 </li>
                 <li>
                   <Link
-                    href="/studio-video-production"
+                    href="/services/studio-video-production"
                     prefetch={false}
                     className="group flex items-center text-sm text-white/80 transition-colors hover:text-white"
                   >
@@ -144,7 +142,7 @@ const Footer = async () => {
                   },
                   {
                     href: '/equipment-rental',
-                    name: 'Equipment Rental',
+                    name: 'Equipment',
                   },
                   {
                     href: '/services',
@@ -153,6 +151,10 @@ const Footer = async () => {
                   {
                     href: '/about',
                     name: 'About',
+                  },
+                  {
+                    href: '/contact',
+                    name: 'Contact',
                   },
                   {
                     href: '/blog',
@@ -182,7 +184,7 @@ const Footer = async () => {
                   <MapPin className="mt-1 h-5 w-5 shrink-0 text-white/80" />
                   <div>
                     <div className="text-sm text-white/80">Location</div>
-                    <div className="text-white">{settingsData?.contact?.address}</div>
+                    <div className="text-white text-xs">{footerData.contact.address}</div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -190,8 +192,11 @@ const Footer = async () => {
                   <div>
                     <div className="text-sm text-white/80">Phone</div>
                     <div className="text-white">
-                      <a href="tel:+971545444499" className="text-white hover:underline">
-                        {settingsData?.contact?.phone}
+                      <a
+                        href={`tel:${footerData.contact.phone.replace(/\s/g, '')}`}
+                        className="text-white hover:underline text-xs"
+                      >
+                        {footerData.contact.phone}
                       </a>
                     </div>
                   </div>
@@ -201,8 +206,8 @@ const Footer = async () => {
                   <div>
                     <div className="text-sm text-white/80">Email</div>
                     <div className="text-white">
-                      <a href={`mailto:${settingsData?.contact?.email}`} className="text-white hover:underline">
-                        {settingsData?.contact?.email}
+                      <a href={`mailto:${footerData.contact.email}`} className="text-white hover:underline text-xs">
+                        {footerData.contact.email}
                       </a>
                     </div>
                   </div>
@@ -229,10 +234,10 @@ const Footer = async () => {
 
               <div className="flex items-center space-x-6">
                 <div className="flex items-center space-x-6 text-sm">
-                  <Link href="#" className="text-white/80 transition-colors">
+                  <Link href="/privacy" prefetch={false} className="text-white/80 transition-colors hover:text-white">
                     Privacy Policy
                   </Link>
-                  <Link href="#" className="text-white/80 transition-colors">
+                  <Link href="/terms" prefetch={false} className="text-white/80 transition-colors hover:text-white">
                     Terms of Service
                   </Link>
                 </div>

@@ -55,14 +55,26 @@ export const articlesService = {
   async getAll(params: ArticleListParams = {}, opts?: RequestOpts): Promise<ApiResponse<Article[]>> {
     const res = await ApiService.get<Article[]>(
       `/articles/published${toQS(params)}`,
-      opts,
+      {
+        ...opts,
+        cache: 'force-cache',
+        next: { revalidate: 60 * 60 }, // 1 hour
+      },
       true, // withoutAuthHeader - public endpoint
     );
     return res;
   },
 
   async getBySlug(slug: string, opts?: RequestOpts): Promise<Article> {
-    const res = await ApiService.get<Article>(`${BASE}/slug/${enc(slug)}`, opts, true); // withoutAuthHeader - public endpoint
+    const res = await ApiService.get<Article>(
+      `${BASE}/slug/${enc(slug)}`,
+      {
+        ...opts,
+        cache: 'force-cache',
+        next: { revalidate: 60 * 60 }, // 1 hour
+      },
+      true, // withoutAuthHeader - public endpoint
+    );
     return res.data;
   },
 };

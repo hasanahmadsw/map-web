@@ -6,8 +6,8 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 
-const inputClassName = cn(
-  'min-h-8 rounded-md ps-12 transition-all duration-200 mb-0 focus-visible:ring-1 focus-visible:ring-primary/40',
+const inputBaseClassName = cn(
+  'min-h-8 rounded-md transition-all duration-200 mb-0 focus-visible:ring-1 focus-visible:ring-primary/40',
 );
 const labelClassName = cn('text-sm font-medium text-foreground ');
 
@@ -134,7 +134,7 @@ export function NumericInput<T extends FieldValues>({
             {icon && <div className="absolute start-3 top-1/2 -translate-y-1/2">{icon}</div>}
             <FormControl>
               <Input
-                className={cn(inputClassName, className)}
+                className={cn(inputBaseClassName, icon ? 'ps-12' : 'ps-3', className)}
                 placeholder={placeholder}
                 type="text"
                 autoComplete={autoComplete}

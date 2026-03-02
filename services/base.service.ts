@@ -77,7 +77,7 @@ const hasEnvelope = (data: unknown): boolean => {
 const LOG_API = process.env.NEXT_PUBLIC_LOG_API === 'true';
 
 const getApiUrl = () => {
-  const url = process.env.NEXT_PUBLIC_API_URL?.trim() || 'http://localhost:8000/api/v1';
+  const url = process.env.NEXT_PUBLIC_API_URL?.trim() || 'https://map-server-kpyg.onrender.com/api/v1';
   return url;
 };
 

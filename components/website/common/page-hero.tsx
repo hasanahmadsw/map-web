@@ -26,7 +26,7 @@ interface PageHeroProps {
   description: string;
   buttons: HeroButton[];
   breadcrumbs?: BreadcrumbItemType[];
-  minHeight?: '55vh' | '60vh';
+  minHeight?: '55vh' | '60vh' | '40vh';
 }
 
 export function PageHero({
@@ -36,7 +36,7 @@ export function PageHero({
   breadcrumbs,
   minHeight = '55vh',
 }: PageHeroProps) {
-  const heightClass = minHeight === '60vh' ? 'min-h-[calc(60vh-1rem)]' : 'min-h-[calc(55vh-1rem)]';
+  const heightClass = minHeight === '60vh' ? 'min-h-[calc(60vh-1rem)]' : minHeight === '40vh' ? 'min-h-[calc(40vh-1rem)]' : 'min-h-[calc(55vh-1rem)]';
 
   return (
     <section

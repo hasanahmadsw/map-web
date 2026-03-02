@@ -1,5 +1,4 @@
 import ContactDetails from '@/components/website/contact/contact-details';
-import ContactForm from '@/components/website/contact/contact-form';
 import { createEnhancedMetadata } from '@/utils/seo/meta/enhanced-meta';
 import { generateContactPageSchema } from '@/utils/seo/schema/contact/contact-schema';
 import { PageHero, PageSection } from '@/components/website/common/page-components';
@@ -44,14 +43,7 @@ export default async function ContactPage() {
       />
 
       <PageSection>
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-12">
-          <div className="lg:col-span-2">
-            <ContactDetails />
-          </div>
-          <div className="lg:col-span-3">
-            <ContactForm />
-          </div>
-        </div>
+        <ContactDetails />
       </PageSection>
     </div>
   );

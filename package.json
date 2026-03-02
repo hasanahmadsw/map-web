@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack --port 3009",
+    "dev": "next dev --turbopack --port 3002",
     "build": "next build --turbopack",
     "build:analyze": "cross-env ANALYZE=true next build --webpack",
     "start": "next start",
@@ -99,6 +99,7 @@
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "@types/sanitize-html": "^2.16.0",
+    "baseline-browser-mapping": "^2.10.0",
     "cross-env": "^10.1.0",
     "eslint": "^9.35.0",
     "eslint-config-next": "16.0.1",

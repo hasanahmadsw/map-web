@@ -1,30 +1,14 @@
-import { settingsService } from '@/services/settings.service';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
+import { footerData } from '@/components/layout/footer/footer.data';
 
-async function ContactDetails() {
-  const { data: settings } = await settingsService.getSettings();
+function ContactDetails() {
+  const { contact } = footerData;
 
   const items = [
-    {
-      icon: Mail,
-      label: 'Email',
-      value: settings?.contact?.email || 'N/A',
-    },
-    {
-      icon: Phone,
-      label: 'Phone',
-      value: settings?.contact?.phone || 'N/A',
-    },
-    {
-      icon: MapPin,
-      label: 'Address',
-      value: settings?.contact?.address || 'N/A',
-    },
-    {
-      icon: Clock,
-      label: 'Working Hours',
-      value: settings?.contact?.workingHours || 'N/A',
-    },
+    { icon: Mail, label: 'Email', value: contact.email },
+    { icon: Phone, label: 'Phone', value: contact.phone },
+    { icon: MapPin, label: 'Address', value: contact.address },
+    { icon: Clock, label: 'Working Hours', value: contact.workingHours },
   ];
 
   return (
