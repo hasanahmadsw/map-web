@@ -120,7 +120,7 @@ export function TableHeader({
   };
 
   return (
-    <CardHeader className="flex flex-row items-center justify-between">
+    <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-4">
       <div className="flex flex-col gap-1">
         <CardTitle>{title}</CardTitle>
         {renderCountDisplay()}
