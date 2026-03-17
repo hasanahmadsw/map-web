@@ -1,26 +1,18 @@
-'use client';
+'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import * as z from 'zod';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { useAuth } from '@/hooks/api/useAuth';
-import { useRouterWithLoader } from '@/hooks/useRouterWithLoader';
-import { cn } from '@/lib/utils';
-
-// Login form schema
-const loginSchema = z.object({
-  email: z.string().min(1, 'Email is required').email('Please enter a valid email address'),
-  password: z.string().min(1, 'Password is required').min(6, 'Password must be at least 6 characters'),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+import { zodResolver } from '@hookform/resolvers/zod'
+import { AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { useAuth } from '@/hooks/api/useAuth'
+import { useRouterWithLoader } from '@/hooks/useRouterWithLoader'
+import { cn } from '@/lib/utils'
+import { loginSchema, type TLoginForm } from '@/validations/auth/login.schema'
 
 interface AuthFormProps {
   className?: string;
@@ -31,15 +23,15 @@ export function AuthForm({ className }: AuthFormProps) {
   const [formError, setFormError] = useState<string | null>(null);
   const { login, isLoading, error } = useAuth();
   const router = useRouterWithLoader();
-  const form = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<TLoginForm>({
+    resolver: zodResolver(loginSchema()),
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const handleSubmit = async (data: LoginFormData) => {
+  const handleSubmit = async (data: TLoginForm) => {
     try {
       setFormError(null);
       await login(data.email, data.password);
