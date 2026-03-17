@@ -1,5 +1,9 @@
 import { BreadcrumbList, Organization, SiteNavigationElement, WebPage, WebSite } from 'schema-dts';
 import seoConfig from '../../meta/seo.config';
+import { settingsService } from '@/services/settings.service';
+import { DEFAULT_SETTINGS } from '@/constants/constant';
+import { Settings } from '@/types/settings.types';
+import { ApiResponse } from '@/types/common.types';
 
 interface BreadcrumbItem {
   name: string;
@@ -25,41 +29,48 @@ export function generateBreadcrumbSchema(items: BreadcrumbItem[]): BreadcrumbLis
 export async function generateOrganizationSchema(): Promise<Organization> {
   const { siteName, siteURL, logo, organizationId } = seoConfig;
 
+  const settings = await settingsService.getSettings().catch(err => {
+    console.error(err);
+    return { data: DEFAULT_SETTINGS } as unknown as ApiResponse<Settings>;
+  });
+
   return {
     '@type': 'Organization',
     '@id': organizationId,
-    name: siteName,
-    description: 'Media Production Solutions for UAE',
+    name: settings.data?.siteName || siteName,
+    description: settings.data?.siteDescription || 'Media Production Solutions for UAE',
     foundingDate: '1997',
     logo: {
       '@type': 'ImageObject',
-      url: `${siteURL}/${logo}`,
+      url: logo,
     },
     url: `${siteURL}`,
-    email: 'info@maproduction.ae',
+    email: settings.data?.contact?.email ?? '',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'BS 18, Dubai Studio City',
+      streetAddress: settings.data?.contact?.address ?? '',
       addressLocality: 'Dubai',
       addressRegion: 'Dubai',
       addressCountry: 'AE',
       // "postalCode": ,
     },
 
-    contactPoint: [
-      {
-        '@type': 'ContactPoint',
-        telephone: '+971545444499',
-        contactType: 'customer service',
-        availableLanguage: ['English'],
-      },
-      {
-        '@type': 'ContactPoint',
-        telephone: '+97144107001',
-        contactType: 'customer service',
-        availableLanguage: ['English'],
-      },
-    ],
+    ...(settings.data?.contact && {
+      contactPoint: [
+        (settings.data?.contact?.phone && {
+          '@type': 'ContactPoint',
+          telephone: settings.data?.contact?.phone ?? '',
+          contactType: 'customer service',
+          availableLanguage: ['Arabic', 'English'],
+        }) as any,
+        (settings.data?.contact?.email && {
+          '@type': 'ContactPoint',
+          email: settings.data?.contact?.email ?? '',
+          contactType: 'customer service',
+          availableLanguage: ['Arabic', 'English'],
+        }) as any,
+      ].filter(Boolean),
+    }),
 
     areaServed: [
       { '@type': 'Country', name: 'AE' },
@@ -73,10 +84,11 @@ export async function generateOrganizationSchema(): Promise<Organization> {
       'Professional Cinematography',
     ],
 
-    // sameAs: [
-    //   'https://www.instagram.com/maproduction.ae',
-    //   'https://www.linkedin.com/company/maproduction'
-    // ],
+    publishingPrinciples: [`${siteURL}/terms`, `${siteURL}/privacy`],
+
+    ...(settings.data?.social && {
+      sameAs: [...new Set(settings.data?.social?.map(social => social.url) ?? [])],
+    }),
   };
 }
 

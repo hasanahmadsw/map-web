@@ -2,7 +2,10 @@ import { MapPin, Phone, Mail, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '../header/logo';
 import { SocialIcons } from '@/components/shared/social-icons';
-import { footerData } from './footer.data';
+import { DEFAULT_SETTINGS } from '@/constants/constant';
+import { settingsService } from '@/services/settings.service';
+import { ApiResponse } from '@/types/common.types';
+import { Settings } from '@/types/settings.types';
 
 const currentYear = new Date().getFullYear();
 
@@ -18,7 +21,11 @@ const socialsComponents = {
   snapchat: <SocialIcons.snapchat className="h-5 w-5" />,
 };
 
-const Footer = () => {
+async function Footer() {
+  const settings = await settingsService.getSettings().catch(err => {
+    console.error(err);
+    return { data: DEFAULT_SETTINGS } as unknown as ApiResponse<Settings>;
+  });
 
   return (
     <footer className="text-card-foreground bg-gray-900">
@@ -33,10 +40,10 @@ const Footer = () => {
                 <Logo width={150} height={150} />
               </div>
 
-              <p className="text-sm leading-relaxed text-white/80">{footerData.siteDescription}</p>
+              <p className="text-sm leading-relaxed text-white/80">{settings.data?.siteDescription || ''}</p>
 
               <div className="grid w-44 grid-cols-4 gap-3 text-white">
-                {footerData.social.map(social => (
+                {settings.data?.social?.map(social => (
                   <a
                     key={social.url}
                     href={social.url}
@@ -184,7 +191,7 @@ const Footer = () => {
                   <MapPin className="mt-1 h-5 w-5 shrink-0 text-white/80" />
                   <div>
                     <div className="text-sm text-white/80">Location</div>
-                    <div className="text-white text-xs">{footerData.contact.address}</div>
+                    <div className="text-xs text-white">{settings.data?.contact?.address}</div>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -193,10 +200,10 @@ const Footer = () => {
                     <div className="text-sm text-white/80">Phone</div>
                     <div className="text-white">
                       <a
-                        href={`tel:${footerData.contact.phone.replace(/\s/g, '')}`}
-                        className="text-white hover:underline text-xs"
+                        href={`tel:${settings.data?.contact?.phone?.replace(/\s/g, '')}`}
+                        className="text-xs text-white hover:underline"
                       >
-                        {footerData.contact.phone}
+                        {settings.data?.contact?.phone}
                       </a>
                     </div>
                   </div>
@@ -206,8 +213,11 @@ const Footer = () => {
                   <div>
                     <div className="text-sm text-white/80">Email</div>
                     <div className="text-white">
-                      <a href={`mailto:${footerData.contact.email}`} className="text-white hover:underline text-xs">
-                        {footerData.contact.email}
+                      <a
+                        href={`mailto:${settings.data?.contact?.email}`}
+                        className="text-xs text-white hover:underline"
+                      >
+                        {settings.data?.contact?.email}
                       </a>
                     </div>
                   </div>
@@ -234,10 +244,18 @@ const Footer = () => {
 
               <div className="flex items-center space-x-6">
                 <div className="flex items-center space-x-6 text-sm">
-                  <Link href="/privacy" prefetch={false} className="text-white/80 transition-colors hover:text-white">
+                  <Link
+                    href="/privacy"
+                    prefetch={false}
+                    className="text-white/80 transition-colors hover:text-white"
+                  >
                     Privacy Policy
                   </Link>
-                  <Link href="/terms" prefetch={false} className="text-white/80 transition-colors hover:text-white">
+                  <Link
+                    href="/terms"
+                    prefetch={false}
+                    className="text-white/80 transition-colors hover:text-white"
+                  >
                     Terms of Service
                   </Link>
                 </div>
@@ -255,6 +273,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+}
 
 export default Footer;

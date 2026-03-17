@@ -1,14 +1,20 @@
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
-import { footerData } from '@/components/layout/footer/footer.data';
+import { DEFAULT_SETTINGS } from '@/constants/constant';
+import { ApiResponse } from '@/types/common.types';
+import { Settings } from '@/types/settings.types';
+import { settingsService } from '@/services/settings.service';
 
-function ContactDetails() {
-  const { contact } = footerData;
+async function ContactDetails() {
+  const settings = await settingsService.getSettings().catch(err => {
+    console.error(err);
+    return { data: DEFAULT_SETTINGS } as unknown as ApiResponse<Settings>;
+  });
 
   const items = [
-    { icon: Mail, label: 'Email', value: contact.email },
-    { icon: Phone, label: 'Phone', value: contact.phone },
-    { icon: MapPin, label: 'Address', value: contact.address },
-    { icon: Clock, label: 'Working Hours', value: contact.workingHours },
+    { icon: Mail, label: 'Email', value: settings.data?.contact?.email },
+    { icon: Phone, label: 'Phone', value: settings.data?.contact?.phone },
+    { icon: MapPin, label: 'Address', value: settings.data?.contact?.address },
+    { icon: Clock, label: 'Working Hours', value: settings.data?.contact?.workingHours },
   ];
 
   return (
@@ -22,14 +28,14 @@ function ContactDetails() {
       </div>
 
       <div className="space-y-4">
-        {items.map((item) => {
+        {items.map(item => {
           const Icon = item.icon;
           return (
             <div
               key={item.label}
-              className="flex items-start gap-4 rounded-xl border border-border/60 bg-muted/20 p-4 transition-colors hover:bg-muted/30"
+              className="border-border/60 bg-muted/20 hover:bg-muted/30 flex items-start gap-4 rounded-xl border p-4 transition-colors"
             >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+              <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
                 <Icon className="text-primary size-5" />
               </div>
               <div className="min-w-0 flex-1">
