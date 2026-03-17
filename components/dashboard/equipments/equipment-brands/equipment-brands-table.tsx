@@ -1,22 +1,17 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-
-import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 import { DataTable } from '@/components/shared/table/data-table';
 
-import { useEquipmentBrandMutations } from '@/hooks/api/equipments/equipment-brands/mutations';
-import { useEquipmentBrandsController } from '@/hooks/api/equipments/equipment-brands/use-equipment-brands-controller';
-import { useEquipmentBrandColumns } from './columns';
-import { TableHeader, type FilterInfo } from '@/components/shared/table/table-header';
+import { TableHeader } from '@/components/shared/table/table-header';
 
 import type { IEquipmentBrand } from '@/types/equipments/equipment-brand.type';
 import dynamic from 'next/dynamic';
 import DialogSkeleton from '@/components/shared/skeletons/dialog-skeleton';
 import { SelectFilter } from '@/components/shared/selects/select-filter';
+import { useEquipmentBrandsTable } from './use-equipment-brands-table';
 
 const AddEquipmentBrandDynamic = dynamic(
   () => import('@/components/dashboard/equipments/equipment-brands/form/add-equipment-brand-form'),
@@ -42,14 +37,9 @@ const ConfirmationDialogDynamic = dynamic(
   },
 );
 
-type DialogType = 'add' | 'edit' | 'delete' | null;
-
 function EquipmentBrandsTable() {
-  const [activeDialog, setActiveDialog] = useState<DialogType>(null);
-  const [selectedBrand, setSelectedBrand] = useState<IEquipmentBrand | null>(null);
-
   const {
-    items: brands,
+    brands,
     total,
     totalPages,
     error,
@@ -59,71 +49,27 @@ function EquipmentBrandsTable() {
     currentPage,
     pageSize,
     searchTerm,
-    urlState,
     hasActiveFilters,
+
+    filterInfo,
+    columns,
+
+    activeDialog,
+    selectedBrand,
+    deleteBrand,
+
+    isActiveSelectValue,
 
     setSearch,
     setPage,
     setPageSize,
-    setFilter,
     clearAll,
-  } = useEquipmentBrandsController();
+    setActiveDialog,
 
-  const isActiveFilter = urlState.isActive ?? undefined;
-
-  const { del: deleteBrand } = useEquipmentBrandMutations();
-
-  const handleEdit = (brand: IEquipmentBrand) => {
-    setSelectedBrand(brand);
-    setActiveDialog('edit');
-  };
-
-  const handleDelete = (brand: IEquipmentBrand) => {
-    setSelectedBrand(brand);
-    setActiveDialog('delete');
-  };
-
-  const handleDeleteBrand = async () => {
-    if (!selectedBrand) return;
-
-    try {
-      await deleteBrand.mutateAsync(selectedBrand.id);
-
-      toast.success('Equipment brand deleted successfully');
-
-      setSelectedBrand(null);
-      setActiveDialog(null);
-    } catch (error) {
-      const errMsg = (error as Error).message || 'Failed to delete equipment brand';
-
-      toast.error(errMsg);
-      console.error('Error deleting equipment brand:', error);
-    }
-  };
-
-  const columns = useEquipmentBrandColumns({
-    onEdit: handleEdit,
-    onDelete: handleDelete,
-  });
-
-  const handleAddBrand = () => {
-    setActiveDialog('add');
-  };
-
-  // Prepare filter information for the header
-  const filterInfo: FilterInfo[] = useMemo(() => {
-    const filters: FilterInfo[] = [];
-
-    if (isActiveFilter !== undefined) {
-      filters.push({
-        key: 'isActive',
-        label: 'Status',
-        value: isActiveFilter ? 'Active' : 'Inactive',
-      });
-    }
-
-    return filters;
-  }, [isActiveFilter]);
+    handleAddBrand,
+    handleDeleteBrand,
+    handleIsActiveFilterChange,
+  } = useEquipmentBrandsTable()
 
   return (
     <>
@@ -174,16 +120,8 @@ function EquipmentBrandsTable() {
             toolbarRight={
               <div className="flex flex-wrap items-center gap-2">
                 <SelectFilter
-                  value={
-                    isActiveFilter === undefined
-                      ? 'all'
-                      : (isActiveFilter as unknown as string) === 'true'
-                        ? 'true'
-                        : 'false'
-                  }
-                  onValueChange={val =>
-                    setFilter('isActive', val === undefined ? undefined : val === 'true' ? true : false)
-                  }
+                  value={isActiveSelectValue}
+                  onValueChange={handleIsActiveFilterChange}
                   options={[
                     { value: 'true', label: 'Active' },
                     { value: 'false', label: 'Inactive' },

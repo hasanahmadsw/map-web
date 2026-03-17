@@ -1,23 +1,17 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-
-import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 import { DataTable } from '@/components/shared/table/data-table';
 
-import { useStaffMutations } from '@/hooks/api/staff/mutations';
-import { useStaffController } from '@/hooks/api/staff/useStaffController';
-import { useStaffColumns } from './columns';
-import { TableHeader, type FilterInfo } from '@/components/shared/table/table-header';
+import { TableHeader } from '@/components/shared/table/table-header';
 
 import type { Staff } from '@/types/staff.types';
-import type { Role } from '@/types/staff.types';
 import dynamic from 'next/dynamic';
 import DialogSkeleton from '@/components/shared/skeletons/dialog-skeleton';
 import { SelectFilter } from '@/components/shared/selects/select-filter';
+import { useStaffTable } from './use-staff-table';
 
 const AddStaffMemberDynamic = dynamic(() => import('./form/add-staff-form'), {
   ssr: false,
@@ -37,14 +31,9 @@ const ConfirmationDialogDynamic = dynamic(
   },
 );
 
-type DialogType = 'add' | 'edit' | 'delete' | null;
-
 function StaffTable() {
-  const [activeDialog, setActiveDialog] = useState<DialogType>(null);
-  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
-
   const {
-    items: staff,
+    staff,
     total,
     totalPages,
     error,
@@ -54,79 +43,26 @@ function StaffTable() {
     currentPage,
     pageSize,
     searchTerm,
-    urlState,
     hasActiveFilters,
+
+    roleFilter,
+    filterInfo,
+    columns,
+
+    activeDialog,
+    selectedStaff,
+    deleteStaff,
 
     setSearch,
     setPage,
     setPageSize,
-    setFilter,
     clearAll,
-  } = useStaffController();
+    setActiveDialog,
 
-  const roleFilter = urlState.role ?? undefined;
-
-  const { del: deleteStaff } = useStaffMutations();
-
-  const handleEdit = (staff: Staff) => {
-    setSelectedStaff(staff);
-    setActiveDialog('edit');
-  };
-
-  const handleDelete = (staff: Staff) => {
-    setSelectedStaff(staff);
-    setActiveDialog('delete');
-  };
-
-  const handleDeleteStaff = async () => {
-    if (!selectedStaff) return;
-
-    try {
-      await deleteStaff.mutateAsync(selectedStaff.id);
-
-      toast.success('Staff deleted successfully');
-
-      setSelectedStaff(null);
-      setActiveDialog(null);
-    } catch (error) {
-      const errMsg = (error as Error).message || 'Failed to delete staff';
-
-      toast.error(errMsg);
-      console.error('Error deleting staff:', error);
-    }
-  };
-
-  const columns = useStaffColumns({
-    onEdit: handleEdit,
-    onDelete: handleDelete,
-  });
-
-  const handleAddStaff = () => {
-    setActiveDialog('add');
-  };
-
-  // Prepare filter information for the header
-  const filterInfo: FilterInfo[] = useMemo(() => {
-    const filters: FilterInfo[] = [];
-
-    if (roleFilter) {
-      const roleLabel =
-        roleFilter === 'superadmin'
-          ? 'Super Admin'
-          : roleFilter === 'admin'
-            ? 'Admin'
-            : roleFilter === 'author'
-              ? 'Author'
-              : roleFilter;
-      filters.push({
-        key: 'role',
-        label: 'Role',
-        value: roleLabel,
-      });
-    }
-
-    return filters;
-  }, [roleFilter]);
+    handleAddStaff,
+    handleDeleteStaff,
+    handleRoleFilterChange,
+  } = useStaffTable()
 
   return (
     <>
@@ -178,7 +114,7 @@ function StaffTable() {
               <div className="flex flex-wrap items-center gap-2">
                 <SelectFilter
                   value={roleFilter || 'all'}
-                  onValueChange={val => setFilter('role', val)}
+                  onValueChange={handleRoleFilterChange}
                   options={[
                     { value: 'superadmin', label: 'Super Admin' },
                     { value: 'admin', label: 'Admin' },

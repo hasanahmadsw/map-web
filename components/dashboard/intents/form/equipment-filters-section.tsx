@@ -4,8 +4,8 @@ import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { SelectInput } from '@/components/shared/input/SelectInput';
 import { CheckboxInput } from '@/components/shared/input/CheckboxInput';
-import { CategorySelector } from '@/components/dashboard/common/selectors/category-selector';
-import { BrandSelector } from '@/components/dashboard/common/selectors/brand-selector';
+import { CategorySelector } from '@/components/shared/selectors/category-selector';
+import { BrandSelector } from '@/components/shared/selectors/brand-selector';
 import { useEquipmentCategoryById } from '@/hooks/api/equipments/equipment-categories/use-equipment-categories';
 import { useEquipmentBrandById } from '@/hooks/api/equipments/equipment-brands/use-equipment-brands';
 import { EquipmentType } from '@/types/equipments/equipment.enum';
@@ -34,10 +34,7 @@ function EquipmentFiltersSection() {
     categoryIdNum ?? 0,
     !!categoryIdNum && !filterCategoryLabel,
   );
-  const { brand: brandItem } = useEquipmentBrandById(
-    brandIdNum ?? 0,
-    !!brandIdNum && !filterBrandLabel,
-  );
+  const { brand: brandItem } = useEquipmentBrandById(brandIdNum ?? 0, !!brandIdNum && !filterBrandLabel);
 
   const displayCategoryLabel = useMemo(() => {
     if (filterCategoryLabel) return filterCategoryLabel;

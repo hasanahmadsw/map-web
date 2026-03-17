@@ -1,25 +1,16 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-
-import { toast } from 'sonner';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 import { DataTable } from '@/components/shared/table/data-table';
 
-import { useRouter } from 'next/navigation';
-import { useBroadcastUnitMutations } from '@/hooks/api/broadcasts/broadcast-unit-mutations';
-import { useBroadcastUnitsController } from '@/hooks/api/broadcasts/useBroadcastUnitsController';
-
-import { useBroadcastUnitColumns } from './columns';
-import { TableHeader, type FilterInfo } from '@/components/shared/table/table-header';
-
-import type { BroadcastUnit } from '@/types/broadcasts/broadcasts.types';
+import { TableHeader } from '@/components/shared/table/table-header';
 import dynamic from 'next/dynamic';
 import DialogSkeleton from '../../shared/skeletons/dialog-skeleton';
 import { SelectFilter } from '@/components/shared/selects/select-filter';
 import { BroadcastType } from '@/types/broadcasts/broadcast.enums';
+import { useBroadcastUnitsTable } from './use-broadcast-units-table';
 
 const ConfirmationDialogDynamic = dynamic(
   () => import('@/components/shared/confirmation-dialog').then(mod => mod.ConfirmationDialog),
@@ -30,12 +21,8 @@ const ConfirmationDialogDynamic = dynamic(
 );
 
 export function BroadcastUnitsTable() {
-  const router = useRouter();
-
-  const [broadcastUnitToDelete, setBroadcastUnitToDelete] = useState<BroadcastUnit | null>(null);
-
   const {
-    items: broadcastUnitsList,
+    broadcastUnitsList,
     total,
     totalPages,
     error,
@@ -45,73 +32,29 @@ export function BroadcastUnitsTable() {
     currentPage,
     pageSize,
     searchTerm,
-    urlState,
     hasActiveFilters,
+
+    filterInfo,
+    broadcastTypeOptions,
+
+    publishedSelectValue,
+    typeSelectValue,
+
+    columns,
+    broadcastUnitToDelete,
+    deleteBroadcastUnit,
+    setBroadcastUnitToDelete,
 
     setSearch,
     setPage,
     setPageSize,
-    setFilter,
     clearAll,
-  } = useBroadcastUnitsController();
 
-  const publishedFilter = urlState.isPublished ?? undefined;
-  const typeFilter = urlState.type ?? undefined;
-
-  const { del: deleteBroadcastUnit } = useBroadcastUnitMutations();
-
-  const handleDeleteBroadcastUnit = async () => {
-    if (!broadcastUnitToDelete) return;
-
-    try {
-      await deleteBroadcastUnit.mutateAsync(broadcastUnitToDelete.id);
-
-      toast.success('Broadcast unit deleted successfully');
-
-      setBroadcastUnitToDelete(null);
-    } catch (error) {
-      const errMsg = (error as Error).message || 'Failed to delete Broadcast Unit';
-
-      toast.error(errMsg);
-      console.error('Error deleting broadcast unit:', error);
-    }
-  };
-
-  const columns = useBroadcastUnitColumns({
-    onDelete: setBroadcastUnitToDelete,
-  });
-
-  const handleAddBroadcastUnit = () => {
-    router.push(`/dashboard/broadcast-units/add`);
-  };
-
-  // Prepare filter information for the header
-  const filterInfo: FilterInfo[] = useMemo(() => {
-    const filters: FilterInfo[] = [];
-
-    if (publishedFilter !== undefined) {
-      filters.push({
-        key: 'isPublished',
-        label: 'Status',
-        value: publishedFilter ? 'Published' : 'Draft',
-      });
-    }
-
-    if (typeFilter) {
-      filters.push({
-        key: 'type',
-        label: 'Type',
-        value: typeFilter.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase()),
-      });
-    }
-
-    return filters;
-  }, [publishedFilter, typeFilter]);
-
-  const broadcastTypeOptions = Object.values(BroadcastType).map(type => ({
-    value: type,
-    label: type.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase()),
-  }));
+    handleAddBroadcastUnit,
+    handleDeleteBroadcastUnit,
+    handlePublishedFilterChange,
+    handleTypeFilterChange,
+  } = useBroadcastUnitsTable()
 
   return (
     <>
@@ -162,16 +105,8 @@ export function BroadcastUnitsTable() {
             toolbarRight={
               <div className="flex flex-wrap items-center gap-2">
                 <SelectFilter
-                  value={
-                    publishedFilter === undefined
-                      ? 'all'
-                      : (publishedFilter as unknown as string) === 'true'
-                        ? 'true'
-                        : 'false'
-                  }
-                  onValueChange={val =>
-                    setFilter('isPublished', val === undefined ? undefined : val === 'true' ? true : false)
-                  }
+                  value={publishedSelectValue}
+                  onValueChange={handlePublishedFilterChange}
                   options={[
                     { value: 'true', label: 'Published' },
                     { value: 'false', label: 'Draft' },
@@ -180,8 +115,8 @@ export function BroadcastUnitsTable() {
                   className="w-32"
                 />
                 <SelectFilter
-                  value={typeFilter}
-                  onValueChange={val => setFilter('type', val)}
+                  value={typeSelectValue}
+                  onValueChange={handleTypeFilterChange}
                   options={broadcastTypeOptions}
                   allOptionLabel="All Types"
                   className="w-40"

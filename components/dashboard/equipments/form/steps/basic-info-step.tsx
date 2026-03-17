@@ -11,9 +11,9 @@ import { CheckboxInput } from '@/components/shared/input/CheckboxInput';
 import { EquipmentType } from '@/types/equipments/equipment.enum';
 import type { TCreateEquipmentForm } from '@/validations/equipments/create-equipment.schema';
 import type { TUpdateEquipmentForm } from '@/validations/equipments/update-equipment.schema';
-import { CategorySelector } from '@/components/dashboard/common/selectors/category-selector';
+import { CategorySelector } from '@/components/shared/selectors/category-selector';
 
-import { BrandSelector } from '@/components/dashboard/common/selectors/brand-selector';
+import { BrandSelector } from '@/components/shared/selectors/brand-selector';
 
 const equipmentTypeOptions = Object.values(EquipmentType).map(type => ({ value: type, label: type }));
 

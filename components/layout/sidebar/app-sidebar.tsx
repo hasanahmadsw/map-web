@@ -22,13 +22,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <Link href="/" className="flex items-center gap-2 p-2 transition-opacity hover:opacity-80">
+        <Link
+          href="/"
+          className="flex items-center justify-center gap-2 p-2 transition-opacity hover:opacity-80"
+        >
           <Image
             src="/logo.png"
             alt="MAP Logo"
             width={130}
             height={40}
-            className={cn('transition-all duration-300', state === 'collapsed' ? 'h-5 w-14' : 'h-8 w-auto')}
+            className={cn('transition-all duration-300', state === 'collapsed' ? 'h-4 w-14' : 'h-14 w-32')}
             priority
           />
         </Link>
