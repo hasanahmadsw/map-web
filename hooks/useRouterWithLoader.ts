@@ -1,5 +1,5 @@
-import { useRouter } from "next/navigation";
-import nProgress from "nprogress";
+import { useRouter } from 'nextjs-toploader/app';
+import nProgress from 'nprogress';
 
 export const useRouterWithLoader = () => {
   const router = useRouter();

@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -58,7 +58,12 @@ function AddIntentForm() {
             <ResponseError error={create.error as Error} />
 
             <div className="flex gap-2">
-              <Button type="button" variant="outline" onClick={() => router.back()} disabled={create.isPending}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.back()}
+                disabled={create.isPending}
+              >
                 Cancel
               </Button>
               <LoadingButton isLoading={create.isPending} loadingText="Adding..." defaultText="Add Intent" />

@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -70,7 +70,7 @@ function EditIntentForm({ intentId }: { intentId: string }) {
 
   if (!intent) {
     return (
-      <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive">
+      <div className="border-destructive/50 bg-destructive/10 text-destructive rounded-lg border p-4">
         Intent not found.
       </div>
     );
@@ -84,17 +84,19 @@ function EditIntentForm({ intentId }: { intentId: string }) {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <IntentFormFields
-              initialParentId={intent.parentId}
-              excludeId={intent.id}
-            />
+            <IntentFormFields initialParentId={intent.parentId} excludeId={intent.id} />
 
             <Separator />
 
             <ResponseError error={update.error as Error} />
 
             <div className="flex gap-2">
-              <Button type="button" variant="outline" onClick={() => router.back()} disabled={update.isPending}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.back()}
+                disabled={update.isPending}
+              >
                 Cancel
               </Button>
               <LoadingButton isLoading={update.isPending} loadingText="Saving..." defaultText="Save" />

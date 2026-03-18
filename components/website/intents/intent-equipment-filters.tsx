@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useSearchParams, usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import EquipmentsAutocomplete from '@/components/website/common/equipments-autocomplete';
 import { FilterSelect } from '@/components/shared/FilterSelect';
@@ -9,6 +9,7 @@ import type { IEquipmentCategory } from '@/types/equipments/equipment-category.t
 import type { IEquipmentBrand } from '@/types/equipments/equipment-brand.type';
 import { X } from 'lucide-react';
 import { useMemo } from 'react';
+import { useRouter } from 'nextjs-toploader/app';
 
 interface IntentEquipmentFiltersProps {
   categories: IEquipmentCategory[];
@@ -45,10 +46,7 @@ export function IntentEquipmentFilters({ categories, brands }: IntentEquipmentFi
   );
 
   const brandOptions = useMemo(
-    () => [
-      { value: 'all', label: 'All Brands' },
-      ...brands.map(b => ({ value: b.slug, label: b.name })),
-    ],
+    () => [{ value: 'all', label: 'All Brands' }, ...brands.map(b => ({ value: b.slug, label: b.name }))],
     [brands],
   );
 

@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { useDebouncedCallback } from 'use-debounce';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 import { Input } from '@/components/ui/input';
+import { useRouter } from 'nextjs-toploader/app';
 
 interface searchProps {
   query?: string;

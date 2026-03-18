@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import { useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
+import { useMemo, useState } from 'react';
+import { useRouter } from 'nextjs-toploader/app';
+import { toast } from 'sonner';
 
-import { useIntentMutations } from '@/hooks/api/intents/mutations'
-import { useIntentsController } from '@/hooks/api/intents/use-intents-controller'
-import type { FilterInfo } from '@/components/shared/table/table-header'
-import type { IIntentBase, IntentType } from '@/types/intents/intent.type'
+import { useIntentMutations } from '@/hooks/api/intents/mutations';
+import { useIntentsController } from '@/hooks/api/intents/use-intents-controller';
+import type { FilterInfo } from '@/components/shared/table/table-header';
+import type { IIntentBase, IntentType } from '@/types/intents/intent.type';
 
-import { useIntentColumns } from './columns'
+import { useIntentColumns } from './columns';
 
 const INTENT_TYPE_OPTIONS: { value: IntentType; label: string }[] = [
   { value: 'HUB', label: 'HUB' },
@@ -19,14 +19,14 @@ const INTENT_TYPE_OPTIONS: { value: IntentType; label: string }[] = [
   { value: 'MODEL', label: 'MODEL' },
   { value: 'OFFER', label: 'OFFER' },
   { value: 'LOCATION', label: 'LOCATION' },
-]
+];
 
-type DialogType = 'delete' | null
+type DialogType = 'delete' | null;
 
 export function useIntentsTable() {
-  const router = useRouter()
-  const [activeDialog, setActiveDialog] = useState<DialogType>(null)
-  const [selectedIntent, setSelectedIntent] = useState<IIntentBase | null>(null)
+  const router = useRouter();
+  const [activeDialog, setActiveDialog] = useState<DialogType>(null);
+  const [selectedIntent, setSelectedIntent] = useState<IIntentBase | null>(null);
 
   const {
     items: intents,
@@ -45,50 +45,50 @@ export function useIntentsTable() {
     setFilter,
     clearAll,
     hasActiveFilters,
-  } = useIntentsController()
+  } = useIntentsController();
 
-  const typeFilter = urlState.type ?? undefined
+  const typeFilter = urlState.type ?? undefined;
 
-  const { del: deleteIntent } = useIntentMutations()
+  const { del: deleteIntent } = useIntentMutations();
 
   function handleAddIntent() {
-    router.push('/dashboard/intents/add')
+    router.push('/dashboard/intents/add');
   }
 
   function handleEdit(intent: IIntentBase) {
-    router.push(`/dashboard/intents/${intent.id}`)
+    router.push(`/dashboard/intents/${intent.id}`);
   }
 
   function handleDelete(intent: IIntentBase) {
-    setSelectedIntent(intent)
-    setActiveDialog('delete')
+    setSelectedIntent(intent);
+    setActiveDialog('delete');
   }
 
   async function handleDeleteIntent() {
-    if (!selectedIntent) return
+    if (!selectedIntent) return;
     try {
-      await deleteIntent.mutateAsync(selectedIntent.id)
-      toast.success('Intent deleted successfully')
-      setSelectedIntent(null)
-      setActiveDialog(null)
+      await deleteIntent.mutateAsync(selectedIntent.id);
+      toast.success('Intent deleted successfully');
+      setSelectedIntent(null);
+      setActiveDialog(null);
     } catch (err) {
-      toast.error((err as Error).message || 'Failed to delete intent')
+      toast.error((err as Error).message || 'Failed to delete intent');
     }
   }
 
-  const columns = useIntentColumns({ onEdit: handleEdit, onDelete: handleDelete })
+  const columns = useIntentColumns({ onEdit: handleEdit, onDelete: handleDelete });
 
   const filterInfo: FilterInfo[] = useMemo(() => {
-    const filters: FilterInfo[] = []
-    if (searchTerm) filters.push({ key: 'search', label: 'Search', value: searchTerm })
-    if (typeFilter) filters.push({ key: 'type', label: 'Type', value: typeFilter })
-    return filters
-  }, [searchTerm, typeFilter])
+    const filters: FilterInfo[] = [];
+    if (searchTerm) filters.push({ key: 'search', label: 'Search', value: searchTerm });
+    if (typeFilter) filters.push({ key: 'type', label: 'Type', value: typeFilter });
+    return filters;
+  }, [searchTerm, typeFilter]);
 
-  const typeSelectValue = typeFilter ?? 'all'
+  const typeSelectValue = typeFilter ?? 'all';
 
   function handleTypeFilterChange(val: string | undefined) {
-    setFilter('type', val)
+    setFilter('type', val);
   }
 
   return {
@@ -118,5 +118,5 @@ export function useIntentsTable() {
     handleDeleteIntent,
     typeSelectValue,
     handleTypeFilterChange,
-  }
+  };
 }

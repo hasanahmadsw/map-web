@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 
 import { DataTable } from '@/components/shared/table/data-table';
 
-import { useRouter } from 'next/navigation';
 import { useArticleMutations } from '@/hooks/api/articles/mutations';
 import { useArticlesController } from '@/hooks/api/articles/useArticlesController';
 
@@ -19,6 +18,7 @@ import type { Article } from '@/types/articles.types';
 import dynamic from 'next/dynamic';
 import DialogSkeleton from '../../shared/skeletons/dialog-skeleton';
 import { SelectFilter } from '@/components/shared/selects/select-filter';
+import { useRouter } from 'nextjs-toploader/app';
 
 const ConfirmationDialogDynamic = dynamic(
   () => import('@/components/shared/confirmation-dialog').then(mod => mod.ConfirmationDialog),

@@ -2,7 +2,7 @@
 
 import type { ColumnDef } from '@tanstack/react-table';
 import { Edit, MoreHorizontal, Trash2, Package, Calendar } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -99,9 +99,7 @@ export function useBroadcastUnitColumns(opts: {
       cell: ({ row }) => {
         const broadcastUnit = row.original;
         return (
-          <div className="text-muted-foreground max-w-xs truncate text-sm">
-            {broadcastUnit.summary || ''}
-          </div>
+          <div className="text-muted-foreground max-w-xs truncate text-sm">{broadcastUnit.summary || ''}</div>
         );
       },
     },

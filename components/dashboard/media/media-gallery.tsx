@@ -17,7 +17,7 @@ import type { Media } from '@/types/media.types';
 
 import { Folder as FolderIcon, FolderPlus, Loader2, Trash2, Upload, X } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -26,6 +26,7 @@ import { MediaCard } from './media-card';
 import { UploadMediaDialog } from './upload-media-dialog';
 import { useDeleteMedia, useMediaInfinite, useMediaTree } from '@/hooks/api/media/use-media';
 import ApiError from '../../shared/api-error';
+import { useRouter } from 'nextjs-toploader/app';
 
 const MediaViewerModalDynamic = dynamic(
   () => import('./media-viewer-modal').then(mod => mod.MediaViewerModal),

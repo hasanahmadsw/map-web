@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useSearchParams, usePathname } from 'next/navigation';
 
 import {
   Pagination,
@@ -15,6 +15,7 @@ import {
 import { DOTS, usePagination } from './usePagination';
 
 import { cn } from '@/lib/utils';
+import { useRouter } from 'nextjs-toploader/app';
 
 /** ----------------------------------------------
  * @description Custom Pagination

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 import { toast } from 'sonner';
 
 import { useBroadcastUnitMutations } from '@/hooks/api/broadcasts/broadcast-unit-mutations';

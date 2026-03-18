@@ -15,7 +15,7 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
 import { useAuth } from '@/hooks/api/useAuth';
 import { useStaffMe } from '@/hooks/api/staff/useStaffMe';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 
 export function NavUser() {
   const { isMobile } = useSidebar();

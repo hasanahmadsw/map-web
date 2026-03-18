@@ -2,7 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { DatabaseBackup, Filter, RefreshCw, Sparkles } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 import { useEffect, useState } from 'react';
 
 interface EmptyStateProps {

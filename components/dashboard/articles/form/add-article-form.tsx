@@ -1,8 +1,6 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useRouter } from 'next/navigation';
-
 import { Resolver, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -21,6 +19,7 @@ import { createArticleSchema, TCreateArticleForm } from '@/validations/articles/
 import ResponseError from '@/components/shared/response-error';
 import { sanitizeDto } from '@/utils/format';
 import { MediaSelectInput } from '@/components/shared/input/MediaSelectInput';
+import { useRouter } from 'nextjs-toploader/app';
 
 export function AddArticleForm() {
   const router = useRouter();

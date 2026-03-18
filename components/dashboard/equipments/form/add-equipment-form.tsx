@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { Form, FormProvider, type Resolver, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'nextjs-toploader/app';
 
 import { Button } from '@/components/ui/button';
 import FormProgress from '@/components/shared/progress/form-progress';
