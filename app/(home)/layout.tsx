@@ -1,7 +1,5 @@
-import TopBar from '@/components/layout/bar/top-bar';
-import Footer from '@/components/layout/footer/footer';
 import Header from '@/components/layout/header/header';
-
+import Footer from '@/components/layout/footer/footer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -13,7 +11,6 @@ export const metadata: Metadata = {
 export default async function PublicPagesLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      {/* <TopBar /> */}
       <Header />
       <main className="bg-background min-h-screen">{children}</main>
       <Footer />
