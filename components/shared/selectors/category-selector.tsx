@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState, useCallback } from 'react';
-import { useDebouncedValue } from '@/utils/useDebouncedValue';
+import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useCategoriesForFilter } from '@/hooks/api/equipments/equipment-categories/use-equipment-categories-controller';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -116,12 +116,7 @@ export function CategorySelector({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0" align="start">
-        <Command
-          value={searchTerm}
-          onValueChange={handleSearchChange}
-          shouldFilter={false}
-          filter={() => 1}
-        >
+        <Command value={searchTerm} onValueChange={handleSearchChange} shouldFilter={false} filter={() => 1}>
           <CommandInput placeholder={placeholder || 'Search categories...'} />
           <CommandList>
             <CommandEmpty>{isPending ? 'Loading...' : 'No categories found.'}</CommandEmpty>

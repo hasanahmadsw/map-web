@@ -1,18 +1,18 @@
-'use client'
+'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useAuth } from '@/hooks/api/useAuth'
-import { useRouterWithLoader } from '@/hooks/useRouterWithLoader'
-import { cn } from '@/lib/utils'
-import { loginSchema, type TLoginForm } from '@/validations/auth/login.schema'
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useAuth } from '@/hooks/api/useAuth';
+import { cn } from '@/lib/utils';
+import { loginSchema, type TLoginForm } from '@/validations/auth/login.schema';
+import { useRouter } from 'nextjs-toploader/app';
 
 interface AuthFormProps {
   className?: string;
@@ -22,7 +22,7 @@ export function AuthForm({ className }: AuthFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const { login, isLoading, error } = useAuth();
-  const router = useRouterWithLoader();
+  const router = useRouter();
   const form = useForm<TLoginForm>({
     resolver: zodResolver(loginSchema()),
     defaultValues: {

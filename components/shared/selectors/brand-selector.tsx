@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState, useCallback } from 'react';
-import { useDebouncedValue } from '@/utils/useDebouncedValue';
+import { useDebouncedValue } from '@/hooks/useDebouncedValue';
 import { useBrandsForFilter } from '@/hooks/api/equipments/equipment-brands/use-equipment-brands-controller';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';

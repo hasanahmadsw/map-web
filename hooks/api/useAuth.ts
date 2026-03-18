@@ -1,9 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
-import { useRouterWithLoader } from '@/hooks/useRouterWithLoader';
 import { authService } from '@/services/auth.service';
 import type { Staff } from '@/types/staff.types';
-import { deleteCookie, myCookies, readCookieFromDocument, setCookie } from '@/utils/cookies';
+import { deleteCookie, myCookies, setCookie } from '@/utils/cookies';
+import { useRouter } from 'nextjs-toploader/app';
 
 interface UseAuthReturn {
   isLoading: boolean;
@@ -14,7 +14,7 @@ interface UseAuthReturn {
 }
 
 export function useAuth(): UseAuthReturn {
-  const router = useRouterWithLoader();
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const loginMutation = useMutation({

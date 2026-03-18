@@ -1,11 +1,7 @@
-import { useMemo, useCallback } from "react";
-import { useDebouncedValue } from "@/utils/useDebouncedValue";
-import {
-  useListUrlState,
-  type BaseListParams,
-  type UrlStateConfig,
-} from "./useListUrlState";
-import { useListQuery } from "./useListQuery";
+import { useMemo, useCallback } from 'react';
+import { useDebouncedValue } from '@/hooks/useDebouncedValue';
+import { useListUrlState, type BaseListParams, type UrlStateConfig } from './useListUrlState';
+import { useListQuery } from './useListQuery';
 
 export function createListController<P extends BaseListParams, R, TItem>() {
   return function useListController(opts: {
@@ -26,18 +22,9 @@ export function createListController<P extends BaseListParams, R, TItem>() {
     searchDebounceMs?: number;
     searchKey?: keyof P;
   }) {
-    const {
-      url,
-      query,
-      searchDebounceMs = 300,
-      searchKey = "search" as keyof P,
-    } = opts;
-    const { urlState, updateUrlState, clearAll, hasActiveFilters } =
-      useListUrlState<P>(url);
-    const debouncedSearch = useDebouncedValue(
-      urlState[searchKey] as unknown as string,
-      searchDebounceMs,
-    );
+    const { url, query, searchDebounceMs = 300, searchKey = 'search' as keyof P } = opts;
+    const { urlState, updateUrlState, clearAll, hasActiveFilters } = useListUrlState<P>(url);
+    const debouncedSearch = useDebouncedValue(urlState[searchKey] as unknown as string, searchDebounceMs);
 
     const queryParams = useMemo(
       () => ({ ...urlState, [searchKey]: debouncedSearch }) as P,
@@ -54,17 +41,13 @@ export function createListController<P extends BaseListParams, R, TItem>() {
       (v: string) => updateUrlState({ [searchKey]: v } as Partial<P>),
       [updateUrlState, searchKey],
     );
-    const setPage = useCallback(
-      (page: number) => updateUrlState({ page } as Partial<P>),
-      [updateUrlState],
-    );
+    const setPage = useCallback((page: number) => updateUrlState({ page } as Partial<P>), [updateUrlState]);
     const setPageSize = useCallback(
       (size: number) => updateUrlState({ limit: size } as Partial<P>),
       [updateUrlState],
     );
     const setFilter = useCallback(
-      <K extends keyof P>(k: K, v: P[K]) =>
-        updateUrlState({ [k]: v } as unknown as Partial<P>),
+      <K extends keyof P>(k: K, v: P[K]) => updateUrlState({ [k]: v } as unknown as Partial<P>),
       [updateUrlState],
     );
 
@@ -80,7 +63,7 @@ export function createListController<P extends BaseListParams, R, TItem>() {
       hasActiveFilters,
       currentPage: Number(urlState.page) || 1,
       pageSize: limit,
-      searchTerm: String(urlState[searchKey] ?? ""),
+      searchTerm: String(urlState[searchKey] ?? ''),
 
       setSearch,
       setPage,
