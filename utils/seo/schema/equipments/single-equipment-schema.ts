@@ -1,12 +1,12 @@
 import { IEquipment } from '@/types/equipments/equipment.type';
 import seoConfig from '../../meta/seo.config';
-import { BreadcrumbList, ItemPage, Product, WebSite, Organization, SiteNavigationElement } from 'schema-dts';
+import { BreadcrumbList, ItemPage, Product, WebSite, Organization } from 'schema-dts';
 import {
   generateBreadcrumbSchema,
   generateOrganizationSchema,
   generateWebsiteSchema,
   withBaseSchema,
-} from '../common/common';
+} from '../common';
 
 export async function singleEquipmentSchema(equipment: IEquipment): Promise<{
   '@context': 'https://schema.org';

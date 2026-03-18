@@ -5,7 +5,7 @@ import {
   generateOrganizationSchema,
   generateWebsiteSchema,
   withBaseSchema,
-} from '../common/common';
+} from '../common';
 
 interface BroadcastTypeItem {
   type: string;

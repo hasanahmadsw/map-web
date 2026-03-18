@@ -1,16 +1,13 @@
 import { BroadcastUnit } from '@/types/broadcasts/broadcasts.types';
 import seoConfig from '../../meta/seo.config';
-import {
-  getTypeBroadcastingUrl,
-  getTypeParentLabel,
-} from '@/components/website/broadcasts/unit/unit-utils';
+import { getTypeBroadcastingUrl, getTypeParentLabel } from '@/components/website/broadcasts/unit/unit-utils';
 import { BreadcrumbList, ItemPage, Product, WebSite, Organization } from 'schema-dts';
 import {
   generateBreadcrumbSchema,
   generateOrganizationSchema,
   generateWebsiteSchema,
   withBaseSchema,
-} from '../common/common';
+} from '../common';
 
 export async function singleBroadcastSchema(unit: BroadcastUnit): Promise<{
   '@context': 'https://schema.org';
@@ -40,7 +37,8 @@ export async function singleBroadcastSchema(unit: BroadcastUnit): Promise<{
       '@id': `${currentURL}#itempage`,
       url: currentURL,
       name: unit.title || unit.slug,
-      description: unit.metaDescription || unit.summary || `${unit.title || unit.slug} - Professional broadcast unit`,
+      description:
+        unit.metaDescription || unit.summary || `${unit.title || unit.slug} - Professional broadcast unit`,
       mainEntity: { '@id': mainProductId },
     },
     currentURL,
@@ -58,7 +56,8 @@ export async function singleBroadcastSchema(unit: BroadcastUnit): Promise<{
     '@type': 'Product',
     '@id': mainProductId,
     name: unit.title || unit.slug,
-    description: unit.metaDescription || unit.summary || `${unit.title || unit.slug} - Professional broadcast unit`,
+    description:
+      unit.metaDescription || unit.summary || `${unit.title || unit.slug} - Professional broadcast unit`,
     ...(images && images.length > 0 && { image: images }),
     category: `Broadcast ${unit.type.replace(/_/g, ' ')}`,
     sku: `BC-${unit.id}`,
@@ -86,4 +85,3 @@ export async function singleBroadcastSchema(unit: BroadcastUnit): Promise<{
     '@graph': [website, organization, itemPage, mainProduct, breadcrumbSchema],
   };
 }
-

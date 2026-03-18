@@ -1,5 +1,5 @@
 import { BreadcrumbList, Organization, SiteNavigationElement, WebPage, WebSite } from 'schema-dts';
-import seoConfig from '../../meta/seo.config';
+import seoConfig from '@/utils/seo/meta/seo.config';
 import { settingsService } from '@/services/settings.service';
 import { DEFAULT_SETTINGS } from '@/constants/constant';
 import { Settings } from '@/types/settings.types';

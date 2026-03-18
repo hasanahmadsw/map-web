@@ -1,19 +1,11 @@
-import {
-  AboutPage,
-  BreadcrumbList,
-  FAQPage,
-  Question,
-  WebSite,
-  Organization,
-  SiteNavigationElement,
-} from 'schema-dts';
+import { AboutPage, BreadcrumbList, FAQPage, Question, WebSite, Organization } from 'schema-dts';
 import {
   generateBreadcrumbSchema,
   generateOrganizationSchema,
   generateWebsiteSchema,
-} from '../common/common';
+  withBaseSchema,
+} from '../common';
 import seoConfig from '@/utils/seo/meta/seo.config';
-import { withBaseSchema } from '../common/common';
 import { faqItems } from '@/components/website/about/data';
 
 export async function generateAboutPageSchema(): Promise<{
@@ -43,8 +35,9 @@ export async function generateAboutPageSchema(): Promise<{
       url: currentURL,
       name: `About Us | ${siteName}`,
       description:
-        'Learn more about MAP Production, the leading media solutions provider in Dubai Studio City.',
+        'MAP Media Art Production is a leading media company with 25+ years of experience in Dubai Studio City, serving the GCC with innovative broadcasting and video production.',
       mainEntity: { '@id': organizationId },
+      keywords: 'Innovation, Excellence, Collaboration, Integrity, Customer Focus, Passion',
     },
     currentURL,
   );

@@ -1,20 +1,11 @@
-import {
-  Blog,
-  BlogPosting,
-  BreadcrumbList,
-  CollectionPage,
-  ItemList,
-  WebSite,
-  Organization,
-  SiteNavigationElement,
-} from 'schema-dts';
+import { Blog, BlogPosting, BreadcrumbList, CollectionPage, WebSite, Organization } from 'schema-dts';
 import seoConfig from '../../meta/seo.config';
 import {
   generateBreadcrumbSchema,
   generateOrganizationSchema,
   generateWebsiteSchema,
   withBaseSchema,
-} from '../common/common';
+} from '../common';
 import { Article as ArticleType } from '@/types/articles.types';
 
 export async function articlesSchema(

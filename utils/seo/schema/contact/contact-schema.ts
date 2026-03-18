@@ -1,11 +1,7 @@
-import { BreadcrumbList, ContactPage, WebSite, Organization, SiteNavigationElement } from 'schema-dts';
-import {
-  generateBreadcrumbSchema,
-  generateOrganizationSchema,
-  generateWebsiteSchema,
-} from '../common/common';
+import { BreadcrumbList, ContactPage, WebSite, Organization } from 'schema-dts';
+import { generateBreadcrumbSchema, generateOrganizationSchema, generateWebsiteSchema } from '../common';
 import seoConfig from '@/utils/seo/meta/seo.config';
-import { withBaseSchema } from '../common/common';
+import { withBaseSchema } from '../common';
 
 export async function generateContactPageSchema(): Promise<{
   '@context': 'https://schema.org';

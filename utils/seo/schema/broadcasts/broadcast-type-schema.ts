@@ -5,7 +5,7 @@ import {
   generateOrganizationSchema,
   generateWebsiteSchema,
   withBaseSchema,
-} from '../common/common';
+} from '../common';
 import { BroadcastUnit } from '@/types/broadcasts/broadcasts.types';
 import { BroadcastType } from '@/types/broadcasts/broadcast.enums';
 import { getTypeBroadcastingUrl } from '@/components/website/broadcasts/unit/unit-utils';

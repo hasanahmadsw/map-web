@@ -1,12 +1,12 @@
 import { Article as ArticleType } from '@/types/articles.types';
 import seoConfig from '../../meta/seo.config';
-import { Article, BreadcrumbList, ItemPage, WebSite, Organization, SiteNavigationElement } from 'schema-dts';
+import { Article, BreadcrumbList, ItemPage, WebSite, Organization } from 'schema-dts';
 import {
   generateBreadcrumbSchema,
   generateOrganizationSchema,
   generateWebsiteSchema,
   withBaseSchema,
-} from '../common/common';
+} from '../common';
 
 export async function singleArticleSchema(article: ArticleType): Promise<{
   '@context': 'https://schema.org';

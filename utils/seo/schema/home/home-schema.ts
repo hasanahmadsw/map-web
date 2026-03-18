@@ -5,7 +5,7 @@ import {
   generateOrganizationSchema,
   generateWebsiteSchema,
   withBaseSchema,
-} from '../common/common';
+} from '../common';
 
 import type { BreadcrumbList, Organization, SiteNavigationElement, WebPage, WebSite } from 'schema-dts';
 
